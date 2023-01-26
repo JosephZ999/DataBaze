@@ -3,9 +3,6 @@
 
 #include "DataBaze.h"
 
-#define MAX_LOADSTRING 100
-#define IDC_LISTBOX	   9
-
 // Global Variables:
 HINSTANCE hInst;						 // current instance
 WCHAR	  szTitle[MAX_LOADSTRING];		 // The title bar text
@@ -13,13 +10,12 @@ WCHAR	  szWindowClass[MAX_LOADSTRING]; // the main window class name
 HWND	  MainWindow;
 HWND	  ListBox;
 DBSystem* System;
-
-const Size2D BtnSize = {150, 30};
+Size2D	  BtnSize = {150, 30};
 
 // Forward declarations of functions included in this code module:
-ATOM			 MyRegisterClass(HINSTANCE hInstance);
-BOOL			 InitInstance(HINSTANCE, int);
-VOID CALLBACK	 TimerProc(HWND hWnd, UINT nMsg, UINT nIDEvent, DWORD dwTime);
+ATOM MyRegisterClass(HINSTANCE hInstance);
+BOOL InitInstance(HINSTANCE, int);
+
 LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
 INT_PTR CALLBACK About(HWND, UINT, WPARAM, LPARAM);
 
@@ -109,16 +105,13 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 	ShowWindow(MainWindow, nCmdShow);
 	UpdateWindow(MainWindow);
 	System = new DBSystem(&hInst);
+	if (System)
+	{
+		System->MainWindow = &MainWindow;
+		System->BtnSize	   = &BtnSize;
+		System->EndConstruct();
+	}
 	return TRUE;
-}
-
-UINT TimerId;
-int	 clicks;
-
-VOID CALLBACK TimerProc(HWND hWnd, UINT nMsg, UINT nIDEvent, DWORD dwTime)
-{
-	KillTimer(NULL, TimerId);
-	clicks = 0;
 }
 
 //
@@ -166,7 +159,10 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		// TCHAR greeting[] = _T("Hello, Windows desktop!");
 		// TextOut(hdc, 5, 5, greeting, _tcslen(greeting));
 
-		System->CallPaint(hWnd, message, wParam, lParam);
+		if (System)
+		{
+			System->CallPaint(hWnd, message, wParam, lParam);
+		}
 
 		EndPaint(hWnd, &ps);
 	}
@@ -194,29 +190,4 @@ INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 		break;
 	}
 	return (INT_PTR)FALSE;
-}
-
-// Button Container functions
-
-void ButtonContainer::Add(const DBButtonBase& InButton)
-{
-	if (ButtonLastIndex < 10)
-	{
-		Buttons[ButtonLastIndex] = InButton;
-		++ButtonLastIndex;
-		return;
-	}
-}
-
-bool ButtonContainer::FindByIndex(DBButtonId Id, DBButtonBase& Button)
-{
-	for (int i = 0; i < 10; ++i)
-	{
-		if (Buttons[i].Id != Id) continue;
-
-		Button = Buttons[i];
-		return true;
-	}
-
-	return false;
 }

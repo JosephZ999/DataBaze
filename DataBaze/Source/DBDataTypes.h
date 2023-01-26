@@ -60,8 +60,8 @@ class ButtonContainer
 	int			 ButtonLastIndex = 0;
 
 public:
-	void Add(const DBButtonBase& InButton);
-	bool FindByIndex(DBButtonId Id, DBButtonBase& Button);
+	inline void Add(const DBButtonBase& InButton);
+	inline bool FindByIndex(DBButtonId Id, DBButtonBase& Button);
 	bool IsEmpty() { return ButtonLastIndex == 0; }
 };
 
@@ -107,3 +107,28 @@ class DBListContainer
 public:
 	std::vector<DBListItem> Items;
 };
+
+// container implementations
+
+void ButtonContainer::Add(const DBButtonBase& InButton)
+{
+	if (ButtonLastIndex < 10)
+	{
+		Buttons[ButtonLastIndex] = InButton;
+		++ButtonLastIndex;
+		return;
+	}
+}
+
+bool ButtonContainer::FindByIndex(DBButtonId Id, DBButtonBase& Button)
+{
+	for (int i = 0; i < 10; ++i)
+	{
+		if (Buttons[i].Id != Id) continue;
+
+		Button = Buttons[i];
+		return true;
+	}
+
+	return false;
+}

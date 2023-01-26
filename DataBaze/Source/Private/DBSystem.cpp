@@ -1,9 +1,18 @@
+
 #include "Source/Public/DBSystem.h"
+
+UINT TimerId;
+int	 clicks;
 
 DBSystem::DBSystem(HINSTANCE* HInstance)
 {
 	HIns = HInstance;
+}
 
+DBSystem::~DBSystem() {}
+
+void DBSystem::EndConstruct()
+{
 	struct LocalBtnInfo
 	{
 		DBButtonId	 Id;
@@ -14,20 +23,18 @@ DBSystem::DBSystem(HINSTANCE* HInstance)
 	const LocalBtnInfo MainButtons[] = {
 		//
 		{DBButtonId::IDB_DIALOG, Size2D(25, 25), L"Show List"},		//
-	{DBButtonId::IDB_NEWITEM, Size2D(25, 75), L"Add New Item"}, //
-	{DBButtonId::IDB_LOCK, Size2D(25, 125), L"Lock"},			//
-	{DBButtonId::IDB_UNLOCK, Size2D(25, 175), L"Unlock"}		//
+		{DBButtonId::IDB_NEWITEM, Size2D(25, 75), L"Add New Item"}, //
+		{DBButtonId::IDB_LOCK, Size2D(25, 125), L"Lock"},			//
+		{DBButtonId::IDB_UNLOCK, Size2D(25, 175), L"Unlock"}		//
 	};
 
 	for (auto BtnInfo : MainButtons)
 	{
-		CreateButton(MainWindow, BtnInfo.Text, BtnInfo.Id, BtnInfo.Pos, BtnSize);
+		CreateButton(*MainWindow, BtnInfo.Text, BtnInfo.Id, BtnInfo.Pos, *BtnSize);
 	}
 
 	InitListBox();
 }
-
-DBSystem::~DBSystem() {}
 
 void DBSystem::CreateButton(const HWND& ParentWindow, const std::wstring Text, DBButtonId Id, Size2D Pos, Size2D Size)
 {
@@ -51,7 +58,7 @@ void DBSystem::InitListBox()
 	ListContainer.Items.push_back(DBListItem({DBPeopleData(L"Hechkim")}, {}, false));
 	ListContainer.Items.push_back(DBListItem({DBPeopleData(L"Komp")}, {}, false));
 
-	ListBox = CreateWindow(L"LISTBOX", L"button", WS_CLIPSIBLINGS | WS_VISIBLE | WS_CHILD | LBS_STANDARD, 200, 25, 500, 300, MainWindow,
+	ListBox = CreateWindow(L"LISTBOX", L"button", WS_CLIPSIBLINGS | WS_VISIBLE | WS_CHILD | LBS_STANDARD, 200, 25, 500, 300, *MainWindow,
 		(HMENU)IDC_LISTBOX, NULL, NULL);
 
 	for (auto Family : ListContainer.Items)
@@ -70,6 +77,12 @@ void DBSystem::InitListBox()
 		}
 	}
 	SetFontSize(ListBox, 20);
+}
+
+VOID DBSystem::DoubleClickTimer(HWND hWnd, UINT nMsg, UINT nIDEvent, DWORD dwTime)
+{
+	KillTimer(NULL, TimerId);
+	clicks = 0;
 }
 
 void DBSystem::CallCommand(HWND& hWnd, UINT Message, WPARAM& WParam, LPARAM& LParam)
@@ -105,7 +118,7 @@ void DBSystem::CallCommand(HWND& hWnd, UINT Message, WPARAM& WParam, LPARAM& LPa
 	{
 		++clicks;
 		KillTimer(NULL, TimerId);
-		TimerId = SetTimer(NULL, 0, 200, &TimerProc);
+		TimerId = SetTimer(NULL, 0, 200, &DBSystem::DoubleClickTimer);
 		if (clicks == 2)
 		{
 			MessageBox(NULL, L"Sorry. It does't work", L"Dialog Box", MB_OK);
@@ -127,10 +140,8 @@ void DBSystem::CallCommand(HWND& hWnd, UINT Message, WPARAM& WParam, LPARAM& LPa
 
 void DBSystem::CallPaint(HWND& hWnd, UINT Message, WPARAM& WParam, LPARAM& LParam)
 {
-	if (! System) return;
-
 	RECT Rect;
-	if (GetWindowRect(MainWindow, &Rect))
+	if (GetWindowRect(*MainWindow, &Rect))
 	{
 		WindowSize.X = Rect.right - Rect.left;
 		WindowSize.Y = Rect.bottom - Rect.top;
@@ -161,7 +172,7 @@ void DBSystem::Update_BtnVisibility()
 
 void DBSystem::Update_ListBoxScale()
 {
-	Size2D Pos = (IsPortraitModeEnabled()) ? Size2D(25, 25) : Size2D(BtnSize.X + 50, 25);
+	Size2D Pos = (IsPortraitModeEnabled()) ? Size2D(25, 25) : Size2D((*BtnSize).X + 50, 25);
 	Size2D Size;
 	Size.X = abs(Pos.X - (WindowSize.X - 25));
 	Size.Y = WindowSize.Y - 100;
