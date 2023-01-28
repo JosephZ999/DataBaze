@@ -2,8 +2,15 @@
 
 #include "framework.h"
 #include "Resource.h"
+#include <string>
+#include <vector>
+#include "Source/DBDataTypes.h"
 
 namespace DBLib
 {
-	void SetWindowVisibility(HWND Window, bool bShow);
-}
+
+void SetWindowVisibility(HWND Window, bool bShow);
+HWND CreateButton(DBButton& ButtonInfo);
+void SetFontSize(HWND Window, int FontSize);
+
+} // namespace DBLib

@@ -127,10 +127,10 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 
 			RegisterClass(&wc);
 
-			auto Viewer = CreateWindowEx(0, // Optional window styles.
-				CLASS_NAME,					// Window class
-				L"Viewer",					// Window text
-				WS_OVERLAPPED | WS_SYSMENU | WS_CAPTION,		// Window style
+			auto Viewer = CreateWindowEx(0,				 // Optional window styles.
+				CLASS_NAME,								 // Window class
+				L"Viewer",								 // Window text
+				WS_OVERLAPPED | WS_SYSMENU | WS_CAPTION, // Window style
 
 				// Size and position
 				25, 25, 600, 400, // CW_USEDEFAULT
@@ -160,10 +160,10 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 
 			RegisterClass(&wc);
 
-			auto Writer = CreateWindowEx(0, // Optional window styles.
-				CLASS_NAME,					// Window class
-				L"Writer",					// Window text
-				WS_OVERLAPPED | WS_SYSMENU | WS_CAPTION,		// Window style
+			auto Writer = CreateWindowEx(0,				 // Optional window styles.
+				CLASS_NAME,								 // Window class
+				L"Writer",								 // Window text
+				WS_OVERLAPPED | WS_SYSMENU | WS_CAPTION, // Window style
 
 				// Size and position
 				25, 25, 600, 400,
@@ -272,6 +272,16 @@ LRESULT CALLBACK WndViewerProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lP
 {
 	switch (message)
 	{
+	case WM_CREATE:
+	{
+		DBButton NewBtn;
+		NewBtn.Id		= EDBButtonId::IDB_MAX;
+		NewBtn.Parent	= hWnd;
+		NewBtn.Position = {0, 0};
+		NewBtn.Size		= {100, 50};
+
+		DBLib::CreateButton(NewBtn);
+	}
 	case WM_CLOSE:
 	{
 		DBLib::SetWindowVisibility(hWnd, false);

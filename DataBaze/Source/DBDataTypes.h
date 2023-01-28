@@ -43,10 +43,10 @@ enum EWindows
 	IDW_MAX,
 };
 
-struct DBButtonBase
+struct DBButton
 {
-	DBButtonBase() {}
-	DBButtonBase(EDBButtonId InId, HWND InWindow, Size2D InPosition, Size2D InSize, std::wstring InText)
+	DBButton() {}
+	DBButton(EDBButtonId InId, HWND InWindow, Size2D InPosition, Size2D InSize, std::wstring InText)
 		: Id(InId)
 		, Window(InWindow)
 		, Position(InPosition)
@@ -57,19 +57,21 @@ struct DBButtonBase
 
 	EDBButtonId	 Id		= EDBButtonId::IDB_NONE;
 	HWND		 Window = 0;
+	HWND		 Parent = 0;
 	Size2D		 Position;
 	Size2D		 Size;
-	std::wstring Text;
+	std::wstring Text	  = L"Button";
+	int			 FontSize = 16;
 };
 
 class ButtonContainer
 {
-	DBButtonBase Buttons[10];
-	int			 ButtonLastIndex = 0;
+	DBButton Buttons[10];
+	int		 ButtonLastIndex = 0;
 
 public:
-	inline void Add(const DBButtonBase& InButton);
-	inline bool FindByIndex(EDBButtonId Id, DBButtonBase& Button);
+	inline void Add(const DBButton& InButton);
+	inline bool FindByIndex(EDBButtonId Id, DBButton& Button);
 	bool		IsEmpty() { return ButtonLastIndex == 0; }
 };
 
@@ -128,7 +130,7 @@ public:
 
 // container implementations
 
-void ButtonContainer::Add(const DBButtonBase& InButton)
+void ButtonContainer::Add(const DBButton& InButton)
 {
 	if (ButtonLastIndex < 10)
 	{
@@ -138,7 +140,7 @@ void ButtonContainer::Add(const DBButtonBase& InButton)
 	}
 }
 
-bool ButtonContainer::FindByIndex(EDBButtonId Id, DBButtonBase& Button)
+bool ButtonContainer::FindByIndex(EDBButtonId Id, DBButton& Button)
 {
 	for (int i = 0; i < 10; ++i)
 	{

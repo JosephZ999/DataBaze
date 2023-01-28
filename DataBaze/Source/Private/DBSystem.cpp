@@ -51,7 +51,7 @@ void DBSystem::CreateButton(const HWND& ParentWindow, const std::wstring Text, E
 
 	SetFontSize(NewWindow, 16);
 
-	Buttons.Add(DBButtonBase(Id, NewWindow, Pos, Size, Text));
+	Buttons.Add(DBButton(Id, NewWindow, Pos, Size, Text));
 }
 
 void DBSystem::InitListBox()
@@ -215,7 +215,7 @@ void DBSystem::Update_ListBoxScale()
 
 void DBSystem::HideButton(EDBButtonId Id)
 {
-	DBButtonBase Button;
+	DBButton Button;
 	if (Buttons.FindByIndex(Id, Button))
 	{
 		SetWindowPos(Button.Window, 0,			  //
@@ -227,7 +227,7 @@ void DBSystem::HideButton(EDBButtonId Id)
 
 void DBSystem::ShowButton(EDBButtonId Id)
 {
-	DBButtonBase Button;
+	DBButton Button;
 	if (Buttons.FindByIndex(Id, Button))
 	{
 		SetWindowPos(Button.Window, 0,			  //
