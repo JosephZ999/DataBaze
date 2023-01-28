@@ -36,6 +36,12 @@
     <Filter Include="Source\Private\Components">
       <UniqueIdentifier>{4fae78da-ece0-4305-a749-55dda9c93d58}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Private\Utils">
+      <UniqueIdentifier>{f416ebe1-64a7-4be9-8ae0-b7f22c238ed7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Public\Utils">
+      <UniqueIdentifier>{07012492-3e56-4409-87aa-ec04e77d7fba}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -68,6 +74,9 @@
     <ClInclude Include="Source\Public\Components\WindowsManager.h">
       <Filter>Source\Public\Components</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Public\Utils\DBFunctionLibrary.h">
+      <Filter>Source\Public\Utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DataBaze.cpp">
@@ -84,6 +93,9 @@
     </ClCompile>
     <ClCompile Include="Source\Private\Components\WindowsManager.cpp">
       <Filter>Source\Private\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Private\Utils\DBFunctionLibrary.cpp">
+      <Filter>Source\Private\Utils</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
