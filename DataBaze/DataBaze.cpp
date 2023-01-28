@@ -126,10 +126,10 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 			auto Viewer = CreateWindowEx(0, // Optional window styles.
 				CLASS_NAME,					// Window class
 				L"Viewer",					// Window text
-				WS_OVERLAPPEDWINDOW,		// Window style
+				WS_OVERLAPPED,				// Window style
 
 				// Size and position
-				CW_USEDEFAULT, CW_USEDEFAULT, 600, 400,
+				25, 25, 600, 400, // CW_USEDEFAULT
 
 				NULL,	   // Parent window
 				NULL,	   // Menu
@@ -159,10 +159,10 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 			auto Writer = CreateWindowEx(0, // Optional window styles.
 				CLASS_NAME,					// Window class
 				L"Writer",					// Window text
-				WS_OVERLAPPEDWINDOW,		// Window style
+				WS_OVERLAPPED,				// Window style
 
 				// Size and position
-				CW_USEDEFAULT, CW_USEDEFAULT, 600, 400,
+				25, 25, 600, 400,
 
 				NULL,	   // Parent window
 				NULL,	   // Menu
