@@ -1,42 +1,48 @@
 
 #include "Source/Public/DBSystem.h"
+#include "Source/Public/Components/WindowsManager.h"
 
 UINT TimerId;
 int	 clicks;
 
-DBSystem::DBSystem(HINSTANCE* HInstance)
+DBSystem::DBSystem(HINSTANCE* HInstance, HWND InMainWindow)
+	: HIns(HInstance)
+	, MainWindow(InMainWindow)
 {
-	HIns = HInstance;
+	WindowManager = new DBWindowsManager(HIns);
 }
 
-DBSystem::~DBSystem() {}
+DBSystem::~DBSystem()
+{
+	delete WindowManager;
+}
 
 void DBSystem::EndConstruct()
 {
 	struct LocalBtnInfo
 	{
-		DBButtonId	 Id;
+		EDBButtonId	 Id;
 		Size2D		 Pos;
 		std::wstring Text;
 	};
 
 	const LocalBtnInfo MainButtons[] = {
 		//
-		{DBButtonId::IDB_DIALOG, Size2D(25, 25), L"Show List"},		//
-		{DBButtonId::IDB_NEWITEM, Size2D(25, 75), L"Add New Item"}, //
-		{DBButtonId::IDB_LOCK, Size2D(25, 125), L"Lock"},			//
-		{DBButtonId::IDB_UNLOCK, Size2D(25, 175), L"Unlock"}		//
+		{EDBButtonId::IDB_VIEW, Size2D(25, 25), L"Show"},			 //
+		{EDBButtonId::IDB_NEWITEM, Size2D(25, 75), L"Add New Item"}, //
+		{EDBButtonId::IDB_LOCK, Size2D(25, 125), L"Lock"},			 //
+		{EDBButtonId::IDB_UNLOCK, Size2D(25, 175), L"Unlock"}		 //
 	};
 
 	for (auto BtnInfo : MainButtons)
 	{
-		CreateButton(*MainWindow, BtnInfo.Text, BtnInfo.Id, BtnInfo.Pos, *BtnSize);
+		CreateButton(MainWindow, BtnInfo.Text, BtnInfo.Id, BtnInfo.Pos, *BtnSize);
 	}
 
 	InitListBox();
 }
 
-void DBSystem::CreateButton(const HWND& ParentWindow, const std::wstring Text, DBButtonId Id, Size2D Pos, Size2D Size)
+void DBSystem::CreateButton(const HWND& ParentWindow, const std::wstring Text, EDBButtonId Id, Size2D Pos, Size2D Size)
 {
 	auto NewWindow = CreateWindow(L"button", Text.c_str(), //
 		WS_VISIBLE | WS_CHILD,							   //
@@ -58,7 +64,7 @@ void DBSystem::InitListBox()
 	ListContainer.Items.push_back(DBListItem({DBPeopleData(L"Hechkim")}, {}, false));
 	ListContainer.Items.push_back(DBListItem({DBPeopleData(L"Komp")}, {}, false));
 
-	ListBox = CreateWindow(L"LISTBOX", L"button", WS_CLIPSIBLINGS | WS_VISIBLE | WS_CHILD | LBS_STANDARD, 200, 25, 500, 300, *MainWindow,
+	ListBox = CreateWindow(L"LISTBOX", L"button", WS_CLIPSIBLINGS | WS_VISIBLE | WS_CHILD | LBS_STANDARD, 200, 25, 500, 300, MainWindow,
 		(HMENU)IDC_LISTBOX, NULL, NULL);
 
 	for (auto Family : ListContainer.Items)
@@ -103,18 +109,35 @@ void DBSystem::CallCommand(HWND& hWnd, UINT Message, WPARAM& WParam, LPARAM& LPa
 
 			MessageBox(NULL, L"Sorry. It does't work", L"Dialog Box", MB_OK);
 		}
-		}
+		} // switch end
 	}
-	}
+	} // switch end
 
-	DBButtonId BtnId = static_cast<DBButtonId>(LOWORD(WParam));
+	EDBButtonId BtnId = static_cast<EDBButtonId>(LOWORD(WParam));
 	switch (BtnId)
 	{
-	case IDB_DIALOG:
+	case IDB_VIEW:
 	{
+		if (WindowManager)
+		{
+			WindowManager->OpenWindow(EWindows::IDW_VIEWER);
+		}
+		return;
 	}
-	break;
 	case IDB_NEWITEM:
+	{
+		if (WindowManager)
+		{
+			WindowManager->OpenWindow(EWindows::IDW_WRITER);
+		}
+		return;
+	}
+	case IDB_LOCK:
+	{
+		MessageBox(NULL, L"Sorry. It does't work", L"Dialog Box", MB_OK);
+		return;
+	}
+	case IDB_UNLOCK:
 	{
 		++clicks;
 		KillTimer(NULL, TimerId);
@@ -123,25 +146,32 @@ void DBSystem::CallCommand(HWND& hWnd, UINT Message, WPARAM& WParam, LPARAM& LPa
 		{
 			MessageBox(NULL, L"Sorry. It does't work", L"Dialog Box", MB_OK);
 		}
+		return;
 	}
-	break;
-	case IDB_LOCK:
+	} // switch end
+
+	// Windows messages
+	auto WId = static_cast<EWindows>(LOWORD(WParam));
+	switch (WId)
 	{
-		MessageBox(NULL, L"Sorry. It does't work", L"Dialog Box", MB_OK);
-	}
-	break;
-	case IDB_UNLOCK:
+	case IDW_VIEWER:
 	{
-		MessageBox(NULL, L"Sorry. It does't work", L"Dialog Box", MB_OK);
+		WindowManager->CallCommand(hWnd, Message, WParam, LParam);
+		return;
 	}
-	break;
+	case IDW_WRITER:
+	{
+		WindowManager->CallCommand(hWnd, Message, WParam, LParam);
+		return;
 	}
+	} // switch end
+
 }
 
 void DBSystem::CallPaint(HWND& hWnd, UINT Message, WPARAM& WParam, LPARAM& LParam)
 {
 	RECT Rect;
-	if (GetWindowRect(*MainWindow, &Rect))
+	if (GetWindowRect(MainWindow, &Rect))
 	{
 		WindowSize.X = Rect.right - Rect.left;
 		WindowSize.Y = Rect.bottom - Rect.top;
@@ -156,14 +186,14 @@ void DBSystem::Update_BtnVisibility()
 
 	if (IsPortraitModeEnabled())
 	{
-		HideButton(IDB_DIALOG);
+		HideButton(IDB_VIEW);
 		HideButton(IDB_NEWITEM);
 		HideButton(IDB_LOCK);
 		HideButton(IDB_UNLOCK);
 	}
 	else
 	{
-		ShowButton(IDB_DIALOG);
+		ShowButton(IDB_VIEW);
 		ShowButton(IDB_NEWITEM);
 		ShowButton(IDB_LOCK);
 		ShowButton(IDB_UNLOCK);
@@ -172,7 +202,7 @@ void DBSystem::Update_BtnVisibility()
 
 void DBSystem::Update_ListBoxScale()
 {
-	Size2D Pos = (IsPortraitModeEnabled()) ? Size2D(25, 25) : Size2D((*BtnSize).X + 50, 25);
+	Size2D Pos = (IsPortraitModeEnabled()) ? Size2D(0, 25) : Size2D((*BtnSize).X + 50, 25);
 	Size2D Size;
 	Size.X = abs(Pos.X - (WindowSize.X - 25));
 	Size.Y = WindowSize.Y - 100;
@@ -183,7 +213,7 @@ void DBSystem::Update_ListBoxScale()
 		1);
 }
 
-void DBSystem::HideButton(DBButtonId Id)
+void DBSystem::HideButton(EDBButtonId Id)
 {
 	DBButtonBase Button;
 	if (Buttons.FindByIndex(Id, Button))
@@ -195,7 +225,7 @@ void DBSystem::HideButton(DBButtonId Id)
 	}
 }
 
-void DBSystem::ShowButton(DBButtonId Id)
+void DBSystem::ShowButton(EDBButtonId Id)
 {
 	DBButtonBase Button;
 	if (Buttons.FindByIndex(Id, Button))
@@ -221,4 +251,14 @@ void DBSystem::SetFontSize(HWND Window, int Size)
 	HFONT hFont		  = CreateFontIndirect(&logfont);
 
 	SendMessage(Window, WM_SETFONT, (WPARAM)hFont, TRUE);
+}
+
+void DBSystem::SetWindowsViewer(HWND Window)
+{
+	WindowManager->WindowDataViewer = Window;
+}
+
+void DBSystem::SetWindowsWriter(HWND Window)
+{
+	WindowManager->WindowDataWriter = Window;
 }

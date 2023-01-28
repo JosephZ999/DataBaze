@@ -104,11 +104,78 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 
 	ShowWindow(MainWindow, nCmdShow);
 	UpdateWindow(MainWindow);
-	System = new DBSystem(&hInst);
+
+	System = new DBSystem(&hInst, MainWindow);
 	if (System)
 	{
-		System->MainWindow = &MainWindow;
-		System->BtnSize	   = &BtnSize;
+		System->BtnSize = &BtnSize;
+
+		// Viewer
+		{
+			const wchar_t CLASS_NAME[] = L"ViewerClass";
+
+			WNDCLASS wc = {};
+
+			wc.lpfnWndProc	 = WndProc;
+			wc.hInstance	 = hInstance;
+			wc.lpszClassName = CLASS_NAME;
+			wc.style		 = CS_GLOBALCLASS;
+
+			RegisterClass(&wc);
+
+			auto Viewer = CreateWindowEx(0, // Optional window styles.
+				CLASS_NAME,					// Window class
+				L"Viewer",					// Window text
+				WS_OVERLAPPEDWINDOW,		// Window style
+
+				// Size and position
+				CW_USEDEFAULT, CW_USEDEFAULT, 600, 400,
+
+				NULL,	   // Parent window
+				NULL,	   // Menu
+				hInstance, // Instance handle
+				NULL	   // Additional application data
+			);
+
+			if (Viewer)
+			{
+				System->SetWindowsViewer(Viewer);
+			}
+		}
+
+		// Writer
+		{
+			const wchar_t CLASS_NAME[] = L"WriterClass";
+
+			WNDCLASS wc = {};
+
+			wc.lpfnWndProc	 = WndProc;
+			wc.hInstance	 = hInstance;
+			wc.lpszClassName = CLASS_NAME;
+			wc.style		 = CS_GLOBALCLASS;
+
+			RegisterClass(&wc);
+
+			auto Writer = CreateWindowEx(0, // Optional window styles.
+				CLASS_NAME,					// Window class
+				L"Writer",					// Window text
+				WS_OVERLAPPEDWINDOW,		// Window style
+
+				// Size and position
+				CW_USEDEFAULT, CW_USEDEFAULT, 600, 400,
+
+				NULL,	   // Parent window
+				NULL,	   // Menu
+				hInstance, // Instance handle
+				NULL	   // Additional application data
+			);
+
+			if (Writer)
+			{
+				System->SetWindowsWriter(Writer);
+			}
+		}
+
 		System->EndConstruct();
 	}
 	return TRUE;

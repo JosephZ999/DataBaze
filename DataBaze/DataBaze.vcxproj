@@ -154,16 +154,22 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="DataBaze.h" />
+    <ClInclude Include="DBDataViewer.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="JsonInterface\JsonInterface.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="Source\DBDataTypes.h" />
+    <ClInclude Include="Source\Public\Components\DBButton.h" />
+    <ClInclude Include="Source\Public\Components\WindowsManager.h" />
     <ClInclude Include="Source\Public\DBSystem.h">
     </ClInclude>
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DataBaze.cpp" />
+    <ClCompile Include="DBDataViewer.cpp" />
+    <ClCompile Include="Source\Private\Components\DBButton.cpp" />
+    <ClCompile Include="Source\Private\Components\WindowsManager.cpp" />
     <ClCompile Include="Source\Private\DBSystem.cpp">
     </ClCompile>
   </ItemGroup>

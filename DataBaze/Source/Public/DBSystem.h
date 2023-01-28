@@ -2,7 +2,10 @@
 
 #include "framework.h"
 #include "resource.h"
+
 #include "Source/DBDataTypes.h"
+
+class DBWindowsManager;
 
 #define MAX_LOADSTRING 100
 #define IDC_LISTBOX	   9
@@ -10,15 +13,17 @@
 class DBSystem
 {
 public:
-	DBSystem(HINSTANCE* HInstance);
+	DBSystem(HINSTANCE* HInstance, HWND InMainWindow);
 	~DBSystem();
 	void EndConstruct();
 
-	ButtonContainer Buttons;
+	// Components
+	DBWindowsManager* WindowManager = nullptr;
+	ButtonContainer	  Buttons;
 
 	// Global variables
-	HWND*	MainWindow;
-	Size2D* BtnSize;
+	HWND	MainWindow;
+	Size2D* BtnSize = nullptr;
 
 	// End variables
 
@@ -28,23 +33,25 @@ public:
 	void Update_BtnVisibility();
 	void Update_ListBoxScale();
 
-	void HideButton(DBButtonId Id);
-	void ShowButton(DBButtonId Id);
+	void HideButton(EDBButtonId Id);
+	void ShowButton(EDBButtonId Id);
 
 	bool IsPortraitModeEnabled();
 
 	void SetFontSize(HWND Window, int Size);
 
+	void SetWindowsViewer(HWND Window);
+	void SetWindowsWriter(HWND Window);
+
 private:
 	HINSTANCE*		HIns;
-	HWND			ListBox;
+	HWND			ListBox = 0;
 	DBListContainer ListContainer;
 
 	Size2D WindowSize;
 
-	void CreateButton(const HWND& ParentWindow, std::wstring Text, DBButtonId Id, Size2D Pos, Size2D Size);
+	void CreateButton(const HWND& ParentWindow, std::wstring Text, EDBButtonId Id, Size2D Pos, Size2D Size);
 	void InitListBox();
 
 	static VOID CALLBACK DoubleClickTimer(HWND hWnd, UINT nMsg, UINT nIDEvent, DWORD dwTime);
-	// VOID				 _DoubleClickTimer(HWND hWnd, UINT nMsg, UINT nIDEvent, DWORD dwTime){}
 };

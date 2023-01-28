@@ -25,20 +25,28 @@ inline Size2D& Size2D::operator=(const Size2D& NewSize)
 	return *this;
 }
 
-enum DBButtonId
+enum EDBButtonId
 {
 	IDB_NONE = 10,
-	IDB_DIALOG,
+	IDB_VIEW,
 	IDB_NEWITEM,
 	IDB_LOCK,
 	IDB_UNLOCK,
-	// IDB_EXIT
+	IDB_MAX,
+};
+
+enum EWindows
+{
+	IDW_NONE = EDBButtonId::IDB_MAX,
+	IDW_VIEWER,
+	IDW_WRITER,
+	IDW_MAX,
 };
 
 struct DBButtonBase
 {
 	DBButtonBase() {}
-	DBButtonBase(DBButtonId InId, HWND InWindow, Size2D InPosition, Size2D InSize, std::wstring InText)
+	DBButtonBase(EDBButtonId InId, HWND InWindow, Size2D InPosition, Size2D InSize, std::wstring InText)
 		: Id(InId)
 		, Window(InWindow)
 		, Position(InPosition)
@@ -47,7 +55,7 @@ struct DBButtonBase
 	{
 	}
 
-	DBButtonId	 Id		= DBButtonId::IDB_NONE;
+	EDBButtonId	 Id		= EDBButtonId::IDB_NONE;
 	HWND		 Window = 0;
 	Size2D		 Position;
 	Size2D		 Size;
@@ -61,8 +69,8 @@ class ButtonContainer
 
 public:
 	inline void Add(const DBButtonBase& InButton);
-	inline bool FindByIndex(DBButtonId Id, DBButtonBase& Button);
-	bool IsEmpty() { return ButtonLastIndex == 0; }
+	inline bool FindByIndex(EDBButtonId Id, DBButtonBase& Button);
+	bool		IsEmpty() { return ButtonLastIndex == 0; }
 };
 
 struct DBPeopleData
@@ -85,11 +93,21 @@ typedef std::vector<DBPeopleData> PeopleGroup;
 
 struct DBListItem
 {
-	DBListItem() {}
+	DBListItem()
+		: Parents({})
+		, Children({})
+		, bFamily(false)
+		, bDouble(false)
+		, bLocked(false)
+	{
+	}
+
 	DBListItem(PeopleGroup InParents, PeopleGroup InChildren, bool IsFamily)
 		: Parents(InParents)
 		, Children(InChildren)
 		, bFamily(IsFamily)
+		, bDouble(false)
+		, bLocked(false)
 	{
 	}
 
@@ -120,7 +138,7 @@ void ButtonContainer::Add(const DBButtonBase& InButton)
 	}
 }
 
-bool ButtonContainer::FindByIndex(DBButtonId Id, DBButtonBase& Button)
+bool ButtonContainer::FindByIndex(EDBButtonId Id, DBButtonBase& Button)
 {
 	for (int i = 0; i < 10; ++i)
 	{

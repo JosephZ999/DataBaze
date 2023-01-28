@@ -30,6 +30,12 @@
     <Filter Include="Source\Public">
       <UniqueIdentifier>{fdf8ffd7-65c5-4e2a-a54e-3161558b7660}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Public\Components">
+      <UniqueIdentifier>{8a8ef1ec-d643-42ea-aa8a-1ad95229cb2b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Private\Components">
+      <UniqueIdentifier>{4fae78da-ece0-4305-a749-55dda9c93d58}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -53,6 +59,15 @@
     <ClInclude Include="Source\DBDataTypes.h">
       <Filter>Source</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Public\Components\DBButton.h">
+      <Filter>Source\Public\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="DBDataViewer.h">
+      <Filter>Source\Public\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Public\Components\WindowsManager.h">
+      <Filter>Source\Public\Components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DataBaze.cpp">
@@ -60,6 +75,15 @@
     </ClCompile>
     <ClCompile Include="Source\Private\DBSystem.cpp">
       <Filter>Source\Private</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Private\Components\DBButton.cpp">
+      <Filter>Source\Private\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="DBDataViewer.cpp">
+      <Filter>Source\Private\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Private\Components\WindowsManager.cpp">
+      <Filter>Source\Private\Components</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
