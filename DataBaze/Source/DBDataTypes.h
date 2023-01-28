@@ -66,10 +66,11 @@ struct DBButton
 
 class ButtonContainer
 {
-	DBButton Buttons[10];
-	int		 ButtonLastIndex = 0;
+	int ButtonLastIndex = 0;
 
 public:
+	DBButton Buttons[10];
+
 	inline void Add(const DBButton& InButton);
 	inline bool FindByIndex(EDBButtonId Id, DBButton& Button);
 	bool		IsEmpty() { return ButtonLastIndex == 0; }

@@ -1,6 +1,7 @@
 
 #include "Source/Public/DBSystem.h"
 #include "Source/Public/Components/WindowsManager.h"
+#include "Source/Public/Utils/DBFunctionLibrary.h"
 
 UINT TimerId;
 int	 clicks;
@@ -184,19 +185,9 @@ void DBSystem::Update_BtnVisibility()
 {
 	if (Buttons.IsEmpty()) return;
 
-	if (IsPortraitModeEnabled())
+	for (auto Btn : Buttons.Buttons)
 	{
-		HideButton(IDB_VIEW);
-		HideButton(IDB_NEWITEM);
-		HideButton(IDB_LOCK);
-		HideButton(IDB_UNLOCK);
-	}
-	else
-	{
-		ShowButton(IDB_VIEW);
-		ShowButton(IDB_NEWITEM);
-		ShowButton(IDB_LOCK);
-		ShowButton(IDB_UNLOCK);
+		DBLib::SetWindowVisibility(Btn.Window, !IsPortraitModeEnabled());
 	}
 }
 
