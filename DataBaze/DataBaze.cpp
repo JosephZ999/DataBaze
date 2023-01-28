@@ -2,6 +2,7 @@
 //
 
 #include "DataBaze.h"
+#include "Source/Public/Components/WindowsManager.h"
 
 // Global Variables:
 HINSTANCE hInst;						 // current instance
@@ -17,6 +18,8 @@ ATOM MyRegisterClass(HINSTANCE hInstance);
 BOOL InitInstance(HINSTANCE, int);
 
 LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
+LRESULT CALLBACK WndViewerProc(HWND, UINT, WPARAM, LPARAM);
+LRESULT CALLBACK WndWriterProc(HWND, UINT, WPARAM, LPARAM);
 INT_PTR CALLBACK About(HWND, UINT, WPARAM, LPARAM);
 
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPWSTR lpCmdLine, _In_ int nCmdShow)
@@ -116,7 +119,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 
 			WNDCLASS wc = {};
 
-			wc.lpfnWndProc	 = WndProc;
+			wc.lpfnWndProc	 = WndViewerProc;
 			wc.hInstance	 = hInstance;
 			wc.lpszClassName = CLASS_NAME;
 			wc.style		 = CS_GLOBALCLASS;
@@ -126,7 +129,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 			auto Viewer = CreateWindowEx(0, // Optional window styles.
 				CLASS_NAME,					// Window class
 				L"Viewer",					// Window text
-				WS_OVERLAPPED,				// Window style
+				WS_OVERLAPPED | WS_SYSMENU | WS_CAPTION,		// Window style
 
 				// Size and position
 				25, 25, 600, 400, // CW_USEDEFAULT
@@ -149,7 +152,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 
 			WNDCLASS wc = {};
 
-			wc.lpfnWndProc	 = WndProc;
+			wc.lpfnWndProc	 = WndWriterProc;
 			wc.hInstance	 = hInstance;
 			wc.lpszClassName = CLASS_NAME;
 			wc.style		 = CS_GLOBALCLASS;
@@ -159,7 +162,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 			auto Writer = CreateWindowEx(0, // Optional window styles.
 				CLASS_NAME,					// Window class
 				L"Writer",					// Window text
-				WS_OVERLAPPED,				// Window style
+				WS_OVERLAPPED | WS_SYSMENU | WS_CAPTION,		// Window style
 
 				// Size and position
 				25, 25, 600, 400,
@@ -234,7 +237,12 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		EndPaint(hWnd, &ps);
 	}
 	break;
-	case WM_DESTROY: PostQuitMessage(0); break;
+	case WM_DESTROY:
+		if (hWnd == MainWindow)
+		{
+			PostQuitMessage(0);
+			break;
+		}
 	default: return DefWindowProc(hWnd, message, wParam, lParam);
 	}
 	return 0;
@@ -257,4 +265,30 @@ INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 		break;
 	}
 	return (INT_PTR)FALSE;
+}
+
+LRESULT CALLBACK WndViewerProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
+{
+	switch (message)
+	{
+	case WM_CLOSE:
+	{
+		System->WindowManager->CloseWindow(EWindows::IDW_VIEWER);
+		return 0;
+	}
+	}
+	return DefWindowProc(hWnd, message, wParam, lParam);
+}
+
+LRESULT CALLBACK WndWriterProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
+{
+	switch (message)
+	{
+	case WM_CLOSE:
+	{
+		System->WindowManager->CloseWindow(EWindows::IDW_WRITER);
+		return 0;
+	}
+	}
+	return DefWindowProc(hWnd, message, wParam, lParam);
 }
