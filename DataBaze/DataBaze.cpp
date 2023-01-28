@@ -3,6 +3,7 @@
 
 #include "DataBaze.h"
 #include "Source/Public/Components/WindowsManager.h"
+#include "Source/Public/Utils/DBFunctionLibrary.h"
 
 // Global Variables:
 HINSTANCE hInst;						 // current instance
@@ -273,7 +274,7 @@ LRESULT CALLBACK WndViewerProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lP
 	{
 	case WM_CLOSE:
 	{
-		System->WindowManager->CloseWindow(EWindows::IDW_VIEWER);
+		DBLib::SetWindowVisibility(hWnd, false);
 		return 0;
 	}
 	}
@@ -286,7 +287,7 @@ LRESULT CALLBACK WndWriterProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lP
 	{
 	case WM_CLOSE:
 	{
-		System->WindowManager->CloseWindow(EWindows::IDW_WRITER);
+		DBLib::SetWindowVisibility(hWnd, false);
 		return 0;
 	}
 	}
