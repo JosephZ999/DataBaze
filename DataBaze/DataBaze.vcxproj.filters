@@ -42,6 +42,12 @@
     <Filter Include="Source\Public\Utils">
       <UniqueIdentifier>{07012492-3e56-4409-87aa-ec04e77d7fba}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Public\Windows">
+      <UniqueIdentifier>{eb4e063b-0fdf-4f8f-b9d6-41334d630a5a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Private\Windows">
+      <UniqueIdentifier>{c68cf040-eb1e-4b28-8b02-836ee56260f6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -77,6 +83,12 @@
     <ClInclude Include="Source\Public\Utils\DBFunctionLibrary.h">
       <Filter>Source\Public\Utils</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Public\Windows\DBWindowViewer.h">
+      <Filter>Source\Public\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Public\Windows\DBWindowWriter.h">
+      <Filter>Source\Public\Windows</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DataBaze.cpp">
@@ -96,6 +108,12 @@
     </ClCompile>
     <ClCompile Include="Source\Private\Utils\DBFunctionLibrary.cpp">
       <Filter>Source\Private\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Private\Windows\DBWindowViewer.cpp">
+      <Filter>Source\Private\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Private\Windows\DBWindowWriter.cpp">
+      <Filter>Source\Private\Windows</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
