@@ -1,8 +1,5 @@
-#include "framework.h"
-#include "resource.h"
+#include "DBWindowViewer.h"
 #include "DBFunctionLibrary.h"
-
-LRESULT CALLBACK WndViewerProc(HWND, UINT, WPARAM, LPARAM);
 
 LRESULT CALLBACK WndViewerProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
@@ -26,5 +23,3 @@ LRESULT CALLBACK WndViewerProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lP
 	}
 	return DefWindowProc(hWnd, message, wParam, lParam);
 }
-
-

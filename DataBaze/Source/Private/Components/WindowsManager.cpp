@@ -1,8 +1,11 @@
 #include "WindowsManager.h"
+#include "DBWindowViewer.h"
+#include "DBWindowWriter.h"
 
-DBWindowsManager::DBWindowsManager(HINSTANCE* HInstance)
+DBWindowsManager::DBWindowsManager(HINSTANCE HInstance)
 	: HIns(HInstance)
 {
+
 }
 
 void DBWindowsManager::CallCommand(HWND& hWnd, UINT Message, WPARAM& WParam, LPARAM& LParam) {}

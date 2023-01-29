@@ -107,7 +107,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 	ShowWindow(MainWindow, nCmdShow);
 	UpdateWindow(MainWindow);
 
-	System = new DBSystem(&hInst, MainWindow);
+	System = new DBSystem(hInst, MainWindow);
 	if (System)
 	{
 		System->BtnSize = &BtnSize;

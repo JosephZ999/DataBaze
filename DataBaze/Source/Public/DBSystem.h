@@ -3,7 +3,7 @@
 #include "framework.h"
 #include "resource.h"
 
-#include "DBSystem.h"
+#include "DBDataTypes.h"
 
 class DBWindowsManager;
 
@@ -13,7 +13,7 @@ class DBWindowsManager;
 class DBSystem
 {
 public:
-	DBSystem(HINSTANCE* HInstance, HWND InMainWindow);
+	DBSystem(HINSTANCE HInstance, HWND InMainWindow);
 	~DBSystem();
 	void EndConstruct();
 
@@ -44,7 +44,7 @@ public:
 	void SetWindowsWriter(HWND Window);
 
 private:
-	HINSTANCE*		HIns;
+	HINSTANCE		HIns;
 	HWND			ListBox = 0;
 	DBListContainer ListContainer;
 

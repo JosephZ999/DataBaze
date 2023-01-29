@@ -6,7 +6,7 @@
 UINT TimerId;
 int	 clicks;
 
-DBSystem::DBSystem(HINSTANCE* HInstance, HWND InMainWindow)
+DBSystem::DBSystem(HINSTANCE HInstance, HWND InMainWindow)
 	: HIns(HInstance)
 	, MainWindow(InMainWindow)
 {

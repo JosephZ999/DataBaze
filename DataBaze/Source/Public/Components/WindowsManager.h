@@ -8,8 +8,8 @@ class DBWindowsManager
 {
 
 public:
-	DBWindowsManager(HINSTANCE* HInstance);
-	HINSTANCE* HIns;
+	DBWindowsManager(HINSTANCE HInstance);
+	HINSTANCE HIns;
 
 protected:
 	HWND WindowDataViewer = 0;
@@ -19,7 +19,6 @@ protected:
 public:
 	void OpenWindow(EWindows WindowType);
 	void CloseWindow(EWindows WindowType);
-
 
 	friend class DBSystem;
 };
