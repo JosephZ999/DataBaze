@@ -1,4 +1,4 @@
-#include "Source/Public/Utils/DBFunctionLibrary.h"
+#include "DBFunctionLibrary.h"
 
 void DBLib::SetWindowVisibility(HWND Window, bool bShow)
 {

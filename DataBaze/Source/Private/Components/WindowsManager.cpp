@@ -1,4 +1,4 @@
-#include "Source/Public/Components/WindowsManager.h"
+#include "WindowsManager.h"
 
 DBWindowsManager::DBWindowsManager(HINSTANCE* HInstance)
 	: HIns(HInstance)

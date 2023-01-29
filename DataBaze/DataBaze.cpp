@@ -2,8 +2,8 @@
 //
 
 #include "DataBaze.h"
-#include "Source/Public/Components/WindowsManager.h"
-#include "Source/Public/Utils/DBFunctionLibrary.h"
+#include "WindowsManager.h"
+#include "DBFunctionLibrary.h"
 
 // Global Variables:
 HINSTANCE hInst;						 // current instance
@@ -19,8 +19,6 @@ ATOM MyRegisterClass(HINSTANCE hInstance);
 BOOL InitInstance(HINSTANCE, int);
 
 LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
-LRESULT CALLBACK WndViewerProc(HWND, UINT, WPARAM, LPARAM);
-LRESULT CALLBACK WndWriterProc(HWND, UINT, WPARAM, LPARAM);
 INT_PTR CALLBACK About(HWND, UINT, WPARAM, LPARAM);
 
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPWSTR lpCmdLine, _In_ int nCmdShow)
@@ -120,7 +118,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 
 			WNDCLASS wc = {};
 
-			wc.lpfnWndProc	 = WndViewerProc;
+			wc.lpfnWndProc	 = WndProc;
 			wc.hInstance	 = hInstance;
 			wc.lpszClassName = CLASS_NAME;
 			wc.style		 = CS_GLOBALCLASS;
@@ -153,7 +151,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 
 			WNDCLASS wc = {};
 
-			wc.lpfnWndProc	 = WndWriterProc;
+			wc.lpfnWndProc	 = WndProc;
 			wc.hInstance	 = hInstance;
 			wc.lpszClassName = CLASS_NAME;
 			wc.style		 = CS_GLOBALCLASS;
@@ -266,40 +264,4 @@ INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 		break;
 	}
 	return (INT_PTR)FALSE;
-}
-
-LRESULT CALLBACK WndViewerProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
-{
-	switch (message)
-	{
-	case WM_CREATE:
-	{
-		DBButton NewBtn;
-		NewBtn.Id		= EDBButtonId::IDB_MAX;
-		NewBtn.Parent	= hWnd;
-		NewBtn.Position = {0, 0};
-		NewBtn.Size		= {100, 50};
-
-		DBLib::CreateButton(NewBtn);
-	}
-	case WM_CLOSE:
-	{
-		DBLib::SetWindowVisibility(hWnd, false);
-		return 0;
-	}
-	}
-	return DefWindowProc(hWnd, message, wParam, lParam);
-}
-
-LRESULT CALLBACK WndWriterProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
-{
-	switch (message)
-	{
-	case WM_CLOSE:
-	{
-		DBLib::SetWindowVisibility(hWnd, false);
-		return 0;
-	}
-	}
-	return DefWindowProc(hWnd, message, wParam, lParam);
 }

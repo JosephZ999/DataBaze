@@ -1,7 +1,7 @@
 
-#include "Source/Public/DBSystem.h"
-#include "Source/Public/Components/WindowsManager.h"
-#include "Source/Public/Utils/DBFunctionLibrary.h"
+#include "DBSystem.h"
+#include "WindowsManager.h"
+#include "DBFunctionLibrary.h"
 
 UINT TimerId;
 int	 clicks;

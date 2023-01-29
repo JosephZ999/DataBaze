@@ -4,7 +4,7 @@
 #include "Resource.h"
 #include <string>
 #include <vector>
-#include "Source/DBDataTypes.h"
+#include "DBDataTypes.h"
 
 namespace DBLib
 {

@@ -3,7 +3,7 @@
 #include "framework.h"
 #include "resource.h"
 
-#include "Source/DBDataTypes.h"
+#include "DBSystem.h"
 
 class DBWindowsManager;
 

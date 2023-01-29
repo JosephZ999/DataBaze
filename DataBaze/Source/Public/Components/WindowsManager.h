@@ -2,8 +2,7 @@
 
 #include "framework.h"
 #include "Resource.h"
-
-#include "Source/DBDataTypes.h"
+#include "DBDataTypes.h"
 
 class DBWindowsManager
 {
