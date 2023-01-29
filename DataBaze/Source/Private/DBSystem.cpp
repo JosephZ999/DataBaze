@@ -166,7 +166,6 @@ void DBSystem::CallCommand(HWND& hWnd, UINT Message, WPARAM& WParam, LPARAM& LPa
 		return;
 	}
 	} // switch end
-
 }
 
 void DBSystem::CallPaint(HWND& hWnd, UINT Message, WPARAM& WParam, LPARAM& LParam)
@@ -187,7 +186,7 @@ void DBSystem::Update_BtnVisibility()
 
 	for (auto Btn : Buttons.Buttons)
 	{
-		DBLib::SetWindowVisibility(Btn.Window, !IsPortraitModeEnabled());
+		DBLib::SetWindowVisibility(Btn.Window, ! IsPortraitModeEnabled());
 	}
 }
 
@@ -242,14 +241,4 @@ void DBSystem::SetFontSize(HWND Window, int Size)
 	HFONT hFont		  = CreateFontIndirect(&logfont);
 
 	SendMessage(Window, WM_SETFONT, (WPARAM)hFont, TRUE);
-}
-
-void DBSystem::SetWindowsViewer(HWND Window)
-{
-	WindowManager->WindowDataViewer = Window;
-}
-
-void DBSystem::SetWindowsWriter(HWND Window)
-{
-	WindowManager->WindowDataWriter = Window;
 }

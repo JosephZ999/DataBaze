@@ -40,9 +40,6 @@ public:
 
 	void SetFontSize(HWND Window, int Size);
 
-	void SetWindowsViewer(HWND Window);
-	void SetWindowsWriter(HWND Window);
-
 private:
 	HINSTANCE		HIns;
 	HWND			ListBox = 0;

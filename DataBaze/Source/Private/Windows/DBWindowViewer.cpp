@@ -20,6 +20,11 @@ LRESULT CALLBACK WndViewerProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lP
 		DBLib::SetWindowVisibility(hWnd, false);
 		return 0;
 	}
+	case WM_COMMAND:
+	{
+		MessageBox(NULL, L"Sorry. It does't work", L"Dialog Box", MB_OK);
+		break;
+	}
 	}
 	return DefWindowProc(hWnd, message, wParam, lParam);
 }
