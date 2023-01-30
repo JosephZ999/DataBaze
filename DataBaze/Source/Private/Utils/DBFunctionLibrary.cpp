@@ -48,7 +48,7 @@ HWND DBLib::CreateComboBox(DBButton& ButtonInfo)
 	return ButtonInfo.Window;
 }
 
-void DBLib::ToClipboard(HWND hwnd, const std::string& s)
+void DBLib::CopyToClipboard(HWND hwnd, const std::string& s)
 {
 	OpenClipboard(hwnd);
 	EmptyClipboard();
@@ -63,4 +63,51 @@ void DBLib::ToClipboard(HWND hwnd, const std::string& s)
 	SetClipboardData(CF_TEXT, hg);
 	CloseClipboard();
 	GlobalFree(hg);
+}
+
+void DBLib::PressKey(WORD Key)
+{
+	INPUT ip;
+	ip.type			  = INPUT_KEYBOARD;
+	ip.ki.wScan		  = 0;
+	ip.ki.time		  = 0;
+	ip.ki.dwExtraInfo = 0;
+	ip.ki.wVk		  = Key;
+	ip.ki.dwFlags	  = 0;
+
+	SendInput(1, &ip, sizeof(INPUT));
+
+	ip.ki.dwFlags = KEYEVENTF_KEYUP;
+	SendInput(1, &ip, sizeof(INPUT));
+}
+
+void DBLib::PressKeys(WORD Key1, WORD Key2)
+{
+	INPUT ip;
+	ip.type			  = INPUT_KEYBOARD;
+	ip.ki.wScan		  = 0;
+	ip.ki.time		  = 0;
+	ip.ki.dwExtraInfo = 0;
+
+	// Press Control
+	ip.ki.wVk	  = Key1;
+	ip.ki.dwFlags = 0;
+	SendInput(1, &ip, sizeof(INPUT));
+
+	// Press V
+	ip.ki.wVk = Key2;
+	SendInput(1, &ip, sizeof(INPUT));
+
+	// Release V
+	ip.ki.dwFlags = KEYEVENTF_KEYUP;
+	SendInput(1, &ip, sizeof(INPUT));
+
+	// Release Control
+	ip.ki.wVk = Key1;
+	SendInput(1, &ip, sizeof(INPUT));
+}
+
+void DBLib::PasteClipboard()
+{
+	PressKeys(VK_CONTROL, VK_V);
 }

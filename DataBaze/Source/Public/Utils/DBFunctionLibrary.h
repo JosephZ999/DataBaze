@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 #include "DBDataTypes.h"
+#include "DBKeyCodes.h"
 
 namespace DBLib
 {
@@ -15,6 +16,9 @@ void SetFontSize(HWND Window, int FontSize);
 void CreateText();
 HWND CreateComboBox(DBButton& ButtonInfo);
 
-void ToClipboard(HWND hwnd, const std::string& s);
+void CopyToClipboard(HWND hwnd, const std::string& s);
+void PressKey(WORD Key);
+void PressKeys(WORD Key1, WORD Key2);
+void PasteClipboard();
 
 } // namespace DBLib

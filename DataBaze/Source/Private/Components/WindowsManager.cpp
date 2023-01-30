@@ -21,14 +21,11 @@ DBWindowsManager::DBWindowsManager(HINSTANCE HInstance)
 		V_CLASS_NAME,							 // Window class
 		L"Viewer",								 // Window text
 		WS_OVERLAPPED | WS_SYSMENU | WS_CAPTION, // Window style
-
-		// Size and position
-		25, 25, 600, 400, // CW_USEDEFAULT
-
-		NULL,	   // Parent window
-		NULL,	   // Menu
-		HInstance, // Instance handle
-		NULL	   // Additional application data
+		25, 25, 600, 400,						 // CW_USEDEFAULT
+		NULL,									 // Parent window
+		NULL,									 // Menu
+		HInstance,								 // Instance handle
+		NULL									 // Additional application data
 	);
 
 	// Writer
@@ -47,14 +44,11 @@ DBWindowsManager::DBWindowsManager(HINSTANCE HInstance)
 		W_CLASS_NAME,							 // Window class
 		L"Writer",								 // Window text
 		WS_OVERLAPPED | WS_SYSMENU | WS_CAPTION, // Window style
-
-		// Size and position
-		25, 25, 600, 400,
-
-		NULL,	   // Parent window
-		NULL,	   // Menu
-		HInstance, // Instance handle
-		NULL	   // Additional application data
+		25, 25, 600, 400,						 // Size and position
+		NULL,									 // Parent window
+		NULL,									 // Menu
+		HInstance,								 // Instance handle
+		NULL									 // Additional application data
 	);
 }
 
@@ -68,12 +62,14 @@ void DBWindowsManager::OpenWindow(EWindows WindowType)
 	{
 		ShowWindow(WindowDataViewer, SW_SHOWDEFAULT);
 		ShowWindow(WindowDataWriter, SW_HIDE);
+		SendMessage(WindowDataViewer, WM_COMMAND, WM_SHOWWINDOW, 0);
 		return;
 	}
 	case EWindows::IDW_WRITER:
 	{
 		ShowWindow(WindowDataWriter, SW_SHOWDEFAULT);
 		ShowWindow(WindowDataViewer, SW_HIDE);
+		SendMessage(WindowDataWriter, WM_COMMAND, WM_SHOWWINDOW, 0);
 		return;
 	}
 	} // switch end
