@@ -165,6 +165,7 @@
     <ClInclude Include="Source\Public\DBSystem.h">
     </ClInclude>
     <ClInclude Include="Source\Public\Utils\DBFunctionLibrary.h" />
+    <ClInclude Include="Source\Public\Utils\DBKeyCodes.h" />
     <ClInclude Include="Source\Public\Windows\DBWindowViewer.h" />
     <ClInclude Include="Source\Public\Windows\DBWindowWriter.h" />
     <ClInclude Include="targetver.h" />
