@@ -11,9 +11,10 @@ LRESULT CALLBACK WndViewerProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lP
 		NewBtn.Id		= EDBButtonId::IDB_MAX;
 		NewBtn.Parent	= hWnd;
 		NewBtn.Position = {0, 0};
-		NewBtn.Size		= {100, 50};
+		NewBtn.Size		= {200, 100};
 
-		DBLib::CreateButton(NewBtn);
+		// DBLib::CreateButton(NewBtn);
+		DBLib::CreateComboBox(NewBtn);
 	}
 	case WM_CLOSE:
 	{
@@ -22,7 +23,15 @@ LRESULT CALLBACK WndViewerProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lP
 	}
 	case WM_COMMAND:
 	{
-		MessageBox(NULL, L"Sorry. It does't work", L"Dialog Box", MB_OK);
+		
+		break;
+	}
+	case WM_KEYDOWN:
+	{
+		if (wParam == VK_RETURN)
+		{
+			MessageBox(NULL, L"Sorry. It does't work", L"Dialog Box", MB_OK);
+		}
 		break;
 	}
 	}

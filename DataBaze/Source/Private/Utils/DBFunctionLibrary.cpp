@@ -30,3 +30,20 @@ void DBLib::SetFontSize(HWND Window, int FontSize)
 
 	SendMessage(Window, WM_SETFONT, (WPARAM)hFont, TRUE);
 }
+
+void DBLib::CreateText() {}
+
+HWND DBLib::CreateComboBox(DBButton& ButtonInfo)
+{
+	ButtonInfo.Window = CreateWindow(L"EDIT",				  // Type
+		ButtonInfo.Text.c_str(),							  // Text
+		WS_BORDER | WS_VISIBLE | WS_CHILD, // Style
+		ButtonInfo.Position.X, ButtonInfo.Position.Y,		  //
+		ButtonInfo.Size.X, ButtonInfo.Size.Y,				  //
+		ButtonInfo.Parent,									  //
+		(HMENU)ButtonInfo.Id,								  // Id
+		NULL, NULL);
+
+	SetFontSize(ButtonInfo.Window, ButtonInfo.FontSize);
+	return ButtonInfo.Window;
+}

@@ -74,9 +74,6 @@
     <ClInclude Include="Source\Public\Components\DBButton.h">
       <Filter>Source\Public\Components</Filter>
     </ClInclude>
-    <ClInclude Include="DBDataViewer.h">
-      <Filter>Source\Public\Components</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Public\Components\WindowsManager.h">
       <Filter>Source\Public\Components</Filter>
     </ClInclude>
@@ -98,9 +95,6 @@
       <Filter>Source\Private</Filter>
     </ClCompile>
     <ClCompile Include="Source\Private\Components\DBButton.cpp">
-      <Filter>Source\Private\Components</Filter>
-    </ClCompile>
-    <ClCompile Include="DBDataViewer.cpp">
       <Filter>Source\Private\Components</Filter>
     </ClCompile>
     <ClCompile Include="Source\Private\Components\WindowsManager.cpp">
