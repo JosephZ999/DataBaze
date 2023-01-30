@@ -5,7 +5,9 @@ void DBLib::SetWindowVisibility(HWND Window, bool bShow)
 	ShowWindow(Window, (bShow) ? SW_SHOWDEFAULT : SW_HIDE);
 }
 
-HWND DBLib::CreateButton(DBButton& ButtonInfo)
+void DBLib::CreateAWindow() {}
+
+HWND DBLib::CreateButton(DBWindow& ButtonInfo)
 {
 	ButtonInfo.Window = CreateWindow(L"button",		  // Type
 		ButtonInfo.Text.c_str(),					  // Text
@@ -31,13 +33,20 @@ void DBLib::SetFontSize(HWND Window, int FontSize)
 	SendMessage(Window, WM_SETFONT, (WPARAM)hFont, TRUE);
 }
 
-void DBLib::CreateText() {}
+void DBLib::CreateText(HWND hWnd)
+{
+	PAINTSTRUCT ps;
+	HDC			hdc		   = BeginPaint(hWnd, &ps);
+	TCHAR		greeting[] = _T("Hello, Windows desktop!");
+	TextOut(hdc, 5, 5, greeting, _tcslen(greeting));
+	EndPaint(hWnd, &ps);
+}
 
-HWND DBLib::CreateComboBox(DBButton& ButtonInfo)
+HWND DBLib::CreateEditBox(DBWindow& ButtonInfo, DWORD Style)
 {
 	ButtonInfo.Window = CreateWindow(L"EDIT",		  // Type
 		ButtonInfo.Text.c_str(),					  // Text
-		WS_BORDER | WS_VISIBLE | WS_CHILD,			  // Style
+		Style,										  // Style
 		ButtonInfo.Position.X, ButtonInfo.Position.Y, //
 		ButtonInfo.Size.X, ButtonInfo.Size.Y,		  //
 		ButtonInfo.Parent,							  //

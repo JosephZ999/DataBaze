@@ -43,10 +43,10 @@ enum EWindows
 	IDW_MAX,
 };
 
-struct DBButton
+struct DBWindow
 {
-	DBButton() {}
-	DBButton(EDBButtonId InId, HWND InWindow, Size2D InPosition, Size2D InSize, std::wstring InText)
+	DBWindow() {}
+	DBWindow(EDBButtonId InId, HWND InWindow, Size2D InPosition, Size2D InSize, std::wstring InText)
 		: Id(InId)
 		, Window(InWindow)
 		, Position(InPosition)
@@ -69,10 +69,10 @@ class ButtonContainer
 	int ButtonLastIndex = 0;
 
 public:
-	DBButton Buttons[10];
+	DBWindow Buttons[10];
 
-	inline void Add(const DBButton& InButton);
-	inline bool FindByIndex(EDBButtonId Id, DBButton& Button);
+	inline void Add(const DBWindow& InButton);
+	inline bool FindByIndex(EDBButtonId Id, DBWindow& Button);
 	bool		IsEmpty() { return ButtonLastIndex == 0; }
 };
 
@@ -131,7 +131,7 @@ public:
 
 // container implementations
 
-void ButtonContainer::Add(const DBButton& InButton)
+void ButtonContainer::Add(const DBWindow& InButton)
 {
 	if (ButtonLastIndex < 10)
 	{
@@ -141,7 +141,7 @@ void ButtonContainer::Add(const DBButton& InButton)
 	}
 }
 
-bool ButtonContainer::FindByIndex(EDBButtonId Id, DBButton& Button)
+bool ButtonContainer::FindByIndex(EDBButtonId Id, DBWindow& Button)
 {
 	for (int i = 0; i < 10; ++i)
 	{

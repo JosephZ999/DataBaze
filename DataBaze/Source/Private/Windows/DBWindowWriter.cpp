@@ -3,11 +3,25 @@
 #include "DBFunctionLibrary.h"
 
 DBWindowWriter* WriterObj = nullptr;
+DBWindow		EditBox;
 
 LRESULT CALLBACK WndWriterProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	switch (message)
 	{
+	case WM_CREATE:
+	{
+		EditBox.Id		  = EDBButtonId::IDB_MAX;
+		EditBox.Parent	  = hWnd;
+		EditBox.Position = {25, 150};
+		EditBox.Size	  = {520, 40};
+		EditBox.Text	  = {};
+
+		// DBLib::CreateButton(NewBtn);
+		DBLib::CreateEditBox(EditBox, WS_BORDER | WS_VISIBLE | WS_CHILD | ES_CENTER | ES_UPPERCASE);
+		
+		DBLib::SetFontSize(EditBox.Window, 32);
+	}
 	case WM_COMMAND:
 	{
 		if (wParam == WM_SHOWWINDOW)
@@ -15,6 +29,19 @@ LRESULT CALLBACK WndWriterProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lP
 			if (WriterObj) return -1; // something is wrong
 
 			WriterObj = new DBWindowWriter;
+			SetFocus(EditBox.Window);
+		}
+		break;
+	}
+	case WM_PAINT:
+	{
+		DBLib::CreateText(hWnd);
+	}
+	case WM_KEYDOWN:
+	{
+		if (wParam == VK_RETURN)
+		{
+			// MessageBox(NULL, L"Sorry. It does't work", L"Dialog Box", MB_OK);
 		}
 		break;
 	}

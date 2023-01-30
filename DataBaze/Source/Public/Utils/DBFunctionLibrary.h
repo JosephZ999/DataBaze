@@ -11,10 +11,11 @@ namespace DBLib
 {
 
 void SetWindowVisibility(HWND Window, bool bShow);
-HWND CreateButton(DBButton& ButtonInfo);
+void CreateAWindow();
+HWND CreateButton(DBWindow& ButtonInfo);
 void SetFontSize(HWND Window, int FontSize);
-void CreateText();
-HWND CreateComboBox(DBButton& ButtonInfo);
+void CreateText(HWND hWnd);
+HWND CreateEditBox(DBWindow& ButtonInfo, DWORD Style);
 
 void CopyToClipboard(HWND hwnd, const std::string& s);
 void PressKey(WORD Key);
