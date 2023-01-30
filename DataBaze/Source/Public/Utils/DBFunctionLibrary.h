@@ -15,4 +15,6 @@ void SetFontSize(HWND Window, int FontSize);
 void CreateText();
 HWND CreateComboBox(DBButton& ButtonInfo);
 
+void ToClipboard(HWND hwnd, const std::string& s);
+
 } // namespace DBLib
