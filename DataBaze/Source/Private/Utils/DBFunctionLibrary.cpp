@@ -7,7 +7,8 @@ void DBLib::SetWindowVisibility(HWND Window, bool bShow)
 	ShowWindow(Window, (bShow) ? SW_SHOWDEFAULT : SW_HIDE);
 }
 
-HWND DBLib::CreateWindowComponent(EDBWindowCompType Type, std::wstring& Text, DWORD Style, Size2D Pos, Size2D Size, HWND Parent, HMENU Id)
+HWND DBLib::CreateWindowComponent(
+	EDBWindowCompType Type, std::wstring& Text, DWORD Style, Size2D Pos, Size2D Size, HWND Parent, HMENU Id, HINSTANCE HIns)
 {
 	std::wstring CompType;
 	switch (Type)
@@ -24,7 +25,7 @@ HWND DBLib::CreateWindowComponent(EDBWindowCompType Type, std::wstring& Text, DW
 		Pos.X, Pos.Y, Size.X, Size.Y,	  //
 		Parent,							  //
 		Id,								  // Id
-		NULL, NULL);
+		HIns, NULL);
 }
 
 HWND DBLib::CreateButton(DBWindow& ButtonInfo)
@@ -59,16 +60,16 @@ void DBLib::CreateText(HWND hWnd)
 
 HWND DBLib::CreateEditBox(DBWindow& ButtonInfo, DWORD Style)
 {
-	ButtonInfo.Window = CreateWindowComponent(
-		CompType::WCT_Edit, ButtonInfo.Text, Style, ButtonInfo.Position, ButtonInfo.Size, ButtonInfo.Parent, (HMENU)ButtonInfo.Id);
+	ButtonInfo.Window = CreateWindowComponent(CompType::WCT_Edit, ButtonInfo.Text, Style, ButtonInfo.Position, ButtonInfo.Size,
+		ButtonInfo.Parent, (HMENU)ButtonInfo.Id, ButtonInfo.HIns);
 	SetFontSize(ButtonInfo.Window, ButtonInfo.FontSize);
 	return ButtonInfo.Window;
 }
 
 HWND DBLib::CreateStaticBox(DBWindow& WindowInfo, DWORD Style)
 {
-	WindowInfo.Window = CreateWindowComponent(
-		CompType::WCT_Static, WindowInfo.Text, Style, WindowInfo.Position, WindowInfo.Size, WindowInfo.Parent, (HMENU)WindowInfo.Id);
+	WindowInfo.Window = CreateWindowComponent(CompType::WCT_Static, WindowInfo.Text, Style, WindowInfo.Position, WindowInfo.Size,
+		WindowInfo.Parent, (HMENU)WindowInfo.Id, WindowInfo.HIns);
 
 	SetFontSize(WindowInfo.Window, WindowInfo.FontSize);
 	return WindowInfo.Window;

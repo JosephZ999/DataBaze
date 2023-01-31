@@ -38,7 +38,7 @@ enum EDBWindowCompType
 enum EDBWinCompId
 {
 	// Main window comps
-	IDC_NONE = 10,
+	IDC_NONE = 500,
 	IDC_VIEW,
 	IDC_NEWITEM,
 	IDC_LOCK,
@@ -80,6 +80,7 @@ struct DBWindow
 	Size2D		 Size;
 	std::wstring Text	  = L"Button";
 	int			 FontSize = 16;
+	HINSTANCE	 HIns	  = NULL;
 };
 
 class ButtonContainer
@@ -103,11 +104,12 @@ struct DBPeopleData
 	{
 	}
 
-	std::wstring StateInFamily; // Parent 1, Child 1
-	std::wstring Name;			//
-	std::wstring FamilyName;	//
-	std::wstring BirthData;		// mm/dd/yyyy
-	std::wstring Info;			//
+	std::wstring Name;		 //
+	std::wstring FamilyName; //
+	std::wstring BirthMonth; // mm/dd/yyyy
+	std::wstring BirthDay;	 // mm/dd/yyyy
+	std::wstring BirthYear;	 // mm/dd/yyyy
+	std::wstring Info;		 //
 };
 
 typedef std::vector<DBPeopleData> PeopleGroup;
@@ -176,13 +178,23 @@ bool ButtonContainer::FindByIndex(EDBWinCompId Id, DBWindow& Button)
 
 enum EPeopleType
 {
-	WPT_Parent,
-	WPT_Spouse,
-	WPT_Children,
+	PT_None,
+	PT_Parent,
+	PT_Spouse,
+	PT_Child_1,
+	PT_Child_2,
+	PT_Child_3,
+	PT_Child_4,
+	PT_Child_5,
+	PT_Child_6,
+	PT_Child_7,
+	PT_Child_8,
+	PT_Child_9,
 };
 
 enum EPeopleData
 {
+	PD_None = 0,
 	PD_Name,
 	PD_FamilyName,
 
@@ -191,6 +203,9 @@ enum EPeopleData
 	PD_BirthYear,
 
 	PD_BornCountry,
+
+	PD_NotChildrenInfo,
+
 	PD_WhereLive,
 
 	PD_MailCountry,

@@ -11,7 +11,8 @@ namespace DBLib
 {
 
 void SetWindowVisibility(HWND Window, bool bShow);
-HWND CreateWindowComponent(EDBWindowCompType Type, std::wstring& Text, DWORD Style, Size2D Pos, Size2D Size, HWND Parent, HMENU Id);
+HWND CreateWindowComponent(
+	EDBWindowCompType Type, std::wstring& Text, DWORD Style, Size2D Pos, Size2D Size, HWND Parent, HMENU Id, HINSTANCE HIns = NULL);
 HWND CreateButton(DBWindow& ButtonInfo);
 HWND CreateEditBox(DBWindow& ButtonInfo, DWORD Style);
 HWND CreateStaticBox(DBWindow& WindowInfo, DWORD Style);
