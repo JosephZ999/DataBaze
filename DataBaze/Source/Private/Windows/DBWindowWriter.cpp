@@ -49,6 +49,9 @@ LRESULT CALLBACK WndWriterProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lP
 	{
 		if (wParam == VK_RETURN)
 		{
+
+
+
 			// MessageBox(NULL, L"Sorry. It does't work", L"Dialog Box", MB_OK);
 		}
 		break;

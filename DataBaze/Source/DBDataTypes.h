@@ -49,7 +49,7 @@ enum EDBWinCompId
 	// Writer window comps
 	IDC_W_Info,
 	IDC_W_Edit,
-	
+
 	IDC_MAX,
 };
 
@@ -73,7 +73,7 @@ struct DBWindow
 	{
 	}
 
-	EDBWinCompId	 Id		= EDBWinCompId::IDC_NONE;
+	EDBWinCompId Id		= EDBWinCompId::IDC_NONE;
 	HWND		 Window = 0;
 	HWND		 Parent = 0;
 	Size2D		 Position;
@@ -112,9 +112,9 @@ struct DBPeopleData
 
 typedef std::vector<DBPeopleData> PeopleGroup;
 
-struct DBListItem
+struct DBFamilyData
 {
-	DBListItem()
+	DBFamilyData()
 		: Parents({})
 		, Children({})
 		, bFamily(false)
@@ -123,7 +123,7 @@ struct DBListItem
 	{
 	}
 
-	DBListItem(PeopleGroup InParents, PeopleGroup InChildren, bool IsFamily)
+	DBFamilyData(PeopleGroup InParents, PeopleGroup InChildren, bool IsFamily)
 		: Parents(InParents)
 		, Children(InChildren)
 		, bFamily(IsFamily)
@@ -144,7 +144,7 @@ class DBListContainer
 {
 
 public:
-	std::vector<DBListItem> Items;
+	std::vector<DBFamilyData> Items;
 };
 
 // container implementations
@@ -171,3 +171,33 @@ bool ButtonContainer::FindByIndex(EDBWinCompId Id, DBWindow& Button)
 
 	return false;
 }
+
+// Writer Data
+
+enum EPeopleType
+{
+	WPT_Parent,
+	WPT_Spouse,
+	WPT_Children,
+};
+
+enum EPeopleData
+{
+	PD_Name,
+	PD_FamilyName,
+
+	PD_BirthMonth,
+	PD_BirthDay,
+	PD_BirthYear,
+
+	PD_BornCountry,
+	PD_WhereLive,
+
+	PD_MailCountry,
+	PD_MailCity,
+	PD_MailHome,
+	PD_MailZipCode,
+
+	PD_EducationDegree,
+	PD_ChildrenNum,
+};

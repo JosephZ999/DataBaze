@@ -54,11 +54,11 @@ void DBSystem::InitListBox()
 {
 	// Init ListContainer
 
-	ListContainer.Items.push_back(DBListItem({DBPeopleData(L"Abdu")}, {}, false));
-	ListContainer.Items.push_back(DBListItem({DBPeopleData(L"Amir")}, {}, false));
-	ListContainer.Items.push_back(DBListItem({DBPeopleData(L"Piyoz")}, {}, false));
-	ListContainer.Items.push_back(DBListItem({DBPeopleData(L"Hechkim")}, {}, false));
-	ListContainer.Items.push_back(DBListItem({DBPeopleData(L"Komp")}, {}, false));
+	ListContainer.Items.push_back(DBFamilyData({DBPeopleData(L"Abdu")}, {}, false));
+	ListContainer.Items.push_back(DBFamilyData({DBPeopleData(L"Amir")}, {}, false));
+	ListContainer.Items.push_back(DBFamilyData({DBPeopleData(L"Piyoz")}, {}, false));
+	ListContainer.Items.push_back(DBFamilyData({DBPeopleData(L"Hechkim")}, {}, false));
+	ListContainer.Items.push_back(DBFamilyData({DBPeopleData(L"Komp")}, {}, false));
 
 	ListBox = CreateWindow(L"LISTBOX", L"button", WS_CLIPSIBLINGS | WS_VISIBLE | WS_CHILD | LBS_STANDARD, 200, 25, 500, 300, MainWindow,
 		(HMENU)IDC_LISTBOX, NULL, NULL);
