@@ -81,7 +81,9 @@ void DBSystem::InitListBox()
 	SetFontSize(ListBox, 20);
 }
 
-VOID DBSystem::DoubleClickTimer(HWND hWnd, UINT nMsg, UINT nIDEvent, DWORD dwTime)
+
+
+VOID DBSystem::DoubleClickTimer(HWND hWnd, UINT nMsg, UINT_PTR nIDEvent, DWORD dwTime)
 {
 	KillTimer(NULL, TimerId);
 	clicks = 0;
@@ -138,6 +140,7 @@ void DBSystem::CallCommand(HWND& hWnd, UINT Message, WPARAM& WParam, LPARAM& LPa
 		++clicks;
 		KillTimer(NULL, TimerId);
 		TimerId = SetTimer(NULL, 0, 200, &DBSystem::DoubleClickTimer);
+
 		if (clicks == 2)
 		{
 			MessageBox(NULL, L"Sorry. It does't work", L"Dialog Box", MB_OK);

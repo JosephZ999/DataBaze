@@ -36,7 +36,7 @@ LRESULT CALLBACK WndWriterProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lP
 		{
 			if (WriterObj) return -1; // something is wrong
 
-			WriterObj = new DBWindowWriter;
+			WriterObj = new DBWindowWriter(hWnd);
 			SetFocus(WriterEditBox.Window);
 		}
 		break;

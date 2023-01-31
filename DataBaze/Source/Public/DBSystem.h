@@ -10,6 +10,10 @@ class DBWindowsManager;
 #define MAX_LOADSTRING 100
 #define IDC_LISTBOX	   9
 
+#ifdef _M_IX86
+typedef UINT UINT_PTR;
+#endif
+
 class DBSystem
 {
 public:
@@ -48,5 +52,5 @@ private:
 	Size2D WindowSize;
 	void InitListBox();
 
-	static VOID CALLBACK DoubleClickTimer(HWND hWnd, UINT nMsg, UINT nIDEvent, DWORD dwTime);
+	static VOID CALLBACK DoubleClickTimer(HWND hWnd, UINT nMsg, UINT_PTR nIDEvent, DWORD dwTime);
 };
