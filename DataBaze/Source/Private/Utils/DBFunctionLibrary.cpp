@@ -1,22 +1,36 @@
 #include "DBFunctionLibrary.h"
 
+typedef EDBWindowCompType CompType;
+
 void DBLib::SetWindowVisibility(HWND Window, bool bShow)
 {
 	ShowWindow(Window, (bShow) ? SW_SHOWDEFAULT : SW_HIDE);
 }
 
-void DBLib::CreateAWindow() {}
+HWND DBLib::CreateWindowComponent(EDBWindowCompType Type, std::wstring& Text, DWORD Style, Size2D Pos, Size2D Size, HWND Parent, HMENU Id)
+{
+	std::wstring CompType;
+	switch (Type)
+	{ // clang-format off
+	case WCT_Button:	CompType = L"button";	break;
+	case WCT_Edit:		CompType = L"edit";		break;
+	case WCT_ComboBox:	CompType = L"combobox"; break;
+	} // clang-format on
+
+	return CreateWindow(CompType.c_str(), // Type
+		Text.c_str(),					  // Text
+		Style,							  // Style
+		Pos.X, Pos.Y, Size.X, Size.Y,	  //
+		Parent,							  //
+		Id,								  // Id
+		NULL, NULL);
+}
 
 HWND DBLib::CreateButton(DBWindow& ButtonInfo)
 {
-	ButtonInfo.Window = CreateWindow(L"button",		  // Type
-		ButtonInfo.Text.c_str(),					  // Text
-		WS_VISIBLE | WS_CHILD,						  // Style
-		ButtonInfo.Position.X, ButtonInfo.Position.Y, //
-		ButtonInfo.Size.X, ButtonInfo.Size.Y,		  //
-		ButtonInfo.Parent,							  //
-		(HMENU)ButtonInfo.Id,						  // Id
-		NULL, NULL);
+	DWORD BStyle	  = WS_VISIBLE | WS_CHILD;
+	ButtonInfo.Window = CreateWindowComponent(
+		CompType::WCT_Button, ButtonInfo.Text, BStyle, ButtonInfo.Position, ButtonInfo.Size, ButtonInfo.Parent, (HMENU)ButtonInfo.Id);
 
 	SetFontSize(ButtonInfo.Window, ButtonInfo.FontSize);
 	return ButtonInfo.Window;
@@ -44,15 +58,8 @@ void DBLib::CreateText(HWND hWnd)
 
 HWND DBLib::CreateEditBox(DBWindow& ButtonInfo, DWORD Style)
 {
-	ButtonInfo.Window = CreateWindow(L"EDIT",		  // Type
-		ButtonInfo.Text.c_str(),					  // Text
-		Style,										  // Style
-		ButtonInfo.Position.X, ButtonInfo.Position.Y, //
-		ButtonInfo.Size.X, ButtonInfo.Size.Y,		  //
-		ButtonInfo.Parent,							  //
-		(HMENU)ButtonInfo.Id,						  // Id
-		NULL, NULL);
-
+	ButtonInfo.Window = CreateWindowComponent(
+		CompType::WCT_Edit, ButtonInfo.Text, Style, ButtonInfo.Position, ButtonInfo.Size, ButtonInfo.Parent, (HMENU)ButtonInfo.Id);
 	SetFontSize(ButtonInfo.Window, ButtonInfo.FontSize);
 	return ButtonInfo.Window;
 }

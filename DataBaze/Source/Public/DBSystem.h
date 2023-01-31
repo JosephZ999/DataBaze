@@ -23,7 +23,7 @@ public:
 
 	// Global variables
 	HWND	MainWindow;
-	Size2D* BtnSize = nullptr;
+	const Size2D BtnSize = {150, 30};
 
 	// End variables
 
@@ -46,8 +46,6 @@ private:
 	DBListContainer ListContainer;
 
 	Size2D WindowSize;
-
-	void CreateButton(const HWND& ParentWindow, std::wstring Text, EDBButtonId Id, Size2D Pos, Size2D Size);
 	void InitListBox();
 
 	static VOID CALLBACK DoubleClickTimer(HWND hWnd, UINT nMsg, UINT nIDEvent, DWORD dwTime);

@@ -34,25 +34,20 @@ void DBSystem::EndConstruct()
 		{EDBButtonId::IDB_LOCK, Size2D(25, 125), L"Lock"},			 //
 		{EDBButtonId::IDB_UNLOCK, Size2D(25, 175), L"Unlock"}		 //
 	};
-
+	// Size2D	  BtnSize = {150, 30};
 	for (auto BtnInfo : MainButtons)
 	{
-		CreateButton(MainWindow, BtnInfo.Text, BtnInfo.Id, BtnInfo.Pos, *BtnSize);
+		DBWindow NewWindow(BtnInfo.Id, MainWindow, BtnInfo.Pos, BtnSize, BtnInfo.Text);
+		auto Btn = DBLib::CreateButton(NewWindow);
+		if (Btn)
+		{
+			DBLib::SetFontSize(Btn, 16);
+			NewWindow.Window = Btn;
+			Buttons.Add(NewWindow);
+		}
 	}
 
 	InitListBox();
-}
-
-void DBSystem::CreateButton(const HWND& ParentWindow, const std::wstring Text, EDBButtonId Id, Size2D Pos, Size2D Size)
-{
-	auto NewWindow = CreateWindow(L"button", Text.c_str(), //
-		WS_VISIBLE | WS_CHILD,							   //
-		Pos.X, Pos.Y, Size.X, Size.Y,					   //
-		ParentWindow, (HMENU)Id, NULL, NULL);
-
-	SetFontSize(NewWindow, 16);
-
-	Buttons.Add(DBWindow(Id, NewWindow, Pos, Size, Text));
 }
 
 void DBSystem::InitListBox()
@@ -192,7 +187,7 @@ void DBSystem::Update_BtnVisibility()
 
 void DBSystem::Update_ListBoxScale()
 {
-	Size2D Pos = (IsPortraitModeEnabled()) ? Size2D(0, 25) : Size2D((*BtnSize).X + 50, 25);
+	Size2D Pos = (IsPortraitModeEnabled()) ? Size2D(0, 25) : Size2D((BtnSize).X + 50, 25);
 	Size2D Size;
 	Size.X = abs(Pos.X - (WindowSize.X - 25));
 	Size.Y = WindowSize.Y - 100;

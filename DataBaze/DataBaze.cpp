@@ -12,7 +12,6 @@ WCHAR	  szWindowClass[MAX_LOADSTRING]; // the main window class name
 HWND	  MainWindow;
 HWND	  ListBox;
 DBSystem* System;
-Size2D	  BtnSize = {150, 30};
 
 // Forward declarations of functions included in this code module:
 ATOM MyRegisterClass(HINSTANCE hInstance);
@@ -110,7 +109,6 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 	System = new DBSystem(hInst, MainWindow);
 	if (System)
 	{
-		System->BtnSize = &BtnSize;
 		System->EndConstruct();
 	}
 	return TRUE;

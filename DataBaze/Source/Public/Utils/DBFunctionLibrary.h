@@ -11,7 +11,7 @@ namespace DBLib
 {
 
 void SetWindowVisibility(HWND Window, bool bShow);
-void CreateAWindow();
+HWND CreateWindowComponent(EDBWindowCompType Type, std::wstring& Text, DWORD Style, Size2D Pos, Size2D Size, HWND Parent, HMENU Id);
 HWND CreateButton(DBWindow& ButtonInfo);
 void SetFontSize(HWND Window, int FontSize);
 void CreateText(HWND hWnd);

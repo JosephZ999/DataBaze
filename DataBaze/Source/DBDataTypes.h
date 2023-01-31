@@ -25,6 +25,14 @@ inline Size2D& Size2D::operator=(const Size2D& NewSize)
 	return *this;
 }
 
+enum EDBWindowCompType
+{
+	WCT_None,
+	WCT_Button,
+	WCT_Edit,
+	WCT_ComboBox,
+};
+
 enum EDBButtonId
 {
 	IDB_NONE = 10,
@@ -46,9 +54,9 @@ enum EWindows
 struct DBWindow
 {
 	DBWindow() {}
-	DBWindow(EDBButtonId InId, HWND InWindow, Size2D InPosition, Size2D InSize, std::wstring InText)
+	DBWindow(EDBButtonId InId, HWND InParent, Size2D InPosition, Size2D InSize, std::wstring InText)
 		: Id(InId)
-		, Window(InWindow)
+		, Parent(InParent)
 		, Position(InPosition)
 		, Size(InSize)
 		, Text(InText)
