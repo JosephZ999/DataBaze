@@ -13,9 +13,10 @@ namespace DBLib
 void SetWindowVisibility(HWND Window, bool bShow);
 HWND CreateWindowComponent(EDBWindowCompType Type, std::wstring& Text, DWORD Style, Size2D Pos, Size2D Size, HWND Parent, HMENU Id);
 HWND CreateButton(DBWindow& ButtonInfo);
+HWND CreateEditBox(DBWindow& ButtonInfo, DWORD Style);
+HWND CreateStaticBox(DBWindow& WindowInfo, DWORD Style);
 void SetFontSize(HWND Window, int FontSize);
 void CreateText(HWND hWnd);
-HWND CreateEditBox(DBWindow& ButtonInfo, DWORD Style);
 
 void CopyToClipboard(HWND hwnd, const std::string& s);
 void PressKey(WORD Key);

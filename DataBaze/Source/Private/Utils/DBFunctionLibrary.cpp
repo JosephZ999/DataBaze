@@ -12,6 +12,7 @@ HWND DBLib::CreateWindowComponent(EDBWindowCompType Type, std::wstring& Text, DW
 	std::wstring CompType;
 	switch (Type)
 	{ // clang-format off
+	case WCT_Static:	CompType = L"static";	break;
 	case WCT_Button:	CompType = L"button";	break;
 	case WCT_Edit:		CompType = L"edit";		break;
 	case WCT_ComboBox:	CompType = L"combobox"; break;
@@ -62,6 +63,15 @@ HWND DBLib::CreateEditBox(DBWindow& ButtonInfo, DWORD Style)
 		CompType::WCT_Edit, ButtonInfo.Text, Style, ButtonInfo.Position, ButtonInfo.Size, ButtonInfo.Parent, (HMENU)ButtonInfo.Id);
 	SetFontSize(ButtonInfo.Window, ButtonInfo.FontSize);
 	return ButtonInfo.Window;
+}
+
+HWND DBLib::CreateStaticBox(DBWindow& WindowInfo, DWORD Style)
+{
+	WindowInfo.Window = CreateWindowComponent(
+		CompType::WCT_Static, WindowInfo.Text, Style, WindowInfo.Position, WindowInfo.Size, WindowInfo.Parent, (HMENU)WindowInfo.Id);
+
+	SetFontSize(WindowInfo.Window, WindowInfo.FontSize);
+	return WindowInfo.Window;
 }
 
 void DBLib::CopyToClipboard(HWND hwnd, const std::string& s)

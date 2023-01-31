@@ -28,24 +28,33 @@ inline Size2D& Size2D::operator=(const Size2D& NewSize)
 enum EDBWindowCompType
 {
 	WCT_None,
+	WCT_Static,
 	WCT_Button,
 	WCT_Edit,
 	WCT_ComboBox,
 };
 
-enum EDBButtonId
+enum EDBWinCompId
 {
-	IDB_NONE = 10,
-	IDB_VIEW,
-	IDB_NEWITEM,
-	IDB_LOCK,
-	IDB_UNLOCK,
-	IDB_MAX,
+	// Main window comps
+	IDC_NONE = 10,
+	IDC_VIEW,
+	IDC_NEWITEM,
+	IDC_LOCK,
+	IDC_UNLOCK,
+
+	// Viewer window comps
+
+	// Writer window comps
+	IDC_W_Info,
+	IDC_W_Edit,
+	
+	IDC_MAX,
 };
 
 enum EWindows
 {
-	IDW_NONE = EDBButtonId::IDB_MAX,
+	IDW_NONE = EDBWinCompId::IDC_MAX,
 	IDW_VIEWER,
 	IDW_WRITER,
 	IDW_MAX,
@@ -54,7 +63,7 @@ enum EWindows
 struct DBWindow
 {
 	DBWindow() {}
-	DBWindow(EDBButtonId InId, HWND InParent, Size2D InPosition, Size2D InSize, std::wstring InText)
+	DBWindow(EDBWinCompId InId, HWND InParent, Size2D InPosition, Size2D InSize, std::wstring InText)
 		: Id(InId)
 		, Parent(InParent)
 		, Position(InPosition)
@@ -63,7 +72,7 @@ struct DBWindow
 	{
 	}
 
-	EDBButtonId	 Id		= EDBButtonId::IDB_NONE;
+	EDBWinCompId	 Id		= EDBWinCompId::IDC_NONE;
 	HWND		 Window = 0;
 	HWND		 Parent = 0;
 	Size2D		 Position;
@@ -80,7 +89,7 @@ public:
 	DBWindow Buttons[10];
 
 	inline void Add(const DBWindow& InButton);
-	inline bool FindByIndex(EDBButtonId Id, DBWindow& Button);
+	inline bool FindByIndex(EDBWinCompId Id, DBWindow& Button);
 	bool		IsEmpty() { return ButtonLastIndex == 0; }
 };
 
@@ -149,7 +158,7 @@ void ButtonContainer::Add(const DBWindow& InButton)
 	}
 }
 
-bool ButtonContainer::FindByIndex(EDBButtonId Id, DBWindow& Button)
+bool ButtonContainer::FindByIndex(EDBWinCompId Id, DBWindow& Button)
 {
 	for (int i = 0; i < 10; ++i)
 	{

@@ -22,17 +22,17 @@ void DBSystem::EndConstruct()
 {
 	struct LocalBtnInfo
 	{
-		EDBButtonId	 Id;
+		EDBWinCompId	 Id;
 		Size2D		 Pos;
 		std::wstring Text;
 	};
 
 	const LocalBtnInfo MainButtons[] = {
 		//
-		{EDBButtonId::IDB_VIEW, Size2D(25, 25), L"Show"},			 //
-		{EDBButtonId::IDB_NEWITEM, Size2D(25, 75), L"Add New Item"}, //
-		{EDBButtonId::IDB_LOCK, Size2D(25, 125), L"Lock"},			 //
-		{EDBButtonId::IDB_UNLOCK, Size2D(25, 175), L"Unlock"}		 //
+		{EDBWinCompId::IDC_VIEW, Size2D(25, 25), L"Show"},			 //
+		{EDBWinCompId::IDC_NEWITEM, Size2D(25, 75), L"Add New Item"}, //
+		{EDBWinCompId::IDC_LOCK, Size2D(25, 125), L"Lock"},			 //
+		{EDBWinCompId::IDC_UNLOCK, Size2D(25, 175), L"Unlock"}		 //
 	};
 	// Size2D	  BtnSize = {150, 30};
 	for (auto BtnInfo : MainButtons)
@@ -109,10 +109,10 @@ void DBSystem::CallCommand(HWND& hWnd, UINT Message, WPARAM& WParam, LPARAM& LPa
 	}
 	} // switch end
 
-	EDBButtonId BtnId = static_cast<EDBButtonId>(LOWORD(WParam));
+	EDBWinCompId BtnId = static_cast<EDBWinCompId>(LOWORD(WParam));
 	switch (BtnId)
 	{
-	case IDB_VIEW:
+	case IDC_VIEW:
 	{
 		if (WindowManager)
 		{
@@ -120,7 +120,7 @@ void DBSystem::CallCommand(HWND& hWnd, UINT Message, WPARAM& WParam, LPARAM& LPa
 		}
 		return;
 	}
-	case IDB_NEWITEM:
+	case IDC_NEWITEM:
 	{
 		if (WindowManager)
 		{
@@ -128,12 +128,12 @@ void DBSystem::CallCommand(HWND& hWnd, UINT Message, WPARAM& WParam, LPARAM& LPa
 		}
 		return;
 	}
-	case IDB_LOCK:
+	case IDC_LOCK:
 	{
 		MessageBox(NULL, L"Sorry. It does't work", L"Dialog Box", MB_OK);
 		return;
 	}
-	case IDB_UNLOCK:
+	case IDC_UNLOCK:
 	{
 		++clicks;
 		KillTimer(NULL, TimerId);
@@ -198,7 +198,7 @@ void DBSystem::Update_ListBoxScale()
 		1);
 }
 
-void DBSystem::HideButton(EDBButtonId Id)
+void DBSystem::HideButton(EDBWinCompId Id)
 {
 	DBWindow Button;
 	if (Buttons.FindByIndex(Id, Button))
@@ -210,7 +210,7 @@ void DBSystem::HideButton(EDBButtonId Id)
 	}
 }
 
-void DBSystem::ShowButton(EDBButtonId Id)
+void DBSystem::ShowButton(EDBWinCompId Id)
 {
 	DBWindow Button;
 	if (Buttons.FindByIndex(Id, Button))

@@ -33,8 +33,8 @@ public:
 	void Update_BtnVisibility();
 	void Update_ListBoxScale();
 
-	void HideButton(EDBButtonId Id);
-	void ShowButton(EDBButtonId Id);
+	void HideButton(EDBWinCompId Id);
+	void ShowButton(EDBWinCompId Id);
 
 	bool IsPortraitModeEnabled();
 

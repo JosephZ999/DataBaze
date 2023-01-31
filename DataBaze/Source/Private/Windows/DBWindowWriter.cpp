@@ -3,7 +3,8 @@
 #include "DBFunctionLibrary.h"
 
 DBWindowWriter* WriterObj = nullptr;
-DBWindow		EditBox;
+DBWindow		WriterEditBox;
+DBWindow		WriterInfoBox;
 
 LRESULT CALLBACK WndWriterProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
@@ -11,16 +12,23 @@ LRESULT CALLBACK WndWriterProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lP
 	{
 	case WM_CREATE:
 	{
-		EditBox.Id		  = EDBButtonId::IDB_MAX;
-		EditBox.Parent	  = hWnd;
-		EditBox.Position = {25, 150};
-		EditBox.Size	  = {520, 40};
-		EditBox.Text	  = {};
+		WriterEditBox.Id	   = EDBWinCompId::IDC_W_Edit;
+		WriterEditBox.Parent   = hWnd;
+		WriterEditBox.Position = {25, 150};
+		WriterEditBox.Size	   = {520, 40};
+		WriterEditBox.Text	   = {};
+		WriterEditBox.FontSize = 32;
 
-		// DBLib::CreateButton(NewBtn);
-		DBLib::CreateEditBox(EditBox, WS_BORDER | WS_VISIBLE | WS_CHILD | ES_CENTER | ES_UPPERCASE);
-		
-		DBLib::SetFontSize(EditBox.Window, 32);
+		DBLib::CreateEditBox(WriterEditBox, WS_BORDER | WS_VISIBLE | WS_CHILD | ES_CENTER | ES_UPPERCASE);
+
+		WriterInfoBox.Id	   = EDBWinCompId::IDC_W_Info;
+		WriterInfoBox.Parent   = hWnd;
+		WriterInfoBox.Position = {25, 25};
+		WriterInfoBox.Size	   = {520, 120};
+		WriterInfoBox.Text	   = L"Info Info Info Info Info Info Info Info Info Info Info Info Info Info";
+		WriterInfoBox.FontSize = 24;
+
+		DBLib::CreateStaticBox(WriterInfoBox, WS_VISIBLE | WS_CHILD);
 	}
 	case WM_COMMAND:
 	{
@@ -29,13 +37,13 @@ LRESULT CALLBACK WndWriterProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lP
 			if (WriterObj) return -1; // something is wrong
 
 			WriterObj = new DBWindowWriter;
-			SetFocus(EditBox.Window);
+			SetFocus(WriterEditBox.Window);
 		}
 		break;
 	}
 	case WM_PAINT:
 	{
-		DBLib::CreateText(hWnd);
+		// DBLib::CreateText(hWnd);
 	}
 	case WM_KEYDOWN:
 	{
