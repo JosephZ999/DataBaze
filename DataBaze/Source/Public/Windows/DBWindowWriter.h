@@ -31,6 +31,8 @@ public:
 	void SelectChild(size_t Index);
 	void SetInfoText(std::wstring& Text);
 	bool GetLineOfData(std::wstring*& OutData, EPeopleData DataType);
+
 	void NextPeople();
 	void NextLine();
+	void OpenImage();
 };

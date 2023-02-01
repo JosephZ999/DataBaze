@@ -113,6 +113,7 @@ struct DBPeopleData
 	std::wstring WhereLive;	   //
 
 	std::wstring EducationDegree; //
+	std::wstring ImageFile;		  //
 	std::wstring ChildrenNum;	  //
 };
 
@@ -213,6 +214,7 @@ enum EPeopleData
 
 	PD_BornCountry,
 	PD_EducationDegree,
+	PD_ImageFile,
 
 	PD_NotChildInfo,
 
