@@ -331,7 +331,9 @@ void DBWindowWriter::OpenImage()
 		std::wstring nPath = path;
 		nPath.erase(nPath.end() - 4 ,nPath.end());
 		MessageBox(NULL, nPath.c_str(), L"Dialog Box", MB_OK);
-
+		
+		// Copy file to directory
+		// CopyFile(File, NewFile, true)
 
 		// MespathsageBox(NULL, ofn.lpstrFile, L"Dialog Box", MB_OK);
 	}
