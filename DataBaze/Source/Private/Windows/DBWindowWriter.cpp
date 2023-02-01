@@ -50,6 +50,8 @@ LRESULT CALLBACK WndWriterProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lP
 	case WM_PAINT:
 	{
 		// DBLib::CreateText(hWnd);
+		// MessageBox(NULL, L"Sorry. It does't work", L"Dialog Box", MB_OK);
+		break;
 	}
 	case WM_KEYDOWN:
 	{
@@ -140,9 +142,54 @@ void DBWindowWriter::SelectWriteData(EPeopleType PT)
 
 void DBWindowWriter::WriteData()
 {
-	PeopleData = static_cast<EPeopleData>(PeopleData + 1);
-	if (PeopleType >= PT_Child_1 && PeopleData >= PD_NotChildrenInfo)
+	if (! DataToChange) return;
+
+	TCHAR buff[256];
+	GetWindowText(WriterEditBox.Window, buff, 256);
+
+	std::wstring* nText = nullptr;
+	if (GetLineOfData(nText, PeopleData))
 	{
+		if (nText)
+		{
+			*nText = buff;
+			OutputDebugString(nText->append(L"\n").c_str());
+		}
+	}
+
+	switch (PeopleType)
+	{
+	case PT_Parent:
+	{
+		NextLine();
+		switch (PeopleData)
+		{
+		case PD_NotChildInfo: NextLine(); break;
+		case PD_OnlyParentInfo: NextLine(); break;
+		case PD_Max: NextPeople(); break;
+		}
+		break;
+	}
+	case PT_Spouse:
+	{
+		NextLine();
+		switch (PeopleData)
+		{
+		case PD_NotChildInfo: NextLine(); break;
+		case PD_OnlyParentInfo: NextPeople(); break;
+		} // switch
+		break;
+	}
+	default: // children
+	{
+		NextLine();
+
+		switch (PeopleData)
+		{
+		case PD_NotChildInfo: NextPeople(); break;
+		}
+		break;
+	}
 	}
 }
 
@@ -173,23 +220,23 @@ void DBWindowWriter::UpdateInfo()
 	case PD_BirthDay:			InfoText.append(L"Birth Day");					break;
 	case PD_BirthYear:			InfoText.append(L"Birth Year");					break;
 	case PD_BornCountry:		InfoText.append(L"Country where born");			break;
+	case PD_EducationDegree:	InfoText.append(L"Education");					break;
 	case PD_WhereLive:			InfoText.append(L"Country where live today");	break;
+	case PD_ChildrenNum:		InfoText.append(L"Children Num");				break;
 	case PD_MailCountry:		InfoText.append(L"Mailing country");			break;
 	case PD_MailCity:			InfoText.append(L"Mailing city");				break;
 	case PD_MailHome:			InfoText.append(L"Mailing home number");		break;
 	case PD_MailZipCode:		InfoText.append(L"Mailing ZipCode");			break;
-	case PD_EducationDegree:	InfoText.append(L"Education");					break;
-	case PD_ChildrenNum:		InfoText.append(L"Education");					break;
 	} // clang-format on
 
 	SetInfoText(InfoText);
 }
 
-void DBWindowWriter::SelectChild(int Index)
+void DBWindowWriter::SelectChild(size_t Index)
 {
 	while (MembersData.Children.size() < Index)
 	{
-		MembersData.Parents.push_back(DBPeopleData());
+		MembersData.Children.push_back(DBPeopleData());
 	}
 	DataToChange = &MembersData.Children[Index - 1];
 }
@@ -197,4 +244,43 @@ void DBWindowWriter::SelectChild(int Index)
 void DBWindowWriter::SetInfoText(std::wstring& Text)
 {
 	SendMessage(WriterInfoBox.Window, WM_SETTEXT, 0, (LPARAM)Text.c_str());
+}
+
+bool DBWindowWriter::GetLineOfData(std::wstring*& OutData, EPeopleData DataType)
+{
+	if (! DataToChange) return false;
+
+	switch (DataType)
+	{ // clang-format off
+	case PD_Name:				OutData = &DataToChange->Name;				return true;
+	case PD_FamilyName:			OutData = &DataToChange->FamilyName;		return true;
+	case PD_BirthMonth:			OutData = &DataToChange->BirthMonth;		return true;
+	case PD_BirthDay:			OutData = &DataToChange->BirthDay;			return true;
+	case PD_BirthYear:			OutData = &DataToChange->BirthYear;			return true;
+	case PD_BornCountry:		OutData = &DataToChange->BirthCountry;		return true;
+
+	// Only Parent Info:
+	case PD_WhereLive:			OutData = &DataToChange->WhereLive;			return true;
+
+	case PD_MailCountry:		OutData = &MembersData.MailCountry;			return true;
+	case PD_MailCity:			OutData = &MembersData.MailCity;			return true;
+	case PD_MailHome:			OutData = &MembersData.MailHome;			return true;
+	case PD_MailZipCode:		OutData = &MembersData.MailZipCode;			return true;
+
+	case PD_EducationDegree:	OutData = &DataToChange->EducationDegree;	return true;
+	case PD_ChildrenNum:		OutData = &DataToChange->ChildrenNum;		return true;
+	} // clang-format on
+
+	return false;
+}
+
+void DBWindowWriter::NextPeople()
+{
+	PeopleData = EPeopleData::PD_Name;
+	PeopleType = static_cast<EPeopleType>(PeopleType + 1);
+}
+
+void DBWindowWriter::NextLine()
+{
+	PeopleData = static_cast<EPeopleData>(PeopleData + 1);
 }

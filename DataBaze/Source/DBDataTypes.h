@@ -104,12 +104,16 @@ struct DBPeopleData
 	{
 	}
 
-	std::wstring Name;		 //
-	std::wstring FamilyName; //
-	std::wstring BirthMonth; // mm/dd/yyyy
-	std::wstring BirthDay;	 // mm/dd/yyyy
-	std::wstring BirthYear;	 // mm/dd/yyyy
-	std::wstring Info;		 //
+	std::wstring Name;		   //
+	std::wstring FamilyName;   //
+	std::wstring BirthMonth;   //
+	std::wstring BirthDay;	   //
+	std::wstring BirthYear;	   //
+	std::wstring BirthCountry; //
+	std::wstring WhereLive;	   //
+
+	std::wstring EducationDegree; //
+	std::wstring ChildrenNum;	  //
 };
 
 typedef std::vector<DBPeopleData> PeopleGroup;
@@ -140,6 +144,11 @@ struct DBFamilyData
 	bool bFamily;
 	bool bDouble;
 	bool bLocked;
+
+	std::wstring MailCountry; //
+	std::wstring MailCity;	  //
+	std::wstring MailHome;	  //
+	std::wstring MailZipCode; //
 };
 
 class DBListContainer
@@ -203,16 +212,18 @@ enum EPeopleData
 	PD_BirthYear,
 
 	PD_BornCountry,
+	PD_EducationDegree,
 
-	PD_NotChildrenInfo,
+	PD_NotChildInfo,
 
 	PD_WhereLive,
 
+	PD_OnlyParentInfo,
+
+	PD_ChildrenNum,
 	PD_MailCountry,
 	PD_MailCity,
 	PD_MailHome,
 	PD_MailZipCode,
-
-	PD_EducationDegree,
-	PD_ChildrenNum,
+	PD_Max,
 };
