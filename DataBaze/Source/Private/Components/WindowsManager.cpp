@@ -17,7 +17,7 @@ DBWindowsManager::DBWindowsManager(HINSTANCE HInstance)
 
 	RegisterClass(&Viewer_wc);
 
-	WindowDataViewer = CreateWindowEx(0,		 // Optional window styles.
+	ViewerHandle = CreateWindowEx(0,			 // Optional window styles.
 		V_CLASS_NAME,							 // Window class
 		L"Viewer",								 // Window text
 		WS_OVERLAPPED | WS_SYSMENU | WS_CAPTION, // Window style
@@ -40,7 +40,7 @@ DBWindowsManager::DBWindowsManager(HINSTANCE HInstance)
 
 	RegisterClass(&Writer_wc);
 
-	WindowDataWriter = CreateWindowEx(0,		 // Optional window styles.
+	WriterHandle = CreateWindowEx(0,			 // Optional window styles.
 		W_CLASS_NAME,							 // Window class
 		L"Writer",								 // Window text
 		WS_OVERLAPPED | WS_SYSMENU | WS_CAPTION, // Window style
@@ -52,7 +52,11 @@ DBWindowsManager::DBWindowsManager(HINSTANCE HInstance)
 	);
 }
 
-void DBWindowsManager::CallCommand(HWND& hWnd, UINT Message, WPARAM& WParam, LPARAM& LParam) {}
+DBWindowsManager::~DBWindowsManager()
+{
+	DestroyViewer();
+	DestroyWriter();
+}
 
 void DBWindowsManager::OpenWindow(EWindows WindowType)
 {
@@ -60,16 +64,20 @@ void DBWindowsManager::OpenWindow(EWindows WindowType)
 	{
 	case EWindows::IDW_VIEWER:
 	{
-		ShowWindow(WindowDataViewer, SW_SHOWDEFAULT);
-		ShowWindow(WindowDataWriter, SW_HIDE);
-		SendMessage(WindowDataViewer, WM_COMMAND, WM_SHOWWINDOW, 0);
+		CreateViewer();
+		DestroyWriter();
+		ShowWindow(ViewerHandle, SW_SHOWDEFAULT);
+		ShowWindow(WriterHandle, SW_HIDE);
+		SendMessage(ViewerHandle, WM_COMMAND, WM_SHOWWINDOW, 0);
 		return;
 	}
 	case EWindows::IDW_WRITER:
 	{
-		ShowWindow(WindowDataWriter, SW_SHOWDEFAULT);
-		ShowWindow(WindowDataViewer, SW_HIDE);
-		SendMessage(WindowDataWriter, WM_COMMAND, WM_SHOWWINDOW, 0);
+		CreateWriter();
+		DestroyViewer();
+		ShowWindow(WriterHandle, SW_SHOWDEFAULT);
+		ShowWindow(ViewerHandle, SW_HIDE);
+		SendMessage(WriterHandle, WM_COMMAND, WM_SHOWWINDOW, 0);
 		return;
 	}
 	} // switch end
@@ -81,13 +89,64 @@ void DBWindowsManager::CloseWindow(EWindows WindowType)
 	{
 	case EWindows::IDW_VIEWER:
 	{
-		ShowWindow(WindowDataViewer, SW_HIDE);
+		DestroyViewer();
+		ShowWindow(ViewerHandle, SW_HIDE);
 		return;
 	}
 	case EWindows::IDW_WRITER:
 	{
-		ShowWindow(WindowDataWriter, SW_HIDE);
+		DestroyWriter();
+		ShowWindow(WriterHandle, SW_HIDE);
 		return;
 	}
 	} // switch end
+}
+
+DBInterface* DBWindowsManager::GetSystem()
+{
+	return GetOwner();
+}
+
+DBInterface* DBWindowsManager::GetViewerClass() const
+{
+	return WindowViewer;
+}
+
+DBInterface* DBWindowsManager::GetWriterClass() const
+{
+	return WindowWriter;
+}
+
+void DBWindowsManager::CreateViewer()
+{
+	if (WindowViewer)
+	{
+		delete WindowViewer;
+	}
+	WindowViewer = new DBWindowViewer(this);
+}
+
+void DBWindowsManager::DestroyViewer()
+{
+	if (WindowViewer)
+	{
+		delete WindowViewer;
+	}
+}
+
+void DBWindowsManager::CreateWriter()
+{
+	if (WindowWriter)
+	{
+		delete WindowWriter;
+	}
+	WindowWriter = new DBWindowWriter(this);
+}
+
+void DBWindowsManager::DestroyWriter()
+{
+	if (WindowWriter)
+	{
+		delete WindowWriter;
+	}
 }

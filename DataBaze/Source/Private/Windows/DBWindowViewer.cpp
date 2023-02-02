@@ -2,8 +2,9 @@
 #include "DBFunctionLibrary.h"
 #include <Windows.h>
 #include "DBKeyCodes.h"
+#include "WindowsManager.h"
 
-DBWindowViwer* ViewerObj = nullptr;
+DBWindowViewer* ViewerObj = nullptr;
 
 LRESULT CALLBACK WndViewerProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
@@ -23,7 +24,7 @@ LRESULT CALLBACK WndViewerProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lP
 			RegisterHotKey(hWnd, HKV_Command_2, 0, VK_2);
 			RegisterHotKey(hWnd, HKV_Command_3, 0, VK_3);
 			RegisterHotKey(hWnd, HKV_Command_4, 0, VK_4);
-			ViewerObj = new DBWindowViwer(hWnd);
+			ViewerObj = new DBWindowViewer(hWnd);
 		}
 		break;
 	}
@@ -61,15 +62,25 @@ LRESULT CALLBACK WndViewerProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lP
 	return DefWindowProc(hWnd, message, wParam, lParam);
 }
 
-void DBWindowViwer::Autofill_Form1()
+DBWindowViewer::DBWindowViewer(DBInterface* InOwner)
+{
+	SetOwner(InOwner);
+	auto Manager = static_cast<DBWindowsManager*>(GetOwner());
+	if (Manager)
+	{
+		WindowHandle = Manager->GetViewerHandle();
+	}
+}
+
+void DBWindowViewer::Autofill_Form1()
 {
 	// Sleep(1000);
-	DBLib::CopyToClipboard(OwnerHWND, "123456789");
+	DBLib::CopyToClipboard(WindowHandle, "123456789");
 	DBLib::PasteClipboard();
 }
 
-void DBWindowViwer::Autofill_Form2() {}
+void DBWindowViewer::Autofill_Form2() {}
 
-void DBWindowViwer::Autofill_Form3() {}
+void DBWindowViewer::Autofill_Form3() {}
 
-void DBWindowViwer::Autofill_Form4() {}
+void DBWindowViewer::Autofill_Form4() {}

@@ -3,19 +3,22 @@
 #include "framework.h"
 #include "resource.h"
 
+#include "DBInterface.h"
+
 LRESULT CALLBACK WndViewerProc(HWND, UINT, WPARAM, LPARAM);
 
-class DBWindowViwer
+class DBWindowViewer : public DBInterface
 {
-	DBWindowViwer() {}
 
 public:
-	DBWindowViwer(HWND InOwnerHWND)
-		: OwnerHWND(InOwnerHWND)
+	DBWindowViewer() {}
+	DBWindowViewer(DBInterface* InOwner);
+	DBWindowViewer(HWND InOwnerHWND)
+		: WindowHandle(InOwnerHWND)
 	{
 	}
 
-	HWND OwnerHWND = 0;
+	HWND WindowHandle = 0;
 
 public:
 	void Autofill_Form1();

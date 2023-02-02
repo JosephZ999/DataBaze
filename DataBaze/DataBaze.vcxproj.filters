@@ -89,6 +89,9 @@
     <ClInclude Include="Source\Public\Utils\DBKeyCodes.h">
       <Filter>Source\Public\Utils</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Public\DBInterface.h">
+      <Filter>Source\Public</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DataBaze.cpp">
@@ -111,6 +114,9 @@
     </ClCompile>
     <ClCompile Include="Source\Private\Windows\DBWindowWriter.cpp">
       <Filter>Source\Private\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Private\DBInterface.cpp">
+      <Filter>Source\Private</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

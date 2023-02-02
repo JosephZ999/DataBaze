@@ -11,6 +11,7 @@ DBSystem::DBSystem(HINSTANCE HInstance, HWND InMainWindow)
 	, MainWindow(InMainWindow)
 {
 	WindowManager = new DBWindowsManager(HIns);
+	WindowManager->SetOwner(this);
 }
 
 DBSystem::~DBSystem()
@@ -22,23 +23,23 @@ void DBSystem::EndConstruct()
 {
 	struct LocalBtnInfo
 	{
-		EDBWinCompId	 Id;
+		EDBWinCompId Id;
 		Size2D		 Pos;
 		std::wstring Text;
 	};
 
 	const LocalBtnInfo MainButtons[] = {
 		//
-		{EDBWinCompId::IDC_VIEW, Size2D(25, 25), L"Show"},			 //
+		{EDBWinCompId::IDC_VIEW, Size2D(25, 25), L"Show"},			  //
 		{EDBWinCompId::IDC_NEWITEM, Size2D(25, 75), L"Add New Item"}, //
-		{EDBWinCompId::IDC_LOCK, Size2D(25, 125), L"Lock"},			 //
-		{EDBWinCompId::IDC_UNLOCK, Size2D(25, 175), L"Unlock"}		 //
+		{EDBWinCompId::IDC_LOCK, Size2D(25, 125), L"Lock"},			  //
+		{EDBWinCompId::IDC_UNLOCK, Size2D(25, 175), L"Unlock"}		  //
 	};
 	// Size2D	  BtnSize = {150, 30};
 	for (auto BtnInfo : MainButtons)
 	{
 		DBWindow NewWindow(BtnInfo.Id, MainWindow, BtnInfo.Pos, BtnSize, BtnInfo.Text);
-		auto Btn = DBLib::CreateButton(NewWindow);
+		auto	 Btn = DBLib::CreateButton(NewWindow);
 		if (Btn)
 		{
 			DBLib::SetFontSize(Btn, 16);
@@ -48,6 +49,11 @@ void DBSystem::EndConstruct()
 	}
 
 	InitListBox();
+}
+
+DBInterface* DBSystem::GetSystem()
+{
+	return this;
 }
 
 void DBSystem::InitListBox()
@@ -80,8 +86,6 @@ void DBSystem::InitListBox()
 	}
 	SetFontSize(ListBox, 20);
 }
-
-
 
 VOID DBSystem::DoubleClickTimer(HWND hWnd, UINT nMsg, UINT_PTR nIDEvent, DWORD dwTime)
 {
@@ -150,20 +154,21 @@ void DBSystem::CallCommand(HWND& hWnd, UINT Message, WPARAM& WParam, LPARAM& LPa
 	} // switch end
 
 	// Windows messages
-	auto WId = static_cast<EWindows>(LOWORD(WParam));
-	switch (WId)
-	{
-	case IDW_VIEWER:
-	{
-		WindowManager->CallCommand(hWnd, Message, WParam, LParam);
-		return;
-	}
-	case IDW_WRITER:
-	{
-		WindowManager->CallCommand(hWnd, Message, WParam, LParam);
-		return;
-	}
-	} // switch end
+
+	// auto WId = static_cast<EWindows>(LOWORD(WParam));
+	// switch (WId)
+	//{
+	// case IDW_VIEWER:
+	//{
+	//	WindowManager->CallCommand(hWnd, Message, WParam, LParam);
+	//	return;
+	//}
+	// case IDW_WRITER:
+	//{
+	//	WindowManager->CallCommand(hWnd, Message, WParam, LParam);
+	//	return;
+	//}
+	//} // switch end
 }
 
 void DBSystem::CallPaint(HWND& hWnd, UINT Message, WPARAM& WParam, LPARAM& LParam)

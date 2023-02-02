@@ -1,21 +1,23 @@
 #pragma once
 #include "framework.h"
 #include "resource.h"
+#include "DBInterface.h"
 #include "DBDataTypes.h"
 
 LRESULT CALLBACK WndWriterProc(HWND, UINT, WPARAM, LPARAM);
 
-class DBWindowWriter
+class DBWindowWriter : public DBInterface
 {
-	DBWindowWriter() {}
 
 public:
+	DBWindowWriter() {}
+	DBWindowWriter(DBInterface* InOwner);
 	DBWindowWriter(HWND InOwnerHWND)
-		: OwnerHWND(InOwnerHWND)
+		: WindowHandle(InOwnerHWND)
 	{
 	}
 
-	HWND OwnerHWND = 0;
+	HWND WindowHandle = 0;
 
 	DBFamilyData MembersData;
 

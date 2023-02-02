@@ -162,6 +162,7 @@
     <ClInclude Include="Source\DBDataTypes.h" />
     <ClInclude Include="Source\Public\Components\DBButton.h" />
     <ClInclude Include="Source\Public\Components\WindowsManager.h" />
+    <ClInclude Include="Source\Public\DBInterface.h" />
     <ClInclude Include="Source\Public\DBSystem.h">
     </ClInclude>
     <ClInclude Include="Source\Public\Utils\DBFunctionLibrary.h" />
@@ -174,6 +175,7 @@
     <ClCompile Include="DataBaze.cpp" />
     <ClCompile Include="Source\Private\Components\DBButton.cpp" />
     <ClCompile Include="Source\Private\Components\WindowsManager.cpp" />
+    <ClCompile Include="Source\Private\DBInterface.cpp" />
     <ClCompile Include="Source\Private\DBSystem.cpp">
     </ClCompile>
     <ClCompile Include="Source\Private\Utils\DBFunctionLibrary.cpp" />

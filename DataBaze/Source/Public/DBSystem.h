@@ -3,6 +3,7 @@
 #include "framework.h"
 #include "resource.h"
 
+#include "DBInterface.h"
 #include "DBDataTypes.h"
 
 class DBWindowsManager;
@@ -14,19 +15,21 @@ class DBWindowsManager;
 typedef UINT UINT_PTR;
 #endif
 
-class DBSystem
+class DBSystem : public DBInterface
 {
 public:
 	DBSystem(HINSTANCE HInstance, HWND InMainWindow);
 	~DBSystem();
 	void EndConstruct();
 
+	virtual DBInterface* GetSystem() override;
+
 	// Components
 	DBWindowsManager* WindowManager = nullptr;
 	ButtonContainer	  Buttons;
 
 	// Global variables
-	HWND	MainWindow;
+	HWND		 MainWindow;
 	const Size2D BtnSize = {150, 30};
 
 	// End variables
@@ -50,7 +53,7 @@ private:
 	DBListContainer ListContainer;
 
 	Size2D WindowSize;
-	void InitListBox();
+	void   InitListBox();
 
 	static VOID CALLBACK DoubleClickTimer(HWND hWnd, UINT nMsg, UINT_PTR nIDEvent, DWORD dwTime);
 };

@@ -3,6 +3,7 @@
 #include "DBFunctionLibrary.h"
 #include <commdlg.h>
 #include <comdef.h>
+#include "WindowsManager.h"
 
 DBWindowWriter* WriterObj = nullptr;
 DBWindow		WriterEditBox;
@@ -105,6 +106,16 @@ LRESULT CALLBACK WndWriterProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lP
 	*/
 
 	return DefWindowProc(hWnd, message, wParam, lParam);
+}
+
+DBWindowWriter::DBWindowWriter(DBInterface* InOwner)
+{
+	SetOwner(InOwner);
+	auto Manager = static_cast<DBWindowsManager*>(GetOwner());
+	if (Manager)
+	{
+		WindowHandle = Manager->GetWriterHandle();
+	}
 }
 
 void DBWindowWriter::SelectWriteData(EPeopleType PT)
@@ -298,12 +309,12 @@ void DBWindowWriter::OpenImage()
 	{
 		OPENFILENAME ofn;		  // common dialog box structure
 		char		 szFile[260]; // buffer for file name
-		HANDLE		 hf;		  // file handle
+		// HANDLE    hf;	      // file handle
 
 		// Initialize OPENFILENAME
 		ZeroMemory(&ofn, sizeof(ofn));
 		ofn.lStructSize = sizeof(ofn);
-		ofn.hwndOwner	= OwnerHWND;
+		ofn.hwndOwner	= WindowHandle;
 		ofn.lpstrFile	= (LPWSTR)szFile;
 		// Set lpstrFile[0] to '\0' so that GetOpenFileName does not
 		// use the contents of szFile to initialize itself.
@@ -347,7 +358,7 @@ void DBWindowWriter::CopyImage()
 	std::wstring ProjectPath = path;
 	ProjectPath.erase(ProjectPath.end() - 12, ProjectPath.end());
 
-	ProjectPath.append(L"\NewFolder");
+	ProjectPath.append(L"\\NewFolder");
 
 	// MessageBox(NULL, ImagePath.c_str(), L"Dialog Box", MB_OK);
 	// MessageBox(NULL, ProjectPath.c_str(), L"Dialog Box", MB_OK);
