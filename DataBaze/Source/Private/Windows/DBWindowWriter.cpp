@@ -87,11 +87,11 @@ LRESULT CALLBACK WndWriterProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lP
 	{
 		if (HIWORD(wParam) == EN_SETFOCUS)
 		{
-			RegisterHotKey(hWnd, 5, 0, VK_RETURN);
+			RegisterHotKey(hWnd, HKW_Enter, 0, VK_RETURN);
 		}
 		if (HIWORD(wParam) == EN_KILLFOCUS)
 		{
-			UnregisterHotKey(hWnd, 5);
+			UnregisterHotKey(hWnd, HKW_Enter);
 		}
 		break;
 	}
@@ -314,27 +314,36 @@ void DBWindowWriter::OpenImage()
 
 	// Display the Open dialog box.
 
-	if (GetOpenFileName(&ofn) == TRUE)
+	bool ImageSelected = false;
+	while (! ImageSelected)
 	{
-		hf = CreateFile(ofn.lpstrFile,	 // File Name
-			GENERIC_READ,				 //
-			0,							 //
-			(LPSECURITY_ATTRIBUTES)NULL, //
-			OPEN_EXISTING,				 //
-			FILE_ATTRIBUTE_NORMAL,		 //
-			(HANDLE)NULL);
+		ImageSelected = GetOpenFileName(&ofn) == TRUE;
+		if (ImageSelected)
+		{
+			hf = CreateFile(ofn.lpstrFile,	 // File Name
+				GENERIC_READ,				 //
+				0,							 //
+				(LPSECURITY_ATTRIBUTES)NULL, //
+				OPEN_EXISTING,				 //
+				FILE_ATTRIBUTE_NORMAL,		 //
+				(HANDLE)NULL);
 
-
-		// Get Program Folder
-		WCHAR path[MAX_PATH];
-		GetModuleFileNameW(NULL, path, MAX_PATH);
-		std::wstring nPath = path;
-		nPath.erase(nPath.end() - 4 ,nPath.end());
-		MessageBox(NULL, nPath.c_str(), L"Dialog Box", MB_OK);
-		
-		// Copy file to directory
-		// CopyFile(File, NewFile, true)
-
-		// MespathsageBox(NULL, ofn.lpstrFile, L"Dialog Box", MB_OK);
+			std::wstring FilePath = ofn.lpstrFile;
+			CopyImage(FilePath);
+			NextLine();
+			NextLine();
+		}
 	}
+}
+
+void DBWindowWriter::CopyImage(std::wstring & FilePath)
+{
+	// Get Program Folder
+	WCHAR path[MAX_PATH];
+	GetModuleFileNameW(NULL, path, MAX_PATH);
+	std::wstring nPath = path;
+	nPath.erase(nPath.end() - 4, nPath.end());
+	MessageBox(NULL, nPath.c_str(), L"Dialog Box", MB_OK);
+
+	// CopyFile(File, NewFile, true)
 }

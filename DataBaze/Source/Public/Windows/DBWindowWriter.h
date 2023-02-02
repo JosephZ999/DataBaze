@@ -35,4 +35,5 @@ public:
 	void NextPeople();
 	void NextLine();
 	void OpenImage();
+	void CopyImage(std::wstring& FilePath);
 };

@@ -184,6 +184,21 @@ bool ButtonContainer::FindByIndex(EDBWinCompId Id, DBWindow& Button)
 	return false;
 }
 
+enum EHotKeyId
+{
+	HK_None = 0,
+
+	// Viewer
+	HKV_Command_1,
+	HKV_Command_2,
+	HKV_Command_3,
+	HKV_Command_4,
+
+	// Writer
+	HKW_Enter,
+};
+
+
 // Writer Data
 
 enum EPeopleType

@@ -11,10 +11,6 @@ LRESULT CALLBACK WndViewerProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lP
 	{
 	case WM_CREATE:
 	{
-		RegisterHotKey(hWnd, 1, 0, VK_1);
-		RegisterHotKey(hWnd, 2, 0, VK_2);
-		RegisterHotKey(hWnd, 3, 0, VK_3);
-		RegisterHotKey(hWnd, 4, 0, VK_4);
 		break;
 	}
 	case WM_COMMAND:
@@ -23,12 +19,21 @@ LRESULT CALLBACK WndViewerProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lP
 		{
 			if (ViewerObj) return -1; // something is wrong
 
+			RegisterHotKey(hWnd, HKV_Command_1, 0, VK_1);
+			RegisterHotKey(hWnd, HKV_Command_2, 0, VK_2);
+			RegisterHotKey(hWnd, HKV_Command_3, 0, VK_3);
+			RegisterHotKey(hWnd, HKV_Command_4, 0, VK_4);
 			ViewerObj = new DBWindowViwer(hWnd);
 		}
 		break;
 	}
 	case WM_CLOSE:
 	{
+		UnregisterHotKey(hWnd, HKV_Command_1);
+		UnregisterHotKey(hWnd, HKV_Command_2);
+		UnregisterHotKey(hWnd, HKV_Command_3);
+		UnregisterHotKey(hWnd, HKV_Command_4);
+
 		DBLib::SetWindowVisibility(hWnd, false);
 
 		if (ViewerObj)
