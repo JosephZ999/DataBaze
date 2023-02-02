@@ -2,6 +2,7 @@
 #include "DBWindowWriter.h"
 #include "DBFunctionLibrary.h"
 #include <commdlg.h>
+#include <comdef.h>
 
 DBWindowWriter* WriterObj = nullptr;
 DBWindow		WriterEditBox;
@@ -290,60 +291,85 @@ void DBWindowWriter::NextLine()
 
 void DBWindowWriter::OpenImage()
 {
-	OPENFILENAME ofn;		  // common dialog box structure
-	char		 szFile[260]; // buffer for file name
-	HANDLE		 hf;		  // file handle
-
-	// Initialize OPENFILENAME
-	ZeroMemory(&ofn, sizeof(ofn));
-	ofn.lStructSize = sizeof(ofn);
-	ofn.hwndOwner	= OwnerHWND;
-	ofn.lpstrFile	= (LPWSTR)szFile;
-	// Set lpstrFile[0] to '\0' so that GetOpenFileName does not
-	// use the contents of szFile to initialize itself.
-	ofn.lpstrFile[0]	= '\0';
-	ofn.nMaxFile		= sizeof(szFile);
-	ofn.lpstrFilter		= L"JPEG\0*.JP*G";
-	ofn.nFilterIndex	= 1;
-	ofn.lpstrFileTitle	= NULL;
-	ofn.nMaxFileTitle	= 0;
-	ofn.lpstrInitialDir = NULL;
-	ofn.Flags			= OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST;
-
-	// CDN_FILEOK
-
 	// Display the Open dialog box.
 
 	bool ImageSelected = false;
 	while (! ImageSelected)
 	{
+		OPENFILENAME ofn;		  // common dialog box structure
+		char		 szFile[260]; // buffer for file name
+		HANDLE		 hf;		  // file handle
+
+		// Initialize OPENFILENAME
+		ZeroMemory(&ofn, sizeof(ofn));
+		ofn.lStructSize = sizeof(ofn);
+		ofn.hwndOwner	= OwnerHWND;
+		ofn.lpstrFile	= (LPWSTR)szFile;
+		// Set lpstrFile[0] to '\0' so that GetOpenFileName does not
+		// use the contents of szFile to initialize itself.
+		ofn.lpstrFile[0]	= '\0';
+		ofn.nMaxFile		= sizeof(szFile);
+		ofn.lpstrFilter		= L"JPEG\0*.JP*G";
+		ofn.nFilterIndex	= 1;
+		ofn.lpstrFileTitle	= NULL;
+		ofn.nMaxFileTitle	= 0;
+		ofn.lpstrInitialDir = NULL;
+		ofn.Flags			= OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST;
+
+		// CDN_FILEOK
+
 		ImageSelected = GetOpenFileName(&ofn) == TRUE;
 		if (ImageSelected)
 		{
-			hf = CreateFile(ofn.lpstrFile,	 // File Name
-				GENERIC_READ,				 //
-				0,							 //
-				(LPSECURITY_ATTRIBUTES)NULL, //
-				OPEN_EXISTING,				 //
-				FILE_ATTRIBUTE_NORMAL,		 //
-				(HANDLE)NULL);
+			//	hf = CreateFile(ofn.lpstrFile,	 // File Name
+			//	GENERIC_READ,				 //
+			//	0,							 //
+			//	(LPSECURITY_ATTRIBUTES)NULL, //
+			//	OPEN_EXISTING,				 //
+			//	FILE_ATTRIBUTE_NORMAL,		 //
+			//	(HANDLE)NULL);
 
-			std::wstring FilePath = ofn.lpstrFile;
-			CopyImage(FilePath);
-			NextLine();
-			NextLine();
+			ImagePath = ofn.lpstrFile;
+			MessageBox(NULL, ImagePath.c_str(), L"Dialog Box", MB_OK);
 		}
 	}
+	CopyImage();
+	NextLine();
+	NextLine();
 }
 
-void DBWindowWriter::CopyImage(std::wstring & FilePath)
+void DBWindowWriter::CopyImage()
 {
 	// Get Program Folder
 	WCHAR path[MAX_PATH];
 	GetModuleFileNameW(NULL, path, MAX_PATH);
-	std::wstring nPath = path;
-	nPath.erase(nPath.end() - 4, nPath.end());
-	MessageBox(NULL, nPath.c_str(), L"Dialog Box", MB_OK);
 
-	// CopyFile(File, NewFile, true)
+	std::wstring ProjectPath = path;
+	ProjectPath.erase(ProjectPath.end() - 12, ProjectPath.end());
+
+	ProjectPath.append(L"\NewFolder");
+
+	// MessageBox(NULL, ImagePath.c_str(), L"Dialog Box", MB_OK);
+	// MessageBox(NULL, ProjectPath.c_str(), L"Dialog Box", MB_OK);
+
+	_bstr_t		b(ImagePath.c_str());
+	struct stat buffer;
+	if (stat(b, &buffer) == 0)
+	{
+		MessageBox(NULL, L"File exists", L"Dialog Box", MB_OK);
+	}
+
+	if (_wmkdir(ProjectPath.c_str()))
+	{
+		ProjectPath.append(L"/asd.jpg");
+
+		if (! CopyFile(ImagePath.c_str(), ProjectPath.c_str(), true))
+		{
+			std::wstring ErrorCode(L"Error Code: ");
+			ErrorCode.append(std::to_wstring(GetLastError()));
+			OutputDebugString(ErrorCode.c_str());
+			MessageBox(NULL, L"Error", L"Dialog Box", MB_OK);
+			// ERROR_PATH_NOT_FOUND //  error codes
+		}
+	}
 }
