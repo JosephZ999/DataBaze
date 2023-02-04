@@ -2,7 +2,7 @@
 //
 
 #include "DataBaze.h"
-#include "WindowsManager.h"
+#include "DBWindowsManager.h"
 #include "DBFunctionLibrary.h"
 
 // Global Variables:
@@ -168,15 +168,18 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		EndPaint(hWnd, &ps);
 	}
 	break;
+	case WM_CLOSE:
+	{
+		if (System)
+		{
+			delete System;
+		}
+		return DefWindowProc(hWnd, message, wParam, lParam);
+	}
 	case WM_DESTROY:
 		if (hWnd == MainWindow)
 		{
 			PostQuitMessage(0);
-			if (System)
-			{
-				delete System;
-			}
-			break;
 		}
 	default: return DefWindowProc(hWnd, message, wParam, lParam);
 	}

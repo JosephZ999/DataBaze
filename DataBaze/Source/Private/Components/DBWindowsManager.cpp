@@ -1,4 +1,4 @@
-#include "WindowsManager.h"
+#include "DbWindowsManager.h"
 #include "DBWindowViewer.h"
 #include "DBWindowWriter.h"
 

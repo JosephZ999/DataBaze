@@ -3,7 +3,7 @@
 #include "DBFunctionLibrary.h"
 #include <commdlg.h>
 #include <comdef.h>
-#include "WindowsManager.h"
+#include "DBWindowsManager.h"
 
 DBWindowWriter* WriterObj = nullptr;
 DBWindow		WriterEditBox;

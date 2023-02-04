@@ -74,9 +74,6 @@
     <ClInclude Include="Source\Public\Components\DBButton.h">
       <Filter>Source\Public\Components</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Public\Components\WindowsManager.h">
-      <Filter>Source\Public\Components</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Public\Utils\DBFunctionLibrary.h">
       <Filter>Source\Public\Utils</Filter>
     </ClInclude>
@@ -95,6 +92,12 @@
     <ClInclude Include="Source\Public\Components\DBDataManager.h">
       <Filter>Source\Public\Components</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Public\Components\DBWindowsManager.h">
+      <Filter>Source\Public\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Public\Utils\DBDelegate.h">
+      <Filter>Source\Public\Utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DataBaze.cpp">
@@ -104,9 +107,6 @@
       <Filter>Source\Private</Filter>
     </ClCompile>
     <ClCompile Include="Source\Private\Components\DBButton.cpp">
-      <Filter>Source\Private\Components</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Private\Components\WindowsManager.cpp">
       <Filter>Source\Private\Components</Filter>
     </ClCompile>
     <ClCompile Include="Source\Private\Utils\DBFunctionLibrary.cpp">
@@ -122,6 +122,9 @@
       <Filter>Source\Private</Filter>
     </ClCompile>
     <ClCompile Include="Source\Private\Components\DBDataManager.cpp">
+      <Filter>Source\Private\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Private\Components\DBWindowsManager.cpp">
       <Filter>Source\Private\Components</Filter>
     </ClCompile>
   </ItemGroup>

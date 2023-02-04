@@ -1,6 +1,11 @@
 #pragma once
+#include "DBInterface.h"
+#include "DBFunctionLibrary.h"
 
-class DBDataManager
+DECLARE_DELEGATE(OnUpdateSignature);
+
+class DBDataManager : public DBInterface
 {
-
+public:
+	OnUpdateSignature OnUpdate;
 };

@@ -7,6 +7,7 @@
 #include "DBDataTypes.h"
 
 class DBWindowsManager;
+class DBDataManager;
 
 #define MAX_LOADSTRING 100
 #define IDC_LISTBOX	   9
@@ -26,6 +27,7 @@ public:
 
 	// Components
 	DBWindowsManager* WindowManager = nullptr;
+	DBDataManager*	  DataManager	= nullptr;
 	ButtonContainer	  Buttons;
 
 	// Global variables

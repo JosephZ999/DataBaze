@@ -1,6 +1,7 @@
 
 #include "DBSystem.h"
-#include "WindowsManager.h"
+#include "DBWindowsManager.h"
+#include "DBDataManager.h"
 #include "DBFunctionLibrary.h"
 
 UINT TimerId;
@@ -12,11 +13,15 @@ DBSystem::DBSystem(HINSTANCE HInstance, HWND InMainWindow)
 {
 	WindowManager = new DBWindowsManager(HIns);
 	WindowManager->SetOwner(this);
+
+	DataManager = new DBDataManager;
+	DataManager->SetOwner(this);
 }
 
 DBSystem::~DBSystem()
 {
 	delete WindowManager;
+	delete DataManager;
 }
 
 void DBSystem::EndConstruct()
