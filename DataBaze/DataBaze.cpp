@@ -107,10 +107,11 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 	UpdateWindow(MainWindow);
 
 	System = new DBSystem(hInst, MainWindow);
-	if (System)
-	{
-		System->EndConstruct();
-	}
+	if (! System) return FALSE;
+
+	// System Initialization
+	System->EndConstruct();
+
 	return TRUE;
 }
 
@@ -171,6 +172,10 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		if (hWnd == MainWindow)
 		{
 			PostQuitMessage(0);
+			if (System)
+			{
+				delete System;
+			}
 			break;
 		}
 	default: return DefWindowProc(hWnd, message, wParam, lParam);

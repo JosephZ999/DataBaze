@@ -92,6 +92,9 @@
     <ClInclude Include="Source\Public\DBInterface.h">
       <Filter>Source\Public</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Public\Components\DBDataManager.h">
+      <Filter>Source\Public\Components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DataBaze.cpp">
@@ -117,6 +120,9 @@
     </ClCompile>
     <ClCompile Include="Source\Private\DBInterface.cpp">
       <Filter>Source\Private</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Private\Components\DBDataManager.cpp">
+      <Filter>Source\Private\Components</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
