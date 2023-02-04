@@ -37,7 +37,7 @@ public:
 	void NextPeople();
 	void NextLine();
 	void OpenImage();
-	void CopyImage();
+	bool CopyImage();
 
 	std::wstring ImagePath;
 };

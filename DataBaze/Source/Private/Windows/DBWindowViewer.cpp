@@ -18,13 +18,10 @@ LRESULT CALLBACK WndViewerProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lP
 	{
 		if (wParam == WM_SHOWWINDOW)
 		{
-			if (ViewerObj) return -1; // something is wrong
-
 			RegisterHotKey(hWnd, HKV_Command_1, 0, VK_1);
 			RegisterHotKey(hWnd, HKV_Command_2, 0, VK_2);
 			RegisterHotKey(hWnd, HKV_Command_3, 0, VK_3);
 			RegisterHotKey(hWnd, HKV_Command_4, 0, VK_4);
-			ViewerObj = new DBWindowViewer(hWnd);
 		}
 		break;
 	}
@@ -36,13 +33,6 @@ LRESULT CALLBACK WndViewerProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lP
 		UnregisterHotKey(hWnd, HKV_Command_4);
 
 		DBLib::SetWindowVisibility(hWnd, false);
-
-		if (ViewerObj)
-		{
-			delete ViewerObj;
-			ViewerObj = nullptr;
-		}
-
 		return 0;
 	}
 
@@ -65,10 +55,12 @@ LRESULT CALLBACK WndViewerProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lP
 DBWindowViewer::DBWindowViewer(DBInterface* InOwner)
 {
 	SetOwner(InOwner);
-	auto Manager = static_cast<DBWindowsManager*>(GetOwner());
+	// auto Manager = static_cast<DBWindowsManager*>(GetOwner());
+	auto Manager = Cast<DBWindowsManager>(GetOwner());
 	if (Manager)
 	{
 		WindowHandle = Manager->GetViewerHandle();
+		ViewerObj = this;
 	}
 }
 

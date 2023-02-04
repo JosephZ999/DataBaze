@@ -25,3 +25,9 @@ void PressKeys(WORD Key1, WORD Key2);
 void PasteClipboard();
 
 } // namespace DBLib
+
+template <typename To, typename From> //
+To* Cast(From* Param)
+{
+	return static_cast<To*>(Param);
+}

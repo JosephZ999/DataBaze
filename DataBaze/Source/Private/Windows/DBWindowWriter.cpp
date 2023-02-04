@@ -39,9 +39,8 @@ LRESULT CALLBACK WndWriterProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lP
 	{
 		if (wParam == WM_SHOWWINDOW)
 		{
-			if (WriterObj) break; // something is wrong
+			if (!WriterObj) break;
 
-			WriterObj = new DBWindowWriter(hWnd);
 			SetFocus(WriterEditBox.Window);
 
 			WriterObj->SelectWriteData(WriterObj->PeopleType);
@@ -64,11 +63,6 @@ LRESULT CALLBACK WndWriterProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lP
 	case WM_CLOSE:
 	{
 		DBLib::SetWindowVisibility(hWnd, false);
-		if (WriterObj)
-		{
-			delete WriterObj;
-			WriterObj = nullptr;
-		}
 		return 0;
 	}
 	case WM_HOTKEY:
@@ -111,10 +105,12 @@ LRESULT CALLBACK WndWriterProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lP
 DBWindowWriter::DBWindowWriter(DBInterface* InOwner)
 {
 	SetOwner(InOwner);
-	auto Manager = static_cast<DBWindowsManager*>(GetOwner());
+	// auto Manager = static_cast<DBWindowsManager*>(GetOwner());
+	auto Manager = Cast<DBWindowsManager>(GetOwner());
 	if (Manager)
 	{
 		WindowHandle = Manager->GetWriterHandle();
+		WriterObj = this;
 	}
 }
 
@@ -304,8 +300,8 @@ void DBWindowWriter::OpenImage()
 {
 	// Display the Open dialog box.
 
-	bool ImageSelected = false;
-	while (! ImageSelected)
+	bool ImageCopied = false;
+	while (! ImageCopied)
 	{
 		OPENFILENAME ofn;		  // common dialog box structure
 		char		 szFile[260]; // buffer for file name
@@ -329,8 +325,7 @@ void DBWindowWriter::OpenImage()
 
 		// CDN_FILEOK
 
-		ImageSelected = GetOpenFileName(&ofn) == TRUE;
-		if (ImageSelected)
+		if (GetOpenFileName(&ofn) == TRUE)
 		{
 			//	hf = CreateFile(ofn.lpstrFile,	 // File Name
 			//	GENERIC_READ,				 //
@@ -342,14 +337,16 @@ void DBWindowWriter::OpenImage()
 
 			ImagePath = ofn.lpstrFile;
 			MessageBox(NULL, ImagePath.c_str(), L"Dialog Box", MB_OK);
+
+			ImageCopied = CopyImage();
 		}
 	}
-	CopyImage();
+	
 	NextLine();
 	NextLine();
 }
 
-void DBWindowWriter::CopyImage()
+bool DBWindowWriter::CopyImage()
 {
 	// Get Program Folder
 	WCHAR path[MAX_PATH];
@@ -363,24 +360,30 @@ void DBWindowWriter::CopyImage()
 	// MessageBox(NULL, ImagePath.c_str(), L"Dialog Box", MB_OK);
 	// MessageBox(NULL, ProjectPath.c_str(), L"Dialog Box", MB_OK);
 
-	_bstr_t		b(ImagePath.c_str());
+	/*_bstr_t		b(ImagePath.c_str());
 	struct stat buffer;
 	if (stat(b, &buffer) == 0)
 	{
 		MessageBox(NULL, L"File exists", L"Dialog Box", MB_OK);
-	}
+	}*/
 
 	if (_wmkdir(ProjectPath.c_str()))
 	{
 		ProjectPath.append(L"/asd.jpg");
 
-		if (! CopyFile(ImagePath.c_str(), ProjectPath.c_str(), true))
+		if (CopyFile(ImagePath.c_str(), ProjectPath.c_str(), true))
+		{
+			return true;
+		}
+		else
 		{
 			std::wstring ErrorCode(L"Error Code: ");
 			ErrorCode.append(std::to_wstring(GetLastError()));
 			OutputDebugString(ErrorCode.c_str());
 			MessageBox(NULL, L"Error", L"Dialog Box", MB_OK);
 			// ERROR_PATH_NOT_FOUND //  error codes
+			return false;
 		}
 	}
+	return false;
 }
