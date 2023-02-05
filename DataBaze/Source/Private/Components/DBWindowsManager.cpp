@@ -122,6 +122,7 @@ void DBWindowsManager::CreateViewer()
 	if (WindowViewer)
 	{
 		delete WindowViewer;
+		WindowViewer = nullptr;
 	}
 	WindowViewer = new DBWindowViewer(this);
 }
@@ -131,6 +132,7 @@ void DBWindowsManager::DestroyViewer()
 	if (WindowViewer)
 	{
 		delete WindowViewer;
+		WindowViewer = nullptr;
 	}
 }
 
@@ -139,6 +141,7 @@ void DBWindowsManager::CreateWriter()
 	if (WindowWriter)
 	{
 		delete WindowWriter;
+		WindowWriter = nullptr;
 	}
 	WindowWriter = new DBWindowWriter(this);
 }
@@ -148,5 +151,6 @@ void DBWindowsManager::DestroyWriter()
 	if (WindowWriter)
 	{
 		delete WindowWriter;
+		WindowWriter = nullptr;
 	}
 }

@@ -21,23 +21,27 @@ class DBSystem : public DBInterface
 public:
 	DBSystem(HINSTANCE HInstance, HWND InMainWindow);
 	~DBSystem();
-	void EndConstruct();
-
-	virtual DBInterface* GetSystem() override;
-
-	// Components
-	DBWindowsManager* WindowManager = nullptr;
-	DBDataManager*	  DataManager	= nullptr;
-	ButtonContainer	  Buttons;
 
 	// Global variables
 	HWND		 MainWindow;
 	const Size2D BtnSize = {150, 30};
 
-	// End variables
+private:
+	// Components
+	DBWindowsManager* WindowManager = nullptr;
+	DBDataManager*	  DataManager	= nullptr;
+	ButtonContainer	  Buttons;
+
+public:
+	void EndConstruct();
+
+	// Delegate callbacks
+	void OnDataUpdated();
 
 	void CallCommand(HWND& hWnd, UINT Message, WPARAM& WParam, LPARAM& LParam);
 	void CallPaint(HWND& hWnd, UINT Message, WPARAM& WParam, LPARAM& LParam);
+
+	virtual DBInterface* GetSystem() override;
 
 	void Update_BtnVisibility();
 	void Update_ListBoxScale();
@@ -47,7 +51,6 @@ public:
 
 	bool IsPortraitModeEnabled();
 
-	void SetFontSize(HWND Window, int Size);
 
 private:
 	HINSTANCE		HIns;
@@ -56,6 +59,8 @@ private:
 
 	Size2D WindowSize;
 	void   InitListBox();
+	void   CreateListBox();
+	void   CreateButtons();
 
 	static VOID CALLBACK DoubleClickTimer(HWND hWnd, UINT nMsg, UINT_PTR nIDEvent, DWORD dwTime);
 };

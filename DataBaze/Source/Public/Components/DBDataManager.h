@@ -8,4 +8,7 @@ class DBDataManager : public DBInterface
 {
 public:
 	OnUpdateSignature OnUpdate;
+
+public:
+	void LoadFiles();
 };

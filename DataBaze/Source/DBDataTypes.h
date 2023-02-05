@@ -146,10 +146,11 @@ struct DBFamilyData
 	bool bDouble;
 	bool bLocked;
 
-	std::wstring MailCountry; //
-	std::wstring MailCity;	  //
-	std::wstring MailHome;	  //
-	std::wstring MailZipCode; //
+	std::wstring MaritalStatus; //
+	std::wstring MailCountry;	//
+	std::wstring MailCity;		//
+	std::wstring MailHome;		//
+	std::wstring MailZipCode;	//
 };
 
 class DBListContainer
@@ -198,7 +199,6 @@ enum EHotKeyId
 	HKW_Enter,
 };
 
-
 // Writer Data
 
 enum EPeopleType
@@ -237,6 +237,7 @@ enum EPeopleData
 
 	PD_OnlyParentInfo,
 
+	PD_MaritalStatus,
 	PD_ChildrenNum,
 	PD_MailCountry,
 	PD_MailCity,

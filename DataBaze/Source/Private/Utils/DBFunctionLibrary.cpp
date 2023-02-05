@@ -75,21 +75,23 @@ HWND DBLib::CreateStaticBox(DBWindow& WindowInfo, DWORD Style)
 	return WindowInfo.Window;
 }
 
-void DBLib::CopyToClipboard(HWND hwnd, const std::string& s)
+void DBLib::CopyToClipboard(HWND hwnd, const std::string& String)
 {
 	OpenClipboard(hwnd);
 	EmptyClipboard();
-	HGLOBAL hg = GlobalAlloc(GMEM_MOVEABLE, s.size() + 1);
-	if (! hg)
+	HGLOBAL hg = GlobalAlloc(GMEM_MOVEABLE, String.size() + 1);
+	if (hg)
+	{
+		memcpy(GlobalLock(hg), String.c_str(), String.size() + 1);
+		GlobalUnlock(hg);
+		SetClipboardData(CF_TEXT, hg);
+		CloseClipboard();
+		GlobalFree(hg);
+	}
+	else
 	{
 		CloseClipboard();
-		return;
 	}
-	memcpy(GlobalLock(hg), s.c_str(), s.size() + 1);
-	GlobalUnlock(hg);
-	SetClipboardData(CF_TEXT, hg);
-	CloseClipboard();
-	GlobalFree(hg);
 }
 
 void DBLib::PressKey(WORD Key)

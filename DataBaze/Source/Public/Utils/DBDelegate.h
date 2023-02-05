@@ -45,6 +45,7 @@ public:
 		if (DelegateObj)
 		{
 			delete DelegateObj;
+			DelegateObj = nullptr;
 		}
 	}
 
@@ -54,6 +55,7 @@ public:
 		if (DelegateObj)
 		{
 			delete DelegateObj;
+			DelegateObj = nullptr;
 		}
 		DelegateObj = new Delegate<T>(Object, InFunc);
 	}

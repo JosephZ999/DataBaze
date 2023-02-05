@@ -146,7 +146,16 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		switch (wmId)
 		{
 		case IDM_ABOUT: DialogBox(hInst, MAKEINTRESOURCE(IDD_ABOUTBOX), hWnd, About); break;
-		case IDM_EXIT: DestroyWindow(hWnd); break;
+		case IDM_EXIT:
+		{
+			if (System)
+			{
+				delete System;
+				System = nullptr;
+			}
+			DestroyWindow(hWnd);
+			break;
+		}
 		default: return DefWindowProc(hWnd, message, wParam, lParam);
 		}
 	}
@@ -173,6 +182,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		if (System)
 		{
 			delete System;
+			System = nullptr;
 		}
 		return DefWindowProc(hWnd, message, wParam, lParam);
 	}

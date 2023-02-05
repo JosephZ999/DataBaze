@@ -20,7 +20,7 @@ HWND CreateStaticBox(DBWindow& WindowInfo, DWORD Style);
 void SetFontSize(HWND Window, int FontSize);
 void CreateText(HWND hWnd);
 
-void CopyToClipboard(HWND hwnd, const std::string& s);
+void CopyToClipboard(HWND hwnd, const std::string& String);
 void PressKey(WORD Key);
 void PressKeys(WORD Key1, WORD Key2);
 void PasteClipboard();

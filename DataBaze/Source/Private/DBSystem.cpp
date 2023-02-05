@@ -21,38 +21,16 @@ DBSystem::DBSystem(HINSTANCE HInstance, HWND InMainWindow)
 DBSystem::~DBSystem()
 {
 	delete WindowManager;
+	WindowManager = nullptr;
+
 	delete DataManager;
+	DataManager = nullptr;
 }
 
 void DBSystem::EndConstruct()
 {
-	struct LocalBtnInfo
-	{
-		EDBWinCompId Id;
-		Size2D		 Pos;
-		std::wstring Text;
-	};
-
-	const LocalBtnInfo MainButtons[] = {
-		//
-		{EDBWinCompId::IDC_VIEW, Size2D(25, 25), L"Show"},			  //
-		{EDBWinCompId::IDC_NEWITEM, Size2D(25, 75), L"Add New Item"}, //
-		{EDBWinCompId::IDC_LOCK, Size2D(25, 125), L"Lock"},			  //
-		{EDBWinCompId::IDC_UNLOCK, Size2D(25, 175), L"Unlock"}		  //
-	};
-	// Size2D	  BtnSize = {150, 30};
-	for (auto BtnInfo : MainButtons)
-	{
-		DBWindow NewWindow(BtnInfo.Id, MainWindow, BtnInfo.Pos, BtnSize, BtnInfo.Text);
-		auto	 Btn = DBLib::CreateButton(NewWindow);
-		if (Btn)
-		{
-			DBLib::SetFontSize(Btn, 16);
-			NewWindow.Window = Btn;
-			Buttons.Add(NewWindow);
-		}
-	}
-
+	CreateListBox();
+	CreateButtons();
 	InitListBox();
 }
 
@@ -63,8 +41,18 @@ DBInterface* DBSystem::GetSystem()
 
 void DBSystem::InitListBox()
 {
-	// Init ListContainer
+	//
+	DataManager->OnUpdate.Bind(this, &DBSystem::OnDataUpdated);
+	DataManager.LoadFiles();
+}
 
+void DBSystem::OnDataUpdated()
+{
+}
+
+void DBSystem::CreateListBox()
+{
+	// Init ListContainer
 	ListContainer.Items.push_back(DBFamilyData({DBPeopleData(L"Abdu")}, {}, false));
 	ListContainer.Items.push_back(DBFamilyData({DBPeopleData(L"Amir")}, {}, false));
 	ListContainer.Items.push_back(DBFamilyData({DBPeopleData(L"Piyoz")}, {}, false));
@@ -89,7 +77,38 @@ void DBSystem::InitListBox()
 			}
 		}
 	}
-	SetFontSize(ListBox, 20);
+	DBLib::SetFontSize(ListBox, 20);
+}
+
+void DBSystem::CreateButtons()
+{
+	struct LocalBtnInfo
+	{
+		EDBWinCompId Id;
+		Size2D		 Pos;
+		std::wstring Text;
+	};
+
+	const LocalBtnInfo MainButtons[] = {
+		//
+		{EDBWinCompId::IDC_VIEW, Size2D(25, 25), L"Show"},			  //
+		{EDBWinCompId::IDC_NEWITEM, Size2D(25, 75), L"Add New Item"}, //
+		{EDBWinCompId::IDC_LOCK, Size2D(25, 125), L"Lock"},			  //
+		{EDBWinCompId::IDC_UNLOCK, Size2D(25, 175), L"Unlock"}		  //
+	};
+
+	// Size2D BtnSize = {150, 30};
+	for (auto BtnInfo : MainButtons)
+	{
+		DBWindow NewWindow(BtnInfo.Id, MainWindow, BtnInfo.Pos, BtnSize, BtnInfo.Text);
+		auto	 Btn = DBLib::CreateButton(NewWindow);
+		if (Btn)
+		{
+			DBLib::SetFontSize(Btn, 16);
+			NewWindow.Window = Btn;
+			Buttons.Add(NewWindow);
+		}
+	}
 }
 
 VOID DBSystem::DoubleClickTimer(HWND hWnd, UINT nMsg, UINT_PTR nIDEvent, DWORD dwTime)
@@ -238,15 +257,4 @@ void DBSystem::ShowButton(EDBWinCompId Id)
 bool DBSystem::IsPortraitModeEnabled()
 {
 	return WindowSize.X < WindowSize.Y;
-}
-
-void DBSystem::SetFontSize(HWND Window, int Size)
-{
-	LOGFONT logfont;
-	ZeroMemory(&logfont, sizeof(LOGFONT));
-	logfont.lfCharSet = DEFAULT_CHARSET;
-	logfont.lfHeight  = -(Size);
-	HFONT hFont		  = CreateFontIndirect(&logfont);
-
-	SendMessage(Window, WM_SETFONT, (WPARAM)hFont, TRUE);
 }

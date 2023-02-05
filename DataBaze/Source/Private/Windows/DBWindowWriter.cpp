@@ -39,7 +39,7 @@ LRESULT CALLBACK WndWriterProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lP
 	{
 		if (wParam == WM_SHOWWINDOW)
 		{
-			if (!WriterObj) break;
+			if (! WriterObj) break;
 
 			SetFocus(WriterEditBox.Window);
 
@@ -69,8 +69,13 @@ LRESULT CALLBACK WndWriterProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lP
 	{
 		if (! WriterObj) break;
 
-		WriterObj->WriteData();
-		WriterObj->SelectWriteData(WriterObj->PeopleType);
+		if (WriterObj->CheckData())
+		{
+			WriterObj->WriteData();
+			WriterObj->SelectWriteData(WriterObj->PeopleType);
+			WriterObj->UpdateEditStyle();
+		}
+
 		SendMessage(WriterEditBox.Window, WM_SETTEXT, 0, (LPARAM)L"");
 		break;
 	}
@@ -110,7 +115,7 @@ DBWindowWriter::DBWindowWriter(DBInterface* InOwner)
 	if (Manager)
 	{
 		WindowHandle = Manager->GetWriterHandle();
-		WriterObj = this;
+		WriterObj	 = this;
 	}
 }
 
@@ -233,6 +238,7 @@ void DBWindowWriter::UpdateInfo()
 	case PD_BornCountry:		InfoText.append(L"Country where born");			break;
 	case PD_EducationDegree:	InfoText.append(L"Education");					break;
 	case PD_WhereLive:			InfoText.append(L"Country where live today");	break;
+	case PD_MaritalStatus:		InfoText.append(L"Marital Status");				break;
 	case PD_ChildrenNum:		InfoText.append(L"Children Num");				break;
 	case PD_MailCountry:		InfoText.append(L"Mailing country");			break;
 	case PD_MailCity:			InfoText.append(L"Mailing city");				break;
@@ -279,10 +285,43 @@ bool DBWindowWriter::GetLineOfData(std::wstring*& OutData, EPeopleData DataType)
 	case PD_MailZipCode:		OutData = &MembersData.MailZipCode;			return true;
 
 	case PD_EducationDegree:	OutData = &DataToChange->EducationDegree;	return true;
+	case PD_MaritalStatus:		OutData = &MembersData.MaritalStatus;		return true;
 	case PD_ChildrenNum:		OutData = &DataToChange->ChildrenNum;		return true;
 	} // clang-format on
 
 	return false;
+}
+
+bool DBWindowWriter::CheckData()
+{
+	return true;
+}
+
+void DBWindowWriter::UpdateEditStyle()
+{
+	switch (PeopleData)
+	{
+	case PD_None: break;
+	case PD_Name: break;
+	case PD_FamilyName: break;
+	case PD_BirthMonth: break;
+	case PD_BirthDay: break;
+	case PD_BirthYear: break;
+	case PD_BornCountry: break;
+	case PD_EducationDegree: break;
+	case PD_ImageFile: break;
+	case PD_NotChildInfo: break;
+	case PD_WhereLive: break;
+	case PD_OnlyParentInfo: break;
+	case PD_MaritalStatus: break;
+	case PD_ChildrenNum: break;
+	case PD_MailCountry: break;
+	case PD_MailCity: break;
+	case PD_MailHome: break;
+	case PD_MailZipCode: break;
+	case PD_Max: break;
+	default: break;
+	}
 }
 
 void DBWindowWriter::NextPeople()
@@ -341,7 +380,7 @@ void DBWindowWriter::OpenImage()
 			ImageCopied = CopyImage();
 		}
 	}
-	
+
 	NextLine();
 	NextLine();
 }

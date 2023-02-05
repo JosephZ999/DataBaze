@@ -34,6 +34,9 @@ public:
 	void SetInfoText(std::wstring& Text);
 	bool GetLineOfData(std::wstring*& OutData, EPeopleData DataType);
 
+	bool CheckData();
+	void UpdateEditStyle();
+
 	void NextPeople();
 	void NextLine();
 	void OpenImage();
