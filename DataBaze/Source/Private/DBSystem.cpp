@@ -43,7 +43,7 @@ void DBSystem::InitListBox()
 {
 	//
 	DataManager->OnUpdate.Bind(this, &DBSystem::OnDataUpdated);
-	DataManager.LoadFiles();
+	DataManager->LoadFiles();
 }
 
 void DBSystem::OnDataUpdated()

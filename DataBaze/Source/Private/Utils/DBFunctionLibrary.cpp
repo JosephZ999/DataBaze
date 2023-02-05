@@ -140,3 +140,14 @@ void DBLib::PasteClipboard()
 {
 	PressKeys(VK_CONTROL, VK_V);
 }
+
+
+// namespace // Path ------------------------------------->
+
+std::wstring DBPaths::GetProjectPath()
+{
+	TCHAR buffer[MAX_PATH] = { 0 };
+	GetModuleFileName( NULL, buffer, MAX_PATH );
+	std::wstring::size_type pos = std::wstring(buffer).find_last_of(L"\\/");
+	return std::wstring(buffer).substr(0, pos);
+}

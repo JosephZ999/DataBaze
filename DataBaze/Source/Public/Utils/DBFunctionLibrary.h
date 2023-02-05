@@ -27,6 +27,11 @@ void PasteClipboard();
 
 } // namespace DBLib
 
+namespace DBPaths
+{
+std::wstring GetProjectPath();
+}
+
 template <typename To, typename From> //
 To* Cast(From* Param)
 {
