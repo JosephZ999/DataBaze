@@ -11,4 +11,7 @@ public:
 
 public:
 	void LoadFiles();
+
+private:
+	void CheckFiles();
 };
