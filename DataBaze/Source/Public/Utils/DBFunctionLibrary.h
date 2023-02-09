@@ -32,6 +32,12 @@ namespace DBPaths
 std::wstring GetProjectPath();
 }
 
+namespace DBConvert
+{
+void StringToWString(const std::string& String, std::wstring& OutWString);
+void WStringToString(const std::wstring& WString, std::string& OutString);
+} // namespace DBConvert
+
 template <typename To, typename From> //
 To* Cast(From* Param)
 {

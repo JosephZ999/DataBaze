@@ -115,7 +115,14 @@ struct DBPeopleData
 	std::wstring EducationDegree; //
 	std::wstring ImageFile;		  //
 	std::wstring ChildrenNum;	  //
+
+	std::wstring ToWString();
 };
+
+inline std::wstring DBPeopleData::ToWString()
+{
+	return std::wstring();
+}
 
 typedef std::vector<DBPeopleData> PeopleGroup;
 
@@ -151,7 +158,15 @@ struct DBFamilyData
 	std::wstring MailCity;		//
 	std::wstring MailHome;		//
 	std::wstring MailZipCode;	//
+
+	std::wstring ToWString();
 };
+
+inline std::wstring DBFamilyData::ToWString()
+{
+	// return L"{ \"people\": [{\"id\": 1, \"name\":\"Human\",\"surname\":\"TAYLOR\"}, {\"id\": 2, \"name\":\"TOM\",\"surname\":\"JERRY\"} ]}";
+	return std::wstring();
+}
 
 class DBListContainer
 {

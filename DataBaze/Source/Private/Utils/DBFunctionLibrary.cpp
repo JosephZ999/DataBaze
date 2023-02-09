@@ -1,5 +1,9 @@
 #include "DBFunctionLibrary.h"
 
+#include <string>
+#include <codecvt>
+#include <locale>
+
 typedef EDBWindowCompType CompType;
 
 void DBLib::SetWindowVisibility(HWND Window, bool bShow)
@@ -141,13 +145,27 @@ void DBLib::PasteClipboard()
 	PressKeys(VK_CONTROL, VK_V);
 }
 
-
 // namespace // Path ------------------------------------->
 
 std::wstring DBPaths::GetProjectPath()
 {
-	TCHAR buffer[MAX_PATH] = { 0 };
-	GetModuleFileName( NULL, buffer, MAX_PATH );
+	TCHAR buffer[MAX_PATH] = {0};
+	GetModuleFileName(NULL, buffer, MAX_PATH);
 	std::wstring::size_type pos = std::wstring(buffer).find_last_of(L"\\/");
 	return std::wstring(buffer).substr(0, pos);
+}
+
+
+// Converter
+using convert_t = std::codecvt_utf8<wchar_t>;
+std::wstring_convert<convert_t, wchar_t> strconverter;
+
+void DBConvert::StringToWString(const std::string& String, std::wstring& OutWString)
+{
+	OutWString = strconverter.from_bytes(String);
+}
+
+void DBConvert::WStringToString(const std::wstring& WString, std::string& OutString)
+{
+	OutString = strconverter.to_bytes(WString);
 }

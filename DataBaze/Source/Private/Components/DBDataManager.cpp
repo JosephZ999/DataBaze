@@ -1,34 +1,36 @@
 #include "DBDataManager.h"
-#include "json/json.h"
-#include "json/writer.h"
-
 #include <iostream>
 #include <fstream>
 
-using namespace std;
-// using namespace Json;
+#include "json/reader.h"
+#include "json/writer.h"
 
 void DBDataManager::LoadFiles()
 {
-	const wstring ProjectPath = DBPaths::GetProjectPath();
+	const std::wstring ProjectPath = DBPaths::GetProjectPath();
 
 	// Try to write array as json file
 
 	// Generate json file name
-	const wstring FileName = wstring(ProjectPath).append(L"\\ExampleArray.json");
+	const std::wstring FileName = std::wstring(ProjectPath).append(L"\\ExampleArray.json");
+
+	// Struct
+	DBFamilyData Family;
+	std::string FamilyData;
+	DBConvert::WStringToString(Family.ToWString(), FamilyData);
 
 	Json::Reader Reader;
-	Json::Value Root;
+	Json::Value	 RootValue;
 
-	string text ="{ \"people\": [{\"id\": 1, \"name\":\"MIKE\",\"surname\":\"TAYLOR\"}, {\"id\": 2, \"name\":\"TOM\",\"surname\":\"JERRY\"} ]}";
-	Reader.parse(text, Root);
+	// std::string text = "{ \"people\": [{\"id\": 1, \"name\":\"Human\",\"surname\":\"TAYLOR\"}, {\"id\": 2, \"name\":\"TOM\",\"surname\":\"JERRY\"} ]}";
+	Reader.parse(FamilyData, RootValue);
 
+
+	// Save Json
 	Json::StreamWriterBuilder Builder;
-
 	std::unique_ptr<Json::StreamWriter> Writer(Builder.newStreamWriter());
-
-	ofstream File(FileName);
-	Writer->write(Root, &File);
+	std::ofstream File(FileName);
+	Writer->write(RootValue, &File);
 
 	OnUpdate.Broadcast();
 }
@@ -36,18 +38,18 @@ void DBDataManager::LoadFiles()
 void DBDataManager::CheckFiles()
 {
 
-	const wstring ProjectPath = DBPaths::GetProjectPath();
+	const std::wstring ProjectPath = DBPaths::GetProjectPath();
 
 	for (size_t i = 1; i <= 20; ++i)
 	{
-		wstring FilePath = ProjectPath;
+		std::wstring FilePath = ProjectPath;
 
 		char str[256];
 		sprintf_s(str, sizeof(str), "\\Folder_%i\\", i);
 
-		FilePath.append(wstring(&str[0], &str[strlen(str)])).append(L"data.json");
+		FilePath.append(std::wstring(&str[0], &str[strlen(str)])).append(L"data.json");
 
-		ifstream file(FilePath);
+		std::ifstream file(FilePath);
 
 		// json reader
 		Json::Reader reader;
@@ -62,7 +64,7 @@ void DBDataManager::CheckFiles()
 			const auto Data = completeJsonData["name"].asCString();
 
 			// convert value to wstring
-			const wstring a(&Data[0], &Data[strlen(Data)]);
+			const std::wstring a(&Data[0], &Data[strlen(Data)]);
 
 			MessageBox(NULL, a.c_str(), L"Dialog Box", MB_OK);
 		}
