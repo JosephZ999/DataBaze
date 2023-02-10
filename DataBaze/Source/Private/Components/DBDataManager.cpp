@@ -16,20 +16,31 @@ void DBDataManager::LoadFiles()
 
 	// Struct
 	DBFamilyData Family;
+
+	DBPeopleData People;
+	People.Name		  = L"Doston";
+	People.FamilyName = L"Hamdamov";
+	Family.Parents.push_back(People);
+	Family.Parents.push_back(People);
+
+	Family.Children.push_back(People);
+	Family.Children.push_back(People);
+	Family.Children.push_back(People);
+
 	std::string FamilyData;
 	DBConvert::WStringToString(Family.ToWString(), FamilyData);
 
 	Json::Reader Reader;
 	Json::Value	 RootValue;
 
-	// std::string text = "{ \"people\": [{\"id\": 1, \"name\":\"Human\",\"surname\":\"TAYLOR\"}, {\"id\": 2, \"name\":\"TOM\",\"surname\":\"JERRY\"} ]}";
+	// std::string text = "{ \"people\": [{\"id\": 1, \"name\":\"Human\",\"surname\":\"TAYLOR\"}, {\"id\": 2,
+	// \"name\":\"TOM\",\"surname\":\"JERRY\"} ]}";
 	Reader.parse(FamilyData, RootValue);
 
-
 	// Save Json
-	Json::StreamWriterBuilder Builder;
+	Json::StreamWriterBuilder			Builder;
 	std::unique_ptr<Json::StreamWriter> Writer(Builder.newStreamWriter());
-	std::ofstream File(FileName);
+	std::ofstream						File(FileName);
 	Writer->write(RootValue, &File);
 
 	OnUpdate.Broadcast();

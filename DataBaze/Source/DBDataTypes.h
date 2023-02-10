@@ -100,29 +100,51 @@ struct DBPeopleData
 	DBPeopleData() {}
 	DBPeopleData(std::wstring InName)
 		: Name(InName)
-
 	{
 	}
 
-	std::wstring Name;		   //
-	std::wstring FamilyName;   //
-	std::wstring BirthMonth;   //
-	std::wstring BirthDay;	   //
-	std::wstring BirthYear;	   //
-	std::wstring BirthCountry; //
-	std::wstring WhereLive;	   //
+	int Id; 
+	std::wstring Name;		 //
+	std::wstring FamilyName; //
 
+	int BirthMonth; //
+	int BirthDay;	//
+	int BirthYear;	//
+
+	std::wstring BirthCountry;	  //
+	std::wstring WhereLive;		  //
 	std::wstring EducationDegree; //
 	std::wstring ImageFile;		  //
-	std::wstring ChildrenNum;	  //
 
 	std::wstring ToWString();
 };
 
 inline std::wstring DBPeopleData::ToWString()
 {
-	return std::wstring();
+	// return L"{ \"people\": [{\"id\": 1, \"name\":\"Human\",\"surname\":\"TAYLOR\"}, {\"id\": 2,
+	// \"name\":\"TOM\",\"surname\":\"JERRY\"}]}";
+
+	std::wstring Data;
+	Data.append(L"{");
+
+	Data.append(L"\"").append(L"Name").append(L"\":");
+	Data.append(L"\"").append(Name).append(L"\",");
+
+	Data.append(L"\"").append(L"FamilyName").append(L"\":");
+	Data.append(L"\"").append(FamilyName).append(L"\"");
+
+	Data.append(L"}");
+	return Data;
 }
+
+enum EMeritialStatus
+{
+	MS_Unmarried,
+	MS_Married,
+	MS_USMarried,
+	MS_Divorced,
+	MS_Widowed,
+};
 
 typedef std::vector<DBPeopleData> PeopleGroup;
 
@@ -153,19 +175,63 @@ struct DBFamilyData
 	bool bDouble;
 	bool bLocked;
 
-	std::wstring MaritalStatus; //
-	std::wstring MailCountry;	//
-	std::wstring MailCity;		//
-	std::wstring MailHome;		//
-	std::wstring MailZipCode;	//
+	int				ChildrenNum;
+	EMeritialStatus MaritalStatus; // use enum EMeritialStatus
+	std::wstring	MailCountry;   //
+	std::wstring	MailCity;	   //
+	std::wstring	MailHome;	   //
+	std::wstring	MailZipCode;   //
 
 	std::wstring ToWString();
 };
 
 inline std::wstring DBFamilyData::ToWString()
 {
-	// return L"{ \"people\": [{\"id\": 1, \"name\":\"Human\",\"surname\":\"TAYLOR\"}, {\"id\": 2, \"name\":\"TOM\",\"surname\":\"JERRY\"} ]}";
-	return std::wstring();
+	// return L"{ \"people\": [{\"id\": 1, \"name\":\"Human\",\"surname\":\"TAYLOR\"}, {\"id\": 2,
+	// \"name\":\"TOM\",\"surname\":\"JERRY\"}]}";
+
+	const bool HasChild	 = Children.size() > 0;
+	const bool HasSpouse = Parents.size() > 1;
+
+	std::wstring Data;
+	Data.append(L"{ \"Family\": [");
+
+	// Parents
+	Data.append(L"{ \"Parent_1\": ");
+	Data.append(Parents[0].ToWString());
+	if (HasSpouse)
+	{
+		Data.append(L"},");
+		Data.append(L"{ \"Parent_2\": ");
+		Data.append(Parents[1].ToWString());
+	}
+	Data.append(L"}");
+	// End Parents
+
+	if (HasChild)
+	{
+		Data.append(L",");
+
+		int ChildIndex = 0;
+		for (auto& Elem : Children)
+		{
+			if (ChildIndex > 0)
+			{
+				Data.append(L",");
+			}
+			++ChildIndex;
+
+			Data.append(L"{ \"Child_").append(std::to_wstring(ChildIndex));
+			Data.append(L"\": ");
+			Data.append(Elem.ToWString());
+			Data.append(L"}");
+		}
+	}
+
+
+	Data.append(L"]}");
+
+	return Data;
 }
 
 class DBListContainer

@@ -271,9 +271,9 @@ bool DBWindowWriter::GetLineOfData(std::wstring*& OutData, EPeopleData DataType)
 	{ // clang-format off
 	case PD_Name:				OutData = &DataToChange->Name;				return true;
 	case PD_FamilyName:			OutData = &DataToChange->FamilyName;		return true;
-	case PD_BirthMonth:			OutData = &DataToChange->BirthMonth;		return true;
-	case PD_BirthDay:			OutData = &DataToChange->BirthDay;			return true;
-	case PD_BirthYear:			OutData = &DataToChange->BirthYear;			return true;
+	case PD_BirthMonth:			OutData = &std::to_wstring(DataToChange->BirthMonth);		return true;
+	case PD_BirthDay:			OutData = &std::to_wstring(DataToChange->BirthDay);			return true;
+	case PD_BirthYear:			OutData = &std::to_wstring(DataToChange->BirthYear);		return true;
 	case PD_BornCountry:		OutData = &DataToChange->BirthCountry;		return true;
 
 	// Only Parent Info:
@@ -285,8 +285,8 @@ bool DBWindowWriter::GetLineOfData(std::wstring*& OutData, EPeopleData DataType)
 	case PD_MailZipCode:		OutData = &MembersData.MailZipCode;			return true;
 
 	case PD_EducationDegree:	OutData = &DataToChange->EducationDegree;	return true;
-	case PD_MaritalStatus:		OutData = &MembersData.MaritalStatus;		return true;
-	case PD_ChildrenNum:		OutData = &DataToChange->ChildrenNum;		return true;
+	//case PD_MaritalStatus:	OutData = &MembersData.MaritalStatus;		return true;
+	//case PD_ChildrenNum:		OutData = &std::to_wstring(MembersData.ChildrenNum);		return true;
 	} // clang-format on
 
 	return false;
