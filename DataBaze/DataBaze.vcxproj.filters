@@ -48,6 +48,9 @@
     <Filter Include="Source\Private\Windows">
       <UniqueIdentifier>{c68cf040-eb1e-4b28-8b02-836ee56260f6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Public\DataTypes">
+      <UniqueIdentifier>{39294ec1-0ace-480c-9c99-97d3d3053c48}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -67,9 +70,6 @@
     </ClInclude>
     <ClInclude Include="Source\Public\DBSystem.h">
       <Filter>Source\Public</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\DBDataTypes.h">
-      <Filter>Source</Filter>
     </ClInclude>
     <ClInclude Include="Source\Public\Components\DBButton.h">
       <Filter>Source\Public\Components</Filter>
@@ -97,6 +97,12 @@
     </ClInclude>
     <ClInclude Include="Source\Public\Utils\DBDelegate.h">
       <Filter>Source\Public\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Public\DBDataTypes.h">
+      <Filter>Source\Public</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Public\DataTypes\Size2D.h">
+      <Filter>Source\Public\DataTypes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -126,6 +132,9 @@
     </ClCompile>
     <ClCompile Include="Source\Private\Components\DBWindowsManager.cpp">
       <Filter>Source\Private\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Private\DBDataTypes.cpp">
+      <Filter>Source\Private</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
