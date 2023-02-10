@@ -104,6 +104,9 @@
     <ClInclude Include="Source\Public\DataTypes\Size2D.h">
       <Filter>Source\Public\DataTypes</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Public\Utils\DBJsonUtils.h">
+      <Filter>Source\Public\Utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DataBaze.cpp">
@@ -135,6 +138,9 @@
     </ClCompile>
     <ClCompile Include="Source\Private\DBDataTypes.cpp">
       <Filter>Source\Private</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Private\DBJsonUtils.cpp">
+      <Filter>Source\Private\Utils</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

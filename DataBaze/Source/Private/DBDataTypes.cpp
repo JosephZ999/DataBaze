@@ -1,4 +1,5 @@
 #include "DBDataTypes.h"
+#include "DBJsonUtils.h"
 
 void ButtonContainer::Add(const DBWindow& InButton)
 {
@@ -53,15 +54,10 @@ std::wstring DBFamilyData::ToWString()
 	Data.append(L"{ \"Family\": [");
 
 	// Globals
-	Data.append(L"{ \"Globals\": {");
-
-	// Data.append(L"{").append(L"\"ChildrenNum\" :").append(std::to_wstring(GetChildrenNum())).append(L"},");
-	// Data.append(L"{").append(L"\"blablabla\" :").append(L"\"hahaha\"").append(L"}");
-
-	Data.append(L"\"ChildrenNum\" :").append(std::to_wstring(GetChildrenNum())).append(L",");
-	Data.append(L"\"blablabla\" :").append(L"\"hahaha\"");
-
-	Data.append(L"}},");
+	JsonUtils::OpenArray(Data, L"Globals");
+	JsonUtils::AddItem(Data, L"ChildrenNum", GetChildrenNum()).append(L",");
+	JsonUtils::AddItem(Data, L"blablabla", L"hahaha");
+	JsonUtils::CloseArray(Data).append(L",");
 	// End Globals
 
 	// Parents
