@@ -31,13 +31,8 @@ std::wstring DBPeopleData::ToWString()
 
 	std::wstring Data;
 	Data.append(L"{");
-
-	Data.append(L"\"").append(L"Name").append(L"\":");
-	Data.append(L"\"").append(Name).append(L"\",");
-
-	Data.append(L"\"").append(L"FamilyName").append(L"\":");
-	Data.append(L"\"").append(FamilyName).append(L"\"");
-
+	JsonUtils::AddItem(Data, L"Name", Name).append(L",");
+	JsonUtils::AddItem(Data, L"FamilyName", FamilyName);
 	Data.append(L"}");
 	return Data;
 }
@@ -51,13 +46,45 @@ std::wstring DBFamilyData::ToWString()
 	const bool HasSpouse = Parents.size() > 1;
 
 	std::wstring Data;
+
+	JsonUtils::OpenArray(Data, L"Main");
+	for (size_t i = 0; i < 500; i++)
+	{
+		if (i > 0)
+		{
+			Data.append(L",");
+		}
+
+		JsonUtils::OpenArray(Data, std::wstring(L"Family ").append(std::to_wstring(i + 1)));
+		for (size_t ii = 0; ii < 5; ++ii)
+		{
+			if (ii > 0)
+			{
+				Data.append(L",");
+			}
+
+			JsonUtils::OpenList(Data, std::wstring(L"List ").append(std::to_wstring(ii + 1)));
+			JsonUtils::AddItem(Data,L"Item 1", L"Value 1").append(L",");
+			JsonUtils::AddItem(Data,L"Item 2", L"Value 2").append(L",");
+			JsonUtils::AddItem(Data,L"Item 3", L"Value 3").append(L",");
+			JsonUtils::AddItem(Data,L"Item 4", L"Value 4").append(L",");
+			JsonUtils::AddItem(Data,L"Item 5", L"Value 5").append(L",");
+			JsonUtils::AddItem(Data,L"Item 6", L"Value 6");
+			JsonUtils::CloseList(Data);
+		}
+		JsonUtils::CloseArray(Data);
+	}
+	JsonUtils::CloseArray(Data);
+
+	return Data;
+
 	Data.append(L"{ \"Family\": [");
 
 	// Globals
-	JsonUtils::OpenArray(Data, L"Globals");
+	JsonUtils::OpenList(Data, L"Globals");
 	JsonUtils::AddItem(Data, L"ChildrenNum", GetChildrenNum()).append(L",");
 	JsonUtils::AddItem(Data, L"blablabla", L"hahaha");
-	JsonUtils::CloseArray(Data).append(L",");
+	JsonUtils::CloseList(Data).append(L",");
 	// End Globals
 
 	// Parents
