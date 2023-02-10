@@ -175,7 +175,6 @@ struct DBFamilyData
 	bool bDouble;
 	bool bLocked;
 
-	int				ChildrenNum;
 	EMeritialStatus MaritalStatus; // use enum EMeritialStatus
 	std::wstring	MailCountry;   //
 	std::wstring	MailCity;	   //
@@ -183,7 +182,13 @@ struct DBFamilyData
 	std::wstring	MailZipCode;   //
 
 	std::wstring ToWString();
+	int GetChildrenNum();
 };
+
+inline int DBFamilyData::GetChildrenNum()
+{
+	return Children.size();
+}
 
 inline std::wstring DBFamilyData::ToWString()
 {
@@ -196,18 +201,31 @@ inline std::wstring DBFamilyData::ToWString()
 	std::wstring Data;
 	Data.append(L"{ \"Family\": [");
 
+	// Globals
+	Data.append(L"{ \"Globals\": {");
+	
+	// Data.append(L"{").append(L"\"ChildrenNum\" :").append(std::to_wstring(GetChildrenNum())).append(L"},");
+	// Data.append(L"{").append(L"\"blablabla\" :").append(L"\"hahaha\"").append(L"}");
+
+	Data.append(L"\"ChildrenNum\" :").append(std::to_wstring(GetChildrenNum())).append(L",");
+	Data.append(L"\"blablabla\" :").append(L"\"hahaha\"");
+
+	Data.append(L"}},");
+	// End Globals
+
 	// Parents
 	Data.append(L"{ \"Parent_1\": ");
 	Data.append(Parents[0].ToWString());
 	if (HasSpouse)
 	{
-		Data.append(L"},");
-		Data.append(L"{ \"Parent_2\": ");
+		Data.append(L"}, { \"Parent_2\": ");
 		Data.append(Parents[1].ToWString());
 	}
 	Data.append(L"}");
 	// End Parents
 
+
+	// Children
 	if (HasChild)
 	{
 		Data.append(L",");
@@ -221,13 +239,12 @@ inline std::wstring DBFamilyData::ToWString()
 			}
 			++ChildIndex;
 
-			Data.append(L"{ \"Child_").append(std::to_wstring(ChildIndex));
-			Data.append(L"\": ");
+			Data.append(L"{ \"Child_").append(std::to_wstring(ChildIndex)).append(L"\": ");
 			Data.append(Elem.ToWString());
 			Data.append(L"}");
 		}
 	}
-
+	// End Children
 
 	Data.append(L"]}");
 
