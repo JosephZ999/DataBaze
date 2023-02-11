@@ -2,14 +2,10 @@
 #include <iostream>
 #include <fstream>
 
-#include "json/reader.h"
-#include "json/writer.h"
-
 void DBDataManager::LoadFiles()
 {
-	const std::wstring ProjectPath = DBPaths::GetProjectPath();
 
-	const std::wstring FileName = std::wstring(ProjectPath).append(L"\\ExampleArray.json");
+	const std::wstring FileName = GenerateFileLocation();
 	{
 		// Try to write array as json file
 		// Generate json file name
@@ -26,6 +22,9 @@ void DBDataManager::LoadFiles()
 		Family.Children.push_back(People);
 		Family.Children.push_back(People);
 		Family.Children.push_back(People);
+
+		AddMember(Family);
+		return;
 
 		std::string FamilyData;
 		DBConvert::WStringToString(Family.ToWString(), FamilyData);
@@ -65,8 +64,7 @@ void DBDataManager::LoadFiles()
 		{
 			//
 
-			//Json::Value Main(Json::arrayValue);
-			
+			// Json::Value Main(Json::arrayValue);
 
 			Json::Value Item(Json::arrayValue);
 			Json::Value Item2;
@@ -96,9 +94,58 @@ void DBDataManager::LoadFiles()
 	OnUpdate.Broadcast();
 }
 
+void DBDataManager::AddMember(const DBFamilyData& MemberData)
+{
+	const auto FileName = GenerateFileLocation();
+
+	Json::Reader FileReader;
+	Json::Value	 FileData;
+
+	// Read Json file
+	if (CheckFile(FileName))
+	{
+		// Read file data
+		std::ifstream File(FileName);
+		FileReader.parse(File, FileData);
+		File.close();
+
+		// Add New Member
+		Json::Value Family;
+		FillFamilyInfo(MemberData, Family);
+		FileData["Main"].append(Family);
+
+		std::wstring Message = std::to_wstring(FileData["Main"].size());
+		MessageBox(NULL, Message.c_str(), L"Dialog Box", MB_OK);
+
+		// Save to file
+		std::ofstream FileStream(FileName);
+
+		Json::StreamWriterBuilder			Builder;
+		std::unique_ptr<Json::StreamWriter> Writer(Builder.newStreamWriter());
+		Writer->write(FileData, &FileStream);
+		FileStream.close();
+	}
+	else
+	{
+		std::ofstream FileStream(FileName);
+
+		// Add New Member
+		Json::Value Family;
+		FillFamilyInfo(MemberData, Family);
+		FileData["Main"].append(Family);
+
+		std::wstring Message = std::to_wstring(FileData["Main"].size());
+		MessageBox(NULL, Message.c_str(), L"Dialog Box", MB_OK);
+
+		Json::StreamWriterBuilder			Builder;
+		std::unique_ptr<Json::StreamWriter> Writer(Builder.newStreamWriter());
+		Writer->write(FileData, &FileStream);
+		FileStream.close();
+	}
+}
+
 void DBDataManager::CheckFiles()
 {
-
 	const std::wstring ProjectPath = DBPaths::GetProjectPath();
 
 	for (size_t i = 1; i <= 20; ++i)
@@ -131,13 +178,40 @@ void DBDataManager::CheckFiles()
 		}
 		// MessageBox(NULL, FilePath.c_str(), L"Dialog Box", MB_OK);
 	}
+}
 
-	// complete JSON data
-	// cout << "Complete JSON data : " << endl << completeJsGrade << endl;
+bool DBDataManager::CheckFile(const std::wstring& InFilePath)
+{
+	return std::ifstream(InFilePath).good();
+}
 
-	// get the value associated with name key
-	// cout << "Name : " << completeJsonData["name"] << endl;
+void DBDataManager::FillFamilyInfo(const DBFamilyData& MemberData, Json::Value& OutValue)
+{
+	const bool HasChildren = MemberData.IsHasChildren();
+	const bool HasSpouse   = MemberData.IsHasASpouse();
 
-	// get the value associated with grade key
-	// cout << "Grade : " << completeJsonData["grade"] << endl;
+	Json::Value FamilyMember;
+	Json::Value MemberItem;
+
+	std::string StringData;
+	DBConvert::WStringToString(MemberData.Parents[0].Name, StringData);
+	MemberItem["Name"] = Json::Value(StringData);
+
+	DBConvert::WStringToString(MemberData.Parents[0].FamilyName, StringData);
+	MemberItem["FamilyName"] = Json::Value(StringData);
+
+	FamilyMember["Member 1"] = MemberItem;
+	FamilyMember["Member 2"] = MemberItem;
+	OutValue				 = FamilyMember;
+}
+
+std::wstring DBDataManager::GenerateFileLocation()
+{
+	/*char str[256];
+	sprintf_s(str, sizeof(str), "\\Folder_%i\\", FolderIndex);
+
+	std::wstring FilePath = ProjectPath;
+	FilePath.append(std::wstring(&str[0], &str[strlen(str)])).append(L"data.json");*/
+
+	return DBPaths::GetProjectPath().append(L"\\ExampleArray.json");
 }

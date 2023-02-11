@@ -145,7 +145,10 @@ struct DBFamilyData
 	std::wstring	MailZipCode;   //
 
 	std::wstring ToWString();
-	int			 GetChildrenNum();
+
+	int	 GetChildrenNum() const;
+	bool IsHasChildren() const;
+	bool IsHasASpouse() const;
 };
 
 class DBListContainer

@@ -42,17 +42,10 @@ std::wstring DBFamilyData::ToWString()
 	// return L"{ \"people\": [{\"id\": 1, \"name\":\"Human\",\"surname\":\"TAYLOR\"}, {\"id\": 2,
 	// \"name\":\"TOM\",\"surname\":\"JERRY\"}]}";
 
-	const bool HasChild	 = Children.size() > 0;
-	const bool HasSpouse = Parents.size() > 1;
+	const bool HasChild	 = IsHasChildren();
+	const bool HasSpouse = IsHasASpouse();
 
 	std::wstring Data;
-	/*Data.append(L"{ \"people\": [");
-
-	Data.append(L"{\"name\":\"Human\",");
-	Data.append(L"\"surname\":\"TAYLOR\"}");
-
-	Data.append(L"]");
-	Data.append(L"}");*/
 
 	JsonUtils::OpenArray(Data, L"Main");
 	for (size_t i = 0; i < 1; i++)
@@ -131,7 +124,17 @@ std::wstring DBFamilyData::ToWString()
 	return Data;
 }
 
-int DBFamilyData::GetChildrenNum()
+int DBFamilyData::GetChildrenNum() const
 {
 	return Children.size();
+}
+
+bool DBFamilyData::IsHasChildren() const
+{
+	return Children.size() > 0;
+}
+
+bool DBFamilyData::IsHasASpouse() const
+{
+	return Parents.size() > 1;
 }
