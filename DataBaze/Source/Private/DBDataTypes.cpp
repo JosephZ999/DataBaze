@@ -46,9 +46,16 @@ std::wstring DBFamilyData::ToWString()
 	const bool HasSpouse = Parents.size() > 1;
 
 	std::wstring Data;
+	/*Data.append(L"{ \"people\": [");
+
+	Data.append(L"{\"name\":\"Human\",");
+	Data.append(L"\"surname\":\"TAYLOR\"}");
+
+	Data.append(L"]");
+	Data.append(L"}");*/
 
 	JsonUtils::OpenArray(Data, L"Main");
-	for (size_t i = 0; i < 500; i++)
+	for (size_t i = 0; i < 1; i++)
 	{
 		if (i > 0)
 		{
@@ -64,12 +71,12 @@ std::wstring DBFamilyData::ToWString()
 			}
 
 			JsonUtils::OpenList(Data, std::wstring(L"List ").append(std::to_wstring(ii + 1)));
-			JsonUtils::AddItem(Data,L"Item 1", L"Value 1").append(L",");
-			JsonUtils::AddItem(Data,L"Item 2", L"Value 2").append(L",");
-			JsonUtils::AddItem(Data,L"Item 3", L"Value 3").append(L",");
-			JsonUtils::AddItem(Data,L"Item 4", L"Value 4").append(L",");
-			JsonUtils::AddItem(Data,L"Item 5", L"Value 5").append(L",");
-			JsonUtils::AddItem(Data,L"Item 6", L"Value 6");
+			JsonUtils::AddItem(Data, L"Item 1", L"Value 1").append(L",");
+			JsonUtils::AddItem(Data, L"Item 2", L"Value 2").append(L",");
+			JsonUtils::AddItem(Data, L"Item 3", L"Value 3").append(L",");
+			JsonUtils::AddItem(Data, L"Item 4", L"Value 4").append(L",");
+			JsonUtils::AddItem(Data, L"Item 5", 7).append(L",");
+			JsonUtils::AddItem(Data, L"Item 6", 14);
 			JsonUtils::CloseList(Data);
 		}
 		JsonUtils::CloseArray(Data);

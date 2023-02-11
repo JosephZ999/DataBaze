@@ -9,39 +9,89 @@ void DBDataManager::LoadFiles()
 {
 	const std::wstring ProjectPath = DBPaths::GetProjectPath();
 
-	// Try to write array as json file
-
-	// Generate json file name
 	const std::wstring FileName = std::wstring(ProjectPath).append(L"\\ExampleArray.json");
+	{
+		// Try to write array as json file
+		// Generate json file name
 
-	// Struct
-	DBFamilyData Family;
+		// Struct
+		DBFamilyData Family;
 
-	DBPeopleData People;
-	People.Name		  = L"Doston";
-	People.FamilyName = L"Hamdamov";
-	Family.Parents.push_back(People);
-	Family.Parents.push_back(People);
+		DBPeopleData People;
+		People.Name		  = L"Doston";
+		People.FamilyName = L"Hamdamov";
+		Family.Parents.push_back(People);
+		Family.Parents.push_back(People);
 
-	Family.Children.push_back(People);
-	Family.Children.push_back(People);
-	Family.Children.push_back(People);
+		Family.Children.push_back(People);
+		Family.Children.push_back(People);
+		Family.Children.push_back(People);
 
-	std::string FamilyData;
-	DBConvert::WStringToString(Family.ToWString(), FamilyData);
+		std::string FamilyData;
+		DBConvert::WStringToString(Family.ToWString(), FamilyData);
 
-	Json::Reader Reader;
-	Json::Value	 RootValue;
+		Json::Reader Reader;
+		Json::Value	 RootValue;
 
-	// std::string text = "{ \"people\": [{\"id\": 1, \"name\":\"Human\",\"surname\":\"TAYLOR\"}, {\"id\": 2,
-	// \"name\":\"TOM\",\"surname\":\"JERRY\"} ]}";
-	Reader.parse(FamilyData, RootValue);
+		Reader.parse(FamilyData, RootValue);
 
-	// Save Json
-	Json::StreamWriterBuilder			Builder;
-	std::unique_ptr<Json::StreamWriter> Writer(Builder.newStreamWriter());
-	std::ofstream						File(FileName);
-	Writer->write(RootValue, &File);
+		// Save Json
+		Json::StreamWriterBuilder			Builder;
+		std::unique_ptr<Json::StreamWriter> Writer(Builder.newStreamWriter());
+
+		std::ofstream File(FileName);
+		Writer->write(RootValue, &File);
+
+		File.close();
+	}
+
+	// Json Read
+	{
+		// Try to read Json
+		std::ifstream File(FileName);
+
+		Json::Reader FileReader;
+		Json::Value	 FileData;
+
+		// parsing
+		if (FileReader.parse(File, FileData))
+		{
+			std::wstring Line;
+			DBConvert::StringToWString(FileData["Main"][0]["Family 1"][0]["List 1"]["Item 1"].asString(), Line);
+			MessageBox(NULL, Line.c_str(), L"Dialog Box", MB_OK);
+		}
+
+		// Adding new data
+		{
+			//
+
+			//Json::Value Main(Json::arrayValue);
+			
+
+			Json::Value Item(Json::arrayValue);
+			Json::Value Item2;
+			Json::Value Item3;
+
+			Item3["Elem 1"] = Json::Value(0);
+			Item3["Elem 2"] = Json::Value(1);
+
+			Item.append(Item3);
+			Item.append(Json::Value(2));
+			Item.append(Json::Value(3));
+
+			Item2["Text"] = Item;
+			FileData["Main"].append(Item2);
+
+			// Save Json
+			Json::StreamWriterBuilder			Builder;
+			std::unique_ptr<Json::StreamWriter> Writer(Builder.newStreamWriter());
+
+			std::ofstream Save(FileName);
+			Writer->write(FileData["Main"], &Save);
+
+			Save.close();
+		}
+	}
 
 	OnUpdate.Broadcast();
 }
