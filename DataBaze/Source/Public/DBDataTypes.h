@@ -96,8 +96,6 @@ struct DBPeopleData
 	std::wstring WhereLive;		  //
 	std::wstring EducationDegree; //
 	std::wstring ImageFile;		  //
-
-	std::wstring ToWString();
 };
 
 enum EMeritialStatus
@@ -143,8 +141,6 @@ struct DBFamilyData
 	std::wstring	MailCity;	   //
 	std::wstring	MailHome;	   //
 	std::wstring	MailZipCode;   //
-
-	std::wstring ToWString();
 
 	int	 GetChildrenNum() const;
 	bool IsHasChildren() const;
