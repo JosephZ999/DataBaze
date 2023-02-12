@@ -43,9 +43,6 @@ void DBDataManager::AddMember(const DBFamilyData& MemberData)
 		FillFamilyInfo(MemberData, Family);
 		FileData["Main"].append(Family);
 
-		std::wstring Message = std::to_wstring(FileData["Main"].size());
-		// MessageBox(NULL, Message.c_str(), L"Dialog Box", MB_OK);
-
 		// Save to file
 		std::ofstream FileStream(FileName);
 
@@ -63,9 +60,6 @@ void DBDataManager::AddMember(const DBFamilyData& MemberData)
 		FillFamilyInfo(MemberData, Family);
 		FileData["Main"].append(Family);
 
-		std::wstring Message = std::to_wstring(FileData["Main"].size());
-		// MessageBox(NULL, Message.c_str(), L"Dialog Box", MB_OK);
-
 		Json::StreamWriterBuilder			Builder;
 		std::unique_ptr<Json::StreamWriter> Writer(Builder.newStreamWriter());
 		Writer->write(FileData, &FileStream);
@@ -78,12 +72,34 @@ void DBDataManager::LoadMember(DBFamilyData& OutMemberData)
 	//
 }
 
-void DBDataManager::SearchValidFolders()
+bool DBDataManager::SearchValidFolders()
 {
-	for (size_t i = 1; i <= 20; ++i)
+	bool SomeFileWasFound = false;
+	for (size_t i = 1; i <= MAX_FOLDERS_NUM; ++i)
 	{
-		const std::wstring FilePath = GenerateFileLocationById(i);
+		const std::wstring FilePath = GenerateFileLocationById(i, true);
+		std::ifstream	   File(FilePath);
+		if (File.good())
+		{
+			SomeFileWasFound = true;
+			ValidFolders->push_back(i);
+		}
+		File.close();
 	}
+
+#ifdef _DEBUG
+	std::wstring Message;
+	Message.append(L"Valid Folders Num : ").append(std::to_wstring(ValidFolders->size()));
+	MessageBox(NULL, Message.c_str(), L"Func: SearchValidFolders", MB_OK);
+
+	for (auto& Elem : *ValidFolders)
+	{
+		std::wstring Message;
+		Message.append(L"Valid Folder : ").append(std::to_wstring(Elem));
+		MessageBox(NULL, Message.c_str(), L"Func: SearchValidFolders", MB_OK);
+	}
+#endif
+	return SomeFileWasFound;
 }
 
 int DBDataManager::GetValidFoldersNum()
@@ -116,17 +132,20 @@ void DBDataManager::FillFamilyInfo(const DBFamilyData& MemberData, Json::Value& 
 	OutValue				 = FamilyMember;
 }
 
-std::wstring DBDataManager::GenerateFileLocation()
+std::wstring DBDataManager::GenerateFileLocation(bool CreateFolder)
 {
-	return GenerateFileLocationById(SelectedFolderId);
+	return GenerateFileLocationById(SelectedFolderId, CreateFolder);
 }
 
-std::wstring DBDataManager::GenerateFileLocationById(int InId)
+std::wstring DBDataManager::GenerateFileLocationById(int InId, bool CreateFolder)
 {
-	auto Folder = DBPaths::GetProjectPath().append(L"\\Folder_").append(std::to_wstring(InId));
-	if (_wmkdir(Folder.c_str()))
+	auto Folder = DBPaths::GetProjectPath().append(L"\\Data");
+	_wmkdir(Folder.c_str());
+
+	Folder.append(L"\\Folder_").append(std::to_wstring(InId));
+	if (CreateFolder)
 	{
-		return Folder.append(L"\\data.json");
+		_wmkdir(Folder.c_str());
 	}
-	return std::wstring();
+	return Folder.append(L"\\data.json");
 }

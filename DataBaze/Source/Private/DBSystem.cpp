@@ -31,7 +31,11 @@ void DBSystem::EndConstruct()
 {
 	CreateListBox();
 	CreateButtons();
-	InitListBox();
+
+	if (DataManager->SearchValidFolders())
+	{
+		InitListBox();
+	}
 }
 
 DBInterface* DBSystem::GetSystem()
@@ -41,7 +45,6 @@ DBInterface* DBSystem::GetSystem()
 
 void DBSystem::InitListBox()
 {
-	//
 	DataManager->OnUpdate.Bind(this, &DBSystem::OnDataUpdated);
 	DataManager->LoadFiles();
 }

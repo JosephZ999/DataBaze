@@ -1,9 +1,14 @@
 #pragma once
 #include "DBInterface.h"
 #include "DBFunctionLibrary.h"
+#include <vector>
 
 #include "json/reader.h"
 #include "json/writer.h"
+
+#define MAX_FOLDERS_NUM 20
+#define MAX_MEMBERS_NUM 500
+
 // #include "DBDataTypes.h"
 
 DECLARE_DELEGATE(OnUpdateSignature);
@@ -16,12 +21,13 @@ public:
 private:
 	int SelectedFolderId = 1;
 	int SelectedMemberId = 1;
+	std::vector<int> ValidFolders[MAX_FOLDERS_NUM];
 
 protected:
 	void SelectFolder(int InId) { SelectedFolderId = InId; }
 	void SelectMember(int InId) { SelectedMemberId = InId; }
 
-	void SearchValidFolders();
+	bool SearchValidFolders();
 	int	 GetValidFoldersNum();
 	void LoadFiles();
 	void AddMember(const DBFamilyData& MemberData);
@@ -30,8 +36,8 @@ protected:
 private:
 	bool		 CheckFile(const std::wstring& InFilePath);
 	void		 FillFamilyInfo(const DBFamilyData& MemberData, Json::Value& OutValue);
-	std::wstring GenerateFileLocation();
-	std::wstring GenerateFileLocationById(int InId);
+	std::wstring GenerateFileLocation(bool CreateFolder = true);
+	std::wstring GenerateFileLocationById(int InId, bool CreateFolder = false);
 
 public:
 	friend class DBSystem;
