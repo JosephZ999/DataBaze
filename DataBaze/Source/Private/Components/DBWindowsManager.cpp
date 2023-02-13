@@ -69,6 +69,11 @@ void DBWindowsManager::OpenWindow(EWindows WindowType)
 		ShowWindow(ViewerHandle, SW_SHOWDEFAULT);
 		ShowWindow(WriterHandle, SW_HIDE);
 		SendMessage(ViewerHandle, WM_COMMAND, WM_SHOWWINDOW, 0);
+
+		if (WindowViewer)
+		{
+			WindowViewer->OnConstruct();
+		}
 		return;
 	}
 	case EWindows::IDW_WRITER:
@@ -78,6 +83,11 @@ void DBWindowsManager::OpenWindow(EWindows WindowType)
 		ShowWindow(WriterHandle, SW_SHOWDEFAULT);
 		ShowWindow(ViewerHandle, SW_HIDE);
 		SendMessage(WriterHandle, WM_COMMAND, WM_SHOWWINDOW, 0);
+
+		if (WindowWriter)
+		{
+			WindowWriter->OnConstruct();
+		}
 		return;
 	}
 	} // switch end

@@ -4,6 +4,9 @@
 #include "DBDataManager.h"
 #include "DBFunctionLibrary.h"
 
+#include "DBWindowViewer.h"
+#include "DBWindowWriter.h"
+
 UINT TimerId;
 int	 clicks;
 
@@ -144,16 +147,19 @@ void DBSystem::CallCommand(HWND& hWnd, UINT Message, WPARAM& WParam, LPARAM& LPa
 		{
 		case LBN_DBLCLK:
 		{
-			// Get selected index.
-			int lbItem = (int)SendMessage(ListBox, LB_GETCURSEL, 0, 0);
+			if (WindowManager && DataManager)
+			{
+				// Get selected index.
+				int lbItem = (int)SendMessage(ListBox, LB_GETCURSEL, 0, 0);
 
-			// Get item data.
-			int i = (int)SendMessage(ListBox, LB_GETITEMDATA, lbItem, 0);
+				// Get item data.
+				int i = (int)SendMessage(ListBox, LB_GETITEMDATA, lbItem, 0);
 
-			std::wstring MyMessage;
-			MyMessage = std::to_wstring(i);
-
-			MessageBox(NULL, MyMessage.c_str(), L"Dialog Box", MB_OK);
+				DBFamilyData SelectedData;
+				DataManager->LoadMember(SelectedData);
+				WindowManager->GetViewer()->SetMemberData(SelectedData);
+				WindowManager->OpenWindow(EWindows::IDW_VIEWER);
+			}
 			return;
 		}
 		case LBN_SELCHANGE:

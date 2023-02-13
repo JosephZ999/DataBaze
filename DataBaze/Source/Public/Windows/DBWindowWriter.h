@@ -27,6 +27,10 @@ public:
 	EPeopleType PeopleType = EPeopleType::PT_Parent;
 	EPeopleData PeopleData = EPeopleData::PD_Name;
 
+
+public:
+	void OnConstruct();
+	
 	void SelectWriteData(EPeopleType PT);
 	void WriteData();
 	void UpdateInfo();

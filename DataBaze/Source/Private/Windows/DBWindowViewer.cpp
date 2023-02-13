@@ -60,8 +60,17 @@ DBWindowViewer::DBWindowViewer(DBInterface* InOwner)
 	if (Manager)
 	{
 		WindowHandle = Manager->GetViewerHandle();
-		ViewerObj = this;
+		ViewerObj	 = this;
 	}
+}
+
+void DBWindowViewer::OnConstruct()
+{
+}
+
+void DBWindowViewer::SetMemberData(const DBFamilyData& InData)
+{
+	MemberData = InData;
 }
 
 void DBWindowViewer::Autofill_Form1()

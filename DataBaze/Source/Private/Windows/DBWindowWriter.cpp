@@ -119,6 +119,10 @@ DBWindowWriter::DBWindowWriter(DBInterface* InOwner)
 	}
 }
 
+void DBWindowWriter::OnConstruct()
+{
+}
+
 void DBWindowWriter::SelectWriteData(EPeopleType PT)
 {
 	switch (PT)

@@ -35,6 +35,8 @@ public:
 	void AddMember(const DBFamilyData& MemberData);
 	void LoadMember(DBFamilyData& OutMemberData);
 	void GetMembersList(std::vector<std::wstring>& OutList);
+	int	 GetFolderId() { return SelectedFolderId; }
+
 
 private:
 	bool SetFolder(int FolderId);

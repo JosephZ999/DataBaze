@@ -23,9 +23,12 @@ private:
 	DBWindowViewer* WindowViewer = nullptr;
 	DBWindowWriter* WindowWriter = nullptr;
 
-protected:
+public:
 	void OpenWindow(EWindows WindowType);
 	void CloseWindow(EWindows WindowType);
+
+	DBWindowViewer* GetViewer() { return WindowViewer; }
+	DBWindowWriter* GetWriter() { return WindowWriter; }
 
 public:
 	virtual DBInterface* GetSystem() override;
@@ -39,7 +42,4 @@ private:
 	void DestroyViewer();
 	void CreateWriter();
 	void DestroyWriter();
-
-public:
-	friend class DBSystem;
 };
