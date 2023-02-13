@@ -26,6 +26,7 @@ private:
 public:
 	void OpenWindow(EWindows WindowType);
 	void CloseWindow(EWindows WindowType);
+	void EndConstruct();
 
 	DBWindowViewer* GetViewer() { return WindowViewer; }
 	DBWindowWriter* GetWriter() { return WindowWriter; }

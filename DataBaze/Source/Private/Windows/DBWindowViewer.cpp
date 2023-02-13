@@ -66,6 +66,9 @@ DBWindowViewer::DBWindowViewer(DBInterface* InOwner)
 
 void DBWindowViewer::OnConstruct()
 {
+	std::wstring message;
+	message = MemberData.Parents[0].Name;
+	MessageBox(NULL, message.c_str(), L"Dialog Box", MB_OK);
 }
 
 void DBWindowViewer::SetMemberData(const DBFamilyData& InData)

@@ -74,7 +74,13 @@ void DBDataManager::AddMember(const DBFamilyData& MemberData)
 
 void DBDataManager::LoadMember(DBFamilyData& OutMemberData)
 {
-	//
+	DBFamilyData Member;
+	DBPeopleData Parent;
+	Parent.Name		  = L"Joseph";
+	Parent.FamilyName = L"Zzz";
+
+	Member.Parents.push_back(Parent);
+	OutMemberData = Member;
 }
 
 bool DBDataManager::SearchValidFolders()

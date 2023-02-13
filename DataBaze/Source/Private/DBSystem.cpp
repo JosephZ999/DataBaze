@@ -157,8 +157,13 @@ void DBSystem::CallCommand(HWND& hWnd, UINT Message, WPARAM& WParam, LPARAM& LPa
 
 				DBFamilyData SelectedData;
 				DataManager->LoadMember(SelectedData);
-				WindowManager->GetViewer()->SetMemberData(SelectedData);
 				WindowManager->OpenWindow(EWindows::IDW_VIEWER);
+
+				if (WindowManager->GetViewer())
+				{
+					WindowManager->GetViewer()->SetMemberData(SelectedData);
+					WindowManager->EndConstruct();
+				}
 			}
 			return;
 		}
@@ -214,23 +219,6 @@ void DBSystem::CallCommand(HWND& hWnd, UINT Message, WPARAM& WParam, LPARAM& LPa
 		return;
 	}
 	} // switch end
-
-	// Windows messages
-
-	// auto WId = static_cast<EWindows>(LOWORD(WParam));
-	// switch (WId)
-	//{
-	// case IDW_VIEWER:
-	//{
-	//	WindowManager->CallCommand(hWnd, Message, WParam, LParam);
-	//	return;
-	//}
-	// case IDW_WRITER:
-	//{
-	//	WindowManager->CallCommand(hWnd, Message, WParam, LParam);
-	//	return;
-	//}
-	//} // switch end
 }
 
 void DBSystem::CallPaint(HWND& hWnd, UINT Message, WPARAM& WParam, LPARAM& LParam)
