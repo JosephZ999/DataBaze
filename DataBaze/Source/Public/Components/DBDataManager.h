@@ -15,30 +15,33 @@ DECLARE_DELEGATE(OnUpdateSignature);
 
 class DBDataManager : public DBInterface
 {
+	typedef std::vector<int> Folders;
+
 public:
 	OnUpdateSignature OnUpdate;
 
 private:
-	int SelectedFolderId = 1;
-	int SelectedMemberId = 1;
-	std::vector<int> ValidFolders[MAX_FOLDERS_NUM];
+	int		SelectedFolderId = 1;
+	int		SelectedMemberId = 1;
+	Folders ValidFolders[MAX_FOLDERS_NUM];
 
-protected:
-	void SelectFolder(int InId) { SelectedFolderId = InId; }
-	void SelectMember(int InId) { SelectedMemberId = InId; }
+public:
+	void SelectMember(int InMemberId);
+	// void ChangeFolder(bool bNext);
 
 	bool SearchValidFolders();
 	int	 GetValidFoldersNum();
 	void LoadFiles();
 	void AddMember(const DBFamilyData& MemberData);
 	void LoadMember(DBFamilyData& OutMemberData);
+	void GetMembersList(std::vector<std::wstring>& OutList);
 
 private:
+	void SetFolder(size_t FolderId);
+
 	bool		 CheckFile(const std::wstring& InFilePath);
 	void		 FillFamilyInfo(const DBFamilyData& MemberData, Json::Value& OutValue);
 	std::wstring GenerateFileLocation(bool CreateFolder = true);
 	std::wstring GenerateFileLocationById(int InId, bool CreateFolder = false);
-
-public:
-	friend class DBSystem;
+	std::wstring GetMemberStatus(Json::Value& InData, int InId);
 };

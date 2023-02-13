@@ -18,6 +18,8 @@ typedef UINT UINT_PTR;
 
 class DBSystem : public DBInterface
 {
+	typedef std::vector<std::wstring> ListElem;
+
 public:
 	DBSystem(HINSTANCE HInstance, HWND InMainWindow);
 	~DBSystem();
@@ -27,10 +29,18 @@ public:
 	const Size2D BtnSize = {150, 30};
 
 private:
+	HINSTANCE		HIns;
+	HWND			ListBox = 0;
+	DBListContainer ListContainer;
+	Size2D			WindowSize;
+
 	// Components
 	DBWindowsManager* WindowManager = nullptr;
 	DBDataManager*	  DataManager	= nullptr;
 	ButtonContainer	  Buttons;
+
+	ListElem ListData;
+	int		 ListBoxLastItem = 0;
 
 public:
 	void EndConstruct();
@@ -51,16 +61,11 @@ public:
 
 	bool IsPortraitModeEnabled();
 
-
 private:
-	HINSTANCE		HIns;
-	HWND			ListBox = 0;
-	DBListContainer ListContainer;
-
-	Size2D WindowSize;
-	void   InitListBox();
-	void   CreateListBox();
-	void   CreateButtons();
+	void InitListBox();
+	void CreateListBox();
+	void CreateButtons();
+	void ResetList();
 
 	static VOID CALLBACK DoubleClickTimer(HWND hWnd, UINT nMsg, UINT_PTR nIDEvent, DWORD dwTime);
 };

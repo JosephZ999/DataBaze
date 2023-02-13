@@ -7,20 +7,25 @@ void DBDataManager::LoadFiles()
 	const std::wstring FileName = GenerateFileLocation();
 
 	DBFamilyData Family;
+	DBFamilyData Family2;
+	DBFamilyData Family3;
 
 	DBPeopleData People;
-	People.Name		  = L"Doston";
-	People.FamilyName = L"Hamdamov";
-	Family.Parents.push_back(People);
+	People.Name		  = L"Joseph";
+	People.FamilyName = L"Zzz";
 	Family.Parents.push_back(People);
 
-	Family.Children.push_back(People);
-	Family.Children.push_back(People);
-	Family.Children.push_back(People);
+	People.Name		  = L"Di";
+	People.FamilyName = L"Moon";
+	Family2.Parents.push_back(People);
+
+	People.Name		  = L"DN";
+	People.FamilyName = L"Age";
+	Family3.Parents.push_back(People);
 
 	AddMember(Family);
-
-	OnUpdate.Broadcast();
+	AddMember(Family2);
+	AddMember(Family3);
 }
 
 void DBDataManager::AddMember(const DBFamilyData& MemberData)
@@ -77,7 +82,7 @@ bool DBDataManager::SearchValidFolders()
 	bool SomeFileWasFound = false;
 	for (size_t i = 1; i <= MAX_FOLDERS_NUM; ++i)
 	{
-		const std::wstring FilePath = GenerateFileLocationById(i, true);
+		const std::wstring FilePath = GenerateFileLocationById(i);
 		std::ifstream	   File(FilePath);
 		if (File.good())
 		{
@@ -148,4 +153,49 @@ std::wstring DBDataManager::GenerateFileLocationById(int InId, bool CreateFolder
 		_wmkdir(Folder.c_str());
 	}
 	return Folder.append(L"\\data.json");
+}
+
+void DBDataManager::GetMembersList(std::vector<std::wstring>& OutList)
+{
+	auto FilePath = GenerateFileLocation();
+
+	Json::Reader FileReader;
+	Json::Value	 FileData;
+
+	std::ifstream File(FilePath);
+	FileReader.parse(File, FileData);
+	File.close();
+
+	for (size_t i = 0; i < FileData["Main"].size(); ++i)
+	{
+		OutList.push_back(GetMemberStatus(FileData["Main"], i));
+	}
+}
+
+std::wstring DBDataManager::GetMemberStatus(Json::Value& InData, int InId)
+{
+	std::string Info;
+	Info.append(InData[InId]["Member 1"]["Name"].asString()).append(" ");
+	Info.append(InData[InId]["Member 1"]["FamilyName"].asString());
+
+	std::wstring Status;
+	DBConvert::StringToWString(Info, Status);
+	return Status;
+}
+
+void DBDataManager::SelectMember(int InMemberId)
+{
+	SelectedMemberId = InMemberId;
+}
+
+void DBDataManager::SetFolder(size_t FolderId)
+{
+	if (ValidFolders->size() == 0) return;
+
+	if (FolderId >= ValidFolders->size())
+	{
+	}
+	else if (FolderId < 0)
+	{
+	}
 }

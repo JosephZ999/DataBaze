@@ -82,6 +82,22 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
+  <PropertyGroup Label="Vcpkg" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <VcpkgInstalledDir>
+    </VcpkgInstalledDir>
+  </PropertyGroup>
+  <PropertyGroup Label="Vcpkg" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <VcpkgInstalledDir>
+    </VcpkgInstalledDir>
+  </PropertyGroup>
+  <PropertyGroup Label="Vcpkg" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <VcpkgInstalledDir>
+    </VcpkgInstalledDir>
+  </PropertyGroup>
+  <PropertyGroup Label="Vcpkg" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <VcpkgInstalledDir>
+    </VcpkgInstalledDir>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <PrecompiledHeader>
@@ -91,11 +107,12 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Users\devil\source\repos\DataBaze\DataBaze\Source;C:\Users\devil\source\repos\DataBaze\DataBaze;C:\Users\devil\source\repos\DataBaze\DataBaze\Source\Public\Windows;C:\Users\devil\source\repos\DataBaze\DataBaze\Source\Public\Utils;C:\Users\devil\source\repos\DataBaze\DataBaze\Source\Public\Components;C:\Users\devil\source\repos\DataBaze\DataBaze\Source\Public;C:\Users\devil\source\repos\DataBaze\DataBaze\Source\Public\DataTypes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\devil\source\repos\DataBaze\DataBaze\Source;C:\Users\devil\source\repos\DataBaze\DataBaze;C:\Users\devil\source\repos\DataBaze\DataBaze\Source\Public\Windows;C:\Users\devil\source\repos\DataBaze\DataBaze\Source\Public\Utils;C:\Users\devil\source\repos\DataBaze\DataBaze\Source\Public\Components;C:\Users\devil\source\repos\DataBaze\DataBaze\Source\Public;C:\Users\devil\source\repos\DataBaze\DataBaze\Source\Public\DataTypes;C:\Users\devil\source\repos\DataBaze\DataBaze\Json\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>%(AdditionalDependencies);C:\Users\devil\source\repos\DataBaze\DataBaze\Json\lib\jsoncpp.lib</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -107,11 +124,12 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Users\devil\source\repos\DataBaze\DataBaze\Source;C:\Users\devil\source\repos\DataBaze\DataBaze;C:\Users\devil\source\repos\DataBaze\DataBaze\Source\Public\Windows;C:\Users\devil\source\repos\DataBaze\DataBaze\Source\Public\Utils;C:\Users\devil\source\repos\DataBaze\DataBaze\Source\Public\Components;C:\Users\devil\source\repos\DataBaze\DataBaze\Source\Public;C:\Users\devil\source\repos\DataBaze\DataBaze\Source\Public\DataTypes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\devil\source\repos\DataBaze\DataBaze\Source;C:\Users\devil\source\repos\DataBaze\DataBaze;C:\Users\devil\source\repos\DataBaze\DataBaze\Source\Public\Windows;C:\Users\devil\source\repos\DataBaze\DataBaze\Source\Public\Utils;C:\Users\devil\source\repos\DataBaze\DataBaze\Source\Public\Components;C:\Users\devil\source\repos\DataBaze\DataBaze\Source\Public;C:\Users\devil\source\repos\DataBaze\DataBaze\Source\Public\DataTypes;C:\Users\devil\source\repos\DataBaze\DataBaze\Json\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>%(AdditionalDependencies);C:\Users\devil\source\repos\DataBaze\DataBaze\Json\lib\jsoncpp.lib</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -125,13 +143,14 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Users\devil\source\repos\DataBaze\DataBaze\Source;C:\Users\devil\source\repos\DataBaze\DataBaze;C:\Users\devil\source\repos\DataBaze\DataBaze\Source\Public\Windows;C:\Users\devil\source\repos\DataBaze\DataBaze\Source\Public\Utils;C:\Users\devil\source\repos\DataBaze\DataBaze\Source\Public\Components;C:\Users\devil\source\repos\DataBaze\DataBaze\Source\Public;C:\Users\devil\source\repos\DataBaze\DataBaze\Source\Public\DataTypes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\devil\source\repos\DataBaze\DataBaze\Source;C:\Users\devil\source\repos\DataBaze\DataBaze;C:\Users\devil\source\repos\DataBaze\DataBaze\Source\Public\Windows;C:\Users\devil\source\repos\DataBaze\DataBaze\Source\Public\Utils;C:\Users\devil\source\repos\DataBaze\DataBaze\Source\Public\Components;C:\Users\devil\source\repos\DataBaze\DataBaze\Source\Public;C:\Users\devil\source\repos\DataBaze\DataBaze\Source\Public\DataTypes;C:\Users\devil\source\repos\DataBaze\DataBaze\Json\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>%(AdditionalDependencies);C:\Users\devil\source\repos\DataBaze\DataBaze\Json\lib\jsoncpp.lib</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -145,13 +164,14 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Users\devil\source\repos\DataBaze\DataBaze\Source;C:\Users\devil\source\repos\DataBaze\DataBaze;C:\Users\devil\source\repos\DataBaze\DataBaze\Source\Public\Windows;C:\Users\devil\source\repos\DataBaze\DataBaze\Source\Public\Utils;C:\Users\devil\source\repos\DataBaze\DataBaze\Source\Public\Components;C:\Users\devil\source\repos\DataBaze\DataBaze\Source\Public;C:\Users\devil\source\repos\DataBaze\DataBaze\Source\Public\DataTypes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\devil\source\repos\DataBaze\DataBaze\Source;C:\Users\devil\source\repos\DataBaze\DataBaze;C:\Users\devil\source\repos\DataBaze\DataBaze\Source\Public\Windows;C:\Users\devil\source\repos\DataBaze\DataBaze\Source\Public\Utils;C:\Users\devil\source\repos\DataBaze\DataBaze\Source\Public\Components;C:\Users\devil\source\repos\DataBaze\DataBaze\Source\Public;C:\Users\devil\source\repos\DataBaze\DataBaze\Source\Public\DataTypes;C:\Users\devil\source\repos\DataBaze\DataBaze\Json\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>%(AdditionalDependencies);C:\Users\devil\source\repos\DataBaze\DataBaze\Json\lib\jsoncpp.lib</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>

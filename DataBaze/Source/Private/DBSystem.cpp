@@ -29,9 +29,12 @@ DBSystem::~DBSystem()
 
 void DBSystem::EndConstruct()
 {
+	DataManager->OnUpdate.Bind(this, &DBSystem::OnDataUpdated);
+
 	CreateListBox();
 	CreateButtons();
 
+	// DataManager->LoadFiles();
 	if (DataManager->SearchValidFolders())
 	{
 		InitListBox();
@@ -45,13 +48,18 @@ DBInterface* DBSystem::GetSystem()
 
 void DBSystem::InitListBox()
 {
-	DataManager->OnUpdate.Bind(this, &DBSystem::OnDataUpdated);
-	DataManager->LoadFiles();
+	DataManager->GetMembersList(ListData);
+
+	ResetList();
+	for (auto& Elem : ListData)
+	{
+		int ItemId = SendMessage(ListBox, LB_ADDSTRING, 0, (LPARAM)Elem.c_str());
+		SendMessage(ListBox, LB_SETITEMDATA, ItemId, ListBoxLastItem);
+		++ListBoxLastItem;
+	}
 }
 
-void DBSystem::OnDataUpdated()
-{
-}
+void DBSystem::OnDataUpdated() {}
 
 void DBSystem::CreateListBox()
 {
@@ -114,6 +122,12 @@ void DBSystem::CreateButtons()
 	}
 }
 
+void DBSystem::ResetList()
+{
+	SendMessage(ListBox, LB_RESETCONTENT, 0, 0);
+	ListBoxLastItem = 0;
+}
+
 VOID DBSystem::DoubleClickTimer(HWND hWnd, UINT nMsg, UINT_PTR nIDEvent, DWORD dwTime)
 {
 	KillTimer(NULL, TimerId);
@@ -136,7 +150,22 @@ void DBSystem::CallCommand(HWND& hWnd, UINT Message, WPARAM& WParam, LPARAM& LPa
 			// Get item data.
 			int i = (int)SendMessage(ListBox, LB_GETITEMDATA, lbItem, 0);
 
-			MessageBox(NULL, L"Sorry. It does't work", L"Dialog Box", MB_OK);
+			std::wstring MyMessage;
+			MyMessage = std::to_wstring(i);
+
+			MessageBox(NULL, MyMessage.c_str(), L"Dialog Box", MB_OK);
+			return;
+		}
+		case LBN_SELCHANGE:
+		{
+			// Get selected index.
+			int lbItem = (int)SendMessage(ListBox, LB_GETCURSEL, 0, 0);
+
+			// Get item data.
+			int i = (int)SendMessage(ListBox, LB_GETITEMDATA, lbItem, 0);
+
+			DataManager->SelectMember(i);
+			return;
 		}
 		} // switch end
 	}
