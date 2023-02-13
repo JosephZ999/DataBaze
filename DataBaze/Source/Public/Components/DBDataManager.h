@@ -27,7 +27,7 @@ private:
 
 public:
 	void SelectMember(int InMemberId);
-	// void ChangeFolder(bool bNext);
+	bool ChangeFolder(bool bNext);
 
 	bool SearchValidFolders();
 	int	 GetValidFoldersNum();
@@ -37,7 +37,7 @@ public:
 	void GetMembersList(std::vector<std::wstring>& OutList);
 
 private:
-	void SetFolder(size_t FolderId);
+	bool SetFolder(int FolderId);
 
 	bool		 CheckFile(const std::wstring& InFilePath);
 	void		 FillFamilyInfo(const DBFamilyData& MemberData, Json::Value& OutValue);

@@ -188,14 +188,27 @@ void DBDataManager::SelectMember(int InMemberId)
 	SelectedMemberId = InMemberId;
 }
 
-void DBDataManager::SetFolder(size_t FolderId)
+bool DBDataManager::ChangeFolder(bool bNext)
 {
-	if (ValidFolders->size() == 0) return;
+	return SetFolder(bNext ? SelectedFolderId + 1 : SelectedFolderId - 1);
+}
 
-	if (FolderId >= ValidFolders->size())
+bool DBDataManager::SetFolder(int FolderId)
+{
+	if (ValidFolders->size() == 0) return false;
+
+	const int InitialValue = SelectedFolderId;
+
+	if (FolderId >= (int)ValidFolders->size())
 	{
+		SelectedFolderId = ValidFolders->size() - 1;
+		return InitialValue != SelectedFolderId;
 	}
 	else if (FolderId < 0)
 	{
+		SelectedFolderId = 0;
+		return InitialValue != SelectedFolderId;
 	}
+	SelectedFolderId = FolderId;
+	return InitialValue != SelectedFolderId;
 }
