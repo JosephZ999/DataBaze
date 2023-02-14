@@ -66,32 +66,8 @@ void DBSystem::OnDataUpdated() {}
 
 void DBSystem::CreateListBox()
 {
-	// Init ListContainer
-	ListContainer.Items.push_back(DBFamilyData({DBPeopleData("Abdu")}, {}, false));
-	ListContainer.Items.push_back(DBFamilyData({DBPeopleData("Amir")}, {}, false));
-	ListContainer.Items.push_back(DBFamilyData({DBPeopleData("Piyoz")}, {}, false));
-	ListContainer.Items.push_back(DBFamilyData({DBPeopleData("Hechkim")}, {}, false));
-	ListContainer.Items.push_back(DBFamilyData({DBPeopleData("Komp")}, {}, false));
-
 	ListBox = CreateWindow(L"LISTBOX", L"button", WS_CLIPSIBLINGS | WS_VISIBLE | WS_CHILD | LBS_STANDARD, 200, 25, 500, 300, MainWindow,
 		(HMENU)IDC_LISTBOX, NULL, NULL);
-
-	for (auto Family : ListContainer.Items)
-	{
-		if (! Family.bFamily)
-		{
-			std::wstring ItemName;
-			DBConvert::StringToWString(Family.Parents[0].Name, ItemName);
-			SendMessage(ListBox, LB_ADDSTRING, 0, (LPARAM)ItemName.c_str());
-		}
-		else
-		{
-			for (auto Parents : Family.Parents)
-			{
-				SendMessage(ListBox, LB_ADDSTRING, 0, (LPARAM)L"People (Family)");
-			}
-		}
-	}
 	DBLib::SetFontSize(ListBox, 20);
 }
 

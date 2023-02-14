@@ -131,8 +131,6 @@ struct DBFamilyData
 	DBFamilyData()
 		: Parents({})
 		, Children({})
-		, bFamily(false)
-		, bDouble(false)
 		, bLocked(false)
 	{
 	}
@@ -214,11 +212,11 @@ enum EPeopleData
 	PD_BirthYear,
 
 	PD_BornCountry,
-	PD_EducationDegree,
 	PD_ImageFile,
 
 	PD_NotChildInfo,
 
+	PD_EducationDegree,
 	PD_WhereLive,
 
 	PD_OnlyParentInfo,

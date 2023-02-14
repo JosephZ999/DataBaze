@@ -120,10 +120,15 @@ DBWindowWriter::DBWindowWriter(DBInterface* InOwner)
 	}
 }
 
-void DBWindowWriter::OnConstruct() {}
+void DBWindowWriter::OnConstruct()
+{
+	// we can reset all data
+}
 
 void DBWindowWriter::SelectWriteData(EPeopleType PT)
 {
+	if (Finish) return;
+
 	switch (PT)
 	{
 	case PT_Parent:
@@ -137,6 +142,12 @@ void DBWindowWriter::SelectWriteData(EPeopleType PT)
 	}
 	case PT_Spouse:
 	{
+		if (Status != EMeritialStatus::MS_Married)
+		{
+			NextPeople();
+			break;
+		}
+
 		if (MembersData.Parents.size() < 2)
 		{
 			MembersData.Parents.push_back(DBPeopleData());
@@ -178,7 +189,12 @@ void DBWindowWriter::WriteData()
 		{
 		case PD_NotChildInfo: NextLine(); break;
 		case PD_OnlyParentInfo: NextLine(); break;
-		case PD_Max: NextPeople(); break;
+		case PD_Max:
+		{
+			FinishWriting();
+			NextPeople();
+			break;
+		}
 		}
 		break;
 	}
@@ -187,7 +203,12 @@ void DBWindowWriter::WriteData()
 		switch (PeopleData)
 		{
 		case PD_NotChildInfo: NextLine(); break;
-		case PD_OnlyParentInfo: NextPeople(); break;
+		case PD_OnlyParentInfo:
+		{
+			FinishWriting();
+			NextPeople();
+			break;
+		}
 		} // switch
 		break;
 	}
@@ -195,7 +216,12 @@ void DBWindowWriter::WriteData()
 	{
 		switch (PeopleData)
 		{
-		case PD_NotChildInfo: NextPeople(); break;
+		case PD_NotChildInfo:
+		{
+			FinishWriting();
+			NextPeople();
+			break;
+		}
 		}
 		break;
 	}
@@ -251,7 +277,13 @@ void DBWindowWriter::UpdateInfo()
 
 void DBWindowWriter::SelectChild(size_t Index)
 {
-	while (MembersData.Children.size() < Index)
+	if (Index > ChildrenNum)
+	{
+		NextPeople();
+		return;
+	}
+
+	if (MembersData.Children.size() < Index)
 	{
 		MembersData.Children.push_back(DBPeopleData());
 	}
@@ -311,7 +343,7 @@ void DBWindowWriter::OpenImage()
 	while (! ImageCopied)
 	{
 		OPENFILENAME ofn;		  // common dialog box structure
-		char		 szFile[260]; // buffer for file name
+		wchar_t		 szFile[512]; // buffer for file name
 		// HANDLE    hf;	      // file handle
 
 		// Initialize OPENFILENAME
@@ -374,25 +406,50 @@ bool DBWindowWriter::CopyImage()
 		MessageBox(NULL, L"File exists", L"Dialog Box", MB_OK);
 	}*/
 
-	if (_wmkdir(ProjectPath.c_str()))
-	{
-		ProjectPath.append(L"/asd.jpg");
+	_wmkdir(ProjectPath.c_str());
 
-		if (CopyFile(ImagePath.c_str(), ProjectPath.c_str(), true))
+	ProjectPath.append(L"\\asd.jpg");
+
+	if (CopyFile(ImagePath.c_str(), ProjectPath.c_str(), true))
+	{
+		return true;
+	}
+	else
+	{
+		std::wstring ErrorCode(L"Error Code: ");
+		ErrorCode.append(std::to_wstring(GetLastError()));
+		OutputDebugString(ErrorCode.c_str());
+		MessageBox(NULL, L"Error", L"Dialog Box", MB_OK);
+		// ERROR_PATH_NOT_FOUND //  error codes
+		return false;
+	}
+
+	return false;
+}
+
+void DBWindowWriter::FinishWriting()
+{
+	const bool IsParent = PeopleType == EPeopleType::PT_Parent;
+	const bool IsSpouse = PeopleType == EPeopleType::PT_Spouse;
+	const bool IsChild = PeopleType != (IsParent || IsSpouse);
+	
+	if (IsParent)
+	{
+		if (Status != EMeritialStatus::MS_Married && ChildrenNum == EnteredChildrenNum)
 		{
-			return true;
-		}
-		else
-		{
-			std::wstring ErrorCode(L"Error Code: ");
-			ErrorCode.append(std::to_wstring(GetLastError()));
-			OutputDebugString(ErrorCode.c_str());
-			MessageBox(NULL, L"Error", L"Dialog Box", MB_OK);
-			// ERROR_PATH_NOT_FOUND //  error codes
-			return false;
+
 		}
 	}
-	return false;
+
+	if (IsChild)
+	{
+		Finish = ChildrenNum == EnteredChildrenNum;
+	}
+
+	if (Finish)
+	{
+
+	}
 }
 
 void DBWindowWriter::SetItem(std::string& Info)
@@ -461,7 +518,7 @@ void DBWindowWriter::SetItem(std::string& Info)
 	case PD_ChildrenNum:
 	{
 		MembersData.ChildrenNum = DBConvert::StringToInt(Info);
-		ChildrenNum = MembersData.ChildrenNum; // local
+		ChildrenNum				= MembersData.ChildrenNum; // local
 		break;
 	}
 	case PD_MailCountry:
