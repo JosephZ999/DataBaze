@@ -212,24 +212,26 @@ void DBWindowWriter::WriteData()
 		} // switch
 		break;
 	}
-	default: // children
-	{
-		switch (PeopleData)
-		{
-		case PD_NotChildInfo:
-		{
-			FinishWriting();
-			NextPeople();
-			break;
-		}
-		}
-		break;
-	}
-	}
+	} // switch
+
+	const bool IsParent = PeopleType == EPeopleType::PT_Parent;
+	const bool IsSpouse = PeopleType == EPeopleType::PT_Spouse;
+	const bool IsChild = !(IsParent || IsSpouse);
 
 	if (PeopleData == PD_ImageFile)
 	{
 		OpenImage();
+		if (IsParent || IsSpouse)
+		{
+			NextLine();
+			NextLine();
+		}
+		else
+		{
+			++EnteredChildrenNum;
+			FinishWriting();
+			NextPeople();
+		}
 	}
 }
 
@@ -380,9 +382,6 @@ void DBWindowWriter::OpenImage()
 			ImageCopied = CopyImage();
 		}
 	}
-
-	NextLine();
-	NextLine();
 }
 
 bool DBWindowWriter::CopyImage()
@@ -431,14 +430,16 @@ void DBWindowWriter::FinishWriting()
 {
 	const bool IsParent = PeopleType == EPeopleType::PT_Parent;
 	const bool IsSpouse = PeopleType == EPeopleType::PT_Spouse;
-	const bool IsChild = PeopleType != (IsParent || IsSpouse);
+	const bool IsChild = !(IsParent || IsSpouse);
 	
 	if (IsParent)
 	{
-		if (Status != EMeritialStatus::MS_Married && ChildrenNum == EnteredChildrenNum)
-		{
+		Finish = Status != EMeritialStatus::MS_Married && ChildrenNum == EnteredChildrenNum;
+	}
 
-		}
+	if (IsSpouse)
+	{
+		Finish = ChildrenNum == EnteredChildrenNum;
 	}
 
 	if (IsChild)
@@ -448,7 +449,7 @@ void DBWindowWriter::FinishWriting()
 
 	if (Finish)
 	{
-
+		MessageBox(NULL, L"Ну как бы ок", L"Dialog Box", MB_OK);
 	}
 }
 
