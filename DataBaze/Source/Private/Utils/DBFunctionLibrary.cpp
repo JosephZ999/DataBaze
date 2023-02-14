@@ -155,7 +155,6 @@ std::wstring DBPaths::GetProjectPath()
 	return std::wstring(buffer).substr(0, pos);
 }
 
-
 // Converter
 using convert_t = std::codecvt_utf8<wchar_t>;
 std::wstring_convert<convert_t, wchar_t> strconverter;
@@ -168,4 +167,13 @@ void DBConvert::StringToWString(const std::string& String, std::wstring& OutWStr
 void DBConvert::WStringToString(const std::wstring& WString, std::string& OutString)
 {
 	OutString = strconverter.to_bytes(WString);
+}
+
+int DBConvert::StringToInt(const std::string& InString)
+{
+	if (InString.size() == 0)
+	{
+		return 0;
+	}
+	return std::stoi(InString);
 }

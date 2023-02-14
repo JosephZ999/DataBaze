@@ -36,6 +36,7 @@ namespace DBConvert
 {
 void StringToWString(const std::string& String, std::wstring& OutWString);
 void WStringToString(const std::wstring& WString, std::string& OutString);
+int StringToInt(const std::string& InString);
 } // namespace DBConvert
 
 template <typename To, typename From> //

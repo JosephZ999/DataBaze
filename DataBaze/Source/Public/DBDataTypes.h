@@ -76,6 +76,19 @@ public:
 	bool IsEmpty() { return ButtonLastIndex == 0; }
 };
 
+enum EEducationDegree
+{
+	ED_HighSchoolNoDegree = 1,
+	ED_HighSchoolDegree,
+	ED_vocationalSchool,
+	ED_SomeUniversityCourses,
+	ED_UniversityDegree,
+	ED_SomeGraduatelevelCourses,
+	ED_MastersDegree,
+	ED_SomeDoctoralCourses,
+	ED_Doctorate
+};
+
 struct DBPeopleData
 {
 	DBPeopleData() {}
@@ -87,14 +100,19 @@ struct DBPeopleData
 	std::string Name;		//
 	std::string FamilyName; //
 
-	std::string BirthMonth; //
-	std::string BirthDay;	//
-	std::string BirthYear;	//
+	int Gender;		// 1 Mele and 2 Femele
+	int BirthMonth; //
+	int BirthDay;	//
+	int BirthYear;	//
 
 	std::string BirthCountry;	 //
 	std::string WhereLive;		 //
-	std::string EducationDegree; //
+	int			EducationDegree; //
 	std::string ImageFile;		 //
+
+	bool IsMele() const { return Gender == 1; }
+
+	EEducationDegree GetEducation() const;
 };
 
 enum EMeritialStatus
@@ -135,17 +153,18 @@ struct DBFamilyData
 	bool bDouble;
 	bool bLocked;
 
-	std::string MaritalStatus; // use enum EMeritialStatus
-	std::string MailCountry;   //
-	std::string MailCity;	   //
-	std::string MailHome;	   //
-	std::string MailZipCode;   //
+	int			MaritalStatus;	// use enum EMeritialStatus
+	std::string MailCountry;	//
+	std::string MailCity;		//
+	std::string MailStreet;		//
+	std::string MailHomeNumber; //
+	int			MailZipCode;	//
 
 	int	 GetChildrenNum() const;
 	bool IsHasChildren() const;
 	bool IsHasASpouse() const;
 
-	EMeritialStatus GetStatus() const {}
+	EMeritialStatus GetStatus() const;
 };
 
 class DBListContainer
@@ -192,6 +211,7 @@ enum EPeopleData
 	PD_None = 0,
 	PD_Name,
 	PD_FamilyName,
+	PD_Gender,
 
 	PD_BirthMonth,
 	PD_BirthDay,
@@ -211,7 +231,8 @@ enum EPeopleData
 	PD_ChildrenNum,
 	PD_MailCountry,
 	PD_MailCity,
-	PD_MailHome,
+	PD_MailStreet,
+	PD_MailHomeNumber,
 	PD_MailZipCode,
 	PD_Max,
 };

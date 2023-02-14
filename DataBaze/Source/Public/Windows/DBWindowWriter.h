@@ -24,30 +24,33 @@ public:
 	// Writing progress
 	DBPeopleData* DataToChange = nullptr;
 
-	EPeopleType PeopleType = EPeopleType::PT_Parent;
-	EPeopleData PeopleData = EPeopleData::PD_Name;
-
+	EPeopleType		PeopleType	= EPeopleType::PT_Parent;
+	EPeopleData		PeopleData	= EPeopleData::PD_Name;
+	EMeritialStatus Status		= EMeritialStatus::MS_Unmarried;
+	int				ChildrenNum = 0;
+	std::wstring	ImagePath;
 
 public:
 	void OnConstruct();
-	
-	void SelectWriteData(EPeopleType PT);
+	bool CheckFormat();
 	void WriteData();
+	void SelectWriteData(EPeopleType PT);
+
+private:
+	void SetEditboxStyle(LONG Style = 0, int TextLimit = 0);
+	void SetItem(std::string& Info);
+
+
+
 	void UpdateInfo();
 	void SelectChild(size_t Index);
 	void SetInfoText(std::wstring& Text);
-	bool GetLineOfData(std::string*& OutData, EPeopleData DataType);
 
-	bool CheckData();
+
 	void UpdateEditStyle();
 
 	void NextPeople();
 	void NextLine();
 	void OpenImage();
 	bool CopyImage();
-
-	std::wstring ImagePath;
-
-private:
-	void SetEditboxStyle(LONG Style = 0, int TextLimit = 0);
 };

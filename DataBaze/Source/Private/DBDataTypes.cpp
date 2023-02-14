@@ -38,3 +38,13 @@ bool DBFamilyData::IsHasASpouse() const
 {
 	return Parents.size() > 1;
 }
+
+EMeritialStatus DBFamilyData::GetStatus() const
+{
+	return EMeritialStatus(static_cast<EMeritialStatus>(MaritalStatus));
+}
+
+EEducationDegree DBPeopleData::GetEducation() const
+{
+	return static_cast<EEducationDegree>(EducationDegree);
+}

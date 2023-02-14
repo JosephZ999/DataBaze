@@ -71,7 +71,7 @@ LRESULT CALLBACK WndWriterProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lP
 	{
 		if (! WriterObj) break;
 
-		if (WriterObj->CheckData())
+		if (WriterObj->CheckFormat())
 		{
 			WriterObj->WriteData();
 			WriterObj->SelectWriteData(WriterObj->PeopleType);
@@ -164,20 +164,10 @@ void DBWindowWriter::WriteData()
 
 	TCHAR buff[256];
 	GetWindowText(WriterEditBox.Window, buff, 256);
+
 	std::string OutValue;
 	DBConvert::WStringToString(buff, OutValue);
-
-	//
-	std::string* nText = nullptr;
-	if (GetLineOfData(nText, PeopleData))
-	{
-		if (nText)
-		{
-			*nText = OutValue;
-			OutputDebugString(std::wstring(buff).append(L"\n").c_str());
-		}
-	}
-	//
+	SetItem(OutValue);
 
 	NextLine();
 	switch (PeopleType)
@@ -240,6 +230,7 @@ void DBWindowWriter::UpdateInfo()
 	{ // clang-format off
 	case PD_Name:				InfoText.append(L"Name");						break;
 	case PD_FamilyName:			InfoText.append(L"Family name");				break;
+	case PD_Gender:				InfoText.append(L"Gender");						break;
 	case PD_BirthMonth:			InfoText.append(L"Birth Month");				break;
 	case PD_BirthDay:			InfoText.append(L"Birth Day");					break;
 	case PD_BirthYear:			InfoText.append(L"Birth Year");					break;
@@ -250,7 +241,8 @@ void DBWindowWriter::UpdateInfo()
 	case PD_ChildrenNum:		InfoText.append(L"Children Num");				break;
 	case PD_MailCountry:		InfoText.append(L"Mailing country");			break;
 	case PD_MailCity:			InfoText.append(L"Mailing city");				break;
-	case PD_MailHome:			InfoText.append(L"Mailing home number");		break;
+	case PD_MailStreet:			InfoText.append(L"Mailing Street");				break;
+	case PD_MailHomeNumber:		InfoText.append(L"Mailing home number");		break;
 	case PD_MailZipCode:		InfoText.append(L"Mailing ZipCode");			break;
 	} // clang-format on
 
@@ -271,37 +263,15 @@ void DBWindowWriter::SetInfoText(std::wstring& Text)
 	SendMessage(WriterInfoBox.Window, WM_SETTEXT, 0, (LPARAM)Text.c_str());
 }
 
-bool DBWindowWriter::GetLineOfData(std::string*& OutData, EPeopleData DataType)
+bool DBWindowWriter::CheckFormat()
 {
-	if (! DataToChange) return false;
+	TCHAR buff[256];
+	GetWindowText(WriterEditBox.Window, buff, 256);
+	std::string Text;
+	DBConvert::WStringToString(buff, Text);
 
-	switch (DataType)
-	{ // clang-format off
-	case PD_Name:				OutData = &DataToChange->Name;				return true;
-	case PD_FamilyName:			OutData = &DataToChange->FamilyName;		return true;
-	case PD_BirthMonth:			OutData = &DataToChange->BirthMonth;		return true;
-	case PD_BirthDay:			OutData = &DataToChange->BirthDay;			return true;
-	case PD_BirthYear:			OutData = &DataToChange->BirthYear;			return true;
-	case PD_BornCountry:		OutData = &DataToChange->BirthCountry;		return true;
+	if (Text.size() == 0) return false;
 
-	// Only Parent Info:
-	case PD_WhereLive:			OutData = &DataToChange->WhereLive;			return true;
-
-	case PD_MailCountry:		OutData = &MembersData.MailCountry;			return true;
-	case PD_MailCity:			OutData = &MembersData.MailCity;			return true;
-	case PD_MailHome:			OutData = &MembersData.MailHome;			return true;
-	case PD_MailZipCode:		OutData = &MembersData.MailZipCode;			return true;
-
-	case PD_EducationDegree:	OutData = &DataToChange->EducationDegree;	return true;
-	case PD_MaritalStatus:		OutData = &MembersData.MaritalStatus;		return true;
-	// case PD_ChildrenNum:		OutData = &std::to_wstring(MembersData.ChildrenNum);		return true;
-	} // clang-format on
-
-	return false;
-}
-
-bool DBWindowWriter::CheckData()
-{
 	return true;
 }
 
@@ -309,6 +279,7 @@ void DBWindowWriter::UpdateEditStyle()
 {
 	switch (PeopleData)
 	{	// clang-format off
+	case PD_Gender:				SetEditboxStyle(ES_NUMBER, 1); break;
 	case PD_BirthMonth:			SetEditboxStyle(ES_NUMBER, 2); break;
 	case PD_BirthDay:			SetEditboxStyle(ES_NUMBER, 2); break;
 	case PD_BirthYear:			SetEditboxStyle(ES_NUMBER, 4); break;
@@ -422,6 +393,102 @@ bool DBWindowWriter::CopyImage()
 		}
 	}
 	return false;
+}
+
+void DBWindowWriter::SetItem(std::string& Info)
+{
+	if (! DataToChange) return;
+
+	switch (PeopleData)
+	{
+
+	case PD_Name:
+	{
+		DataToChange->Name = Info;
+		break;
+	}
+	case PD_FamilyName:
+	{
+		DataToChange->FamilyName = Info;
+		break;
+	}
+	case PD_Gender:
+	{
+		DataToChange->Gender = DBConvert::StringToInt(Info);
+		break;
+	}
+	case PD_BirthMonth:
+	{
+		DataToChange->BirthMonth = DBConvert::StringToInt(Info);
+		break;
+	}
+	case PD_BirthDay:
+	{
+		DataToChange->BirthDay = DBConvert::StringToInt(Info);
+		break;
+	}
+	case PD_BirthYear:
+	{
+		DataToChange->BirthYear = DBConvert::StringToInt(Info);
+		break;
+	}
+	case PD_BornCountry:
+	{
+		DataToChange->BirthCountry = Info;
+		break;
+	}
+	case PD_EducationDegree:
+	{
+		DataToChange->EducationDegree = DBConvert::StringToInt(Info);
+		break;
+	}
+	case PD_ImageFile:
+	{
+		DataToChange->ImageFile = Info;
+		break;
+	}
+	case PD_WhereLive:
+	{
+		DataToChange->WhereLive = Info;
+		break;
+	}
+	case PD_MaritalStatus:
+	{
+		MembersData.MaritalStatus = DBConvert::StringToInt(Info);
+		Status					  = MembersData.GetStatus(); // local
+		break;
+	}
+	case PD_ChildrenNum:
+	{
+		ChildrenNum = DBConvert::StringToInt(Info); // local
+		break;
+	}
+	case PD_MailCountry:
+	{
+		MembersData.MailCountry = Info;
+		break;
+	}
+	case PD_MailCity:
+	{
+		MembersData.MailCity = Info;
+		break;
+	}
+	case PD_MailStreet:
+	{
+		MembersData.MailStreet = Info;
+		break;
+	}
+	case PD_MailHomeNumber:
+	{
+		MembersData.MailHomeNumber = Info;
+		break;
+	}
+	case PD_MailZipCode:
+	{
+		MembersData.MailZipCode = DBConvert::StringToInt(Info);
+		break;
+	}
+	}
 }
 
 void DBWindowWriter::SetEditboxStyle(LONG Style, int TextLimit)
