@@ -107,6 +107,9 @@
     <ClInclude Include="Source\Public\Utils\DBJsonUtils.h">
       <Filter>Source\Public\Utils</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Public\Utils\DBCharCodes.h">
+      <Filter>Source\Public\Utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DataBaze.cpp">

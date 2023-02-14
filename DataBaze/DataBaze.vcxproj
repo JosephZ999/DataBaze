@@ -187,6 +187,7 @@
     <ClInclude Include="Source\Public\DBInterface.h" />
     <ClInclude Include="Source\Public\DBSystem.h">
     </ClInclude>
+    <ClInclude Include="Source\Public\Utils\DBCharCodes.h" />
     <ClInclude Include="Source\Public\Utils\DBDelegate.h" />
     <ClInclude Include="Source\Public\Utils\DBFunctionLibrary.h" />
     <ClInclude Include="Source\Public\Utils\DBJsonUtils.h" />
