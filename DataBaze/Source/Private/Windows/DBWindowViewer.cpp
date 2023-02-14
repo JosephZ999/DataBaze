@@ -67,7 +67,7 @@ DBWindowViewer::DBWindowViewer(DBInterface* InOwner)
 void DBWindowViewer::OnConstruct()
 {
 	std::wstring message;
-	message = MemberData.Parents[0].Name;
+	DBConvert::StringToWString(MemberData.Parents[0].Name, message);
 	MessageBox(NULL, message.c_str(), L"Dialog Box", MB_OK);
 }
 

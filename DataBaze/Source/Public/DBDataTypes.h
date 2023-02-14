@@ -79,28 +79,27 @@ public:
 struct DBPeopleData
 {
 	DBPeopleData() {}
-	DBPeopleData(std::wstring InName)
+	DBPeopleData(std::string InName)
 		: Name(InName)
 	{
 	}
 
-	int			 Id;
-	std::wstring Name;		 //
-	std::wstring FamilyName; //
+	std::string Name;		//
+	std::string FamilyName; //
 
-	int BirthMonth; //
-	int BirthDay;	//
-	int BirthYear;	//
+	std::string BirthMonth; //
+	std::string BirthDay;	//
+	std::string BirthYear;	//
 
-	std::wstring BirthCountry;	  //
-	std::wstring WhereLive;		  //
-	std::wstring EducationDegree; //
-	std::wstring ImageFile;		  //
+	std::string BirthCountry;	 //
+	std::string WhereLive;		 //
+	std::string EducationDegree; //
+	std::string ImageFile;		 //
 };
 
 enum EMeritialStatus
 {
-	MS_Unmarried,
+	MS_Unmarried = 1,
 	MS_Married,
 	MS_USMarried,
 	MS_Divorced,
@@ -136,15 +135,17 @@ struct DBFamilyData
 	bool bDouble;
 	bool bLocked;
 
-	EMeritialStatus MaritalStatus; // use enum EMeritialStatus
-	std::wstring	MailCountry;   //
-	std::wstring	MailCity;	   //
-	std::wstring	MailHome;	   //
-	std::wstring	MailZipCode;   //
+	std::string MaritalStatus; // use enum EMeritialStatus
+	std::string MailCountry;   //
+	std::string MailCity;	   //
+	std::string MailHome;	   //
+	std::string MailZipCode;   //
 
 	int	 GetChildrenNum() const;
 	bool IsHasChildren() const;
 	bool IsHasASpouse() const;
+
+	EMeritialStatus GetStatus() const {}
 };
 
 class DBListContainer

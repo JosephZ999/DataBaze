@@ -36,7 +36,7 @@ public:
 	void UpdateInfo();
 	void SelectChild(size_t Index);
 	void SetInfoText(std::wstring& Text);
-	bool GetLineOfData(std::wstring*& OutData, EPeopleData DataType);
+	bool GetLineOfData(std::string*& OutData, EPeopleData DataType);
 
 	bool CheckData();
 	void UpdateEditStyle();

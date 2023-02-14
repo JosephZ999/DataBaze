@@ -11,16 +11,16 @@ void DBDataManager::LoadFiles()
 	DBFamilyData Family3;
 
 	DBPeopleData People;
-	People.Name		  = L"Joseph";
-	People.FamilyName = L"Zzz";
+	People.Name		  = "Joseph";
+	People.FamilyName = "Zzz";
 	Family.Parents.push_back(People);
 
-	People.Name		  = L"Di";
-	People.FamilyName = L"Moon";
+	People.Name		  = "Di";
+	People.FamilyName = "Moon";
 	Family2.Parents.push_back(People);
 
-	People.Name		  = L"DN";
-	People.FamilyName = L"Age";
+	People.Name		  = "DN";
+	People.FamilyName = "Age";
 	Family3.Parents.push_back(People);
 
 	AddMember(Family);
@@ -76,8 +76,8 @@ void DBDataManager::LoadMember(DBFamilyData& OutMemberData)
 {
 	DBFamilyData Member;
 	DBPeopleData Parent;
-	Parent.Name		  = L"Joseph";
-	Parent.FamilyName = L"Zzz";
+	Parent.Name		  = "Joseph";
+	Parent.FamilyName = "Zzz";
 
 	Member.Parents.push_back(Parent);
 	OutMemberData = Member;
@@ -131,12 +131,9 @@ void DBDataManager::FillFamilyInfo(const DBFamilyData& MemberData, Json::Value& 
 	Json::Value FamilyMember;
 	Json::Value MemberItem;
 
-	std::string StringData;
-	DBConvert::WStringToString(MemberData.Parents[0].Name, StringData);
-	MemberItem["Name"] = Json::Value(StringData);
+	MemberItem["Name"] = Json::Value(MemberData.Parents[0].Name);
 
-	DBConvert::WStringToString(MemberData.Parents[0].FamilyName, StringData);
-	MemberItem["FamilyName"] = Json::Value(StringData);
+	MemberItem["FamilyName"] = Json::Value(MemberData.Parents[0].FamilyName);
 
 	FamilyMember["Member 1"] = MemberItem;
 	FamilyMember["Member 2"] = MemberItem;
