@@ -140,8 +140,6 @@ struct DBFamilyData
 	DBFamilyData(PeopleGroup InParents, PeopleGroup InChildren, bool IsFamily)
 		: Parents(InParents)
 		, Children(InChildren)
-		, bFamily(IsFamily)
-		, bDouble(false)
 		, bLocked(false)
 	{
 	}
@@ -149,8 +147,6 @@ struct DBFamilyData
 	PeopleGroup Parents;
 	PeopleGroup Children;
 
-	bool bFamily;
-	bool bDouble;
 	bool bLocked;
 
 	int			MaritalStatus;	// use enum EMeritialStatus

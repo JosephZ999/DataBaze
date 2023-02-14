@@ -129,15 +129,65 @@ void DBDataManager::FillFamilyInfo(const DBFamilyData& MemberData, Json::Value& 
 	const bool HasSpouse   = MemberData.IsHasASpouse();
 
 	Json::Value FamilyMember;
-	Json::Value MemberItem;
 
-	MemberItem["Name"] = Json::Value(MemberData.Parents[0].Name);
+	{
+		Json::Value Globals;
+		std::string Id = "Globals";
 
-	MemberItem["FamilyName"] = Json::Value(MemberData.Parents[0].FamilyName);
+		Globals[JGK_LOCK]			= Json::Value(MemberData.bLocked);
+		Globals[JGK_STATUS]			= Json::Value(MemberData.MaritalStatus);
+		Globals[JGK_CHILDNUM]		= Json::Value(MemberData.ChildrenNum);
+		Globals[JGK_MAILCOUNTRY]	= Json::Value(MemberData.MailCountry);
+		Globals[JGK_MAILCITY]		= Json::Value(MemberData.MailCity);
+		Globals[JGK_MAILSTREET]		= Json::Value(MemberData.MailStreet);
+		Globals[JGK_MAILHOMENUMBER] = Json::Value(MemberData.MailHomeNumber);
+		Globals[JGK_MAILZIP]		= Json::Value(MemberData.MailZipCode);
+		FamilyMember[Id]			= Globals;
+	}
 
-	FamilyMember["Member 1"] = MemberItem;
-	FamilyMember["Member 2"] = MemberItem;
-	OutValue				 = FamilyMember;
+	if (HasSpouse)
+	{
+		for (size_t i = 0; i < (HasSpouse ? 2 : 1); ++i)
+		{
+			Json::Value MemberItem;
+			std::string Id;
+			Id.append("Parent ").append(std::to_string(i + 1));
+
+			FillPeopleInfo(MemberData.Parents[i], MemberItem);
+			FamilyMember[Id] = MemberItem;
+		}
+	}
+
+	if (HasChildren)
+	{
+		for (size_t i = 0; i < MemberData.Children.size(); ++i)
+		{
+			Json::Value MemberItem;
+			std::string Id;
+			Id.append("Child ").append(std::to_string(i + 1));
+
+			FillPeopleInfo(MemberData.Children[i], MemberItem);
+			FamilyMember[Id] = MemberItem;
+		}
+	}
+
+	OutValue = FamilyMember;
+}
+
+void DBDataManager::FillPeopleInfo(const DBPeopleData& People, Json::Value& OutValue)
+{
+	OutValue[JPK_NAME]		 = Json::Value(People.Name);
+	OutValue[JPK_FAMILYNAME] = Json::Value(People.FamilyName);
+	OutValue[JPK_GENDER]	 = Json::Value(People.Gender);
+
+	OutValue[JPK_BIRTHMONTH] = Json::Value(People.BirthMonth);
+	OutValue[JPK_BIRTHDAY]	 = Json::Value(People.BirthDay);
+	OutValue[JPK_BIRTHYEAR]	 = Json::Value(People.BirthYear);
+
+	OutValue[JPK_BIRTHCOUNTRY] = Json::Value(People.BirthCountry);
+	OutValue[JPK_LIVECOUNTRY]  = Json::Value(People.WhereLive);
+	OutValue[JPK_IMAGE]		   = Json::Value(People.ImageFile);
+	OutValue[JPK_EDUCATION]	   = Json::Value(People.EducationDegree);
 }
 
 std::wstring DBDataManager::GenerateFileLocation(bool CreateFolder)
