@@ -460,7 +460,8 @@ void DBWindowWriter::SetItem(std::string& Info)
 	}
 	case PD_ChildrenNum:
 	{
-		ChildrenNum = DBConvert::StringToInt(Info); // local
+		MembersData.ChildrenNum = DBConvert::StringToInt(Info);
+		ChildrenNum = MembersData.ChildrenNum; // local
 		break;
 	}
 	case PD_MailCountry:

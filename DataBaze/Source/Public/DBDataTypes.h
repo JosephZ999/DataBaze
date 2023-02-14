@@ -107,8 +107,8 @@ struct DBPeopleData
 
 	std::string BirthCountry;	 //
 	std::string WhereLive;		 //
-	int			EducationDegree; //
 	std::string ImageFile;		 //
+	int			EducationDegree; //
 
 	bool IsMele() const { return Gender == 1; }
 
@@ -154,13 +154,13 @@ struct DBFamilyData
 	bool bLocked;
 
 	int			MaritalStatus;	// use enum EMeritialStatus
+	int			ChildrenNum;	//
 	std::string MailCountry;	//
 	std::string MailCity;		//
 	std::string MailStreet;		//
 	std::string MailHomeNumber; //
 	int			MailZipCode;	//
 
-	int	 GetChildrenNum() const;
 	bool IsHasChildren() const;
 	bool IsHasASpouse() const;
 

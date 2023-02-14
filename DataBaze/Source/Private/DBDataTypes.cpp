@@ -24,11 +24,6 @@ bool ButtonContainer::FindByIndex(EDBWinCompId Id, DBWindow& Button)
 	return false;
 }
 
-int DBFamilyData::GetChildrenNum() const
-{
-	return Children.size();
-}
-
 bool DBFamilyData::IsHasChildren() const
 {
 	return Children.size() > 0;
