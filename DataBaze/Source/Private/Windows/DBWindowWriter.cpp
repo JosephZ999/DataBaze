@@ -5,6 +5,8 @@
 #include <comdef.h>
 #include "DBWindowsManager.h"
 
+#define EDIT_STYLE_BASE WS_BORDER | WS_VISIBLE | WS_CHILD | ES_CENTER | ES_UPPERCASE | ES_WANTRETURN
+
 DBWindowWriter* WriterObj = nullptr;
 DBWindow		WriterEditBox;
 DBWindow		WriterInfoBox;
@@ -73,7 +75,6 @@ LRESULT CALLBACK WndWriterProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lP
 		{
 			WriterObj->WriteData();
 			WriterObj->SelectWriteData(WriterObj->PeopleType);
-			WriterObj->UpdateEditStyle();
 		}
 
 		SendMessage(WriterEditBox.Window, WM_SETTEXT, 0, (LPARAM)L"");
@@ -119,9 +120,7 @@ DBWindowWriter::DBWindowWriter(DBInterface* InOwner)
 	}
 }
 
-void DBWindowWriter::OnConstruct()
-{
-}
+void DBWindowWriter::OnConstruct() {}
 
 void DBWindowWriter::SelectWriteData(EPeopleType PT)
 {
@@ -156,6 +155,7 @@ void DBWindowWriter::SelectWriteData(EPeopleType PT)
 	case PT_Child_9: SelectChild(9); break;
 	}
 	WriterObj->UpdateInfo();
+	WriterObj->UpdateEditStyle();
 }
 
 void DBWindowWriter::WriteData()
@@ -306,28 +306,17 @@ bool DBWindowWriter::CheckData()
 void DBWindowWriter::UpdateEditStyle()
 {
 	switch (PeopleData)
-	{
-	case PD_None: break;
-	case PD_Name: break;
-	case PD_FamilyName: break;
-	case PD_BirthMonth: break;
-	case PD_BirthDay: break;
-	case PD_BirthYear: break;
-	case PD_BornCountry: break;
-	case PD_EducationDegree: break;
-	case PD_ImageFile: break;
-	case PD_NotChildInfo: break;
-	case PD_WhereLive: break;
-	case PD_OnlyParentInfo: break;
-	case PD_MaritalStatus: break;
-	case PD_ChildrenNum: break;
-	case PD_MailCountry: break;
-	case PD_MailCity: break;
-	case PD_MailHome: break;
-	case PD_MailZipCode: break;
-	case PD_Max: break;
-	default: break;
-	}
+	{	// clang-format off
+	case PD_BirthMonth:			SetEditboxStyle(ES_NUMBER, 2); break;
+	case PD_BirthDay:			SetEditboxStyle(ES_NUMBER, 2); break;
+	case PD_BirthYear:			SetEditboxStyle(ES_NUMBER, 4); break;
+	case PD_EducationDegree:	SetEditboxStyle(ES_NUMBER, 1); break;
+	case PD_MaritalStatus:		SetEditboxStyle(ES_NUMBER, 1); break;
+	case PD_ChildrenNum:		SetEditboxStyle(ES_NUMBER, 2); break;
+	case PD_MailZipCode:		SetEditboxStyle(ES_NUMBER); break;
+	default:					SetEditboxStyle(); break;
+		// clang-format on
+	}	// Switch PeopleData
 }
 
 void DBWindowWriter::NextPeople()
@@ -431,4 +420,10 @@ bool DBWindowWriter::CopyImage()
 		}
 	}
 	return false;
+}
+
+void DBWindowWriter::SetEditboxStyle(LONG Style, int TextLimit)
+{
+	SetWindowLongPtr(WriterEditBox.Window, GWL_STYLE, EDIT_STYLE_BASE | Style);
+	SendMessage(WriterEditBox.Window, EM_SETLIMITTEXT, TextLimit, 0);
 }

@@ -47,4 +47,7 @@ public:
 	bool CopyImage();
 
 	std::wstring ImagePath;
+
+private:
+	void SetEditboxStyle(LONG Style = 0, int TextLimit = 0);
 };
