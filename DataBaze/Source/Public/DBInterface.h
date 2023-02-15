@@ -34,9 +34,9 @@ public:
 	template <typename T> //
 	T* GetComponent()
 	{
-		for (auto& Elem : Components)
+		for (auto Elem : Components)
 		{
-			T* OutValue = static_cast<T*>(Elem);
+			T* OutValue = dynamic_cast<T*>(Elem);
 			if (OutValue)
 			{
 				return OutValue;

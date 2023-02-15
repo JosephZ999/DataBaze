@@ -22,14 +22,11 @@ DBSystem::DBSystem(HINSTANCE HInstance, HWND InMainWindow)
 	DataManager = CreateComponent<DBDataManager>();
 	if (DataManager)
 	{
+		
 		// debug
 	}
-
 	assert(WindowManager);
 	assert(DataManager);
-
-	auto test = GetComponent<DBWindowsManager>();
-	assert(test);
 }
 
 DBSystem::~DBSystem()

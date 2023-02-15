@@ -31,6 +31,10 @@
 #define JPK_IMAGE		   "Image"
 #define JPK_EDUCATION	   "EducationDegree"
 
+#define JCK_GLOBALS		   "1.Global"
+#define JCK_PARENT		   "2.Parent "
+#define JCK_CHILD		   "3.Child "
+
 DECLARE_DELEGATE(OnUpdateSignature);
 
 class DBDataManager : public DBInterface
@@ -38,11 +42,12 @@ class DBDataManager : public DBInterface
 	typedef std::vector<int> Folders;
 
 public:
+	DBDataManager();
 	OnUpdateSignature OnUpdate;
 
 private:
-	int		SelectedFolderId = 1;
-	int		SelectedMemberId = 1;
+	int		SelectedFolderId;
+	int		SelectedMemberId;
 	Folders ValidFolders[MAX_FOLDERS_NUM];
 
 public:
@@ -57,6 +62,8 @@ public:
 	void GetMembersList(std::vector<std::wstring>& OutList);
 	int	 GetFolderId() { return SelectedFolderId; }
 
+	std::wstring GenerateImagePath();
+	std::wstring GenerateImageName();
 private:
 	bool SetFolder(int FolderId);
 
@@ -64,7 +71,8 @@ private:
 	void FillFamilyInfo(const DBFamilyData& MemberData, Json::Value& OutValue);
 	void FillPeopleInfo(const DBPeopleData& People, Json::Value& OutValue);
 
-	std::wstring GenerateFileLocation(bool CreateFolder = true);
-	std::wstring GenerateFileLocationById(int InId, bool CreateFolder = false);
+	std::wstring GenerateJsonPath(bool CreateFolder = true);
+	std::wstring GenerateJsonPath(int Id, bool CreateFolder = true);
+	std::wstring GenerateDataPath(int InId, bool CreateFolder = false);
 	std::wstring GetMemberStatus(Json::Value& InData, int InId);
 };

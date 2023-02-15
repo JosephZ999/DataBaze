@@ -159,6 +159,8 @@ struct DBFamilyData
 	bool IsHasASpouse() const;
 
 	EMeritialStatus GetStatus() const;
+
+	void SwitchParents();
 };
 
 class DBListContainer

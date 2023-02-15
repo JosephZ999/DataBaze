@@ -42,5 +42,5 @@ int StringToInt(const std::string& InString);
 template <typename To, typename From> //
 To* Cast(From* Param)
 {
-	return static_cast<To*>(Param);
+	return dynamic_cast<To*>(Param);
 }

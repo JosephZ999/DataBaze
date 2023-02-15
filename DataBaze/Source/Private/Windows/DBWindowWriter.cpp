@@ -4,6 +4,7 @@
 #include <commdlg.h>
 #include <comdef.h>
 #include "DBWindowsManager.h"
+#include "DBDataManager.h"
 
 #define EDIT_STYLE_BASE WS_BORDER | WS_VISIBLE | WS_CHILD | ES_CENTER | ES_UPPERCASE | ES_WANTRETURN
 
@@ -216,7 +217,7 @@ void DBWindowWriter::WriteData()
 
 	const bool IsParent = PeopleType == EPeopleType::PT_Parent;
 	const bool IsSpouse = PeopleType == EPeopleType::PT_Spouse;
-	const bool IsChild = !(IsParent || IsSpouse);
+	const bool IsChild	= ! (IsParent || IsSpouse);
 
 	if (PeopleData == PD_ImageFile)
 	{
@@ -386,30 +387,18 @@ void DBWindowWriter::OpenImage()
 
 bool DBWindowWriter::CopyImage()
 {
-	// Get Program Folder
-	WCHAR path[MAX_PATH];
-	GetModuleFileNameW(NULL, path, MAX_PATH);
+	if (! GetSystem()) return false;
+	auto DataManager = GetSystem()->GetComponent<DBDataManager>();
 
-	std::wstring ProjectPath = path;
-	ProjectPath.erase(ProjectPath.end() - 12, ProjectPath.end());
+	if (! DataManager) return false;
 
-	ProjectPath.append(L"\\NewFolder");
+	std::wstring FilePath  = DataManager->GenerateImagePath();
+	std::wstring FileName  = DataManager->GenerateImageName();
+	std::wstring FinalPath = FilePath.append(FileName);
 
-	// MessageBox(NULL, ImagePath.c_str(), L"Dialog Box", MB_OK);
-	// MessageBox(NULL, ProjectPath.c_str(), L"Dialog Box", MB_OK);
+	MessageBox(NULL, FinalPath.c_str(), L"Dialog Box", MB_OK);
 
-	/*_bstr_t		b(ImagePath.c_str());
-	struct stat buffer;
-	if (stat(b, &buffer) == 0)
-	{
-		MessageBox(NULL, L"File exists", L"Dialog Box", MB_OK);
-	}*/
-
-	_wmkdir(ProjectPath.c_str());
-
-	ProjectPath.append(L"\\asd.jpg");
-
-	if (CopyFile(ImagePath.c_str(), ProjectPath.c_str(), true))
+	if (CopyFile(ImagePath.c_str(), FinalPath.c_str(), true))
 	{
 		return true;
 	}
@@ -422,7 +411,6 @@ bool DBWindowWriter::CopyImage()
 		// ERROR_PATH_NOT_FOUND //  error codes
 		return false;
 	}
-
 	return false;
 }
 
@@ -430,8 +418,8 @@ void DBWindowWriter::FinishWriting()
 {
 	const bool IsParent = PeopleType == EPeopleType::PT_Parent;
 	const bool IsSpouse = PeopleType == EPeopleType::PT_Spouse;
-	const bool IsChild = !(IsParent || IsSpouse);
-	
+	const bool IsChild	= ! (IsParent || IsSpouse);
+
 	if (IsParent)
 	{
 		Finish = Status != EMeritialStatus::MS_Married && ChildrenNum == EnteredChildrenNum;
@@ -451,7 +439,18 @@ void DBWindowWriter::FinishWriting()
 	{
 		MessageBox(NULL, L"Ну как бы ок", L"Dialog Box", MB_OK);
 
-		GetSystem();
+		if (! GetSystem()) return;
+
+		auto DataManager = GetSystem()->GetComponent<DBDataManager>();
+		if (! DataManager) return;
+
+		DataManager->AddMember(MembersData);
+
+		if (MembersData.Parents.size() > 1)
+		{
+			MembersData.SwitchParents();
+			DataManager->AddMember(MembersData);
+		}
 	}
 }
 

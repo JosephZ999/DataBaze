@@ -39,6 +39,13 @@ EMeritialStatus DBFamilyData::GetStatus() const
 	return EMeritialStatus(static_cast<EMeritialStatus>(MaritalStatus));
 }
 
+void DBFamilyData::SwitchParents()
+{
+	auto Cache = Parents[0];
+	Parents[0] = Parents[1];
+	Parents[1] = Cache;
+}
+
 EEducationDegree DBPeopleData::GetEducation() const
 {
 	return static_cast<EEducationDegree>(EducationDegree);

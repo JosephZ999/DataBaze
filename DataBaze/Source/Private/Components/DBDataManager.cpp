@@ -2,9 +2,15 @@
 #include <iostream>
 #include <fstream>
 
+DBDataManager::DBDataManager()
+{
+	SelectedFolderId = 1;
+	SelectedMemberId = 1;
+}
+
 void DBDataManager::LoadFiles()
 {
-	const std::wstring FileName = GenerateFileLocation();
+	const std::wstring FileName = GenerateJsonPath();
 
 	DBFamilyData Family;
 	DBFamilyData Family2;
@@ -30,7 +36,7 @@ void DBDataManager::LoadFiles()
 
 void DBDataManager::AddMember(const DBFamilyData& MemberData)
 {
-	const auto FileName = GenerateFileLocation();
+	const auto FileName = GenerateJsonPath();
 
 	Json::Reader FileReader;
 	Json::Value	 FileData;
@@ -88,7 +94,7 @@ bool DBDataManager::SearchValidFolders()
 	bool SomeFileWasFound = false;
 	for (size_t i = 1; i <= MAX_FOLDERS_NUM; ++i)
 	{
-		const std::wstring FilePath = GenerateFileLocationById(i);
+		const std::wstring FilePath = GenerateJsonPath(i, false);
 		std::ifstream	   File(FilePath);
 		if (File.good())
 		{
@@ -115,7 +121,7 @@ bool DBDataManager::SearchValidFolders()
 
 int DBDataManager::GetValidFoldersNum()
 {
-	return 0;
+	return ValidFolders->size();
 }
 
 bool DBDataManager::CheckFile(const std::wstring& InFilePath)
@@ -132,7 +138,7 @@ void DBDataManager::FillFamilyInfo(const DBFamilyData& MemberData, Json::Value& 
 
 	{
 		Json::Value Globals;
-		std::string Id = "Globals";
+		std::string Id = JCK_GLOBALS;
 
 		Globals[JGK_LOCK]			= Json::Value(MemberData.bLocked);
 		Globals[JGK_STATUS]			= Json::Value(MemberData.MaritalStatus);
@@ -151,7 +157,7 @@ void DBDataManager::FillFamilyInfo(const DBFamilyData& MemberData, Json::Value& 
 		{
 			Json::Value MemberItem;
 			std::string Id;
-			Id.append("Parent ").append(std::to_string(i + 1));
+			Id.append(JCK_PARENT).append(std::to_string(i + 1));
 
 			FillPeopleInfo(MemberData.Parents[i], MemberItem);
 			FamilyMember[Id] = MemberItem;
@@ -160,11 +166,11 @@ void DBDataManager::FillFamilyInfo(const DBFamilyData& MemberData, Json::Value& 
 
 	if (HasChildren)
 	{
-		for (int i = 0; i < MemberData.Children.size(); ++i)
+		for (int i = 0; i < (int)MemberData.Children.size(); ++i)
 		{
 			Json::Value MemberItem;
 			std::string Id;
-			Id.append("Child ").append(std::to_string(i + 1));
+			Id.append(JCK_CHILD).append(std::to_string(i + 1));
 
 			FillPeopleInfo(MemberData.Children[i], MemberItem);
 			FamilyMember[Id] = MemberItem;
@@ -190,12 +196,27 @@ void DBDataManager::FillPeopleInfo(const DBPeopleData& People, Json::Value& OutV
 	OutValue[JPK_EDUCATION]	   = Json::Value(People.EducationDegree);
 }
 
-std::wstring DBDataManager::GenerateFileLocation(bool CreateFolder)
+std::wstring DBDataManager::GenerateImagePath()
 {
-	return GenerateFileLocationById(SelectedFolderId, CreateFolder);
+	return GenerateDataPath(SelectedFolderId, true);
 }
 
-std::wstring DBDataManager::GenerateFileLocationById(int InId, bool CreateFolder)
+std::wstring DBDataManager::GenerateImageName()
+{
+	return std::wstring(L"\\Image_1.jpg");
+}
+
+std::wstring DBDataManager::GenerateJsonPath(bool CreateFolder)
+{
+	return GenerateDataPath(SelectedFolderId, CreateFolder).append(L"\\Data.json");
+}
+
+std::wstring DBDataManager::GenerateJsonPath(int Id, bool CreateFolder)
+{
+	return GenerateDataPath(Id, CreateFolder).append(L"\\Data.json");
+}
+
+std::wstring DBDataManager::GenerateDataPath(int InId, bool CreateFolder)
 {
 	auto Folder = DBPaths::GetProjectPath().append(L"\\Data");
 	_wmkdir(Folder.c_str());
@@ -205,12 +226,12 @@ std::wstring DBDataManager::GenerateFileLocationById(int InId, bool CreateFolder
 	{
 		_wmkdir(Folder.c_str());
 	}
-	return Folder.append(L"\\data.json");
+	return Folder;
 }
 
 void DBDataManager::GetMembersList(std::vector<std::wstring>& OutList)
 {
-	auto FilePath = GenerateFileLocation();
+	auto FilePath = GenerateJsonPath();
 
 	Json::Reader FileReader;
 	Json::Value	 FileData;
@@ -228,8 +249,8 @@ void DBDataManager::GetMembersList(std::vector<std::wstring>& OutList)
 std::wstring DBDataManager::GetMemberStatus(Json::Value& InData, int InId)
 {
 	std::string Info;
-	Info.append(InData[InId]["Member 1"]["Name"].asString()).append(" ");
-	Info.append(InData[InId]["Member 1"]["FamilyName"].asString());
+	Info.append(InData[InId]["Parent 1"]["Name"].asString()).append(" ");
+	Info.append(InData[InId]["Parent 1"]["FamilyName"].asString());
 
 	std::wstring Status;
 	DBConvert::StringToWString(Info, Status);
