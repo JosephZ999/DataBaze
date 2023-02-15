@@ -451,6 +451,8 @@ void DBWindowWriter::FinishWriting()
 			MembersData.SwitchParents();
 			DataManager->AddMember(MembersData);
 		}
+
+		ShowWindow(WindowHandle, SW_HIDE);
 	}
 }
 

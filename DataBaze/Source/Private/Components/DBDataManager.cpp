@@ -151,17 +151,14 @@ void DBDataManager::FillFamilyInfo(const DBFamilyData& MemberData, Json::Value& 
 		FamilyMember[Id]			= Globals;
 	}
 
-	if (HasSpouse)
+	for (int i = 0; i < (HasSpouse ? 2 : 1); ++i)
 	{
-		for (int i = 0; i < (HasSpouse ? 2 : 1); ++i)
-		{
-			Json::Value MemberItem;
-			std::string Id;
-			Id.append(JCK_PARENT).append(std::to_string(i + 1));
+		Json::Value MemberItem;
+		std::string Id = (JCK_PARENT);
+		Id.append(std::to_string(i + 1));
 
-			FillPeopleInfo(MemberData.Parents[i], MemberItem);
-			FamilyMember[Id] = MemberItem;
-		}
+		FillPeopleInfo(MemberData.Parents[i], MemberItem);
+		FamilyMember[Id] = MemberItem;
 	}
 
 	if (HasChildren)
@@ -249,8 +246,10 @@ void DBDataManager::GetMembersList(std::vector<std::wstring>& OutList)
 std::wstring DBDataManager::GetMemberStatus(Json::Value& InData, int InId)
 {
 	std::string Info;
-	Info.append(InData[InId]["Parent 1"]["Name"].asString()).append(" ");
-	Info.append(InData[InId]["Parent 1"]["FamilyName"].asString());
+	std::string ParamId = JCK_PARENT;
+	ParamId.append(std::to_string(1));
+	Info.append(InData[InId][ParamId][JPK_NAME].asString()).append(" ");
+	Info.append(InData[InId][ParamId][JPK_FAMILYNAME].asString());
 
 	std::wstring Status;
 	DBConvert::StringToWString(Info, Status);
