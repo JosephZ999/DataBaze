@@ -27,8 +27,8 @@ public:
 	EPeopleType		PeopleType		   = EPeopleType::PT_Parent;
 	EPeopleData		PeopleData		   = EPeopleData::PD_Name;
 	EMeritialStatus Status			   = EMeritialStatus::MS_Unmarried;
-	int				ChildrenNum		   = 0;
-	int				EnteredChildrenNum = 0;
+	size_t			ChildrenNum		   = 0;
+	size_t			EnteredChildrenNum = 0;
 	std::wstring	ImagePath;
 	bool			Finish = false;
 

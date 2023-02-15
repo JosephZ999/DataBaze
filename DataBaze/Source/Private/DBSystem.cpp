@@ -14,11 +14,22 @@ DBSystem::DBSystem(HINSTANCE HInstance, HWND InMainWindow)
 	: HIns(HInstance)
 	, MainWindow(InMainWindow)
 {
-	WindowManager = new DBWindowsManager(HIns);
-	WindowManager->SetOwner(this);
+	WindowManager = CreateComponent<DBWindowsManager>();
+	if (WindowManager)
+	{
+		WindowManager->Initialize(HInstance);
+	}
+	DataManager = CreateComponent<DBDataManager>();
+	if (DataManager)
+	{
+		// debug
+	}
 
-	DataManager = new DBDataManager;
-	DataManager->SetOwner(this);
+	assert(WindowManager);
+	assert(DataManager);
+
+	auto test = GetComponent<DBWindowsManager>();
+	assert(test);
 }
 
 DBSystem::~DBSystem()

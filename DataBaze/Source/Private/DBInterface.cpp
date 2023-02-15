@@ -1,4 +1,4 @@
-#include "..\Public\DBInterface.h"
+#include "DBInterface.h"
 
 DBInterface* DBInterface::GetOwner()
 {
@@ -12,5 +12,9 @@ void DBInterface::SetOwner(DBInterface* NewOwner)
 
 DBInterface* DBInterface::GetSystem()
 {
+	if (Owner)
+	{
+		return Owner->GetSystem();
+	}
 	return nullptr;
 }

@@ -2,8 +2,8 @@
 #include "DBWindowViewer.h"
 #include "DBWindowWriter.h"
 
-DBWindowsManager::DBWindowsManager(HINSTANCE HInstance)
-	: HIns(HInstance)
+
+void DBWindowsManager::Initialize(HINSTANCE HInstance)
 {
 	// Viewer
 	const wchar_t V_CLASS_NAME[] = L"ViewerClass";

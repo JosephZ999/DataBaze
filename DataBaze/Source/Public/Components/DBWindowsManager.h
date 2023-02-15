@@ -12,8 +12,7 @@ class DBWindowWriter;
 class DBWindowsManager : public DBInterface
 {
 public:
-	DBWindowsManager(HINSTANCE HInstance);
-	HINSTANCE HIns;
+	void Initialize(HINSTANCE HInstance);
 	~DBWindowsManager();
 
 private:

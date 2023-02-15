@@ -450,6 +450,8 @@ void DBWindowWriter::FinishWriting()
 	if (Finish)
 	{
 		MessageBox(NULL, L"Ну как бы ок", L"Dialog Box", MB_OK);
+
+		GetSystem();
 	}
 }
 

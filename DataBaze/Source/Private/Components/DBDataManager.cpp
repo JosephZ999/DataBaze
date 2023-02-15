@@ -147,7 +147,7 @@ void DBDataManager::FillFamilyInfo(const DBFamilyData& MemberData, Json::Value& 
 
 	if (HasSpouse)
 	{
-		for (size_t i = 0; i < (HasSpouse ? 2 : 1); ++i)
+		for (int i = 0; i < (HasSpouse ? 2 : 1); ++i)
 		{
 			Json::Value MemberItem;
 			std::string Id;
@@ -160,7 +160,7 @@ void DBDataManager::FillFamilyInfo(const DBFamilyData& MemberData, Json::Value& 
 
 	if (HasChildren)
 	{
-		for (size_t i = 0; i < MemberData.Children.size(); ++i)
+		for (int i = 0; i < MemberData.Children.size(); ++i)
 		{
 			Json::Value MemberItem;
 			std::string Id;
