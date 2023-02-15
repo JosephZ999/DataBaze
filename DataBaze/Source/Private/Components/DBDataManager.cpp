@@ -200,7 +200,37 @@ std::wstring DBDataManager::GenerateImagePath()
 
 std::wstring DBDataManager::GenerateImageName()
 {
-	return std::wstring(L"\\Image_1.jpg");
+	std::wstring FilePath = GenerateDataPath(SelectedFolderId, true);
+	FilePath.append(L"\\NextImage.txt");
+	std::string ImageName = "001";
+
+	std::ifstream ifFile(FilePath);
+	if (ifFile.good())
+	{
+		std::stringstream buffer;
+		buffer << ifFile.rdbuf();
+		ImageName = buffer.str();
+		ifFile.close();
+
+		int ImageId = DBConvert::StringToInt(ImageName);
+		++ImageId;
+
+		std::string prefix = (ImageId < 10) ? "00" : ((ImageId < 100) ? "0": "");
+
+		std::ofstream ofFile(FilePath);
+		ofFile.clear();
+		ofFile << prefix << ImageId;
+		ofFile.close();
+
+		std::wstring OutValue;
+		DBConvert::StringToWString(ImageName, OutValue);
+		return std::wstring().append(L"\\").append(OutValue).append(L".jpg");
+	}
+	
+	std::ofstream ofFile(FilePath);
+	ofFile << "002";
+	ofFile.close();
+	return std::wstring(L"\\001.jpg");
 }
 
 std::wstring DBDataManager::GenerateJsonPath(bool CreateFolder)
