@@ -387,6 +387,8 @@ void DBWindowWriter::OpenImage()
 
 bool DBWindowWriter::CopyImage()
 {
+	assert(DataToChange);
+
 	if (! GetSystem()) return false;
 	auto DataManager = GetSystem()->GetComponent<DBDataManager>();
 
@@ -395,6 +397,14 @@ bool DBWindowWriter::CopyImage()
 	std::wstring FilePath  = DataManager->GenerateImagePath();
 	std::wstring FileName  = DataManager->GenerateImageName();
 	std::wstring FinalPath = FilePath.append(FileName);
+
+	std::wstring NewPath		   = FinalPath;
+	int			 SizeToProjectPath = DBPaths::GetProjectPath().size();
+	NewPath.erase(0, SizeToProjectPath);
+	std::string NewStringPath;
+
+	DBConvert::WStringToString(NewPath, NewStringPath);
+	DataToChange->ImageFile = NewStringPath;
 
 	MessageBox(NULL, FinalPath.c_str(), L"Dialog Box", MB_OK);
 
