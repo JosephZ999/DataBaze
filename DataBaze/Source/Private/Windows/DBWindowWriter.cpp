@@ -21,7 +21,7 @@ LRESULT CALLBACK WndWriterProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lP
 		WriterEditBox.Id	   = EDBWinCompId::IDC_W_Edit;
 		WriterEditBox.Parent   = hWnd;
 		WriterEditBox.Position = {25, 150};
-		WriterEditBox.Size	   = {520, 40};
+		WriterEditBox.Size	   = {530, 40};
 		WriterEditBox.Text	   = {};
 		WriterEditBox.FontSize = 28;
 		WriterEditBox.HIns	   = GetModuleHandle(NULL);
@@ -59,10 +59,15 @@ LRESULT CALLBACK WndWriterProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lP
 
 		HDC hdc = BeginPaint(hWnd, &ps);
 
-		Size2D WindowSize = DBLib::GetScreenSize(hWnd);
-		RECT   Rect		  = {0, 0, WindowSize.X, WindowSize.Y};
-		HBRUSH BrushColor = CreateSolidBrush(RGB(200, 200, 220));
+		Size2D WindowSize  = DBLib::GetScreenSize(hWnd);
+		RECT   Rect		   = {0, 0, WindowSize.X, WindowSize.Y};
+		RECT   Rect2	   = {15, 15, 565, 340};
+		HBRUSH BrushColor  = CreateSolidBrush(RGB(200, 200, 220));
+		HBRUSH BrushColor2 = CreateSolidBrush(RGB(240, 240, 240));
+
 		FillRect(hdc, &Rect, BrushColor);
+		FillRect(hdc, &Rect2, BrushColor2);
+
 		EndPaint(hWnd, &ps);
 		break;
 	}
