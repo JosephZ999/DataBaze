@@ -25,7 +25,7 @@ void PressKeys(WORD Key1, WORD Key2);
 void PasteClipboard();
 Size2D GetScreenSize();
 Size2D GetScreenSize(HWND Window);
-
+RECT GetWindowRect(HWND Window);
 } // namespace DBLib
 
 namespace DBPaths

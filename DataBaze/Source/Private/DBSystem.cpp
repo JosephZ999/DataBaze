@@ -7,8 +7,9 @@
 #include "DBWindowViewer.h"
 #include "DBWindowWriter.h"
 
-UINT TimerId;
-int	 clicks;
+UINT		 TimerId;
+int			 clicks;
+const Size2D MainBtnSizes = {150, 30};
 
 DBSystem::DBSystem(HINSTANCE HInstance, HWND InMainWindow)
 	: HIns(HInstance)
@@ -79,21 +80,24 @@ void DBSystem::CreateButtons()
 	{
 		EDBWinCompId Id;
 		Size2D		 Pos;
+		Size2D		 Size;
 		std::wstring Text;
-	};
-
+	}; //
+	const Size2D	   FolderBtnSize = {45, 30};
 	const LocalBtnInfo MainButtons[] = {
 		//
-		{EDBWinCompId::IDC_VIEW, Size2D(25, 25), L"Show"},			  //
-		{EDBWinCompId::IDC_NEWITEM, Size2D(25, 75), L"Add New Item"}, //
-		{EDBWinCompId::IDC_LOCK, Size2D(25, 125), L"Lock"},			  //
-		{EDBWinCompId::IDC_UNLOCK, Size2D(25, 175), L"Unlock"}		  //
+		{EDBWinCompId::IDC_VIEW, Size2D(25, 25), MainBtnSizes, L"Show"},			//
+		{EDBWinCompId::IDC_NEWITEM, Size2D(25, 75), MainBtnSizes, L"Add New Item"}, //
+		{EDBWinCompId::IDC_LOCK, Size2D(25, 125), MainBtnSizes, L"Lock"},			//
+		{EDBWinCompId::IDC_UNLOCK, Size2D(25, 175), MainBtnSizes, L"Unlock"},		//
+		{EDBWinCompId::IDC_PrevFolder, Size2D(200, 320), FolderBtnSize, L" < "},	//
+		{EDBWinCompId::IDC_NextFolder, Size2D(300, 320), FolderBtnSize, L" >"}		//
 	};
 
 	// Size2D BtnSize = {150, 30};
 	for (auto BtnInfo : MainButtons)
 	{
-		DBWindow NewWindow(BtnInfo.Id, MainWindow, BtnInfo.Pos, BtnSize, BtnInfo.Text);
+		DBWindow NewWindow(BtnInfo.Id, MainWindow, BtnInfo.Pos, BtnInfo.Size, BtnInfo.Text);
 		auto	 Btn = DBLib::CreateButton(NewWindow);
 		if (Btn)
 		{
@@ -225,7 +229,7 @@ void DBSystem::Update_BtnVisibility()
 
 void DBSystem::Update_ListBoxScale()
 {
-	Size2D Pos = (IsPortraitModeEnabled()) ? Size2D(0, 25) : Size2D((BtnSize).X + 50, 25);
+	Size2D Pos = (IsPortraitModeEnabled()) ? Size2D(0, 25) : Size2D((MainBtnSizes).X + 50, 25);
 	Size2D Size;
 	Size.X = abs(Pos.X - (WindowSize.X - 25));
 	Size.Y = WindowSize.Y - 100;

@@ -26,7 +26,6 @@ public:
 
 	// Global variables
 	HWND		 MainWindow;
-	const Size2D BtnSize = {150, 30};
 
 private:
 	HINSTANCE		HIns;

@@ -169,12 +169,20 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		// TCHAR greeting[] = _T("Hello, Windows desktop!");
 		// TextOut(hdc, 5, 5, greeting, _tcslen(greeting));
 
+
 		if (System)
 		{
 			System->CallPaint(hWnd, message, wParam, lParam);
 		}
 
+		const Size2D ScreenSize = DBLib::GetScreenSize();
+		RECT Rect  = {0, 0, ScreenSize.X, ScreenSize.Y};
+		HBRUSH BrushColor = CreateSolidBrush(RGB(200, 200, 200));
+
+		FillRect(hdc, &Rect, BrushColor);
+
 		EndPaint(hWnd, &ps);
+		// return;
 	}
 	break;
 	case WM_CLOSE:

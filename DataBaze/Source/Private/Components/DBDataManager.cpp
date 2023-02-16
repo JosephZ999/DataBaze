@@ -104,7 +104,7 @@ bool DBDataManager::SearchValidFolders()
 		}
 		File.close();
 	}
-
+/*
 #ifdef _DEBUG
 	std::wstring Message;
 	Message.append(L"Valid Folders Num : ").append(std::to_wstring(ValidFolders->size()));
@@ -117,6 +117,7 @@ bool DBDataManager::SearchValidFolders()
 		MessageBox(NULL, Message.c_str(), L"Func: SearchValidFolders", MB_OK);
 	}
 #endif
+*/
 	return SomeFileWasFound;
 }
 

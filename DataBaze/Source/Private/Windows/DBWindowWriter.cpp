@@ -36,7 +36,7 @@ LRESULT CALLBACK WndWriterProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lP
 		WriterInfoBox.FontSize = 24;
 		WriterInfoBox.HIns	   = GetModuleHandle(NULL);
 
-		DBLib::CreateStaticBox(WriterInfoBox, WS_VISIBLE | WS_CHILD);
+		DBLib::CreateStaticBox(WriterInfoBox, WS_VISIBLE | WS_CHILD );
 	}
 	case WM_COMMAND:
 	{
@@ -49,13 +49,21 @@ LRESULT CALLBACK WndWriterProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lP
 			WriterObj->SelectWriteData(WriterObj->PeopleType);
 			break;
 		}
-
+		HDC hdc2 = GetDC(WriterInfoBox.Window);
+		SetTextColor(hdc2, RGB(255, 255, 255));
 		break;
 	}
 	case WM_PAINT:
 	{
-		// DBLib::CreateText(hWnd);
-		// MessageBox(NULL, L"Sorry. It does't work", L"Dialog Box", MB_OK);
+		PAINTSTRUCT ps;
+
+		HDC hdc = BeginPaint(hWnd, &ps);
+
+		Size2D WindowSize = DBLib::GetScreenSize(hWnd);
+		RECT   Rect		  = {0, 0, WindowSize.X, WindowSize.Y};
+		HBRUSH BrushColor = CreateSolidBrush(RGB(200, 200, 220));
+		FillRect(hdc, &Rect, BrushColor);
+		EndPaint(hWnd, &ps);
 		break;
 	}
 	case WM_KEYDOWN:

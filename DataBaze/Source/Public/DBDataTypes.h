@@ -25,6 +25,9 @@ enum EDBWinCompId
 	IDC_LOCK,
 	IDC_UNLOCK,
 
+	IDC_PrevFolder,
+	IDC_NextFolder,
+
 	// Viewer window comps
 
 	// Writer window comps

@@ -48,6 +48,19 @@ LRESULT CALLBACK WndViewerProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lP
 		case 4: ViewerObj->Autofill_Form4(); break;
 		}
 	}
+	case WM_PAINT:
+	{
+		PAINTSTRUCT ps;
+		HDC			hdc = BeginPaint(hWnd, &ps);
+
+		Size2D WindowSize = DBLib::GetScreenSize(hWnd);
+		RECT   Rect		  = {0, 0, WindowSize.X, WindowSize.Y};
+		HBRUSH BrushColor = CreateSolidBrush(RGB(200, 220, 200));
+		FillRect(hdc, &Rect, BrushColor);
+
+		EndPaint(hWnd, &ps);
+		break;
+	}
 	}
 	return DefWindowProc(hWnd, message, wParam, lParam);
 }

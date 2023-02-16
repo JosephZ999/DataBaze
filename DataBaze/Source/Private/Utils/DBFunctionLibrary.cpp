@@ -160,6 +160,16 @@ Size2D DBLib::GetScreenSize(HWND Window)
 	return Size2D();
 }
 
+RECT DBLib::GetWindowRect(HWND Window)
+{
+	RECT Rect;
+	if (GetWindowRect(Window, &Rect))
+	{
+		return Rect;
+	}
+	return RECT();
+}
+
 // namespace // Path ------------------------------------->
 
 std::wstring DBPaths::GetProjectPath()
