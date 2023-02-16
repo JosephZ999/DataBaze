@@ -23,7 +23,7 @@ LRESULT CALLBACK WndWriterProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lP
 		WriterEditBox.Position = {25, 150};
 		WriterEditBox.Size	   = {520, 40};
 		WriterEditBox.Text	   = {};
-		WriterEditBox.FontSize = 32;
+		WriterEditBox.FontSize = 28;
 		WriterEditBox.HIns	   = GetModuleHandle(NULL);
 
 		DBLib::CreateEditBox(WriterEditBox, WS_BORDER | WS_VISIBLE | WS_CHILD | ES_CENTER | ES_UPPERCASE | ES_WANTRETURN);
@@ -36,7 +36,7 @@ LRESULT CALLBACK WndWriterProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lP
 		WriterInfoBox.FontSize = 24;
 		WriterInfoBox.HIns	   = GetModuleHandle(NULL);
 
-		DBLib::CreateStaticBox(WriterInfoBox, WS_VISIBLE | WS_CHILD );
+		DBLib::CreateStaticBox(WriterInfoBox, WS_VISIBLE | WS_CHILD);
 	}
 	case WM_COMMAND:
 	{
@@ -64,6 +64,18 @@ LRESULT CALLBACK WndWriterProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lP
 		HBRUSH BrushColor = CreateSolidBrush(RGB(200, 200, 220));
 		FillRect(hdc, &Rect, BrushColor);
 		EndPaint(hWnd, &ps);
+		break;
+	}
+	case WM_DRAWITEM:
+	{
+		/*
+		 HDC	   hdc		  = GetDC(WriterInfoBox.Window);
+		 RECT   Rect		  = {0, 0, 520, 120};
+		 HBRUSH BrushColor = CreateSolidBrush(RGB(250, 0, 0));
+
+		 FillRect(hdc, &Rect, BrushColor);
+		 SetTextColor(hdc, RGB(0, 0, 250));
+		 */
 		break;
 	}
 	case WM_KEYDOWN:
