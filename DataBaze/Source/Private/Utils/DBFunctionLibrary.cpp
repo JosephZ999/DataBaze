@@ -145,6 +145,21 @@ void DBLib::PasteClipboard()
 	PressKeys(VK_CONTROL, VK_V);
 }
 
+Size2D DBLib::GetScreenSize()
+{
+	return GetScreenSize(GetDesktopWindow());
+}
+
+Size2D DBLib::GetScreenSize(HWND Window)
+{
+	RECT Rect;
+	if (GetWindowRect(Window, &Rect))
+	{
+		return Size2D(Rect.right, Rect.bottom);
+	}
+	return Size2D();
+}
+
 // namespace // Path ------------------------------------->
 
 std::wstring DBPaths::GetProjectPath()

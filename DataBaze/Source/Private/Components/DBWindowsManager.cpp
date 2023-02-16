@@ -1,7 +1,7 @@
 #include "DbWindowsManager.h"
 #include "DBWindowViewer.h"
 #include "DBWindowWriter.h"
-
+#include "DBFunctionLibrary.h"
 
 void DBWindowsManager::Initialize(HINSTANCE HInstance)
 {
@@ -40,15 +40,21 @@ void DBWindowsManager::Initialize(HINSTANCE HInstance)
 
 	RegisterClass(&Writer_wc);
 
-	WriterHandle = CreateWindowEx(0,			 // Optional window styles.
-		W_CLASS_NAME,							 // Window class
-		L"Writer",								 // Window text
-		WS_OVERLAPPED | WS_SYSMENU | WS_CAPTION, // Window style
-		25, 25, 600, 400,						 // Size and position
-		NULL,									 // Parent window
-		NULL,									 // Menu
-		HInstance,								 // Instance handle
-		NULL									 // Additional application data
+	const Size2D WriterSize		= {600, 400};
+	const Size2D WriterHalf		= WriterSize / 2;
+	const Size2D ScreenSize		= DBLib::GetScreenSize();
+	const Size2D ScreenCenter	= ScreenSize / 2;
+	const Size2D FinalWriterPos = ScreenCenter - WriterHalf;
+
+	WriterHandle = CreateWindowEx(0,				  // Optional window styles.
+		W_CLASS_NAME,								  // Window class
+		L"Writer",									  // Window text
+		WS_OVERLAPPED | WS_SYSMENU | WS_CAPTION,	  // Window style
+		FinalWriterPos.X, FinalWriterPos.Y, 600, 400, // Size and position
+		NULL,										  // Parent window
+		NULL,										  // Menu
+		HInstance,									  // Instance handle
+		NULL										  // Additional application data
 	);
 }
 
@@ -58,7 +64,7 @@ DBWindowsManager::~DBWindowsManager()
 	DestroyWriter();
 }
 
-void DBWindowsManager::OpenWindow(EWindows WindowType)
+void DBWindowsManager::OpenWindowByType(EWindows WindowType)
 {
 	switch (WindowType)
 	{
@@ -67,11 +73,10 @@ void DBWindowsManager::OpenWindow(EWindows WindowType)
 		CreateViewer();
 		DestroyWriter();
 		ShowWindow(ViewerHandle, SW_SHOWDEFAULT);
-		ShowWindow(WriterHandle, SW_HIDE);
+		CloseWindowByType(EWindows::IDW_WRITER);
 		SendMessage(ViewerHandle, WM_COMMAND, WM_SHOWWINDOW, 0);
 		if (WindowViewer)
 		{
-			
 		}
 		return;
 	}
@@ -80,7 +85,7 @@ void DBWindowsManager::OpenWindow(EWindows WindowType)
 		CreateWriter();
 		DestroyViewer();
 		ShowWindow(WriterHandle, SW_SHOWDEFAULT);
-		ShowWindow(ViewerHandle, SW_HIDE);
+		CloseWindowByType(EWindows::IDW_VIEWER);
 		SendMessage(WriterHandle, WM_COMMAND, WM_SHOWWINDOW, 0);
 		if (WindowWriter)
 		{
@@ -91,7 +96,7 @@ void DBWindowsManager::OpenWindow(EWindows WindowType)
 	} // switch end
 }
 
-void DBWindowsManager::CloseWindow(EWindows WindowType)
+void DBWindowsManager::CloseWindowByType(EWindows WindowType)
 {
 	switch (WindowType)
 	{
@@ -124,7 +129,7 @@ void DBWindowsManager::EndConstruct()
 
 void DBWindowsManager::OnWriteSuccessHandle()
 {
-	CloseWindow(EWindows::IDW_WRITER);
+	CloseWindowByType(EWindows::IDW_WRITER);
 }
 
 DBInterface* DBWindowsManager::GetSystem()

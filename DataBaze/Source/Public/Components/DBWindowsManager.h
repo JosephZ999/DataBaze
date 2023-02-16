@@ -23,8 +23,8 @@ private:
 	DBWindowWriter* WindowWriter = nullptr;
 
 public:
-	void OpenWindow(EWindows WindowType);
-	void CloseWindow(EWindows WindowType);
+	void OpenWindowByType(EWindows WindowType);
+	void CloseWindowByType(EWindows WindowType);
 	void EndConstruct();
 
 	DBWindowViewer* GetViewer() { return WindowViewer; }

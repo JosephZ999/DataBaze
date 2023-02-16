@@ -23,6 +23,8 @@ void CopyToClipboard(HWND hwnd, const std::string& String);
 void PressKey(WORD Key);
 void PressKeys(WORD Key1, WORD Key2);
 void PasteClipboard();
+Size2D GetScreenSize();
+Size2D GetScreenSize(HWND Window);
 
 } // namespace DBLib
 

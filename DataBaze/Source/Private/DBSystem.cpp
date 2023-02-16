@@ -137,7 +137,7 @@ void DBSystem::CallCommand(HWND& hWnd, UINT Message, WPARAM& WParam, LPARAM& LPa
 
 				DBFamilyData SelectedData;
 				DataManager->LoadMember(SelectedData);
-				WindowManager->OpenWindow(EWindows::IDW_VIEWER);
+				WindowManager->OpenWindowByType(EWindows::IDW_VIEWER);
 
 				if (WindowManager->GetViewer())
 				{
@@ -169,7 +169,7 @@ void DBSystem::CallCommand(HWND& hWnd, UINT Message, WPARAM& WParam, LPARAM& LPa
 	{
 		if (WindowManager)
 		{
-			WindowManager->OpenWindow(EWindows::IDW_VIEWER);
+			WindowManager->OpenWindowByType(EWindows::IDW_VIEWER);
 		}
 		return;
 	}
@@ -177,7 +177,7 @@ void DBSystem::CallCommand(HWND& hWnd, UINT Message, WPARAM& WParam, LPARAM& LPa
 	{
 		if (WindowManager)
 		{
-			WindowManager->OpenWindow(EWindows::IDW_WRITER);
+			WindowManager->OpenWindowByType(EWindows::IDW_WRITER);
 		}
 		return;
 	}
