@@ -22,8 +22,7 @@ DBSystem::DBSystem(HINSTANCE HInstance, HWND InMainWindow)
 	DataManager = CreateComponent<DBDataManager>();
 	if (DataManager)
 	{
-		
-		// debug
+		DataManager->OnListChanged.Bind(this, &DBSystem::OnListChangedHandle);
 	}
 	assert(WindowManager);
 	assert(DataManager);
@@ -40,8 +39,6 @@ DBSystem::~DBSystem()
 
 void DBSystem::EndConstruct()
 {
-	DataManager->OnUpdate.Bind(this, &DBSystem::OnDataUpdated);
-
 	CreateListBox();
 	CreateButtons();
 
@@ -59,9 +56,8 @@ DBInterface* DBSystem::GetSystem()
 
 void DBSystem::InitListBox()
 {
-	DataManager->GetMembersList(ListData);
-
 	ResetList();
+	DataManager->GetMembersList(ListData);
 	for (auto& Elem : ListData)
 	{
 		int ItemId = SendMessage(ListBox, LB_ADDSTRING, 0, (LPARAM)Elem.c_str());
@@ -69,8 +65,6 @@ void DBSystem::InitListBox()
 		++ListBoxLastItem;
 	}
 }
-
-void DBSystem::OnDataUpdated() {}
 
 void DBSystem::CreateListBox()
 {
@@ -114,6 +108,7 @@ void DBSystem::ResetList()
 {
 	SendMessage(ListBox, LB_RESETCONTENT, 0, 0);
 	ListBoxLastItem = 0;
+	ListData.clear();
 }
 
 VOID DBSystem::DoubleClickTimer(HWND hWnd, UINT nMsg, UINT_PTR nIDEvent, DWORD dwTime)
@@ -268,4 +263,9 @@ void DBSystem::ShowButton(EDBWinCompId Id)
 bool DBSystem::IsPortraitModeEnabled()
 {
 	return WindowSize.X < WindowSize.Y;
+}
+
+void DBSystem::OnListChangedHandle()
+{
+	InitListBox();
 }

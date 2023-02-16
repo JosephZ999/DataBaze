@@ -45,9 +45,6 @@ private:
 public:
 	void EndConstruct();
 
-	// Delegate callbacks
-	void OnDataUpdated();
-
 	void CallCommand(HWND& hWnd, UINT Message, WPARAM& WParam, LPARAM& LParam);
 	void CallPaint(HWND& hWnd, UINT Message, WPARAM& WParam, LPARAM& LParam);
 
@@ -60,6 +57,8 @@ public:
 	void ShowButton(EDBWinCompId Id);
 
 	bool IsPortraitModeEnabled();
+
+	void OnListChangedHandle();
 
 private:
 	void InitListBox();

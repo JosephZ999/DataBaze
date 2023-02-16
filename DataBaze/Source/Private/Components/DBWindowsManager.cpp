@@ -69,6 +69,10 @@ void DBWindowsManager::OpenWindow(EWindows WindowType)
 		ShowWindow(ViewerHandle, SW_SHOWDEFAULT);
 		ShowWindow(WriterHandle, SW_HIDE);
 		SendMessage(ViewerHandle, WM_COMMAND, WM_SHOWWINDOW, 0);
+		if (WindowViewer)
+		{
+			
+		}
 		return;
 	}
 	case EWindows::IDW_WRITER:
@@ -78,6 +82,10 @@ void DBWindowsManager::OpenWindow(EWindows WindowType)
 		ShowWindow(WriterHandle, SW_SHOWDEFAULT);
 		ShowWindow(ViewerHandle, SW_HIDE);
 		SendMessage(WriterHandle, WM_COMMAND, WM_SHOWWINDOW, 0);
+		if (WindowWriter)
+		{
+			WindowWriter->OnWriteSuccess.Bind(this, &DBWindowsManager::OnWriteSuccessHandle);
+		}
 		return;
 	}
 	} // switch end
@@ -112,6 +120,11 @@ void DBWindowsManager::EndConstruct()
 	{
 		WindowWriter->OnConstruct();
 	}
+}
+
+void DBWindowsManager::OnWriteSuccessHandle()
+{
+	CloseWindow(EWindows::IDW_WRITER);
 }
 
 DBInterface* DBWindowsManager::GetSystem()

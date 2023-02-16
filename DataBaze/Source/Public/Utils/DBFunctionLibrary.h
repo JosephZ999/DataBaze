@@ -6,7 +6,6 @@
 #include <vector>
 #include "DBDataTypes.h"
 #include "DBKeyCodes.h"
-#include "DBDelegate.h"
 
 namespace DBLib
 {

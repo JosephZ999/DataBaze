@@ -30,6 +30,8 @@ public:
 	DBWindowViewer* GetViewer() { return WindowViewer; }
 	DBWindowWriter* GetWriter() { return WindowWriter; }
 
+	void OnWriteSuccessHandle();
+
 public:
 	virtual DBInterface* GetSystem() override;
 	HWND				 GetViewerHandle() const { return ViewerHandle; }

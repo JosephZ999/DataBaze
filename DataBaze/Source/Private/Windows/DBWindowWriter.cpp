@@ -424,48 +424,6 @@ bool DBWindowWriter::CopyImage()
 	return false;
 }
 
-void DBWindowWriter::FinishWriting()
-{
-	const bool IsParent = PeopleType == EPeopleType::PT_Parent;
-	const bool IsSpouse = PeopleType == EPeopleType::PT_Spouse;
-	const bool IsChild	= ! (IsParent || IsSpouse);
-
-	if (IsParent)
-	{
-		Finish = Status != EMeritialStatus::MS_Married && ChildrenNum == EnteredChildrenNum;
-	}
-
-	if (IsSpouse)
-	{
-		Finish = ChildrenNum == EnteredChildrenNum;
-	}
-
-	if (IsChild)
-	{
-		Finish = ChildrenNum == EnteredChildrenNum;
-	}
-
-	if (Finish)
-	{
-		MessageBox(NULL, L"Ну как бы ок", L"Dialog Box", MB_OK);
-
-		if (! GetSystem()) return;
-
-		auto DataManager = GetSystem()->GetComponent<DBDataManager>();
-		if (! DataManager) return;
-
-		DataManager->AddMember(MembersData);
-
-		if (MembersData.Parents.size() > 1)
-		{
-			MembersData.SwitchParents();
-			DataManager->AddMember(MembersData);
-		}
-
-		ShowWindow(WindowHandle, SW_HIDE);
-	}
-}
-
 void DBWindowWriter::SetItem(std::string& Info)
 {
 	if (! DataToChange) return;
@@ -567,4 +525,46 @@ void DBWindowWriter::SetEditboxStyle(LONG Style, int TextLimit)
 {
 	SetWindowLongPtr(WriterEditBox.Window, GWL_STYLE, EDIT_STYLE_BASE | Style);
 	SendMessage(WriterEditBox.Window, EM_SETLIMITTEXT, TextLimit, 0);
+}
+
+void DBWindowWriter::FinishWriting()
+{
+	const bool IsParent = PeopleType == EPeopleType::PT_Parent;
+	const bool IsSpouse = PeopleType == EPeopleType::PT_Spouse;
+	const bool IsChild	= ! (IsParent || IsSpouse);
+
+	if (IsParent)
+	{
+		Finish = Status != EMeritialStatus::MS_Married && ChildrenNum == EnteredChildrenNum;
+	}
+
+	if (IsSpouse)
+	{
+		Finish = ChildrenNum == EnteredChildrenNum;
+	}
+
+	if (IsChild)
+	{
+		Finish = ChildrenNum == EnteredChildrenNum;
+	}
+
+	if (Finish)
+	{
+		MessageBox(NULL, L"Ну как бы ок", L"Dialog Box", MB_OK);
+
+		if (! GetSystem()) return;
+
+		auto DataManager = GetSystem()->GetComponent<DBDataManager>();
+		if (! DataManager) return;
+
+		DataManager->AddMember(MembersData);
+
+		if (MembersData.Parents.size() > 1)
+		{
+			MembersData.SwitchParents();
+			DataManager->AddMember(MembersData);
+		}
+
+		OnWriteSuccess.Broadcast();
+	}
 }

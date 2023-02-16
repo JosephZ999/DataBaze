@@ -4,6 +4,10 @@
 #include "DBInterface.h"
 #include "DBDataTypes.h"
 
+#include "DBDelegate.h"
+
+DECLARE_DELEGATE(OnWriteSuccessSignature);
+
 LRESULT CALLBACK WndWriterProc(HWND, UINT, WPARAM, LPARAM);
 
 class DBWindowWriter : public DBInterface
@@ -16,6 +20,8 @@ public:
 		: WindowHandle(InOwnerHWND)
 	{
 	}
+
+	OnWriteSuccessSignature OnWriteSuccess;
 
 	HWND WindowHandle = 0;
 

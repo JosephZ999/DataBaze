@@ -6,6 +6,11 @@
 #include "json/reader.h"
 #include "json/writer.h"
 
+#include "DBDelegate.h"
+
+DECLARE_DELEGATE(OnListChangedSignature);
+DECLARE_DELEGATE(OnItemChangedSignature);
+
 #define MAX_FOLDERS_NUM	   20
 #define MAX_MEMBERS_NUM	   500
 
@@ -35,15 +40,14 @@
 #define JCK_PARENT		   "2.Parent "
 #define JCK_CHILD		   "3.Child "
 
-DECLARE_DELEGATE(OnUpdateSignature);
-
 class DBDataManager : public DBInterface
 {
 	typedef std::vector<int> Folders;
 
 public:
 	DBDataManager();
-	OnUpdateSignature OnUpdate;
+
+	OnListChangedSignature OnListChanged;
 
 private:
 	int		SelectedFolderId;

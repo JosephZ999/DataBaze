@@ -76,6 +76,7 @@ void DBDataManager::AddMember(const DBFamilyData& MemberData)
 		Writer->write(FileData, &FileStream);
 		FileStream.close();
 	}
+	OnListChanged.Broadcast();
 }
 
 void DBDataManager::LoadMember(DBFamilyData& OutMemberData)
