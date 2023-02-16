@@ -91,7 +91,8 @@ void DBSystem::CreateButtons()
 		{EDBWinCompId::IDC_LOCK, Size2D(25, 125), MainBtnSizes, L"Lock"},			//
 		{EDBWinCompId::IDC_UNLOCK, Size2D(25, 175), MainBtnSizes, L"Unlock"},		//
 		{EDBWinCompId::IDC_PrevFolder, Size2D(200, 320), FolderBtnSize, L" < "},	//
-		{EDBWinCompId::IDC_NextFolder, Size2D(300, 320), FolderBtnSize, L" >"}		//
+		{EDBWinCompId::IDC_NextFolder, Size2D(300, 320), FolderBtnSize, L" >"},		//
+		{EDBWinCompId::IDC_NextFolder, Size2D(655, 320), FolderBtnSize, L" <<"}		//
 	};
 
 	// Size2D BtnSize = {150, 30};
