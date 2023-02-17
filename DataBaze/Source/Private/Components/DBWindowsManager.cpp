@@ -17,10 +17,10 @@ void DBWindowsManager::Initialize(HINSTANCE HInstance)
 
 	RegisterClass(&Viewer_wc);
 
-	ViewerHandle = CreateWindowEx(0,			 // Optional window styles.
+	ViewerHandle = CreateWindowEx(0,			 // Optional window styles. (Transparent bg WS_EX_TRANSPARENT)
 		V_CLASS_NAME,							 // Window class
 		L"Viewer",								 // Window text
-		WS_OVERLAPPED | WS_SYSMENU | WS_CAPTION, // Window style
+		WS_OVERLAPPED | WS_SYSMENU | WS_CAPTION, // Window style (Transparent bg WS_POPUP)
 		25, 25, 600, 400,						 // CW_USEDEFAULT
 		NULL,									 // Parent window
 		NULL,									 // Menu
@@ -46,10 +46,10 @@ void DBWindowsManager::Initialize(HINSTANCE HInstance)
 	const Size2D ScreenCenter	= ScreenSize / 2;
 	const Size2D FinalWriterPos = ScreenCenter - WriterHalf;
 
-	WriterHandle = CreateWindowEx(0,				  // Optional window styles.
+	WriterHandle = CreateWindowEx(0,				  // Optional window styles. (Transparent bg WS_EX_TRANSPARENT)
 		W_CLASS_NAME,								  // Window class
 		L"Writer",									  // Window text
-		WS_OVERLAPPED | WS_SYSMENU | WS_CAPTION,	  // Window style
+		WS_OVERLAPPED | WS_SYSMENU | WS_CAPTION,	  // Window style (Transparent bg WS_POPUP)
 		FinalWriterPos.X, FinalWriterPos.Y, 600, 400, // Size and position
 		NULL,										  // Parent window
 		NULL,										  // Menu
