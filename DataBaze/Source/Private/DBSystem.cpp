@@ -92,7 +92,7 @@ void DBSystem::CreateButtons()
 		{EDBWinCompId::IDC_UNLOCK, Size2D(25, 175), MainBtnSizes, L"Unlock"},		//
 		{EDBWinCompId::IDC_PrevFolder, Size2D(200, 320), FolderBtnSize, L" < "},	//
 		{EDBWinCompId::IDC_NextFolder, Size2D(300, 320), FolderBtnSize, L" >"},		//
-		{EDBWinCompId::IDC_NextFolder, Size2D(655, 320), FolderBtnSize, L" <<"}		//
+		{EDBWinCompId::IDC_Minimize, Size2D(655, 320), FolderBtnSize, L" <<"}		//
 	};
 
 	// Size2D BtnSize = {150, 30};
@@ -100,12 +100,10 @@ void DBSystem::CreateButtons()
 	{
 		DBWindow NewWindow(BtnInfo.Id, MainWindow, BtnInfo.Pos, BtnInfo.Size, BtnInfo.Text);
 		auto	 Btn = DBLib::CreateButton(NewWindow);
-		if (Btn)
-		{
-			DBLib::SetFontSize(Btn, 16);
-			NewWindow.Window = Btn;
-			Buttons.Add(NewWindow);
-		}
+
+		DBLib::SetFontSize(Btn, 16);
+		NewWindow.Window = Btn;
+		Buttons.Add(NewWindow);
 	}
 }
 
@@ -114,6 +112,42 @@ void DBSystem::ResetList()
 	SendMessage(ListBox, LB_RESETCONTENT, 0, 0);
 	ListBoxLastItem = 0;
 	ListData.clear();
+}
+
+void DBSystem::SetMinimizedMode(bool Enabled)
+{
+	MinimizedMode = Enabled;
+
+	const int Offset = MinimizedMode ? -300 : 0;
+	SetWindowPos(MainWindow, HWND_TOPMOST, 0, 0, 740 + Offset, 450, SWP_NOMOVE);
+
+	const int Offset2 = MinimizedMode ? -190 : 0;
+	for (auto nBtn : Buttons.Buttons)
+	{
+		switch (nBtn.Id)
+		{
+		case IDC_PrevFolder:
+		{
+			SetWindowPos(nBtn.Window, 0, nBtn.Position.X + Offset2, nBtn.Position.Y, 0, 0, SWP_NOSIZE);
+			break;
+		}
+		case IDC_NextFolder:
+		{
+			SetWindowPos(nBtn.Window, 0, nBtn.Position.X + Offset2, nBtn.Position.Y, 0, 0, SWP_NOSIZE);
+			break;
+		}
+		case IDC_Minimize:
+		{
+			SetWindowPos(nBtn.Window, 0, nBtn.Position.X + (int)((float)Offset * 0.95f), nBtn.Position.Y, 0, 0, SWP_NOSIZE);
+			break;
+		}
+		default:
+		{
+			SetWindowPos(nBtn.Window, 0, nBtn.Position.X + Offset, nBtn.Position.Y, 0, 0, SWP_NOSIZE);
+		}
+		} //  switch id
+	}
+	SetWindowPos(ListBox, HWND_TOP, 200 + Offset2, 25, 500 + (int)((float)Offset2 * 0.5f), 300, 0);
 }
 
 VOID DBSystem::DoubleClickTimer(HWND hWnd, UINT nMsg, UINT_PTR nIDEvent, DWORD dwTime)
@@ -203,11 +237,17 @@ void DBSystem::CallCommand(HWND& hWnd, UINT Message, WPARAM& WParam, LPARAM& LPa
 		}
 		return;
 	}
+	case IDC_Minimize:
+	{
+		SetMinimizedMode(! MinimizedMode);
+		break;
+	}
 	} // switch end
 }
 
 void DBSystem::CallPaint(HWND& hWnd, UINT Message, WPARAM& WParam, LPARAM& LParam)
 {
+	return;
 	RECT Rect;
 	if (GetWindowRect(MainWindow, &Rect))
 	{

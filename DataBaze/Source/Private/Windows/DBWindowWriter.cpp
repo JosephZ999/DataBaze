@@ -26,7 +26,7 @@ LRESULT CALLBACK WndWriterProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lP
 		WriterEditBox.FontSize = 28;
 		WriterEditBox.HIns	   = GetModuleHandle(NULL);
 
-		DBLib::CreateEditBox(WriterEditBox, WS_BORDER | WS_VISIBLE | WS_CHILD | ES_CENTER | ES_UPPERCASE | ES_WANTRETURN);
+		DBLib::CreateEditBox(WriterEditBox, WS_VISIBLE | WS_CHILD | ES_CENTER | ES_UPPERCASE | ES_WANTRETURN);
 
 		WriterInfoBox.Id	   = EDBWinCompId::IDC_W_Info;
 		WriterInfoBox.Parent   = hWnd;

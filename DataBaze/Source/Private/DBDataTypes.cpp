@@ -11,16 +11,28 @@ void ButtonContainer::Add(const DBWindow& InButton)
 	}
 }
 
-bool ButtonContainer::FindByIndex(EDBWinCompId Id, DBWindow& Button)
+bool ButtonContainer::FindByIndex(EDBWinCompId Id, DBWindow& OutWindow) const
 {
-	for (int i = 0; i < 10; ++i)
+	for (auto& Elem : Buttons)
 	{
-		if (Buttons[i].Id != Id) continue;
-
-		Button = Buttons[i];
-		return true;
+		if (Elem.Id == Id)
+		{
+			OutWindow = Elem;
+			return true;
+		}
 	}
+	return false;
+}
 
+bool ButtonContainer::Contains(EDBWinCompId Id) const
+{
+	for (auto& Elem : Buttons)
+	{
+		if (Elem.Id == Id)
+		{
+			return true;
+		}
+	}
 	return false;
 }
 

@@ -25,13 +25,14 @@ public:
 	~DBSystem();
 
 	// Global variables
-	HWND		 MainWindow;
+	HWND MainWindow;
 
 private:
 	HINSTANCE		HIns;
 	HWND			ListBox = 0;
 	DBListContainer ListContainer;
 	Size2D			WindowSize;
+	bool			MinimizedMode = false;
 
 	// Components
 	DBWindowsManager* WindowManager = nullptr;
@@ -64,6 +65,7 @@ private:
 	void CreateListBox();
 	void CreateButtons();
 	void ResetList();
+	void SetMinimizedMode(bool Enabled);
 
 	static VOID CALLBACK DoubleClickTimer(HWND hWnd, UINT nMsg, UINT_PTR nIDEvent, DWORD dwTime);
 };

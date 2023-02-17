@@ -27,6 +27,7 @@ enum EDBWinCompId
 
 	IDC_PrevFolder,
 	IDC_NextFolder,
+	IDC_Minimize,
 
 	// Viewer window comps
 
@@ -74,9 +75,10 @@ class ButtonContainer
 public:
 	DBWindow Buttons[10];
 
-	void Add(const DBWindow& InButton);
-	bool FindByIndex(EDBWinCompId Id, DBWindow& Button);
-	bool IsEmpty() { return ButtonLastIndex == 0; }
+	void	  Add(const DBWindow& InButton);
+	bool	  FindByIndex(EDBWinCompId Id, DBWindow& OutWindow) const;
+	bool	  Contains(EDBWinCompId Id) const;
+	bool	  IsEmpty() { return ButtonLastIndex == 0; }
 };
 
 enum EEducationDegree
