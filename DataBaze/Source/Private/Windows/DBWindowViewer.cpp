@@ -81,7 +81,7 @@ void DBWindowViewer::OnConstruct()
 {
 	std::wstring message;
 	DBConvert::StringToWString(MemberData.Parents[0].Name, message);
-	MessageBox(NULL, message.c_str(), L"Dialog Box", MB_OK);
+	// MessageBox(NULL, message.c_str(), L"Dialog Box", MB_OK);
 }
 
 void DBWindowViewer::SetMemberData(const DBFamilyData& InData)

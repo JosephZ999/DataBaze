@@ -62,11 +62,12 @@ public:
 	int	 GetValidFoldersNum();
 	void LoadFiles();
 	void AddMember(const DBFamilyData& MemberData);
-	void LoadMember(DBFamilyData& OutMemberData);
+	bool LoadMember(DBFamilyData& OutMemberData);
+	bool LoadMemberByIndex(int Id, DBFamilyData& OutMemberData);
 	void GetMembersList(std::vector<std::wstring>& OutList);
 	void GetLastMemberStatus(std::wstring& OutList);
 
-	int	 GetFolderId() { return SelectedFolderId; }
+	int GetFolderId() { return SelectedFolderId; }
 
 	std::wstring GenerateImagePath();
 	std::wstring GenerateImageName();
@@ -77,6 +78,8 @@ private:
 	bool CheckFile(const std::wstring& InFilePath);
 	void FillFamilyInfo(const DBFamilyData& MemberData, Json::Value& OutValue);
 	void FillPeopleInfo(const DBPeopleData& People, Json::Value& OutValue, bool IsChild = false);
+	void DeserializeFamily(const Json::Value& InFamily, DBFamilyData& OutFamily);
+	void DeserializePeople(const Json::Value& InPeople, DBPeopleData& OutPeople, bool IsChild = false);
 
 	std::wstring GenerateJsonPath(bool CreateFolder = true);
 	std::wstring GenerateJsonPath(int Id, bool CreateFolder = true);

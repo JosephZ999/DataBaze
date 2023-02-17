@@ -79,15 +79,27 @@ void DBDataManager::AddMember(const DBFamilyData& MemberData)
 	OnMemberAdded.Broadcast();
 }
 
-void DBDataManager::LoadMember(DBFamilyData& OutMemberData)
+bool DBDataManager::LoadMember(DBFamilyData& OutMemberData)
 {
-	DBFamilyData Member;
-	DBPeopleData Parent;
-	Parent.Name		  = "Joseph";
-	Parent.FamilyName = "Zzz";
+	return LoadMemberByIndex(SelectedMemberId, OutMemberData);
+}
 
-	Member.Parents.push_back(Parent);
-	OutMemberData = Member;
+bool DBDataManager::LoadMemberByIndex(int Id, DBFamilyData& OutMemberData)
+{
+	const auto FileName = GenerateJsonPath();
+
+	Json::Reader FileReader;
+	Json::Value	 FileData;
+
+	std::ifstream File(FileName);
+	if (File.good())
+	{
+		FileReader.parse(File, FileData);
+		DeserializeFamily(FileData["Main"][Id], OutMemberData);
+		File.close();
+		return true;
+	}
+	return false;
 }
 
 bool DBDataManager::SearchValidFolders()
@@ -195,6 +207,59 @@ void DBDataManager::FillPeopleInfo(const DBPeopleData& People, Json::Value& OutV
 	if (IsChild) return;
 	OutValue[JPK_LIVECOUNTRY] = Json::Value(People.WhereLive);
 	OutValue[JPK_EDUCATION]	  = Json::Value(People.EducationDegree);
+}
+
+void DBDataManager::DeserializeFamily(const Json::Value& InFamily, DBFamilyData& OutFamily)
+{
+	// Globals
+	OutFamily.bLocked		 = InFamily[JCK_GLOBALS][JGK_LOCK].asBool();
+	OutFamily.MaritalStatus	 = InFamily[JCK_GLOBALS][JGK_STATUS].asInt();
+	OutFamily.ChildrenNum	 = InFamily[JCK_GLOBALS][JGK_CHILDNUM].asInt();
+	OutFamily.MailCountry	 = InFamily[JCK_GLOBALS][JGK_MAILCOUNTRY].asString();
+	OutFamily.MailCity		 = InFamily[JCK_GLOBALS][JGK_MAILCITY].asString();
+	OutFamily.MailStreet	 = InFamily[JCK_GLOBALS][JGK_MAILSTREET].asString();
+	OutFamily.MailHomeNumber = InFamily[JCK_GLOBALS][JGK_MAILHOMENUMBER].asString();
+	OutFamily.MailZipCode	 = InFamily[JCK_GLOBALS][JGK_MAILZIP].asInt();
+
+	// Parents info
+	const bool IsMarried = InFamily[JCK_GLOBALS][JGK_STATUS].asInt() == 2;
+	for (int i = 1; i <= (IsMarried ? 2 : 1); ++i)
+	{
+		std::string Key;
+		Key.append(JCK_PARENT).append(std::to_string(i));
+		DBPeopleData Parent;
+		DeserializePeople(InFamily[Key], Parent);
+		OutFamily.Parents.push_back(Parent);
+	}
+
+	// Children info
+	for (int i = 1; i <= OutFamily.ChildrenNum; ++i)
+	{
+		std::string Key;
+		Key.append(JCK_CHILD).append(std::to_string(i));
+		DBPeopleData Child;
+		DeserializePeople(InFamily[Key], Child, true);
+		OutFamily.Children.push_back(Child);
+	}
+}
+
+void DBDataManager::DeserializePeople(const Json::Value& InPeople, DBPeopleData& OutPeople, bool IsChild)
+{
+	OutPeople.Name		 = InPeople[JPK_NAME].asString();
+	OutPeople.FamilyName = InPeople[JPK_FAMILYNAME].asString();
+
+	OutPeople.Gender	 = InPeople[JPK_GENDER].asInt();
+	OutPeople.BirthMonth = InPeople[JPK_BIRTHMONTH].asInt();
+	OutPeople.BirthDay	 = InPeople[JPK_BIRTHDAY].asInt();
+	OutPeople.BirthYear	 = InPeople[JPK_BIRTHYEAR].asInt();
+
+	OutPeople.BirthCountry = InPeople[JPK_BIRTHCOUNTRY].asString();
+	OutPeople.ImageFile	   = InPeople[JPK_IMAGE].asString();
+
+	if (IsChild) return;
+
+	OutPeople.WhereLive		  = InPeople[JPK_LIVECOUNTRY].asString();
+	OutPeople.EducationDegree = InPeople[JPK_EDUCATION].asInt();
 }
 
 std::wstring DBDataManager::GenerateImagePath()

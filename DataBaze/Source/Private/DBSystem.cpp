@@ -169,15 +169,17 @@ void DBSystem::CallCommand(HWND& hWnd, UINT Message, WPARAM& WParam, LPARAM& LPa
 			if (WindowManager && DataManager)
 			{
 				// Get selected index.
-				int lbItem = (int)SendMessage(ListBox, LB_GETCURSEL, 0, 0);
-
+				// int lbItem = (int)SendMessage(ListBox, LB_GETCURSEL, 0, 0);
 				// Get item data.
-				int i = (int)SendMessage(ListBox, LB_GETITEMDATA, lbItem, 0);
+				// int i = (int)SendMessage(ListBox, LB_GETITEMDATA, lbItem, 0);
 
 				DBFamilyData SelectedData;
-				DataManager->LoadMember(SelectedData);
+				if (! DataManager->LoadMember(SelectedData))
+				{
+					assert(false && "Cannot load member by index - System");
+					return;
+				}
 				WindowManager->OpenWindowByType(EWindows::IDW_VIEWER);
-
 				if (WindowManager->GetViewer())
 				{
 					WindowManager->GetViewer()->SetMemberData(SelectedData);
