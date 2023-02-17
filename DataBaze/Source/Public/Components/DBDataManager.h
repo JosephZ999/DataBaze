@@ -16,25 +16,25 @@ DECLARE_DELEGATE(OnItemChangedSignature);
 
 // Json keys
 
-#define JGK_LOCK		   "Lock"
-#define JGK_STATUS		   "Status"
-#define JGK_CHILDNUM	   "ChildrenNum"
-#define JGK_MAILCOUNTRY	   "MailCountry"
-#define JGK_MAILCITY	   "MailCity"
-#define JGK_MAILSTREET	   "MailStreet"
-#define JGK_MAILHOMENUMBER "MailHomeNumber"
-#define JGK_MAILZIP		   "MailZipCode"
+#define JGK_MAILCOUNTRY	   "1.MailCountry"
+#define JGK_MAILCITY	   "2.MailCity"
+#define JGK_MAILSTREET	   "3.MailStreet"
+#define JGK_MAILHOMENUMBER "4.MailHomeNumber"
+#define JGK_MAILZIP		   "5.MailZipCode"
+#define JGK_STATUS		   "6.Status"
+#define JGK_CHILDNUM	   "7.ChildrenNum"
+#define JGK_LOCK		   "8.Lock"
 
-#define JPK_NAME		   "Name"
-#define JPK_FAMILYNAME	   "FamilyName"
-#define JPK_GENDER		   "Gender"
-#define JPK_BIRTHMONTH	   "BirthM"
-#define JPK_BIRTHDAY	   "BirthD"
-#define JPK_BIRTHYEAR	   "BirthY"
-#define JPK_BIRTHCOUNTRY   "BirthCountry"
-#define JPK_LIVECOUNTRY	   "LiveCountry"
+#define JPK_NAME		   "1.Name"
+#define JPK_FAMILYNAME	   "2.FamilyName"
+#define JPK_GENDER		   "3.Gender"
+#define JPK_BIRTHMONTH	   "4.BirthM"
+#define JPK_BIRTHDAY	   "5.BirthD"
+#define JPK_BIRTHYEAR	   "6.BirthY"
+#define JPK_BIRTHCOUNTRY   "7.BirthCountry"
+#define JPK_LIVECOUNTRY	   "8.LiveCountry"
+#define JPK_EDUCATION	   "9.EducationDegree"
 #define JPK_IMAGE		   "Image"
-#define JPK_EDUCATION	   "EducationDegree"
 
 #define JCK_GLOBALS		   "1.Global"
 #define JCK_PARENT		   "2.Parent "
@@ -73,7 +73,7 @@ private:
 
 	bool CheckFile(const std::wstring& InFilePath);
 	void FillFamilyInfo(const DBFamilyData& MemberData, Json::Value& OutValue);
-	void FillPeopleInfo(const DBPeopleData& People, Json::Value& OutValue);
+	void FillPeopleInfo(const DBPeopleData& People, Json::Value& OutValue, bool IsChild = false);
 
 	std::wstring GenerateJsonPath(bool CreateFolder = true);
 	std::wstring GenerateJsonPath(int Id, bool CreateFolder = true);

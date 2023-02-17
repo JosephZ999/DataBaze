@@ -104,20 +104,20 @@ bool DBDataManager::SearchValidFolders()
 		}
 		File.close();
 	}
-/*
-#ifdef _DEBUG
-	std::wstring Message;
-	Message.append(L"Valid Folders Num : ").append(std::to_wstring(ValidFolders->size()));
-	MessageBox(NULL, Message.c_str(), L"Func: SearchValidFolders", MB_OK);
-
-	for (auto& Elem : *ValidFolders)
-	{
+	/*
+	#ifdef _DEBUG
 		std::wstring Message;
-		Message.append(L"Valid Folder : ").append(std::to_wstring(Elem));
+		Message.append(L"Valid Folders Num : ").append(std::to_wstring(ValidFolders->size()));
 		MessageBox(NULL, Message.c_str(), L"Func: SearchValidFolders", MB_OK);
-	}
-#endif
-*/
+
+		for (auto& Elem : *ValidFolders)
+		{
+			std::wstring Message;
+			Message.append(L"Valid Folder : ").append(std::to_wstring(Elem));
+			MessageBox(NULL, Message.c_str(), L"Func: SearchValidFolders", MB_OK);
+		}
+	#endif
+	*/
 	return SomeFileWasFound;
 }
 
@@ -171,7 +171,7 @@ void DBDataManager::FillFamilyInfo(const DBFamilyData& MemberData, Json::Value& 
 			std::string Id;
 			Id.append(JCK_CHILD).append(std::to_string(i + 1));
 
-			FillPeopleInfo(MemberData.Children[i], MemberItem);
+			FillPeopleInfo(MemberData.Children[i], MemberItem, true);
 			FamilyMember[Id] = MemberItem;
 		}
 	}
@@ -179,7 +179,7 @@ void DBDataManager::FillFamilyInfo(const DBFamilyData& MemberData, Json::Value& 
 	OutValue = FamilyMember;
 }
 
-void DBDataManager::FillPeopleInfo(const DBPeopleData& People, Json::Value& OutValue)
+void DBDataManager::FillPeopleInfo(const DBPeopleData& People, Json::Value& OutValue, bool IsChild)
 {
 	OutValue[JPK_NAME]		 = Json::Value(People.Name);
 	OutValue[JPK_FAMILYNAME] = Json::Value(People.FamilyName);
@@ -190,9 +190,11 @@ void DBDataManager::FillPeopleInfo(const DBPeopleData& People, Json::Value& OutV
 	OutValue[JPK_BIRTHYEAR]	 = Json::Value(People.BirthYear);
 
 	OutValue[JPK_BIRTHCOUNTRY] = Json::Value(People.BirthCountry);
-	OutValue[JPK_LIVECOUNTRY]  = Json::Value(People.WhereLive);
 	OutValue[JPK_IMAGE]		   = Json::Value(People.ImageFile);
-	OutValue[JPK_EDUCATION]	   = Json::Value(People.EducationDegree);
+
+	if (IsChild) return;
+	OutValue[JPK_LIVECOUNTRY] = Json::Value(People.WhereLive);
+	OutValue[JPK_EDUCATION]	  = Json::Value(People.EducationDegree);
 }
 
 std::wstring DBDataManager::GenerateImagePath()
@@ -217,7 +219,7 @@ std::wstring DBDataManager::GenerateImageName()
 		int ImageId = DBConvert::StringToInt(ImageName);
 		++ImageId;
 
-		std::string prefix = (ImageId < 10) ? "00" : ((ImageId < 100) ? "0": "");
+		std::string prefix = (ImageId < 10) ? "00" : ((ImageId < 100) ? "0" : "");
 
 		std::ofstream ofFile(FilePath);
 		ofFile.clear();
@@ -228,7 +230,7 @@ std::wstring DBDataManager::GenerateImageName()
 		DBConvert::StringToWString(ImageName, OutValue);
 		return std::wstring().append(L"\\").append(OutValue).append(L".jpg");
 	}
-	
+
 	std::ofstream ofFile(FilePath);
 	ofFile << "002";
 	ofFile.close();

@@ -583,6 +583,7 @@ void DBWindowWriter::FinishWriting()
 		if (! DataManager) return;
 
 		DataManager->AddMember(MembersData);
+		OnWriteSuccess.Broadcast();
 
 		if (MembersData.Parents.size() > 1)
 		{
