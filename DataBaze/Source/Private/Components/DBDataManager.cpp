@@ -76,7 +76,7 @@ void DBDataManager::AddMember(const DBFamilyData& MemberData)
 		Writer->write(FileData, &FileStream);
 		FileStream.close();
 	}
-	OnListChanged.Broadcast();
+	OnMemberAdded.Broadcast();
 }
 
 void DBDataManager::LoadMember(DBFamilyData& OutMemberData)
@@ -275,6 +275,20 @@ void DBDataManager::GetMembersList(std::vector<std::wstring>& OutList)
 	{
 		OutList.push_back(GetMemberStatus(FileData["Main"], i));
 	}
+}
+
+void DBDataManager::GetLastMemberStatus(std::wstring& OutList)
+{
+	auto FilePath = GenerateJsonPath();
+
+	Json::Reader FileReader;
+	Json::Value	 FileData;
+
+	std::ifstream File(FilePath);
+	FileReader.parse(File, FileData);
+	File.close();
+
+	OutList = GetMemberStatus(FileData["Main"], FileData["Main"].size() - 1);
 }
 
 std::wstring DBDataManager::GetMemberStatus(Json::Value& InData, int InId)

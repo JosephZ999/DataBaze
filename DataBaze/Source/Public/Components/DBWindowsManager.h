@@ -30,7 +30,7 @@ public:
 	DBWindowViewer* GetViewer() { return WindowViewer; }
 	DBWindowWriter* GetWriter() { return WindowWriter; }
 
-	void OnWriteSuccessHandle();
+	void OnMemberAddedHandle();
 
 public:
 	virtual DBInterface* GetSystem() override;

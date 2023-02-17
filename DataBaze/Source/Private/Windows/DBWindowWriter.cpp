@@ -403,7 +403,7 @@ void DBWindowWriter::OpenImage()
 			//	(HANDLE)NULL);
 
 			ImagePath = ofn.lpstrFile;
-			MessageBox(NULL, ImagePath.c_str(), L"Dialog Box", MB_OK);
+			// MessageBox(NULL, ImagePath.c_str(), L"Dialog Box", MB_OK);
 
 			ImageCopied = CopyImage();
 		}
@@ -431,9 +431,9 @@ bool DBWindowWriter::CopyImage()
 	DBConvert::WStringToString(NewPath, NewStringPath);
 	DataToChange->ImageFile = NewStringPath;
 
-	MessageBox(NULL, FinalPath.c_str(), L"Dialog Box", MB_OK);
+	// MessageBox(NULL, FinalPath.c_str(), L"Dialog Box", MB_OK);
 
-	if (CopyFile(ImagePath.c_str(), FinalPath.c_str(), true))
+	if (CopyFile(ImagePath.c_str(), FinalPath.c_str(), false))
 	{
 		return true;
 	}
@@ -575,16 +575,12 @@ void DBWindowWriter::FinishWriting()
 
 	if (Finish)
 	{
-		MessageBox(NULL, L"Ну как бы ок", L"Dialog Box", MB_OK);
-
 		if (! GetSystem()) return;
 
 		auto DataManager = GetSystem()->GetComponent<DBDataManager>();
 		if (! DataManager) return;
 
 		DataManager->AddMember(MembersData);
-		OnWriteSuccess.Broadcast();
-
 		if (MembersData.Parents.size() > 1)
 		{
 			MembersData.SwitchParents();

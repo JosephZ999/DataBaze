@@ -58,7 +58,7 @@ public:
 
 	bool IsPortraitModeEnabled();
 
-	void OnListChangedHandle();
+	void OnMemberAddedHandle();
 
 private:
 	void InitListBox();

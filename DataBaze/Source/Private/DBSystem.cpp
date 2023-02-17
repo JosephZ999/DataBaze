@@ -23,7 +23,7 @@ DBSystem::DBSystem(HINSTANCE HInstance, HWND InMainWindow)
 	DataManager = CreateComponent<DBDataManager>();
 	if (DataManager)
 	{
-		DataManager->OnListChanged.Bind(this, &DBSystem::OnListChangedHandle);
+		DataManager->OnMemberAdded.Bind(this, &DBSystem::OnMemberAddedHandle);
 	}
 	assert(WindowManager);
 	assert(DataManager);
@@ -310,7 +310,13 @@ bool DBSystem::IsPortraitModeEnabled()
 	return WindowSize.X < WindowSize.Y;
 }
 
-void DBSystem::OnListChangedHandle()
+void DBSystem::OnMemberAddedHandle()
 {
-	InitListBox();
+	std::wstring LastMember;
+	DataManager->GetLastMemberStatus(LastMember);
+	ListData.push_back(LastMember);
+
+	int ItemId = SendMessage(ListBox, LB_ADDSTRING, 0, (LPARAM)LastMember.c_str());
+	SendMessage(ListBox, LB_SETITEMDATA, ItemId, ListBoxLastItem);
+	++ListBoxLastItem;
 }

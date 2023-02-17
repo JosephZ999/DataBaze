@@ -47,7 +47,7 @@ class DBDataManager : public DBInterface
 public:
 	DBDataManager();
 
-	OnListChangedSignature OnListChanged;
+	OnListChangedSignature OnMemberAdded;
 
 private:
 	int		SelectedFolderId;
@@ -64,10 +64,13 @@ public:
 	void AddMember(const DBFamilyData& MemberData);
 	void LoadMember(DBFamilyData& OutMemberData);
 	void GetMembersList(std::vector<std::wstring>& OutList);
+	void GetLastMemberStatus(std::wstring& OutList);
+
 	int	 GetFolderId() { return SelectedFolderId; }
 
 	std::wstring GenerateImagePath();
 	std::wstring GenerateImageName();
+
 private:
 	bool SetFolder(int FolderId);
 

@@ -89,7 +89,7 @@ void DBWindowsManager::OpenWindowByType(EWindows WindowType)
 		SendMessage(WriterHandle, WM_COMMAND, WM_SHOWWINDOW, 0);
 		if (WindowWriter)
 		{
-			WindowWriter->OnWriteSuccess.Bind(this, &DBWindowsManager::OnWriteSuccessHandle);
+			WindowWriter->OnWriteSuccess.Bind(this, &DBWindowsManager::OnMemberAddedHandle);
 		}
 		return;
 	}
@@ -127,7 +127,7 @@ void DBWindowsManager::EndConstruct()
 	}
 }
 
-void DBWindowsManager::OnWriteSuccessHandle()
+void DBWindowsManager::OnMemberAddedHandle()
 {
 	CloseWindowByType(EWindows::IDW_WRITER);
 }
