@@ -107,7 +107,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Users\devil\source\repos\DataBaze\DataBaze\Source;C:\Users\devil\source\repos\DataBaze\DataBaze;C:\Users\devil\source\repos\DataBaze\DataBaze\Source\Public\Windows;C:\Users\devil\source\repos\DataBaze\DataBaze\Source\Public\Utils;C:\Users\devil\source\repos\DataBaze\DataBaze\Source\Public\Components;C:\Users\devil\source\repos\DataBaze\DataBaze\Source\Public;C:\Users\devil\source\repos\DataBaze\DataBaze\Source\Public\DataTypes;C:\Users\devil\source\repos\DataBaze\DataBaze\Json\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\devil\source\repos\DataBaze\DataBaze\Source;C:\Users\devil\source\repos\DataBaze\DataBaze;C:\Users\devil\source\repos\DataBaze\DataBaze\Source\Public\Windows;C:\Users\devil\source\repos\DataBaze\DataBaze\Source\Public\Utils;C:\Users\devil\source\repos\DataBaze\DataBaze\Source\Public\Components;C:\Users\devil\source\repos\DataBaze\DataBaze\Source\Public;C:\Users\devil\source\repos\DataBaze\DataBaze\Source\Public\DataTypes;C:\Users\devil\source\repos\DataBaze\DataBaze\Json\include;C:\Users\devil\source\repos\DataBaze\DataBaze\Plugins;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -124,7 +124,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Users\devil\source\repos\DataBaze\DataBaze\Source;C:\Users\devil\source\repos\DataBaze\DataBaze;C:\Users\devil\source\repos\DataBaze\DataBaze\Source\Public\Windows;C:\Users\devil\source\repos\DataBaze\DataBaze\Source\Public\Utils;C:\Users\devil\source\repos\DataBaze\DataBaze\Source\Public\Components;C:\Users\devil\source\repos\DataBaze\DataBaze\Source\Public;C:\Users\devil\source\repos\DataBaze\DataBaze\Source\Public\DataTypes;C:\Users\devil\source\repos\DataBaze\DataBaze\Json\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\devil\source\repos\DataBaze\DataBaze\Source;C:\Users\devil\source\repos\DataBaze\DataBaze;C:\Users\devil\source\repos\DataBaze\DataBaze\Source\Public\Windows;C:\Users\devil\source\repos\DataBaze\DataBaze\Source\Public\Utils;C:\Users\devil\source\repos\DataBaze\DataBaze\Source\Public\Components;C:\Users\devil\source\repos\DataBaze\DataBaze\Source\Public;C:\Users\devil\source\repos\DataBaze\DataBaze\Source\Public\DataTypes;C:\Users\devil\source\repos\DataBaze\DataBaze\Json\include;C:\Users\devil\source\repos\DataBaze\DataBaze\Plugins;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -143,7 +143,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Users\devil\source\repos\DataBaze\DataBaze\Source;C:\Users\devil\source\repos\DataBaze\DataBaze;C:\Users\devil\source\repos\DataBaze\DataBaze\Source\Public\Windows;C:\Users\devil\source\repos\DataBaze\DataBaze\Source\Public\Utils;C:\Users\devil\source\repos\DataBaze\DataBaze\Source\Public\Components;C:\Users\devil\source\repos\DataBaze\DataBaze\Source\Public;C:\Users\devil\source\repos\DataBaze\DataBaze\Source\Public\DataTypes;C:\Users\devil\source\repos\DataBaze\DataBaze\Json\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\devil\source\repos\DataBaze\DataBaze\Source;C:\Users\devil\source\repos\DataBaze\DataBaze;C:\Users\devil\source\repos\DataBaze\DataBaze\Source\Public\Windows;C:\Users\devil\source\repos\DataBaze\DataBaze\Source\Public\Utils;C:\Users\devil\source\repos\DataBaze\DataBaze\Source\Public\Components;C:\Users\devil\source\repos\DataBaze\DataBaze\Source\Public;C:\Users\devil\source\repos\DataBaze\DataBaze\Source\Public\DataTypes;C:\Users\devil\source\repos\DataBaze\DataBaze\Json\include;C:\Users\devil\source\repos\DataBaze\DataBaze\Plugins;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -164,7 +164,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Users\devil\source\repos\DataBaze\DataBaze\Source;C:\Users\devil\source\repos\DataBaze\DataBaze;C:\Users\devil\source\repos\DataBaze\DataBaze\Source\Public\Windows;C:\Users\devil\source\repos\DataBaze\DataBaze\Source\Public\Utils;C:\Users\devil\source\repos\DataBaze\DataBaze\Source\Public\Components;C:\Users\devil\source\repos\DataBaze\DataBaze\Source\Public;C:\Users\devil\source\repos\DataBaze\DataBaze\Source\Public\DataTypes;C:\Users\devil\source\repos\DataBaze\DataBaze\Json\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\devil\source\repos\DataBaze\DataBaze\Source;C:\Users\devil\source\repos\DataBaze\DataBaze;C:\Users\devil\source\repos\DataBaze\DataBaze\Source\Public\Windows;C:\Users\devil\source\repos\DataBaze\DataBaze\Source\Public\Utils;C:\Users\devil\source\repos\DataBaze\DataBaze\Source\Public\Components;C:\Users\devil\source\repos\DataBaze\DataBaze\Source\Public;C:\Users\devil\source\repos\DataBaze\DataBaze\Source\Public\DataTypes;C:\Users\devil\source\repos\DataBaze\DataBaze\Json\include;C:\Users\devil\source\repos\DataBaze\DataBaze\Plugins;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
