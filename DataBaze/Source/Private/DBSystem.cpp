@@ -45,11 +45,7 @@ void DBSystem::EndConstruct()
 	CreateListBox();
 	CreateButtons();
 
-	// DataManager->LoadFiles();
-	if (DataManager->SearchValidFolders())
-	{
-		InitListBox();
-	}
+	InitListBox();
 
 	FolderText.Id		= EDBWinCompId::IDC_FolderId;
 	FolderText.Parent	= MainWindow;
@@ -241,7 +237,7 @@ void DBSystem::CallCommand(HWND& hWnd, UINT Message, WPARAM& WParam, LPARAM& LPa
 	}
 	case IDC_LOCK:
 	{
-		MessageBox(NULL, L"Sorry. It does't work", L"Dialog Box", MB_OK);
+		DBDebug::CreateMessageBox("Lock does not work");
 		return;
 	}
 	case IDC_UNLOCK:
@@ -252,7 +248,7 @@ void DBSystem::CallCommand(HWND& hWnd, UINT Message, WPARAM& WParam, LPARAM& LPa
 
 		if (clicks == 2)
 		{
-			MessageBox(NULL, L"Sorry. It does't work", L"Dialog Box", MB_OK);
+			DBDebug::CreateMessageBox("Unlock double clicked");
 		}
 		return;
 	}

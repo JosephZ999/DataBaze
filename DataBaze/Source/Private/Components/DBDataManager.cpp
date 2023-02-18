@@ -6,37 +6,15 @@ DBDataManager::DBDataManager()
 {
 	SelectedFolderId = 1;
 	SelectedMemberId = 1;
-}
 
-void DBDataManager::LoadFiles()
-{
-	const std::wstring FileName = GenerateJsonPath();
-
-	DBFamilyData Family;
-	DBFamilyData Family2;
-	DBFamilyData Family3;
-
-	DBPeopleData People;
-	People.Name		  = "Joseph";
-	People.FamilyName = "Zzz";
-	Family.Parents.push_back(People);
-
-	People.Name		  = "Di";
-	People.FamilyName = "Moon";
-	Family2.Parents.push_back(People);
-
-	People.Name		  = "DN";
-	People.FamilyName = "Age";
-	Family3.Parents.push_back(People);
-
-	AddMember(Family);
-	AddMember(Family2);
-	AddMember(Family3);
+	using namespace DBPaths;
+	CreatePath(GetDataPath());
 }
 
 void DBDataManager::AddMember(const DBFamilyData& MemberData)
 {
 	const auto FileName = GenerateJsonPath();
+	DBPaths::CreatePath(DBPaths::GetDataFolderPath(SelectedFolderId));
 
 	Json::Reader FileReader;
 	Json::Value	 FileData;
@@ -107,7 +85,7 @@ bool DBDataManager::SearchValidFolders()
 	bool SomeFileWasFound = false;
 	for (size_t i = 1; i <= MAX_FOLDERS_NUM; ++i)
 	{
-		const std::wstring FilePath = GenerateJsonPath(i, false);
+		const std::wstring FilePath = GenerateJsonPath(i);
 		std::ifstream	   File(FilePath);
 		if (File.good())
 		{
@@ -117,13 +95,14 @@ bool DBDataManager::SearchValidFolders()
 		}
 		else
 		{
-
 			InvalidFolders->push_back(i);
 		}
 	}
 	if (InvalidFolders->size() > 0)
 	{
-		ValidFolders->push_back( (*InvalidFolders)[0]);
+		int AdditionalFolder = (*InvalidFolders)[0];
+		DBPaths::CreatePath(DBPaths::GetDataFolderPath(AdditionalFolder));
+		ValidFolders->push_back((*InvalidFolders)[0]);
 	}
 	/*
 	#ifdef _DEBUG
@@ -273,12 +252,12 @@ void DBDataManager::DeserializePeople(const Json::Value& InPeople, DBPeopleData&
 
 std::wstring DBDataManager::GenerateImagePath()
 {
-	return GenerateDataPath(SelectedFolderId, true);
+	return DBPaths::GetDataFolderPath(SelectedFolderId);
 }
 
 std::wstring DBDataManager::GenerateImageName()
 {
-	std::wstring FilePath = GenerateDataPath(SelectedFolderId, true);
+	std::wstring FilePath = DBPaths::GetDataFolderPath(SelectedFolderId);
 	FilePath.append(L"\\NextImage.txt");
 	std::string ImageName = "001";
 
@@ -311,27 +290,14 @@ std::wstring DBDataManager::GenerateImageName()
 	return std::wstring(L"\\001.jpg");
 }
 
-std::wstring DBDataManager::GenerateJsonPath(bool CreateFolder)
+std::wstring DBDataManager::GenerateJsonPath() const
 {
-	return GenerateDataPath(SelectedFolderId, CreateFolder).append(L"\\Data.json");
+	return std::wstring(DBPaths::GetDataFolderPath(SelectedFolderId).append(L"\\Data.json"));
 }
 
-std::wstring DBDataManager::GenerateJsonPath(int Id, bool CreateFolder)
+std::wstring DBDataManager::GenerateJsonPath(int Id) const
 {
-	return GenerateDataPath(Id, CreateFolder).append(L"\\Data.json");
-}
-
-std::wstring DBDataManager::GenerateDataPath(int InId, bool CreateFolder)
-{
-	auto Folder = DBPaths::GetProjectPath().append(L"\\Data");
-	_wmkdir(Folder.c_str());
-
-	Folder.append(L"\\Folder_").append(std::to_wstring(InId));
-	if (CreateFolder)
-	{
-		_wmkdir(Folder.c_str());
-	}
-	return Folder;
+	return std::wstring(DBPaths::GetDataFolderPath(Id).append(L"\\Data.json"));
 }
 
 void DBDataManager::GetMembersList(std::vector<std::wstring>& OutList)

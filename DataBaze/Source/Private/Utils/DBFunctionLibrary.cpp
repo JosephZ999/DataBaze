@@ -185,6 +185,21 @@ std::wstring DBPaths::GetProjectPath()
 	return std::wstring(buffer).substr(0, pos);
 }
 
+std::wstring DBPaths::GetDataPath()
+{
+	return std::wstring(DBPaths::GetProjectPath()).append(L"\\Data");
+}
+
+std::wstring DBPaths::GetDataFolderPath(int Folder)
+{
+	return std::wstring(DBPaths::GetDataPath()).append(L"\\Folder_").append(std::to_wstring(Folder));
+}
+
+void DBPaths::CreatePath(std::wstring NewPath)
+{
+	_wmkdir(NewPath.c_str());
+}
+
 // Converter
 using convert_t = std::codecvt_utf8<wchar_t>;
 std::wstring_convert<convert_t, wchar_t> strconverter;
@@ -206,4 +221,11 @@ int DBConvert::StringToInt(const std::string& InString)
 		return 0;
 	}
 	return std::stoi(InString);
+}
+
+void DBDebug::CreateMessageBox(std::string Text)
+{
+	std::wstring WText;
+	DBConvert::StringToWString(Text, WText);
+	MessageBox(NULL, WText.c_str(), L"Dialog Box", MB_OK);
 }

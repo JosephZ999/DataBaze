@@ -92,14 +92,12 @@ LRESULT CALLBACK WndWriterProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lP
 		 */
 		break;
 	}
-	case WM_KEYDOWN:
-	{
-		// MessageBox(NULL, L"Sorry. It does't work", L"Dialog Box", MB_OK);
-		break;
-	}
 	case WM_CLOSE:
 	{
-		DBLib::SetWindowVisibility(hWnd, false);
+		if (WriterObj)
+		{
+			WriterObj->OnWriteSuccess.Broadcast();
+		}
 		return 0;
 	}
 	case WM_HOTKEY:
@@ -153,6 +151,11 @@ DBWindowWriter::DBWindowWriter(DBInterface* InOwner)
 		WindowHandle = Manager->GetWriterHandle();
 		WriterObj	 = this;
 	}
+}
+
+DBWindowWriter::~DBWindowWriter()
+{
+	DBDebug::CreateMessageBox("My Debug Message Box");
 }
 
 void DBWindowWriter::OnConstruct()
@@ -699,7 +702,7 @@ bool DBWindowWriter::CopyImage()
 		std::wstring ErrorCode(L"Error Code: ");
 		ErrorCode.append(std::to_wstring(GetLastError()));
 		OutputDebugString(ErrorCode.c_str());
-		MessageBox(NULL, L"Error", L"Dialog Box", MB_OK);
+		DBDebug::CreateMessageBox("Cannot copy an image");
 		// ERROR_PATH_NOT_FOUND //  error codes
 		return false;
 	}

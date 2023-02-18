@@ -61,7 +61,6 @@ public:
 
 	bool SearchValidFolders();
 	int	 GetValidFoldersNum();
-	void LoadFiles();
 	void AddMember(const DBFamilyData& MemberData);
 	bool LoadMember(DBFamilyData& OutMemberData);
 	bool LoadMemberByIndex(int Id, DBFamilyData& OutMemberData);
@@ -82,8 +81,7 @@ private:
 	void DeserializeFamily(const Json::Value& InFamily, DBFamilyData& OutFamily);
 	void DeserializePeople(const Json::Value& InPeople, DBPeopleData& OutPeople, bool IsChild = false);
 
-	std::wstring GenerateJsonPath(bool CreateFolder = true);
-	std::wstring GenerateJsonPath(int Id, bool CreateFolder = true);
-	std::wstring GenerateDataPath(int InId, bool CreateFolder = false);
+	std::wstring GenerateJsonPath() const;
+	std::wstring GenerateJsonPath(int Id) const;
 	std::wstring GetMemberStatus(Json::Value& InData, int InId);
 };

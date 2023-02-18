@@ -32,6 +32,10 @@ RECT GetWindowRect(HWND Window);
 namespace DBPaths
 {
 std::wstring GetProjectPath();
+std::wstring GetDataPath();
+std::wstring GetDataFolderPath(int Folder);
+
+void CreatePath(std::wstring NewPath);
 }
 
 namespace DBConvert
@@ -40,6 +44,11 @@ void StringToWString(const std::string& String, std::wstring& OutWString);
 void WStringToString(const std::wstring& WString, std::string& OutString);
 int StringToInt(const std::string& InString);
 } // namespace DBConvert
+
+namespace DBDebug
+{
+void CreateMessageBox(std::string Text);
+}
 
 template <typename To, typename From> //
 To* Cast(From* Param)
