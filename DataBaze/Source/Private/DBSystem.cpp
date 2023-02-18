@@ -10,7 +10,7 @@
 UINT		 TimerId;
 int			 clicks;
 const Size2D MainBtnSizes = {150, 30};
-DBWindow	 SystemFolderText;
+DBWindow	 FolderText;
 
 DBSystem::DBSystem(HINSTANCE HInstance, HWND InMainWindow)
 	: HIns(HInstance)
@@ -51,15 +51,15 @@ void DBSystem::EndConstruct()
 		InitListBox();
 	}
 
-	SystemFolderText.Id		  = EDBWinCompId::IDC_FolderId;
-	SystemFolderText.Parent	  = MainWindow;
-	SystemFolderText.Position = {245, 320};
-	SystemFolderText.Size	  = {55, 30};
-	SystemFolderText.Text	  = L"22";
-	SystemFolderText.FontSize = 20;
-	SystemFolderText.HIns	  = GetModuleHandle(NULL);
+	FolderText.Id		= EDBWinCompId::IDC_FolderId;
+	FolderText.Parent	= MainWindow;
+	FolderText.Position = {245, 320};
+	FolderText.Size		= {55, 30};
+	FolderText.Text		= L"1";
+	FolderText.FontSize = 20;
+	FolderText.HIns		= GetModuleHandle(NULL);
 
-	DBLib::CreateStaticBox(SystemFolderText, WS_VISIBLE | WS_CHILD | WS_BORDER | SS_CENTER);
+	DBLib::CreateStaticBox(FolderText, WS_VISIBLE | WS_CHILD | WS_BORDER | SS_CENTER);
 }
 
 DBInterface* DBSystem::GetSystem()
@@ -159,7 +159,7 @@ void DBSystem::SetMinimizedMode(bool Enabled)
 		}
 		} //  switch id
 	}
-	SetWindowPos(SystemFolderText.Window, 0, SystemFolderText.Position.X + Offset2, SystemFolderText.Position.Y, 0, 0, SWP_NOSIZE);
+	SetWindowPos(FolderText.Window, 0, FolderText.Position.X + Offset2, FolderText.Position.Y, 0, 0, SWP_NOSIZE);
 	SetWindowPos(ListBox, HWND_TOP, 200 + Offset2, 25, 500 + (int)((float)Offset2 * 0.5f), 280, 0);
 }
 
@@ -256,6 +256,18 @@ void DBSystem::CallCommand(HWND& hWnd, UINT Message, WPARAM& WParam, LPARAM& LPa
 	{
 		SetMinimizedMode(! MinimizedMode);
 		break;
+	}
+	case IDC_NextFolder:
+	{
+		DataManager->ChangeFolder(true);
+		std::wstring IdAsText = std::to_wstring(DataManager->GetFolderId() + 1);
+		DBLib::SetText(FolderText.Window, IdAsText);
+	}
+	case IDC_PrevFolder:
+	{
+		DataManager->ChangeFolder(false);
+		std::wstring IdAsText = std::to_wstring(DataManager->GetFolderId() + 1);
+		DBLib::SetText(FolderText.Window, IdAsText);
 	}
 	} // switch end
 }
