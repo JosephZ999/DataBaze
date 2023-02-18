@@ -259,15 +259,23 @@ void DBSystem::CallCommand(HWND& hWnd, UINT Message, WPARAM& WParam, LPARAM& LPa
 	}
 	case IDC_NextFolder:
 	{
-		DataManager->ChangeFolder(true);
-		std::wstring IdAsText = std::to_wstring(DataManager->GetFolderId() + 1);
-		DBLib::SetText(FolderText.Window, IdAsText);
+		if (DataManager->ChangeFolder(true))
+		{
+			std::wstring IdAsText = std::to_wstring(DataManager->GetFolderId());
+			DBLib::SetText(FolderText.Window, IdAsText);
+			InitListBox();
+		}
+		break;
 	}
 	case IDC_PrevFolder:
 	{
-		DataManager->ChangeFolder(false);
-		std::wstring IdAsText = std::to_wstring(DataManager->GetFolderId() + 1);
-		DBLib::SetText(FolderText.Window, IdAsText);
+		if (DataManager->ChangeFolder(false))
+		{
+			std::wstring IdAsText = std::to_wstring(DataManager->GetFolderId());
+			DBLib::SetText(FolderText.Window, IdAsText);
+			InitListBox();
+		}
+		break;
 	}
 	} // switch end
 }

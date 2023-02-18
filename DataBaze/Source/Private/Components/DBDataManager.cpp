@@ -113,8 +113,17 @@ bool DBDataManager::SearchValidFolders()
 		{
 			SomeFileWasFound = true;
 			ValidFolders->push_back(i);
+			File.close();
 		}
-		File.close();
+		else
+		{
+
+			InvalidFolders->push_back(i);
+		}
+	}
+	if (InvalidFolders->size() > 0)
+	{
+		ValidFolders->push_back( (*InvalidFolders)[0]);
 	}
 	/*
 	#ifdef _DEBUG
@@ -385,14 +394,14 @@ bool DBDataManager::SetFolder(int FolderId)
 
 	const int InitialValue = SelectedFolderId;
 
-	if (FolderId >= (int)ValidFolders->size())
+	if (FolderId > (int)ValidFolders->size())
 	{
-		SelectedFolderId = ValidFolders->size() - 1;
+		FolderId = ValidFolders->size();
 		return InitialValue != SelectedFolderId;
 	}
-	else if (FolderId < 0)
+	else if (FolderId <= 1)
 	{
-		SelectedFolderId = 0;
+		SelectedFolderId = 1;
 		return InitialValue != SelectedFolderId;
 	}
 	SelectedFolderId = FolderId;

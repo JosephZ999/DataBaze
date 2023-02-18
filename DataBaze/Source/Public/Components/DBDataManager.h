@@ -53,6 +53,7 @@ private:
 	int		SelectedFolderId;
 	int		SelectedMemberId;
 	Folders ValidFolders[MAX_FOLDERS_NUM];
+	Folders InvalidFolders[MAX_FOLDERS_NUM];
 
 public:
 	void SelectMember(int InMemberId);
