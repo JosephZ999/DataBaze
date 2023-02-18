@@ -50,14 +50,6 @@ public:
 
 	virtual DBInterface* GetSystem() override;
 
-	void Update_BtnVisibility();
-	void Update_ListBoxScale();
-
-	void HideButton(EDBWinCompId Id);
-	void ShowButton(EDBWinCompId Id);
-
-	bool IsPortraitModeEnabled();
-
 	void OnMemberAddedHandle();
 
 private:

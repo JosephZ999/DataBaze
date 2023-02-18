@@ -69,7 +69,7 @@ void DBSystem::InitListBox()
 
 void DBSystem::CreateListBox()
 {
-	ListBox = CreateWindow(L"LISTBOX", L"button", WS_CLIPSIBLINGS | WS_VISIBLE | WS_CHILD | LBS_STANDARD, 200, 25, 500, 300, MainWindow,
+	ListBox = CreateWindow(L"LISTBOX", L"button",  WS_VISIBLE | WS_CHILD | (LBS_NOTIFY | LBS_SORT | WS_VSCROLL), 200, 25, 500, 300, MainWindow,
 		(HMENU)IDC_LISTBOX, NULL, NULL);
 	DBLib::SetFontSize(ListBox, 20);
 }
@@ -147,7 +147,7 @@ void DBSystem::SetMinimizedMode(bool Enabled)
 		}
 		} //  switch id
 	}
-	SetWindowPos(ListBox, HWND_TOP, 200 + Offset2, 25, 500 + (int)((float)Offset2 * 0.5f), 300, 0);
+	SetWindowPos(ListBox, HWND_TOP, 200 + Offset2, 25, 500 + (int)((float)Offset2 * 0.5f), 280, 0);
 }
 
 VOID DBSystem::DoubleClickTimer(HWND hWnd, UINT nMsg, UINT_PTR nIDEvent, DWORD dwTime)
@@ -250,66 +250,6 @@ void DBSystem::CallCommand(HWND& hWnd, UINT Message, WPARAM& WParam, LPARAM& LPa
 void DBSystem::CallPaint(HWND& hWnd, UINT Message, WPARAM& WParam, LPARAM& LParam)
 {
 	return;
-	RECT Rect;
-	if (GetWindowRect(MainWindow, &Rect))
-	{
-		WindowSize.X = Rect.right - Rect.left;
-		WindowSize.Y = Rect.bottom - Rect.top;
-	}
-	Update_BtnVisibility();
-	Update_ListBoxScale();
-}
-
-void DBSystem::Update_BtnVisibility()
-{
-	if (Buttons.IsEmpty()) return;
-
-	for (auto Btn : Buttons.Buttons)
-	{
-		DBLib::SetWindowVisibility(Btn.Window, ! IsPortraitModeEnabled());
-	}
-}
-
-void DBSystem::Update_ListBoxScale()
-{
-	Size2D Pos = (IsPortraitModeEnabled()) ? Size2D(0, 25) : Size2D((MainBtnSizes).X + 50, 25);
-	Size2D Size;
-	Size.X = abs(Pos.X - (WindowSize.X - 25));
-	Size.Y = WindowSize.Y - 100;
-
-	SetWindowPos(ListBox, 0, //
-		Pos.X, Pos.Y,		 //
-		Size.X, Size.Y,		 //
-		1);
-}
-
-void DBSystem::HideButton(EDBWinCompId Id)
-{
-	DBWindow Button;
-	if (Buttons.FindByIndex(Id, Button))
-	{
-		SetWindowPos(Button.Window, 0,			  //
-			Button.Position.X, Button.Position.Y, //
-			0, 0,								  //
-			SWP_NOMOVE | SWP_NOOWNERZORDER | SWP_NOZORDER);
-	}
-}
-
-void DBSystem::ShowButton(EDBWinCompId Id)
-{
-	DBWindow Button;
-	if (Buttons.FindByIndex(Id, Button))
-	{
-		SetWindowPos(Button.Window, 0,			  //
-			Button.Position.X, Button.Position.Y, //
-			Button.Size.X, Button.Size.Y,		  //
-			SWP_NOMOVE | SWP_NOOWNERZORDER | SWP_NOZORDER);
-	}
-}
-
-bool DBSystem::IsPortraitModeEnabled()
-{
-	return WindowSize.X < WindowSize.Y;
 }
 
 void DBSystem::OnMemberAddedHandle()

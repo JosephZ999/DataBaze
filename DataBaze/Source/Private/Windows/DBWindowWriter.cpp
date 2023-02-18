@@ -265,20 +265,22 @@ void DBWindowWriter::UpdateInfo()
 {
 	std::wstring InfoText;
 
+	InfoText.append(L"<   ");
 	switch (PeopleType)
 	{ // clang-format off
-	case PT_Parent:		InfoText.append(L"Parent 1\n\n");	break;
-	case PT_Spouse:		InfoText.append(L"Parent 2\n\n");	break;
-	case PT_Child_1:	InfoText.append(L"Child 1\n\n");	break;
-	case PT_Child_2:	InfoText.append(L"Child 2\n\n");	break;
-	case PT_Child_3:	InfoText.append(L"Child 3\n\n");	break;
-	case PT_Child_4:	InfoText.append(L"Child 4\n\n");	break;
-	case PT_Child_5:	InfoText.append(L"Child 5\n\n");	break;
-	case PT_Child_6:	InfoText.append(L"Child 6\n\n");	break;
-	case PT_Child_7:	InfoText.append(L"Child 7\n\n");	break;
-	case PT_Child_8:	InfoText.append(L"Child 8\n\n");	break;
-	case PT_Child_9:	InfoText.append(L"Child 9\n\n");	break;
+	case PT_Parent:		InfoText.append(L"Parent 1");	break;
+	case PT_Spouse:		InfoText.append(L"Parent 2");	break;
+	case PT_Child_1:	InfoText.append(L"Child 1");	break;
+	case PT_Child_2:	InfoText.append(L"Child 2");	break;
+	case PT_Child_3:	InfoText.append(L"Child 3");	break;
+	case PT_Child_4:	InfoText.append(L"Child 4");	break;
+	case PT_Child_5:	InfoText.append(L"Child 5");	break;
+	case PT_Child_6:	InfoText.append(L"Child 6");	break;
+	case PT_Child_7:	InfoText.append(L"Child 7");	break;
+	case PT_Child_8:	InfoText.append(L"Child 8");	break;
+	case PT_Child_9:	InfoText.append(L"Child 9");	break;
 	} // clang-format on
+	InfoText.append(L"   >\n");
 
 	switch (PeopleData)
 	{ // clang-format off
