@@ -33,6 +33,7 @@ enum EDBWinCompId
 
 	// Writer window comps
 	IDC_W_Info,
+	IDC_W_MoreInfo,
 	IDC_W_Edit,
 
 	IDC_MAX,

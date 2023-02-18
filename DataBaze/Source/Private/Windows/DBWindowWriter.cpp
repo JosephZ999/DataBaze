@@ -11,6 +11,7 @@
 DBWindowWriter* WriterObj = nullptr;
 DBWindow		WriterEditBox;
 DBWindow		WriterInfoBox;
+DBWindow		WriterMoreInfoBox;
 
 LRESULT CALLBACK WndWriterProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
@@ -31,12 +32,22 @@ LRESULT CALLBACK WndWriterProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lP
 		WriterInfoBox.Id	   = EDBWinCompId::IDC_W_Info;
 		WriterInfoBox.Parent   = hWnd;
 		WriterInfoBox.Position = {25, 25};
-		WriterInfoBox.Size	   = {520, 120};
+		WriterInfoBox.Size	   = {525, 125};
 		WriterInfoBox.Text	   = L"Info Info Info Info Info Info Info Info Info Info Info Info Info Info";
 		WriterInfoBox.FontSize = 24;
 		WriterInfoBox.HIns	   = GetModuleHandle(NULL);
 
 		DBLib::CreateStaticBox(WriterInfoBox, WS_VISIBLE | WS_CHILD);
+
+		WriterMoreInfoBox.Id	   = EDBWinCompId::IDC_W_MoreInfo;
+		WriterMoreInfoBox.Parent   = hWnd;
+		WriterMoreInfoBox.Position = {50, 220};
+		WriterMoreInfoBox.Size	   = {475, 100};
+		WriterMoreInfoBox.Text	   = L"";
+		WriterMoreInfoBox.FontSize = 18;
+		WriterMoreInfoBox.HIns	   = GetModuleHandle(NULL);
+
+		DBLib::CreateStaticBox(WriterMoreInfoBox, WS_VISIBLE | WS_CHILD);
 	}
 	case WM_COMMAND:
 	{
@@ -49,8 +60,6 @@ LRESULT CALLBACK WndWriterProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lP
 			WriterObj->SelectWriteData(WriterObj->PeopleType);
 			break;
 		}
-		HDC hdc2 = GetDC(WriterInfoBox.Window);
-		SetTextColor(hdc2, RGB(255, 255, 255));
 		break;
 	}
 	case WM_PAINT:
@@ -264,6 +273,7 @@ void DBWindowWriter::WriteData()
 void DBWindowWriter::UpdateInfo()
 {
 	std::wstring InfoText;
+	std::wstring MoreInfoText;
 
 	InfoText.append(L"<   ");
 	switch (PeopleType)
@@ -283,26 +293,104 @@ void DBWindowWriter::UpdateInfo()
 	InfoText.append(L"   >\n");
 
 	switch (PeopleData)
-	{ // clang-format off
-	case PD_Name:				InfoText.append(L"Name");						break;
-	case PD_FamilyName:			InfoText.append(L"Family name");				break;
-	case PD_Gender:				InfoText.append(L"Gender");						break;
-	case PD_BirthMonth:			InfoText.append(L"Birth Month");				break;
-	case PD_BirthDay:			InfoText.append(L"Birth Day");					break;
-	case PD_BirthYear:			InfoText.append(L"Birth Year");					break;
-	case PD_BornCountry:		InfoText.append(L"Country where born");			break;
-	case PD_EducationDegree:	InfoText.append(L"Education");					break;
-	case PD_WhereLive:			InfoText.append(L"Country where live today");	break;
-	case PD_MaritalStatus:		InfoText.append(L"Marital Status");				break;
-	case PD_ChildrenNum:		InfoText.append(L"Children Num");				break;
-	case PD_MailCountry:		InfoText.append(L"Mailing country");			break;
-	case PD_MailCity:			InfoText.append(L"Mailing city");				break;
-	case PD_MailStreet:			InfoText.append(L"Mailing Street");				break;
-	case PD_MailHomeNumber:		InfoText.append(L"Mailing home number");		break;
-	case PD_MailZipCode:		InfoText.append(L"Mailing ZipCode");			break;
-	} // clang-format on
+	{
+	case PD_Name:
+	{
+		InfoText.append(L"Name");
+		break;
+	}
+	case PD_FamilyName:
+	{
+		InfoText.append(L"Family name");
+		break;
+	}
+	case PD_Gender:
+	{
+		InfoText.append(L"Gender");
+		MoreInfoText.append(L"1 or M - Mele\n2 or F - Famele");
+		break;
+	}
+	case PD_BirthMonth:
+	{
+		InfoText.append(L"Birth Month");
+		break;
+	}
+	case PD_BirthDay:
+	{
+		InfoText.append(L"Birth Day");
+		break;
+	}
+	case PD_BirthYear:
+	{
+		InfoText.append(L"Birth Year");
+		break;
+	}
+	case PD_BornCountry:
+	{
+		InfoText.append(L"Country where born");
+		MoreInfoText.append(L"Example - UZB");
+		break;
+	}
+	case PD_EducationDegree:
+	{
+		InfoText.append(L"Education");
+		MoreInfoText.append(
+			L"H.School no degree - 1 or N, H.School - 2 or S, Vocational - 3 or V, University Courses - 4 or UC, "
+			L"University - 5 or U, Graduate level Courses - 6 or GC, Masters - 7 or M, Doctoral Courses - 8 or SD, Doctorate - 9 or D");
+		break;
+	}
+	case PD_WhereLive:
+	{
+		InfoText.append(L"Country where live today");
+		MoreInfoText.append(L"Example - RUS");
+		break;
+	}
+	case PD_MaritalStatus:
+	{
+		InfoText.append(L"Marital Status");
+		MoreInfoText.append(L"Unmarried - 1 or U, Married - 2 or M, Spouse is a US citizen - 3 or US, Divorced - 4 or D, Widowed - 5 or W");
+		break;
+	}
+	case PD_ChildrenNum:
+	{
+		InfoText.append(L"Children Num");
+		MoreInfoText.append(L"Number 0-9");
+		break;
+	}
+	case PD_MailCountry:
+	{
+		InfoText.append(L"Mailing country");
+		MoreInfoText.append(L"Example - UZB");
+		break;
+	}
+	case PD_MailCity:
+	{
+		InfoText.append(L"Mailing city");
+		MoreInfoText.append(L"Example - Samarkand");
+		break;
+	}
+	case PD_MailStreet:
+	{
+		InfoText.append(L"Mailing Street");
+		MoreInfoText.append(L"Example - Sattepo street");
+		break;
+	}
+	case PD_MailHomeNumber:
+	{
+		InfoText.append(L"Mailing home number");
+		MoreInfoText.append(L"Example - 4/25");
+		break;
+	}
+	case PD_MailZipCode:
+	{
+		InfoText.append(L"Mailing ZipCode");
+		MoreInfoText.append(L"Disabling - Any enter whose length is below 3");
+		break;
+	}
+	}
 
-	SetInfoText(InfoText);
+	SetText(WriterInfoBox.Window, InfoText);
+	SetText(WriterMoreInfoBox.Window, MoreInfoText);
 }
 
 void DBWindowWriter::SelectChild(size_t Index)
@@ -320,9 +408,9 @@ void DBWindowWriter::SelectChild(size_t Index)
 	DataToChange = &MembersData.Children[Index - 1];
 }
 
-void DBWindowWriter::SetInfoText(std::wstring& Text)
+void DBWindowWriter::SetText(HWND Window, std::wstring& Text)
 {
-	SendMessage(WriterInfoBox.Window, WM_SETTEXT, 0, (LPARAM)Text.c_str());
+	SendMessage(Window, WM_SETTEXT, 0, (LPARAM)Text.c_str());
 }
 
 bool DBWindowWriter::CheckFormat()
@@ -341,12 +429,12 @@ void DBWindowWriter::UpdateEditStyle()
 {
 	switch (PeopleData)
 	{	// clang-format off
-	case PD_Gender:				SetEditboxStyle(ES_NUMBER, 1); break;
+	case PD_Gender:				SetEditboxStyle(1); break;
 	case PD_BirthMonth:			SetEditboxStyle(ES_NUMBER, 2); break;
 	case PD_BirthDay:			SetEditboxStyle(ES_NUMBER, 2); break;
 	case PD_BirthYear:			SetEditboxStyle(ES_NUMBER, 4); break;
-	case PD_EducationDegree:	SetEditboxStyle(ES_NUMBER, 1); break;
-	case PD_MaritalStatus:		SetEditboxStyle(ES_NUMBER, 1); break;
+	case PD_EducationDegree:	SetEditboxStyle(2); break;
+	case PD_MaritalStatus:		SetEditboxStyle(1); break;
 	case PD_ChildrenNum:		SetEditboxStyle(ES_NUMBER, 2); break;
 	case PD_MailZipCode:		SetEditboxStyle(ES_NUMBER); break;
 	default:					SetEditboxStyle(); break;
