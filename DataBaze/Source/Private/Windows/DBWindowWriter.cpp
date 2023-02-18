@@ -389,8 +389,8 @@ void DBWindowWriter::UpdateInfo()
 	}
 	}
 
-	SetText(WriterInfoBox.Window, InfoText);
-	SetText(WriterMoreInfoBox.Window, MoreInfoText);
+	DBLib::SetText(WriterInfoBox.Window, InfoText);
+	DBLib::SetText(WriterMoreInfoBox.Window, MoreInfoText);
 }
 
 void DBWindowWriter::SelectChild(size_t Index)
@@ -406,11 +406,6 @@ void DBWindowWriter::SelectChild(size_t Index)
 		MembersData.Children.push_back(DBPeopleData());
 	}
 	DataToChange = &MembersData.Children[Index - 1];
-}
-
-void DBWindowWriter::SetText(HWND Window, std::wstring& Text)
-{
-	SendMessage(Window, WM_SETTEXT, 0, (LPARAM)Text.c_str());
 }
 
 bool DBWindowWriter::CheckFormat()
@@ -436,14 +431,12 @@ bool DBWindowWriter::CheckFormat()
 	{
 		if (Text == "M" || Text == "1")
 		{
-			std::wstring nText(L"1");
-			SetText(WriterEditBox.Window, nText);
+			DBLib::SetText(WriterEditBox.Window, L"1");
 			return true;
 		}
 		if (Text == "F" || Text == "2")
 		{
-			std::wstring nText(L"2");
-			SetText(WriterEditBox.Window, nText);
+			DBLib::SetText(WriterEditBox.Window, L"2");
 			return true;
 		}
 		return false;
@@ -483,56 +476,47 @@ bool DBWindowWriter::CheckFormat()
 	{
 		if (Text == "1" || Text == "N")
 		{
-			std::wstring nText(L"1");
-			SetText(WriterEditBox.Window, nText);
+			DBLib::SetText(WriterEditBox.Window, L"1");
 			return true;
 		}
 		if (Text == "2" || Text == "S")
 		{
-			std::wstring nText(L"2");
-			SetText(WriterEditBox.Window, nText);
+			DBLib::SetText(WriterEditBox.Window, L"2");
 			return true;
 		}
 		if (Text == "3" || Text == "V")
 		{
-			std::wstring nText(L"3");
-			SetText(WriterEditBox.Window, nText);
+			DBLib::SetText(WriterEditBox.Window, L"3");
 			return true;
 		}
 		if (Text == "4" || Text == "UC")
 		{
-			std::wstring nText(L"4");
-			SetText(WriterEditBox.Window, nText);
+			DBLib::SetText(WriterEditBox.Window, L"4");
 			return true;
 		}
 		if (Text == "5" || Text == "U")
 		{
-			std::wstring nText(L"5");
-			SetText(WriterEditBox.Window, nText);
+			DBLib::SetText(WriterEditBox.Window, L"5");
 			return true;
 		}
 		if (Text == "6" || Text == "GC")
 		{
-			std::wstring nText(L"6");
-			SetText(WriterEditBox.Window, nText);
+			DBLib::SetText(WriterEditBox.Window, L"6");
 			return true;
 		}
 		if (Text == "7" || Text == "M")
 		{
-			std::wstring nText(L"7");
-			SetText(WriterEditBox.Window, nText);
+			DBLib::SetText(WriterEditBox.Window, L"7");
 			return true;
 		}
 		if (Text == "8" || Text == "SD")
 		{
-			std::wstring nText(L"8");
-			SetText(WriterEditBox.Window, nText);
+			DBLib::SetText(WriterEditBox.Window, L"8");
 			return true;
 		}
 		if (Text == "9" || Text == "D")
 		{
-			std::wstring nText(L"9");
-			SetText(WriterEditBox.Window, nText);
+			DBLib::SetText(WriterEditBox.Window, L"9");
 			return true;
 		}
 		return false;
@@ -545,32 +529,27 @@ bool DBWindowWriter::CheckFormat()
 	{
 		if (Text == "1" || Text == "U")
 		{
-			std::wstring nText(L"1");
-			SetText(WriterEditBox.Window, nText);
+			DBLib::SetText(WriterEditBox.Window, L"1");
 			return true;
 		}
 		if (Text == "2" || Text == "M")
 		{
-			std::wstring nText(L"2");
-			SetText(WriterEditBox.Window, nText);
+			DBLib::SetText(WriterEditBox.Window, L"2");
 			return true;
 		}
 		if (Text == "3" || Text == "US")
 		{
-			std::wstring nText(L"3");
-			SetText(WriterEditBox.Window, nText);
+			DBLib::SetText(WriterEditBox.Window, L"3");
 			return true;
 		}
 		if (Text == "4" || Text == "D")
 		{
-			std::wstring nText(L"4");
-			SetText(WriterEditBox.Window, nText);
+			DBLib::SetText(WriterEditBox.Window, L"4");
 			return true;
 		}
 		if (Text == "5" || Text == "W")
 		{
-			std::wstring nText(L"5");
-			SetText(WriterEditBox.Window, nText);
+			DBLib::SetText(WriterEditBox.Window, L"5");
 			return true;
 		}
 		return false;
@@ -604,8 +583,7 @@ bool DBWindowWriter::CheckFormat()
 	{
 		if (Text.size() < 3)
 		{
-			std::wstring nText(L"");
-			SetText(WriterEditBox.Window, nText);
+			DBLib::SetText(WriterEditBox.Window, L"");
 			return true;
 		}
 		return true;

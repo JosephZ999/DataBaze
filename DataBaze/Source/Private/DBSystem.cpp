@@ -10,11 +10,13 @@
 UINT		 TimerId;
 int			 clicks;
 const Size2D MainBtnSizes = {150, 30};
+DBWindow	 SystemFolderText;
 
 DBSystem::DBSystem(HINSTANCE HInstance, HWND InMainWindow)
 	: HIns(HInstance)
 	, MainWindow(InMainWindow)
 {
+
 	WindowManager = CreateComponent<DBWindowsManager>();
 	if (WindowManager)
 	{
@@ -48,6 +50,16 @@ void DBSystem::EndConstruct()
 	{
 		InitListBox();
 	}
+
+	SystemFolderText.Id		  = EDBWinCompId::IDC_FolderId;
+	SystemFolderText.Parent	  = MainWindow;
+	SystemFolderText.Position = {245, 320};
+	SystemFolderText.Size	  = {55, 30};
+	SystemFolderText.Text	  = L"22";
+	SystemFolderText.FontSize = 20;
+	SystemFolderText.HIns	  = GetModuleHandle(NULL);
+
+	DBLib::CreateStaticBox(SystemFolderText, WS_VISIBLE | WS_CHILD | WS_BORDER | SS_CENTER);
 }
 
 DBInterface* DBSystem::GetSystem()
@@ -69,8 +81,8 @@ void DBSystem::InitListBox()
 
 void DBSystem::CreateListBox()
 {
-	ListBox = CreateWindow(L"LISTBOX", L"button",  WS_VISIBLE | WS_CHILD | (LBS_NOTIFY | LBS_SORT | WS_VSCROLL), 200, 25, 500, 300, MainWindow,
-		(HMENU)IDC_LISTBOX, NULL, NULL);
+	ListBox = CreateWindow(L"LISTBOX", L"button", WS_VISIBLE | WS_CHILD | (LBS_NOTIFY | LBS_SORT | WS_VSCROLL), 200, 25, 500, 300,
+		MainWindow, (HMENU)IDC_LISTBOX, NULL, NULL);
 	DBLib::SetFontSize(ListBox, 20);
 }
 
@@ -147,6 +159,7 @@ void DBSystem::SetMinimizedMode(bool Enabled)
 		}
 		} //  switch id
 	}
+	SetWindowPos(SystemFolderText.Window, 0, SystemFolderText.Position.X + Offset2, SystemFolderText.Position.Y, 0, 0, SWP_NOSIZE);
 	SetWindowPos(ListBox, HWND_TOP, 200 + Offset2, 25, 500 + (int)((float)Offset2 * 0.5f), 280, 0);
 }
 

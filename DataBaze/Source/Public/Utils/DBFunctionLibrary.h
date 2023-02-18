@@ -18,6 +18,7 @@ HWND CreateEditBox(DBWindow& ButtonInfo, DWORD Style);
 HWND CreateStaticBox(DBWindow& WindowInfo, DWORD Style);
 void SetFontSize(HWND Window, int FontSize);
 void CreateText(HWND hWnd);
+void SetText(HWND Window, std::wstring Text);
 
 void CopyToClipboard(HWND hwnd, const std::string& String);
 void PressKey(WORD Key);

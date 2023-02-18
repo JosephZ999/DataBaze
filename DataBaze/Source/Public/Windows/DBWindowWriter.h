@@ -50,7 +50,6 @@ private:
 
 	void UpdateInfo();
 	void SelectChild(size_t Index);
-	void SetText(HWND Window, std::wstring& Text);
 
 	void UpdateEditStyle();
 

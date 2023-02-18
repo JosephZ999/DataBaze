@@ -28,6 +28,7 @@ enum EDBWinCompId
 	IDC_PrevFolder,
 	IDC_NextFolder,
 	IDC_Minimize,
+	IDC_FolderId,
 
 	// Viewer window comps
 

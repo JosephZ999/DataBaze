@@ -62,6 +62,11 @@ void DBLib::CreateText(HWND hWnd)
 	EndPaint(hWnd, &ps);
 }
 
+void DBLib::SetText(HWND Window, std::wstring Text)
+{
+	SendMessage(Window, WM_SETTEXT, 0, (LPARAM)Text.c_str());
+}
+
 HWND DBLib::CreateEditBox(DBWindow& ButtonInfo, DWORD Style)
 {
 	ButtonInfo.Window = CreateWindowComponent(CompType::WCT_Edit, ButtonInfo.Text, Style, ButtonInfo.Position, ButtonInfo.Size,
