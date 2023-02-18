@@ -67,7 +67,8 @@ public:
 	void GetMembersList(std::vector<std::wstring>& OutList);
 	void GetLastMemberStatus(std::wstring& OutList);
 
-	int GetFolderId() { return SelectedFolderId; }
+	int GetFolderId() const { return SelectedFolderId; }
+	int GetSelectedFolderIndex() const;
 
 	std::wstring GenerateImagePath();
 	std::wstring GenerateImageName();

@@ -9,12 +9,17 @@ DBDataManager::DBDataManager()
 
 	using namespace DBPaths;
 	CreatePath(GetDataPath());
+	SearchValidFolders();
+
+	std::sort(ValidFolders->begin(), ValidFolders->end(),
+		[](const int& Value1, const int& Value2) -> bool //
+		{ return Value1 < Value2; });
 }
 
 void DBDataManager::AddMember(const DBFamilyData& MemberData)
 {
 	const auto FileName = GenerateJsonPath();
-	DBPaths::CreatePath(DBPaths::GetDataFolderPath(SelectedFolderId));
+	DBPaths::CreatePath(DBPaths::GetDataFolderPath(GetFolderId()));
 
 	Json::Reader FileReader;
 	Json::Value	 FileData;
@@ -250,14 +255,26 @@ void DBDataManager::DeserializePeople(const Json::Value& InPeople, DBPeopleData&
 	OutPeople.EducationDegree = InPeople[JPK_EDUCATION].asInt();
 }
 
+int DBDataManager::GetSelectedFolderIndex() const
+{
+	for (size_t i = 0; i < ValidFolders->size(); ++i)
+	{
+		if (SelectedFolderId == (*ValidFolders)[i])
+		{
+			return i;
+		}
+	}
+	return 0;
+}
+
 std::wstring DBDataManager::GenerateImagePath()
 {
-	return DBPaths::GetDataFolderPath(SelectedFolderId);
+	return DBPaths::GetDataFolderPath(GetFolderId());
 }
 
 std::wstring DBDataManager::GenerateImageName()
 {
-	std::wstring FilePath = DBPaths::GetDataFolderPath(SelectedFolderId);
+	std::wstring FilePath = DBPaths::GetDataFolderPath(GetFolderId());
 	FilePath.append(L"\\NextImage.txt");
 	std::string ImageName = "001";
 
@@ -292,7 +309,7 @@ std::wstring DBDataManager::GenerateImageName()
 
 std::wstring DBDataManager::GenerateJsonPath() const
 {
-	return std::wstring(DBPaths::GetDataFolderPath(SelectedFolderId).append(L"\\Data.json"));
+	return std::wstring(DBPaths::GetDataFolderPath(GetFolderId()).append(L"\\Data.json"));
 }
 
 std::wstring DBDataManager::GenerateJsonPath(int Id) const
@@ -351,7 +368,7 @@ void DBDataManager::SelectMember(int InMemberId)
 
 bool DBDataManager::ChangeFolder(bool bNext)
 {
-	return SetFolder(bNext ? SelectedFolderId + 1 : SelectedFolderId - 1);
+	return SetFolder(bNext ? GetSelectedFolderIndex() + 1 : GetSelectedFolderIndex() - 1);
 }
 
 bool DBDataManager::SetFolder(int FolderId)
@@ -360,16 +377,16 @@ bool DBDataManager::SetFolder(int FolderId)
 
 	const int InitialValue = SelectedFolderId;
 
-	if (FolderId > (int)ValidFolders->size())
+	if (FolderId >= (int)ValidFolders->size())
 	{
-		FolderId = ValidFolders->size();
+		SelectedFolderId = (*ValidFolders)[ValidFolders->size() - 1];
 		return InitialValue != SelectedFolderId;
 	}
-	else if (FolderId <= 1)
+	else if (FolderId < 0)
 	{
-		SelectedFolderId = 1;
+		SelectedFolderId = (*ValidFolders)[0];
 		return InitialValue != SelectedFolderId;
 	}
-	SelectedFolderId = FolderId;
+	SelectedFolderId = (*ValidFolders)[FolderId];
 	return InitialValue != SelectedFolderId;
 }
