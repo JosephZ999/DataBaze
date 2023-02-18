@@ -422,22 +422,211 @@ bool DBWindowWriter::CheckFormat()
 
 	if (Text.size() == 0) return false;
 
-	return true;
+	switch (PeopleData)
+	{
+	case PD_Name:
+	{
+		return true;
+	}
+	case PD_FamilyName:
+	{
+		return true;
+	}
+	case PD_Gender:
+	{
+		if (Text == "M" || Text == "1")
+		{
+			std::wstring nText(L"1");
+			SetText(WriterEditBox.Window, nText);
+			return true;
+		}
+		if (Text == "F" || Text == "2")
+		{
+			std::wstring nText(L"2");
+			SetText(WriterEditBox.Window, nText);
+			return true;
+		}
+		return false;
+	}
+	case PD_BirthMonth:
+	{
+		int Value = DBConvert::StringToInt(Text);
+		if (Value > 0 && Value <= 12)
+		{
+			return true;
+		}
+		return false;
+	}
+	case PD_BirthDay:
+	{
+		int Value = DBConvert::StringToInt(Text);
+		if (Value > 0 && Value <= 31)
+		{
+			return true;
+		}
+		return false;
+	}
+	case PD_BirthYear:
+	{
+		int Value = DBConvert::StringToInt(Text);
+		if (Value > 1900 && Value <= 2008)
+		{
+			return true;
+		}
+		return false;
+	}
+	case PD_BornCountry:
+	{
+		return true;
+	}
+	case PD_EducationDegree:
+	{
+		if (Text == "1" || Text == "N")
+		{
+			std::wstring nText(L"1");
+			SetText(WriterEditBox.Window, nText);
+			return true;
+		}
+		if (Text == "2" || Text == "S")
+		{
+			std::wstring nText(L"2");
+			SetText(WriterEditBox.Window, nText);
+			return true;
+		}
+		if (Text == "3" || Text == "V")
+		{
+			std::wstring nText(L"3");
+			SetText(WriterEditBox.Window, nText);
+			return true;
+		}
+		if (Text == "4" || Text == "UC")
+		{
+			std::wstring nText(L"4");
+			SetText(WriterEditBox.Window, nText);
+			return true;
+		}
+		if (Text == "5" || Text == "U")
+		{
+			std::wstring nText(L"5");
+			SetText(WriterEditBox.Window, nText);
+			return true;
+		}
+		if (Text == "6" || Text == "GC")
+		{
+			std::wstring nText(L"6");
+			SetText(WriterEditBox.Window, nText);
+			return true;
+		}
+		if (Text == "7" || Text == "M")
+		{
+			std::wstring nText(L"7");
+			SetText(WriterEditBox.Window, nText);
+			return true;
+		}
+		if (Text == "8" || Text == "SD")
+		{
+			std::wstring nText(L"8");
+			SetText(WriterEditBox.Window, nText);
+			return true;
+		}
+		if (Text == "9" || Text == "D")
+		{
+			std::wstring nText(L"9");
+			SetText(WriterEditBox.Window, nText);
+			return true;
+		}
+		return false;
+	}
+	case PD_WhereLive:
+	{
+		return true;
+	}
+	case PD_MaritalStatus:
+	{
+		if (Text == "1" || Text == "U")
+		{
+			std::wstring nText(L"1");
+			SetText(WriterEditBox.Window, nText);
+			return true;
+		}
+		if (Text == "2" || Text == "M")
+		{
+			std::wstring nText(L"2");
+			SetText(WriterEditBox.Window, nText);
+			return true;
+		}
+		if (Text == "3" || Text == "US")
+		{
+			std::wstring nText(L"3");
+			SetText(WriterEditBox.Window, nText);
+			return true;
+		}
+		if (Text == "4" || Text == "D")
+		{
+			std::wstring nText(L"4");
+			SetText(WriterEditBox.Window, nText);
+			return true;
+		}
+		if (Text == "5" || Text == "W")
+		{
+			std::wstring nText(L"5");
+			SetText(WriterEditBox.Window, nText);
+			return true;
+		}
+		return false;
+	}
+	case PD_ChildrenNum:
+	{
+		int Value = DBConvert::StringToInt(Text);
+		if (Value >= 0 && Value < 10)
+		{
+			return true;
+		}
+		return false;
+	}
+	case PD_MailCountry:
+	{
+		return true;
+	}
+	case PD_MailCity:
+	{
+		return true;
+	}
+	case PD_MailStreet:
+	{
+		return true;
+	}
+	case PD_MailHomeNumber:
+	{
+		return true;
+	}
+	case PD_MailZipCode:
+	{
+		if (Text.size() < 3)
+		{
+			std::wstring nText(L"");
+			SetText(WriterEditBox.Window, nText);
+			return true;
+		}
+		return true;
+	}
+	}
+	return false;
 }
 
 void DBWindowWriter::UpdateEditStyle()
 {
 	switch (PeopleData)
 	{	// clang-format off
-	case PD_Gender:				SetEditboxStyle(1); break;
-	case PD_BirthMonth:			SetEditboxStyle(ES_NUMBER, 2); break;
-	case PD_BirthDay:			SetEditboxStyle(ES_NUMBER, 2); break;
-	case PD_BirthYear:			SetEditboxStyle(ES_NUMBER, 4); break;
-	case PD_EducationDegree:	SetEditboxStyle(2); break;
-	case PD_MaritalStatus:		SetEditboxStyle(1); break;
-	case PD_ChildrenNum:		SetEditboxStyle(ES_NUMBER, 2); break;
-	case PD_MailZipCode:		SetEditboxStyle(ES_NUMBER); break;
-	default:					SetEditboxStyle(); break;
+	case PD_Gender:				SetEditboxStyle(1);				break;
+	case PD_BirthMonth:			SetEditboxStyle(ES_NUMBER, 2);	break;
+	case PD_BirthDay:			SetEditboxStyle(ES_NUMBER, 2);	break;
+	case PD_BirthYear:			SetEditboxStyle(ES_NUMBER, 4);	break;
+	case PD_EducationDegree:	SetEditboxStyle(2);				break;
+	case PD_MaritalStatus:		SetEditboxStyle(1);				break;
+	case PD_ChildrenNum:		SetEditboxStyle(ES_NUMBER, 1);	break;
+	case PD_MailZipCode:		SetEditboxStyle(ES_NUMBER);		break;
+	default:					SetEditboxStyle();				break;
 		// clang-format on
 	}	// Switch PeopleData
 }
