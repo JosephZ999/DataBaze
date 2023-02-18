@@ -132,6 +132,10 @@ void DBSystem::SetMinimizedMode(bool Enabled)
 
 	const int Offset = MinimizedMode ? -300 : 0;
 	SetWindowPos(MainWindow, HWND_TOP, 0, 0, 740 + Offset, 450, SWP_NOMOVE);
+	if (Enabled)
+	{
+		SetWindowPos(MainWindow, HWND_TOP, 25, 25, 0, 0, SWP_NOSIZE);
+	}
 
 	const int Offset2 = MinimizedMode ? -190 : 0;
 	for (auto nBtn : Buttons.Buttons)
