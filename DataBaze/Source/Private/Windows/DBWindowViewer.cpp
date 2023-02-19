@@ -178,6 +178,7 @@ void DBWindowViewer::PrintMail()
 	DataArray.push_back({L"Mail City : ", MemberData.MailCity});
 	DataArray.push_back({L"Mail Street : ", MemberData.MailStreet});
 	DataArray.push_back({L"Mail Home : ", MemberData.MailHomeNumber});
+	DataArray.push_back({L"Mail Code : ", std::to_string(MemberData.MailZipCode)});
 
 	for (auto Elem : DataArray)
 	{
