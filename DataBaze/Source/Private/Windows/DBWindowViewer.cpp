@@ -5,6 +5,8 @@
 #include "DBWindowsManager.h"
 
 DBWindowViewer* ViewerObj = nullptr;
+DBWindow		ViewerInfo;
+DBWindow		ViewerInfoTitle;
 
 LRESULT CALLBACK WndViewerProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
@@ -12,6 +14,25 @@ LRESULT CALLBACK WndViewerProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lP
 	{
 	case WM_CREATE:
 	{
+		ViewerInfoTitle.Id		 = EDBWinCompId::IDC_V_InfoTitle;
+		ViewerInfoTitle.Parent	 = hWnd;
+		ViewerInfoTitle.Position = {25, 25};
+		ViewerInfoTitle.Size	 = {265, 300};
+		ViewerInfoTitle.Text	 = L"Name : ";
+		ViewerInfoTitle.FontSize = 18;
+		ViewerInfoTitle.HIns	 = GetModuleHandle(NULL);
+
+		DBLib::CreateStaticBox(ViewerInfoTitle, WS_VISIBLE | WS_CHILD | SS_RIGHT);
+
+		ViewerInfo.Id		= EDBWinCompId::IDC_V_Info;
+		ViewerInfo.Parent	= hWnd;
+		ViewerInfo.Position = {290, 25};
+		ViewerInfo.Size		= {265, 300};
+		ViewerInfo.Text		= L"Moon";
+		ViewerInfo.FontSize = 18;
+		ViewerInfo.HIns		= GetModuleHandle(NULL);
+
+		DBLib::CreateStaticBox(ViewerInfo, WS_VISIBLE | WS_CHILD);
 		break;
 	}
 	case WM_COMMAND:
@@ -78,9 +99,7 @@ DBWindowViewer::DBWindowViewer(DBInterface* InOwner)
 
 void DBWindowViewer::OnConstruct()
 {
-	std::wstring message;
-	DBConvert::StringToWString(MemberData.Parents[0].Name, message);
-	MessageBox(NULL, message.c_str(), L"Dialog Box", MB_OK);
+	PrintData();
 }
 
 void DBWindowViewer::SetMemberData(const DBFamilyData& InData)
@@ -100,3 +119,69 @@ void DBWindowViewer::Autofill_Form2() {}
 void DBWindowViewer::Autofill_Form3() {}
 
 void DBWindowViewer::Autofill_Form4() {}
+
+void DBWindowViewer::PrintData()
+{
+	if (MemberData.Parents.size() == 0) return;
+
+	// Clear text
+	DBLib::SetText(ViewerInfoTitle.Window, L"");
+	DBLib::SetText(ViewerInfo.Window, L"");
+
+	HasSpouse = MemberData.Parents.size() > 1;
+	HasChild  = MemberData.Children.size() > 0;
+
+	PrintPeople(MemberData.Parents[0], false);
+
+	if (true)
+	{
+		PrintMail();
+	}
+
+	// convert to wstr
+	std::wstring InfoAsWStr;
+	DBConvert::StringToWString(Info, InfoAsWStr);
+
+	DBLib::SetText(ViewerInfoTitle.Window, Title);
+	DBLib::SetText(ViewerInfo.Window, InfoAsWStr);
+}
+
+void DBWindowViewer::PrintPeople(const DBPeopleData& People, bool IsChild)
+{
+	std::vector<FillData> DataArray;
+
+	DataArray.push_back({L"Name : ", People.Name});
+	DataArray.push_back({L"Family Name : ", People.FamilyName});
+	DataArray.push_back({L"Birth Data (d/m/y) : ", People.GetBirthDataAsString()});
+	DataArray.push_back({L"Gender : ", People.GetGenderAsString()});
+	DataArray.push_back({L"Birth Country : ", People.BirthCountry});
+
+	if (! IsChild)
+	{
+		DataArray.push_back({L"Ñountry Wher Live: ", People.WhereLive});
+		DataArray.push_back({L"Education : ", People.GetEducationAsString()});
+	}
+	DataArray.push_back({L"Image Path : ", std::string(People.ImageFile).erase(0, 6)});
+
+	for (auto Elem : DataArray)
+	{
+		Title.append(Elem.Title).append(L"\n");
+		Info.append(Elem.Info).append("\n");
+	}
+}
+
+void DBWindowViewer::PrintMail()
+{
+	std::vector<FillData> DataArray;
+
+	DataArray.push_back({L"Mail Country : ", MemberData.MailCountry});
+	DataArray.push_back({L"Mail City : ", MemberData.MailCity});
+	DataArray.push_back({L"Mail Street : ", MemberData.MailStreet});
+	DataArray.push_back({L"Mail Home : ", MemberData.MailHomeNumber});
+
+	for (auto Elem : DataArray)
+	{
+		Title.append(Elem.Title).append(L"\n");
+		Info.append(Elem.Info).append("\n");
+	}
+}

@@ -62,3 +62,32 @@ EEducationDegree DBPeopleData::GetEducation() const
 {
 	return static_cast<EEducationDegree>(EducationDegree);
 }
+
+std::string DBPeopleData::GetBirthDataAsString() const
+{
+	using namespace std;
+	return string(to_string(BirthDay)).append(".").append(to_string(BirthMonth)).append(".").append(to_string(BirthYear));
+}
+
+std::string DBPeopleData::GetGenderAsString() const
+{
+	return (Gender == 1) ? "Mele" : "Femele";
+}
+
+std::string DBPeopleData::GetEducationAsString() const
+{
+	std::string OutValue;
+	switch (static_cast<EEducationDegree>(EducationDegree))
+	{ // clang-format off
+	case ED_HighSchoolNoDegree:			OutValue = "High school no degree";		break;
+	case ED_HighSchoolDegree:			OutValue = "High school";				break;
+	case ED_vocationalSchool:			OutValue = "Vocational school";			break;
+	case ED_SomeUniversityCourses:		OutValue = "Some univer courses";		break;
+	case ED_UniversityDegree:			OutValue = "University degree";			break;
+	case ED_SomeGraduatelevelCourses:	OutValue = "Graduate level courses";	break;
+	case ED_MastersDegree:				OutValue = "Masters degree";			break;
+	case ED_SomeDoctoralCourses:		OutValue = "Doctoral courses";			break;
+	case ED_Doctorate:					OutValue = "Doctorate";					break;
+	} // clang-format on
+	return OutValue;
+}

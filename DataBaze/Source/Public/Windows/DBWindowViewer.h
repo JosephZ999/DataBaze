@@ -8,6 +8,12 @@
 
 LRESULT CALLBACK WndViewerProc(HWND, UINT, WPARAM, LPARAM);
 
+struct FillData
+{
+	std::wstring Title;
+	std::string	 Info;
+};
+
 class DBWindowViewer : public DBInterface
 {
 public:
@@ -15,13 +21,23 @@ public:
 	HWND		 WindowHandle = 0;
 	DBFamilyData MemberData;
 
+private:
+	bool		 HasSpouse = false;
+	bool		 HasChild  = false;
+	std::wstring Title;
+	std::string	 Info;
+
 public:
+	void OnConstruct();
+
 	void SetMemberData(const DBFamilyData& InData);
 	void Autofill_Form1();
 	void Autofill_Form2();
 	void Autofill_Form3();
 	void Autofill_Form4();
 
-public:
-	void OnConstruct();
+private:
+	void PrintData();
+	void PrintPeople(const DBPeopleData& People, bool IsChild);
+	void PrintMail();
 };

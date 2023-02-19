@@ -33,6 +33,8 @@ enum EDBWinCompId
 	IDC_ListLength,
 
 	// Viewer window comps
+	IDC_V_Info,
+	IDC_V_InfoTitle,
 
 	// Writer window comps
 	IDC_W_Info,
@@ -122,6 +124,9 @@ struct DBPeopleData
 	bool IsMele() const { return Gender == 1; }
 
 	EEducationDegree GetEducation() const;
+	std::string GetBirthDataAsString() const;
+	std::string GetGenderAsString() const;
+	std::string GetEducationAsString() const;
 };
 
 enum EMeritialStatus
