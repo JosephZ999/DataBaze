@@ -68,7 +68,6 @@ LRESULT CALLBACK WndViewerProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lP
 DBWindowViewer::DBWindowViewer(DBInterface* InOwner)
 {
 	SetOwner(InOwner);
-	// auto Manager = static_cast<DBWindowsManager*>(GetOwner());
 	auto Manager = Cast<DBWindowsManager>(GetOwner());
 	if (Manager)
 	{
@@ -81,7 +80,7 @@ void DBWindowViewer::OnConstruct()
 {
 	std::wstring message;
 	DBConvert::StringToWString(MemberData.Parents[0].Name, message);
-	// MessageBox(NULL, message.c_str(), L"Dialog Box", MB_OK);
+	MessageBox(NULL, message.c_str(), L"Dialog Box", MB_OK);
 }
 
 void DBWindowViewer::SetMemberData(const DBFamilyData& InData)

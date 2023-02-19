@@ -202,11 +202,6 @@ void DBSystem::CallCommand(HWND& hWnd, UINT Message, WPARAM& WParam, LPARAM& LPa
 		{
 			if (WindowManager && DataManager)
 			{
-				// Get selected index.
-				// int lbItem = (int)SendMessage(ListBox, LB_GETCURSEL, 0, 0);
-				// Get item data.
-				// int i = (int)SendMessage(ListBox, LB_GETITEMDATA, lbItem, 0);
-
 				DBFamilyData SelectedData;
 				if (! DataManager->LoadMember(SelectedData))
 				{
@@ -231,6 +226,7 @@ void DBSystem::CallCommand(HWND& hWnd, UINT Message, WPARAM& WParam, LPARAM& LPa
 			int i = (int)SendMessage(ListBox, LB_GETITEMDATA, lbItem, 0);
 
 			DataManager->SelectMember(i);
+			AnyItemSelected = true;
 			return;
 		}
 		} // switch end
@@ -242,9 +238,20 @@ void DBSystem::CallCommand(HWND& hWnd, UINT Message, WPARAM& WParam, LPARAM& LPa
 	{
 	case IDC_VIEW:
 	{
-		if (WindowManager)
+		if (AnyItemSelected && WindowManager && DataManager)
 		{
+			DBFamilyData SelectedData;
+			if (! DataManager->LoadMember(SelectedData))
+			{
+				assert(false && "Cannot load member by index - System");
+				return;
+			}
 			WindowManager->OpenWindowByType(EWindows::IDW_VIEWER);
+			if (WindowManager->GetViewer())
+			{
+				WindowManager->GetViewer()->SetMemberData(SelectedData);
+				WindowManager->EndConstruct();
+			}
 		}
 		return;
 	}
@@ -285,6 +292,7 @@ void DBSystem::CallCommand(HWND& hWnd, UINT Message, WPARAM& WParam, LPARAM& LPa
 			std::wstring IdAsText = std::to_wstring(DataManager->GetFolderId());
 			DBLib::SetText(FolderText.Window, IdAsText);
 			InitListBox();
+			AnyItemSelected = false;
 		}
 		break;
 	}
@@ -295,6 +303,7 @@ void DBSystem::CallCommand(HWND& hWnd, UINT Message, WPARAM& WParam, LPARAM& LPa
 			std::wstring IdAsText = std::to_wstring(DataManager->GetFolderId());
 			DBLib::SetText(FolderText.Window, IdAsText);
 			InitListBox();
+			AnyItemSelected = false;
 		}
 		break;
 	}

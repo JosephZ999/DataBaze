@@ -11,13 +11,7 @@ LRESULT CALLBACK WndViewerProc(HWND, UINT, WPARAM, LPARAM);
 class DBWindowViewer : public DBInterface
 {
 public:
-	DBWindowViewer() {}
 	DBWindowViewer(DBInterface* InOwner);
-	DBWindowViewer(HWND InOwnerHWND)
-		: WindowHandle(InOwnerHWND)
-	{
-	}
-
 	HWND		 WindowHandle = 0;
 	DBFamilyData MemberData;
 

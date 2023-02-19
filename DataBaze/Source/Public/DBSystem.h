@@ -33,7 +33,8 @@ private:
 	HWND			ListBox = 0;
 	DBListContainer ListContainer;
 	Size2D			WindowSize;
-	bool			MinimizedMode = false;
+	bool			MinimizedMode	= false;
+	bool			AnyItemSelected = false;
 
 	// Components
 	DBWindowsManager* WindowManager = nullptr;
