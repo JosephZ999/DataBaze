@@ -25,7 +25,7 @@ public:
 	~DBSystem();
 
 	// Global variables
-	HWND MainWindow;
+	HWND	  MainWindow;
 	DBSystem* ThisObj = nullptr;
 
 private:
@@ -42,6 +42,7 @@ private:
 
 	ListElem ListData;
 	int		 ListBoxLastItem = 0;
+	int		 ListItemCount	 = 0;
 
 public:
 	void EndConstruct();
@@ -59,6 +60,7 @@ private:
 	void CreateButtons();
 	void ResetList();
 	void SetMinimizedMode(bool Enabled);
+	void UpdateCount();
 
 	static VOID CALLBACK DoubleClickTimer(HWND hWnd, UINT nMsg, UINT_PTR nIDEvent, DWORD dwTime);
 };

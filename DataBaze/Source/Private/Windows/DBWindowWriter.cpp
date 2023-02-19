@@ -159,11 +159,6 @@ DBWindowWriter::DBWindowWriter(DBInterface* InOwner)
 	LastImageId = DataManager->ReadImageId();
 }
 
-DBWindowWriter::~DBWindowWriter()
-{
-	DBDebug::CreateMessageBox("My Debug Message Box");
-}
-
 void DBWindowWriter::OnConstruct()
 {
 	// we can reset all data

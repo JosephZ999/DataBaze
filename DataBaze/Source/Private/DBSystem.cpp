@@ -11,6 +11,7 @@ UINT		 TimerId;
 int			 clicks;
 const Size2D MainBtnSizes = {150, 30};
 DBWindow	 FolderText;
+DBWindow	 ListLen;
 
 DBSystem::DBSystem(HINSTANCE HInstance, HWND InMainWindow)
 	: HIns(HInstance)
@@ -57,6 +58,17 @@ void DBSystem::EndConstruct()
 	FolderText.HIns		= GetModuleHandle(NULL);
 
 	DBLib::CreateStaticBox(FolderText, WS_VISIBLE | WS_CHILD | WS_BORDER | SS_CENTER);
+
+	ListLen.Id		 = EDBWinCompId::IDC_ListLength;
+	ListLen.Parent	 = MainWindow;
+	ListLen.Position = {350, 320};
+	ListLen.Size	 = {70, 30};
+	ListLen.Text	 = L"500";
+	ListLen.FontSize = 20;
+	ListLen.HIns	 = GetModuleHandle(NULL);
+
+	DBLib::CreateStaticBox(ListLen, WS_VISIBLE | WS_CHILD | WS_BORDER | SS_CENTER);
+	UpdateCount();
 }
 
 DBInterface* DBSystem::GetSystem() const
@@ -74,6 +86,7 @@ void DBSystem::InitListBox()
 		SendMessage(ListBox, LB_SETITEMDATA, ItemId, ListBoxLastItem);
 		++ListBoxLastItem;
 	}
+	UpdateCount();
 }
 
 void DBSystem::CreateListBox()
@@ -161,7 +174,14 @@ void DBSystem::SetMinimizedMode(bool Enabled)
 		} //  switch id
 	}
 	SetWindowPos(FolderText.Window, 0, FolderText.Position.X + Offset2, FolderText.Position.Y, 0, 0, SWP_NOSIZE);
+	SetWindowPos(ListLen.Window, 0, ListLen.Position.X + Offset2, ListLen.Position.Y, 0, 0, SWP_NOSIZE);
 	SetWindowPos(ListBox, HWND_TOP, 200 + Offset2, 25, 500 + (int)((float)Offset2 * 0.5f), 280, 0);
+}
+
+void DBSystem::UpdateCount()
+{
+	ListItemCount = SendMessage(ListBox, LB_GETCOUNT, 0, 0);
+	DBLib::SetText(ListLen.Window, std::to_wstring(ListItemCount));
 }
 
 VOID DBSystem::DoubleClickTimer(HWND hWnd, UINT nMsg, UINT_PTR nIDEvent, DWORD dwTime)
@@ -230,7 +250,7 @@ void DBSystem::CallCommand(HWND& hWnd, UINT Message, WPARAM& WParam, LPARAM& LPa
 	}
 	case IDC_NEWITEM:
 	{
-		if (WindowManager)
+		if (WindowManager && ListItemCount < MAX_MEMBERS_NUM)
 		{
 			WindowManager->OpenWindowByType(EWindows::IDW_WRITER);
 		}
@@ -295,4 +315,6 @@ void DBSystem::OnMemberAddedHandle()
 	int ItemId = SendMessage(ListBox, LB_ADDSTRING, 0, (LPARAM)LastMember.c_str());
 	SendMessage(ListBox, LB_SETITEMDATA, ItemId, ListBoxLastItem);
 	++ListBoxLastItem;
+
+	UpdateCount();
 }

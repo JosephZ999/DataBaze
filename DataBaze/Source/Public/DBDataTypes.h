@@ -30,6 +30,8 @@ enum EDBWinCompId
 	IDC_Minimize,
 	IDC_FolderId,
 
+	IDC_ListLength,
+
 	// Viewer window comps
 
 	// Writer window comps

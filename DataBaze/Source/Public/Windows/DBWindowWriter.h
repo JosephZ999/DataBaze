@@ -28,7 +28,6 @@ public:
 		: WindowHandle(InOwnerHWND)
 	{
 	}
-	~DBWindowWriter();
 
 	OnWriteSuccessSignature OnWriteSuccess;
 
