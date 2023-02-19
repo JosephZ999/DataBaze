@@ -195,6 +195,13 @@ std::wstring DBPaths::GetDataFolderPath(int Folder)
 	return std::wstring(DBPaths::GetDataPath()).append(L"\\Folder_").append(std::to_wstring(Folder));
 }
 
+std::wstring DBPaths::GetImagePath(int Folder, int ImageId)
+{
+	const std::wstring Prefix = (ImageId < 10) ? L"00" : ((ImageId < 100) ? L"0" : L"");
+	const std::wstring ImageName = std::wstring(Prefix).append(std::to_wstring(ImageId)).append(L".jpg");
+	return std::wstring(GetDataFolderPath(Folder)).append(L"\\").append(ImageName);
+}
+
 void DBPaths::CreatePath(std::wstring NewPath)
 {
 	_wmkdir(NewPath.c_str());

@@ -1,6 +1,6 @@
 #include "DBInterface.h"
 
-DBInterface* DBInterface::GetOwner()
+DBInterface* DBInterface::GetOwner() const
 {
 	return Owner;
 }
@@ -10,7 +10,7 @@ void DBInterface::SetOwner(DBInterface* NewOwner)
 	Owner = NewOwner;
 }
 
-DBInterface* DBInterface::GetSystem()
+DBInterface* DBInterface::GetSystem() const
 {
 	if (Owner)
 	{

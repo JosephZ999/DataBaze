@@ -132,7 +132,7 @@ void DBWindowsManager::OnMemberAddedHandle()
 	CloseWindowByType(EWindows::IDW_WRITER);
 }
 
-DBInterface* DBWindowsManager::GetSystem()
+DBInterface* DBWindowsManager::GetSystem() const
 {
 	return GetOwner();
 }

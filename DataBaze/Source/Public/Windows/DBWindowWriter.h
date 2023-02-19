@@ -10,8 +10,16 @@ DECLARE_DELEGATE(OnWriteSuccessSignature);
 
 LRESULT CALLBACK WndWriterProc(HWND, UINT, WPARAM, LPARAM);
 
+struct FImagePath
+{
+	std::wstring Initial;
+	std::wstring Final;
+	int ImageId;
+};
+
 class DBWindowWriter : public DBInterface
 {
+	typedef std::vector<FImagePath> Images;
 
 public:
 	DBWindowWriter() {}
@@ -36,8 +44,10 @@ public:
 	EMeritialStatus Status			   = EMeritialStatus::MS_Unmarried;
 	size_t			ChildrenNum		   = 0;
 	size_t			EnteredChildrenNum = 0;
-	std::wstring	ImagePath;
 	bool			Finish = false;
+
+	Images ImagesToCopy;
+	int	   LastImageId = 1;
 
 public:
 	void OnConstruct();
@@ -57,7 +67,10 @@ private:
 	void NextPeople();
 	void NextLine();
 	void OpenImage();
-	bool CopyImage();
+
+	bool SaveImage(const std::wstring& InImagePath);
+	void CopySavedImages();
+	int	 GetNextImageId() const;
 
 	void FinishWriting();
 };

@@ -10,9 +10,9 @@ private:
 	std::vector<DBInterface*> Components;
 
 public:
-	DBInterface*		 GetOwner();
+	DBInterface*		 GetOwner() const;
 	void				 SetOwner(DBInterface* NewOwner);
-	virtual DBInterface* GetSystem();
+	virtual DBInterface* GetSystem() const;
 
 	template <typename T> //
 	T* CreateComponent()
@@ -32,7 +32,7 @@ public:
 	}
 
 	template <typename T> //
-	T* GetComponent()
+	T* GetComponent() const
 	{
 		for (auto Elem : Components)
 		{

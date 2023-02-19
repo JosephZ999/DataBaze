@@ -33,7 +33,7 @@ public:
 	void OnMemberAddedHandle();
 
 public:
-	virtual DBInterface* GetSystem() override;
+	virtual DBInterface* GetSystem() const override;
 	HWND				 GetViewerHandle() const { return ViewerHandle; }
 	HWND				 GetWriterHandle() const { return WriterHandle; }
 	DBInterface*		 GetViewerClass() const;

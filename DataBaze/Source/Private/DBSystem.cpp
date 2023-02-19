@@ -16,6 +16,7 @@ DBSystem::DBSystem(HINSTANCE HInstance, HWND InMainWindow)
 	: HIns(HInstance)
 	, MainWindow(InMainWindow)
 {
+	ThisObj = this;
 
 	WindowManager = CreateComponent<DBWindowsManager>();
 	if (WindowManager)
@@ -58,9 +59,9 @@ void DBSystem::EndConstruct()
 	DBLib::CreateStaticBox(FolderText, WS_VISIBLE | WS_CHILD | WS_BORDER | SS_CENTER);
 }
 
-DBInterface* DBSystem::GetSystem()
+DBInterface* DBSystem::GetSystem() const
 {
-	return this;
+	return Cast<DBInterface>(ThisObj);
 }
 
 void DBSystem::InitListBox()

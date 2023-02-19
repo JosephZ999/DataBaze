@@ -267,44 +267,28 @@ int DBDataManager::GetSelectedFolderIndex() const
 	return 0;
 }
 
-std::wstring DBDataManager::GenerateImagePath()
+int DBDataManager::ReadImageId()
 {
-	return DBPaths::GetDataFolderPath(GetFolderId());
-}
-
-std::wstring DBDataManager::GenerateImageName()
-{
-	std::wstring FilePath = DBPaths::GetDataFolderPath(GetFolderId());
-	FilePath.append(L"\\NextImage.txt");
-	std::string ImageName = "001";
-
-	std::ifstream ifFile(FilePath);
-	if (ifFile.good())
+	const auto FilePath = GenerateImageDataPath();
+	std::ifstream File(FilePath);
+	if (File.good())
 	{
 		std::stringstream buffer;
-		buffer << ifFile.rdbuf();
-		ImageName = buffer.str();
-		ifFile.close();
-
-		int ImageId = DBConvert::StringToInt(ImageName);
-		++ImageId;
-
-		std::string prefix = (ImageId < 10) ? "00" : ((ImageId < 100) ? "0" : "");
-
-		std::ofstream ofFile(FilePath);
-		ofFile.clear();
-		ofFile << prefix << ImageId;
-		ofFile.close();
-
-		std::wstring OutValue;
-		DBConvert::StringToWString(ImageName, OutValue);
-		return std::wstring().append(L"\\").append(OutValue).append(L".jpg");
+		buffer << File.rdbuf();
+		File.close();
+		return DBConvert::StringToInt(buffer.str());
 	}
+	return 0;
+}
 
-	std::ofstream ofFile(FilePath);
-	ofFile << "002";
-	ofFile.close();
-	return std::wstring(L"\\001.jpg");
+void DBDataManager::WriteImageId(int Id)
+{
+	const auto FilePath = GenerateImageDataPath();
+	const auto Prefix = std::string((Id < 10) ? "00" : ((Id < 100) ? "0" : ""));
+
+	std::ofstream File(FilePath);
+	File << std::string(Prefix).append(std::to_string(Id));
+	File.close();
 }
 
 std::wstring DBDataManager::GenerateJsonPath() const
@@ -315,6 +299,11 @@ std::wstring DBDataManager::GenerateJsonPath() const
 std::wstring DBDataManager::GenerateJsonPath(int Id) const
 {
 	return std::wstring(DBPaths::GetDataFolderPath(Id).append(L"\\Data.json"));
+}
+
+std::wstring DBDataManager::GenerateImageDataPath() const
+{
+	return std::wstring(DBPaths::GetDataFolderPath(GetFolderId())).append(L"\\ImageId.txt");
 }
 
 void DBDataManager::GetMembersList(std::vector<std::wstring>& OutList)

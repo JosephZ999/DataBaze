@@ -26,6 +26,7 @@ public:
 
 	// Global variables
 	HWND MainWindow;
+	DBSystem* ThisObj = nullptr;
 
 private:
 	HINSTANCE		HIns;
@@ -48,7 +49,7 @@ public:
 	void CallCommand(HWND& hWnd, UINT Message, WPARAM& WParam, LPARAM& LParam);
 	void CallPaint(HWND& hWnd, UINT Message, WPARAM& WParam, LPARAM& LParam);
 
-	virtual DBInterface* GetSystem() override;
+	virtual DBInterface* GetSystem() const override;
 
 	void OnMemberAddedHandle();
 

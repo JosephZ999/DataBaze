@@ -34,6 +34,7 @@ namespace DBPaths
 std::wstring GetProjectPath();
 std::wstring GetDataPath();
 std::wstring GetDataFolderPath(int Folder);
+std::wstring GetImagePath(int Folder, int ImageId);
 
 void CreatePath(std::wstring NewPath);
 }

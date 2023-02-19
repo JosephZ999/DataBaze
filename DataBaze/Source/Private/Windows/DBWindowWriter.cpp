@@ -151,6 +151,12 @@ DBWindowWriter::DBWindowWriter(DBInterface* InOwner)
 		WindowHandle = Manager->GetWriterHandle();
 		WriterObj	 = this;
 	}
+
+	if (! GetSystem()) return;
+	auto DataManager = GetSystem()->GetComponent<DBDataManager>();
+
+	if (! DataManager) return;
+	LastImageId = DataManager->ReadImageId();
 }
 
 DBWindowWriter::~DBWindowWriter()
@@ -465,7 +471,7 @@ bool DBWindowWriter::CheckFormat()
 	case PD_BirthYear:
 	{
 		int Value = DBConvert::StringToInt(Text);
-		if (Value > 1900 && Value <= 2008)
+		if (Value > 1900 && Value <= 2100)
 		{
 			return true;
 		}
@@ -627,8 +633,8 @@ void DBWindowWriter::OpenImage()
 {
 	// Display the Open dialog box.
 
-	bool ImageCopied = false;
-	while (! ImageCopied)
+	bool ImageSaved = false;
+	while (! ImageSaved)
 	{
 		OPENFILENAME ofn;		  // common dialog box structure
 		wchar_t		 szFile[512]; // buffer for file name
@@ -654,59 +660,58 @@ void DBWindowWriter::OpenImage()
 
 		if (GetOpenFileName(&ofn) == TRUE)
 		{
-			//	hf = CreateFile(ofn.lpstrFile,	 // File Name
-			//	GENERIC_READ,				 //
-			//	0,							 //
-			//	(LPSECURITY_ATTRIBUTES)NULL, //
-			//	OPEN_EXISTING,				 //
-			//	FILE_ATTRIBUTE_NORMAL,		 //
-			//	(HANDLE)NULL);
-
-			ImagePath = ofn.lpstrFile;
-			// MessageBox(NULL, ImagePath.c_str(), L"Dialog Box", MB_OK);
-
-			ImageCopied = CopyImage();
+			ImageSaved = SaveImage(ofn.lpstrFile);
 		}
 	}
 }
 
-bool DBWindowWriter::CopyImage()
+bool DBWindowWriter::SaveImage(const std::wstring& InImagePath)
 {
-	assert(DataToChange);
-
 	if (! GetSystem()) return false;
 	auto DataManager = GetSystem()->GetComponent<DBDataManager>();
 
 	if (! DataManager) return false;
 
-	std::wstring FilePath  = DataManager->GenerateImagePath();
-	std::wstring FileName  = DataManager->GenerateImageName();
-	std::wstring FinalPath = FilePath.append(FileName);
+	FImagePath NewImage;
+	NewImage.Initial = InImagePath;
 
-	std::wstring NewPath		   = FinalPath;
-	int			 SizeToProjectPath = DBPaths::GetProjectPath().size();
-	NewPath.erase(0, SizeToProjectPath);
-	std::string NewStringPath;
+	const int ImageId = GetNextImageId() + ImagesToCopy.size();
+	NewImage.Final	  = DBPaths::GetImagePath(DataManager->GetFolderId(), ImageId);
+	NewImage.ImageId  = ImageId;
+	ImagesToCopy.push_back(NewImage);
 
-	DBConvert::WStringToString(NewPath, NewStringPath);
-	DataToChange->ImageFile = NewStringPath;
+	// Save path to member data
+	std::wstring CroppedPath = NewImage.Final;
+	CroppedPath.erase(0, DBPaths::GetProjectPath().size()); // crop path
 
-	// MessageBox(NULL, FinalPath.c_str(), L"Dialog Box", MB_OK);
+	// Convertion to string
+	std::string DataToSave;
+	DBConvert::WStringToString(CroppedPath, DataToSave);
 
-	if (CopyFile(ImagePath.c_str(), FinalPath.c_str(), false))
+	// Saving
+	DataToChange->ImageFile = DataToSave;
+	return true;
+}
+
+void DBWindowWriter::CopySavedImages()
+{
+	int LastImageId = 0;
+	for (auto& Elem : ImagesToCopy)
 	{
-		return true;
+		CopyFile(Elem.Initial.c_str(), Elem.Final.c_str(), false);
+		LastImageId = Elem.ImageId;
 	}
-	else
-	{
-		std::wstring ErrorCode(L"Error Code: ");
-		ErrorCode.append(std::to_wstring(GetLastError()));
-		OutputDebugString(ErrorCode.c_str());
-		DBDebug::CreateMessageBox("Cannot copy an image");
-		// ERROR_PATH_NOT_FOUND //  error codes
-		return false;
-	}
-	return false;
+
+	if (! GetSystem()) return;
+	auto DataManager = GetSystem()->GetComponent<DBDataManager>();
+
+	if (! DataManager) return;
+	DataManager->WriteImageId(LastImageId);
+}
+
+int DBWindowWriter::GetNextImageId() const
+{
+	return LastImageId + 1;
 }
 
 void DBWindowWriter::SetItem(std::string& Info)
@@ -846,6 +851,7 @@ void DBWindowWriter::FinishWriting()
 			MembersData.SwitchParents();
 			DataManager->AddMember(MembersData);
 		}
+		CopySavedImages();
 
 		OnWriteSuccess.Broadcast();
 	}

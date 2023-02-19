@@ -70,8 +70,8 @@ public:
 	int GetFolderId() const { return SelectedFolderId; }
 	int GetSelectedFolderIndex() const;
 
-	std::wstring GenerateImagePath();
-	std::wstring GenerateImageName();
+	int	 ReadImageId();
+	void WriteImageId(int Id);
 
 private:
 	bool SetFolder(int FolderId);
@@ -84,5 +84,6 @@ private:
 
 	std::wstring GenerateJsonPath() const;
 	std::wstring GenerateJsonPath(int Id) const;
+	std::wstring GenerateImageDataPath() const;
 	std::wstring GetMemberStatus(Json::Value& InData, int InId);
 };
