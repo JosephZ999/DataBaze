@@ -39,10 +39,10 @@ LRESULT CALLBACK WndViewerProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lP
 	{
 		if (wParam == WM_SHOWWINDOW)
 		{
-			RegisterHotKey(hWnd, HKV_Command_1, 0, VK_1);
-			RegisterHotKey(hWnd, HKV_Command_2, 0, VK_2);
-			RegisterHotKey(hWnd, HKV_Command_3, 0, VK_3);
-			RegisterHotKey(hWnd, HKV_Command_4, 0, VK_4);
+			RegisterHotKey(hWnd, HKV_Command_1, MOD_CONTROL, VK_NUMPAD1);
+			RegisterHotKey(hWnd, HKV_Command_2, MOD_CONTROL, VK_NUMPAD2);
+			RegisterHotKey(hWnd, HKV_Command_3, MOD_CONTROL, VK_NUMPAD3);
+			// RegisterHotKey(hWnd, HKV_Command_4, MOD_CONTROL, VK_NUMPAD4);
 		}
 		break;
 	}
@@ -51,7 +51,7 @@ LRESULT CALLBACK WndViewerProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lP
 		UnregisterHotKey(hWnd, HKV_Command_1);
 		UnregisterHotKey(hWnd, HKV_Command_2);
 		UnregisterHotKey(hWnd, HKV_Command_3);
-		UnregisterHotKey(hWnd, HKV_Command_4);
+		// UnregisterHotKey(hWnd, HKV_Command_4);
 
 		DBLib::SetWindowVisibility(hWnd, false);
 		return 0;
@@ -109,12 +109,27 @@ void DBWindowViewer::SetMemberData(const DBFamilyData& InData)
 
 void DBWindowViewer::Autofill_Form1()
 {
-	// Sleep(1000);
-	DBLib::CopyToClipboard(WindowHandle, "123456789");
-	DBLib::PasteClipboard();
+	if (MemberData.Parents.size() == 0) return;
+
+	PasteString(MemberData.Parents[0].Name);
+	DBInput::PressKey(VK_TAB);
+
+	PasteString(MemberData.Parents[0].FamilyName);
+	DBInput::PressKey(VK_RETURN);
+
+	PasteString(std::to_string(MemberData.Parents[0].BirthMonth));
+	DBInput::PressKey(VK_TAB);
+
+	PasteString(std::to_string(MemberData.Parents[0].BirthDay));
+	DBInput::PressKey(VK_TAB);
+
+	PasteString(std::to_string(MemberData.Parents[0].BirthYear));
 }
 
-void DBWindowViewer::Autofill_Form2() {}
+void DBWindowViewer::Autofill_Form2()
+{
+	DBDebug::CreateMessageBox("Fill 2");
+}
 
 void DBWindowViewer::Autofill_Form3() {}
 
@@ -185,4 +200,11 @@ void DBWindowViewer::PrintMail()
 		Title.append(Elem.Title).append(L"\n");
 		Info.append(Elem.Info).append("\n");
 	}
+}
+
+inline void DBWindowViewer::PasteString(const std::string Text)
+{
+	Sleep(20);
+	DBInput::CopyToClipboard(WindowHandle, Text);
+	DBInput::PasteClipboard();
 }

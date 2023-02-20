@@ -30,14 +30,17 @@ private:
 public:
 	void OnConstruct();
 
-	void SetMemberData(const DBFamilyData& InData);
 	void Autofill_Form1();
 	void Autofill_Form2();
 	void Autofill_Form3();
 	void Autofill_Form4();
 
+	void SetMemberData(const DBFamilyData& InData);
+
 private:
 	void PrintData();
 	void PrintPeople(const DBPeopleData& People, bool IsChild);
 	void PrintMail();
+
+	inline void PasteString(const std::string Text);
 };

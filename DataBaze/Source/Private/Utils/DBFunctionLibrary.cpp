@@ -84,7 +84,7 @@ HWND DBLib::CreateStaticBox(DBWindow& WindowInfo, DWORD Style)
 	return WindowInfo.Window;
 }
 
-void DBLib::CopyToClipboard(HWND hwnd, const std::string& String)
+void DBInput::CopyToClipboard(HWND hwnd, const std::string& String)
 {
 	OpenClipboard(hwnd);
 	EmptyClipboard();
@@ -103,7 +103,7 @@ void DBLib::CopyToClipboard(HWND hwnd, const std::string& String)
 	}
 }
 
-void DBLib::PressKey(WORD Key)
+void DBInput::PressKey(WORD Key)
 {
 	INPUT ip;
 	ip.type			  = INPUT_KEYBOARD;
@@ -119,7 +119,7 @@ void DBLib::PressKey(WORD Key)
 	SendInput(1, &ip, sizeof(INPUT));
 }
 
-void DBLib::PressKeys(WORD Key1, WORD Key2)
+void DBInput::PressKeys(WORD Key1, WORD Key2)
 {
 	INPUT ip;
 	ip.type			  = INPUT_KEYBOARD;
@@ -145,7 +145,7 @@ void DBLib::PressKeys(WORD Key1, WORD Key2)
 	SendInput(1, &ip, sizeof(INPUT));
 }
 
-void DBLib::PasteClipboard()
+void DBInput::PasteClipboard()
 {
 	PressKeys(VK_CONTROL, VK_V);
 }

@@ -79,6 +79,7 @@ DBInterface* DBSystem::GetSystem() const
 void DBSystem::InitListBox()
 {
 	ResetList();
+	ListData.clear();
 	DataManager->GetMembersList(ListData);
 	for (auto& Elem : ListData)
 	{
