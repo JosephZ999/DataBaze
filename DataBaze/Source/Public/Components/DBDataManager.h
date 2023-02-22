@@ -17,6 +17,7 @@ DECLARE_DELEGATE(OnItemChangedSignature);
 // Json keys
 
 #define JGK_MAILCOUNTRY	   "1.MailCountry"
+#define JGK_MAILREGION	   "1.MailRegion"
 #define JGK_MAILCITY	   "2.MailCity"
 #define JGK_MAILSTREET	   "3.MailStreet"
 #define JGK_MAILHOMENUMBER "4.MailHomeNumber"

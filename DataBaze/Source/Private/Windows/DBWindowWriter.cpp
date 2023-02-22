@@ -367,6 +367,12 @@ void DBWindowWriter::UpdateInfo()
 		MoreInfoText.append(L"Example - UZB");
 		break;
 	}
+	case PD_MailRegion:
+	{
+		InfoText.append(L"Mailing region");
+		MoreInfoText.append(L"Example - Samarkand");
+		break;
+	}
 	case PD_MailCity:
 	{
 		InfoText.append(L"Mailing city");
@@ -568,6 +574,10 @@ bool DBWindowWriter::CheckFormat()
 		return false;
 	}
 	case PD_MailCountry:
+	{
+		return true;
+	}
+	case PD_MailRegion:
 	{
 		return true;
 	}
@@ -781,6 +791,11 @@ void DBWindowWriter::SetItem(std::string& Info)
 	case PD_MailCountry:
 	{
 		MembersData.MailCountry = Info;
+		break;
+	}
+	case PD_MailRegion:
+	{
+		MembersData.MailRegion = Info;
 		break;
 	}
 	case PD_MailCity:

@@ -81,10 +81,10 @@ class ButtonContainer
 public:
 	DBWindow Buttons[10];
 
-	void	  Add(const DBWindow& InButton);
-	bool	  FindByIndex(EDBWinCompId Id, DBWindow& OutWindow) const;
-	bool	  Contains(EDBWinCompId Id) const;
-	bool	  IsEmpty() { return ButtonLastIndex == 0; }
+	void Add(const DBWindow& InButton);
+	bool FindByIndex(EDBWinCompId Id, DBWindow& OutWindow) const;
+	bool Contains(EDBWinCompId Id) const;
+	bool IsEmpty() { return ButtonLastIndex == 0; }
 };
 
 enum EEducationDegree
@@ -124,9 +124,9 @@ struct DBPeopleData
 	bool IsMele() const { return Gender == 1; }
 
 	EEducationDegree GetEducation() const;
-	std::string GetBirthDataAsString() const;
-	std::string GetGenderAsString() const;
-	std::string GetEducationAsString() const;
+	std::string		 GetBirthDataAsString() const;
+	std::string		 GetGenderAsString() const;
+	std::string		 GetEducationAsString() const;
 };
 
 enum EMeritialStatus
@@ -163,7 +163,9 @@ struct DBFamilyData
 
 	int			MaritalStatus;	// use enum EMeritialStatus
 	int			ChildrenNum;	//
+
 	std::string MailCountry;	//
+	std::string MailRegion;		//
 	std::string MailCity;		//
 	std::string MailStreet;		//
 	std::string MailHomeNumber; //
@@ -239,7 +241,9 @@ enum EPeopleData
 
 	PD_MaritalStatus,
 	PD_ChildrenNum,
+
 	PD_MailCountry,
+	PD_MailRegion,
 	PD_MailCity,
 	PD_MailStreet,
 	PD_MailHomeNumber,

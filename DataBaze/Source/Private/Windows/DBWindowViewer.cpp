@@ -190,6 +190,7 @@ void DBWindowViewer::PrintMail()
 	std::vector<FillData> DataArray;
 
 	DataArray.push_back({L"Mail Country : ", MemberData.MailCountry});
+	DataArray.push_back({L"Mail Region : ", MemberData.MailRegion});
 	DataArray.push_back({L"Mail City : ", MemberData.MailCity});
 	DataArray.push_back({L"Mail Street : ", MemberData.MailStreet});
 	DataArray.push_back({L"Mail Home : ", MemberData.MailHomeNumber});

@@ -151,6 +151,7 @@ void DBDataManager::FillFamilyInfo(const DBFamilyData& MemberData, Json::Value& 
 		Globals[JGK_STATUS]			= Json::Value(MemberData.MaritalStatus);
 		Globals[JGK_CHILDNUM]		= Json::Value(MemberData.ChildrenNum);
 		Globals[JGK_MAILCOUNTRY]	= Json::Value(MemberData.MailCountry);
+		Globals[JGK_MAILREGION]		= Json::Value(MemberData.MailRegion);
 		Globals[JGK_MAILCITY]		= Json::Value(MemberData.MailCity);
 		Globals[JGK_MAILSTREET]		= Json::Value(MemberData.MailStreet);
 		Globals[JGK_MAILHOMENUMBER] = Json::Value(MemberData.MailHomeNumber);
@@ -209,6 +210,7 @@ void DBDataManager::DeserializeFamily(const Json::Value& InFamily, DBFamilyData&
 	OutFamily.MaritalStatus	 = InFamily[JCK_GLOBALS][JGK_STATUS].asInt();
 	OutFamily.ChildrenNum	 = InFamily[JCK_GLOBALS][JGK_CHILDNUM].asInt();
 	OutFamily.MailCountry	 = InFamily[JCK_GLOBALS][JGK_MAILCOUNTRY].asString();
+	OutFamily.MailRegion	 = InFamily[JCK_GLOBALS][JGK_MAILREGION].asString();
 	OutFamily.MailCity		 = InFamily[JCK_GLOBALS][JGK_MAILCITY].asString();
 	OutFamily.MailStreet	 = InFamily[JCK_GLOBALS][JGK_MAILSTREET].asString();
 	OutFamily.MailHomeNumber = InFamily[JCK_GLOBALS][JGK_MAILHOMENUMBER].asString();
@@ -269,7 +271,7 @@ int DBDataManager::GetSelectedFolderIndex() const
 
 int DBDataManager::ReadImageId()
 {
-	const auto FilePath = GenerateImageDataPath();
+	const auto	  FilePath = GenerateImageDataPath();
 	std::ifstream File(FilePath);
 	if (File.good())
 	{
@@ -284,7 +286,7 @@ int DBDataManager::ReadImageId()
 void DBDataManager::WriteImageId(int Id)
 {
 	const auto FilePath = GenerateImageDataPath();
-	const auto Prefix = std::string((Id < 10) ? "00" : ((Id < 100) ? "0" : ""));
+	const auto Prefix	= std::string((Id < 10) ? "00" : ((Id < 100) ? "0" : ""));
 
 	std::ofstream File(FilePath);
 	File << std::string(Prefix).append(std::to_string(Id));
