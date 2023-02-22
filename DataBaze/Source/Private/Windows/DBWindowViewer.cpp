@@ -124,6 +124,22 @@ void DBWindowViewer::Autofill_Form1()
 	DBInput::PressKey(VK_TAB);
 
 	PasteString(std::to_string(MemberData.Parents[0].BirthYear));
+	DBInput::PressKey(VK_RETURN);
+
+	PasteString(MemberData.MailStreet);
+	DBInput::PressKey(VK_RETURN);
+
+	PasteString(MemberData.MailHomeNumber);
+	DBInput::PressKey(VK_RETURN);
+
+	PasteString(MemberData.MailCity);
+	DBInput::PressKey(VK_RETURN);
+
+	PasteString(MemberData.MailRegion);
+	DBInput::PressKey(VK_RETURN);
+
+	PasteString(MemberData.MailCountry);
+	DBInput::PressKey(VK_RETURN);
 }
 
 void DBWindowViewer::Autofill_Form2()
