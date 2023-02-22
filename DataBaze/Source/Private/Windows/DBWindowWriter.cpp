@@ -305,7 +305,7 @@ void DBWindowWriter::UpdateInfo()
 	}
 	case PD_FamilyName:
 	{
-		InfoText.append(L"Family name");
+		InfoText.append(L"Family Name");
 		break;
 	}
 	case PD_Gender:
@@ -331,7 +331,7 @@ void DBWindowWriter::UpdateInfo()
 	}
 	case PD_BornCountry:
 	{
-		InfoText.append(L"Country where born");
+		InfoText.append(L"Country where Born");
 		MoreInfoText.append(L"Example - UZB");
 		break;
 	}
@@ -345,7 +345,7 @@ void DBWindowWriter::UpdateInfo()
 	}
 	case PD_WhereLive:
 	{
-		InfoText.append(L"Country where live today");
+		InfoText.append(L"Country Where Live Today");
 		MoreInfoText.append(L"Example - RUS");
 		break;
 	}
@@ -363,19 +363,19 @@ void DBWindowWriter::UpdateInfo()
 	}
 	case PD_MailCountry:
 	{
-		InfoText.append(L"Mailing country");
+		InfoText.append(L"Mailing Country");
 		MoreInfoText.append(L"Example - UZB");
 		break;
 	}
 	case PD_MailRegion:
 	{
-		InfoText.append(L"Mailing region");
+		InfoText.append(L"Mailing Region");
 		MoreInfoText.append(L"Example - Samarkand");
 		break;
 	}
 	case PD_MailCity:
 	{
-		InfoText.append(L"Mailing city");
+		InfoText.append(L"Mailing City");
 		MoreInfoText.append(L"Example - Samarkand");
 		break;
 	}
@@ -387,7 +387,7 @@ void DBWindowWriter::UpdateInfo()
 	}
 	case PD_MailHomeNumber:
 	{
-		InfoText.append(L"Mailing home number");
+		InfoText.append(L"Mailing Home Number");
 		MoreInfoText.append(L"Example - 4/25");
 		break;
 	}
