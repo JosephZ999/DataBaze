@@ -8,6 +8,10 @@ DBWindowViewer* ViewerObj = nullptr;
 DBWindow		ViewerInfo;
 DBWindow		ViewerInfoTitle;
 
+DBWindow ViewerBtnEdit;
+DBWindow ViewerBtnPrev;
+DBWindow ViewerBtnNext;
+
 LRESULT CALLBACK WndViewerProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	switch (message)
@@ -17,22 +21,54 @@ LRESULT CALLBACK WndViewerProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lP
 		ViewerInfoTitle.Id		 = EDBWinCompId::IDC_V_InfoTitle;
 		ViewerInfoTitle.Parent	 = hWnd;
 		ViewerInfoTitle.Position = {25, 25};
-		ViewerInfoTitle.Size	 = {265, 300};
+		ViewerInfoTitle.Size	 = {200, 300}; // x 265
 		ViewerInfoTitle.Text	 = L"Name : ";
 		ViewerInfoTitle.FontSize = 18;
 		ViewerInfoTitle.HIns	 = GetModuleHandle(NULL);
-
 		DBLib::CreateStaticBox(ViewerInfoTitle, WS_VISIBLE | WS_CHILD | SS_RIGHT);
 
 		ViewerInfo.Id		= EDBWinCompId::IDC_V_Info;
 		ViewerInfo.Parent	= hWnd;
-		ViewerInfo.Position = {290, 25};
-		ViewerInfo.Size		= {265, 300};
+		ViewerInfo.Position = {225, 25};
+		ViewerInfo.Size		= {335, 300};
 		ViewerInfo.Text		= L"Moon";
 		ViewerInfo.FontSize = 18;
 		ViewerInfo.HIns		= GetModuleHandle(NULL);
-
 		DBLib::CreateStaticBox(ViewerInfo, WS_VISIBLE | WS_CHILD);
+
+		//-----------------------------------------------// Buttons
+		ViewerBtnEdit.Id		 = EDBWinCompId::IDC_V_Edit;
+		ViewerBtnEdit.Parent	 = hWnd;
+		ViewerBtnEdit.Size		 = {100, 35};
+		ViewerBtnEdit.Position.X = (int)(300 - ViewerBtnEdit.Size.X / 2.f);
+		ViewerBtnEdit.Position.Y = 340;
+		ViewerBtnEdit.Text		 = L"Edit";
+		ViewerBtnEdit.FontSize	 = 18;
+		ViewerBtnEdit.HIns		 = GetModuleHandle(NULL);
+
+		auto locvar = DBLib::GetScreenSize(hWnd);
+
+		DBLib::CreateButton(ViewerBtnEdit);
+
+		ViewerBtnPrev.Id		 = EDBWinCompId::IDC_V_Prev;
+		ViewerBtnPrev.Parent	 = hWnd;
+		ViewerBtnPrev.Size		 = {100, 35};
+		ViewerBtnPrev.Position.X = 25;
+		ViewerBtnPrev.Position.Y = 340;
+		ViewerBtnPrev.Text		 = L"Prev";
+		ViewerBtnPrev.FontSize	 = 18;
+		ViewerBtnPrev.HIns		 = GetModuleHandle(NULL);
+		DBLib::CreateButton(ViewerBtnPrev);
+
+		ViewerBtnNext.Id		 = EDBWinCompId::IDC_V_Next;
+		ViewerBtnNext.Parent	 = hWnd;
+		ViewerBtnNext.Size		 = {100, 35};
+		ViewerBtnNext.Position.X = 460;
+		ViewerBtnNext.Position.Y = 340;
+		ViewerBtnNext.Text		 = L"Next";
+		ViewerBtnNext.FontSize	 = 18;
+		ViewerBtnNext.HIns		 = GetModuleHandle(NULL);
+		DBLib::CreateButton(ViewerBtnNext);
 		break;
 	}
 	case WM_COMMAND:
@@ -189,7 +225,7 @@ void DBWindowViewer::PrintPeople(const DBPeopleData& People, bool IsChild)
 
 	if (! IsChild)
 	{
-		DataArray.push_back({L"Ñountry Wher Live: ", People.WhereLive});
+		DataArray.push_back({L"Ñountry Wher Live : ", People.WhereLive});
 		DataArray.push_back({L"Education : ", People.GetEducationAsString()});
 	}
 	DataArray.push_back({L"Image Path : ", std::string(People.ImageFile).erase(0, 6)});

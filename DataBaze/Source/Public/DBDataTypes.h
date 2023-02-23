@@ -36,6 +36,11 @@ enum EDBWinCompId
 	IDC_V_Info,
 	IDC_V_InfoTitle,
 
+	// btns
+	IDC_V_Edit,
+	IDC_V_Prev,
+	IDC_V_Next,
+
 	// Writer window comps
 	IDC_W_Info,
 	IDC_W_MoreInfo,

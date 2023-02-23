@@ -12,7 +12,7 @@ void DBLib::SetWindowVisibility(HWND Window, bool bShow)
 }
 
 HWND DBLib::CreateWindowComponent(
-	EDBWindowCompType Type, std::wstring& Text, DWORD Style, Size2D Pos, Size2D Size, HWND Parent, HMENU Id, HINSTANCE HIns)
+	EDBWindowCompType Type, std::wstring Text, DWORD Style, Size2D Pos, Size2D Size, HWND Parent, HMENU Id, HINSTANCE HIns)
 {
 	std::wstring CompType;
 	switch (Type)
