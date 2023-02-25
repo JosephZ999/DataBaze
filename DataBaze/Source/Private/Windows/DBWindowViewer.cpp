@@ -3,6 +3,7 @@
 #include <Windows.h>
 #include "DBKeyCodes.h"
 #include "DBWindowsManager.h"
+#include "DBSystem.h"
 
 DBWindowViewer* ViewerObj = nullptr;
 DBWindow		ViewerInfo;
@@ -119,6 +120,33 @@ LRESULT CALLBACK WndViewerProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lP
 		break;
 	}
 	}
+
+	EDBWinCompId BtnId = static_cast<EDBWinCompId>(LOWORD(wParam));
+	switch (BtnId)
+	{
+	case EDBWinCompId::IDC_V_Edit:
+	{
+		if (ViewerObj)
+		{
+			auto wp = (WPARAM)EDBWinCompId::IDC_NEWITEM;
+			auto Sys = Cast<DBSystem>(ViewerObj->GetSystem());
+			Sys->CallCommand(hWnd, 0, wp, lParam);
+
+			// MAKEWORD()
+			// SendMessage()
+		}
+		break;
+	}
+	case EDBWinCompId::IDC_V_Prev:
+	{
+		break;
+	}
+	case EDBWinCompId::IDC_V_Next:
+	{
+		break;
+	}
+	}
+
 	return DefWindowProc(hWnd, message, wParam, lParam);
 }
 
