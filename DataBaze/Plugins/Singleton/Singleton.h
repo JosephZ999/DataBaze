@@ -1,49 +1,62 @@
 #pragma once
 #include <typeinfo>
+#include <vector>
+#include <type_traits>
 
-class Singleton
+class SingletonFactory;
+
+class Singleton abstract
 {
+	size_t Id;
+
 protected:
-	static Singleton* _self;
-	Singleton() {}
-	virtual ~Singleton() { DeleteInstance(); }
+	size_t GetId() { return Id; }
+	virtual ~Singleton() {}
 
 public:
-	static Singleton* Instance()
-	{
-		if (! _self)
-		{
-			_self = new Singleton();
-		}
-		return _self;
-	}
+	friend SingletonFactory;
+};
 
+// Factory
+class SingletonFactory
+{
+private:
+	static std::vector<Singleton*> Objects;
+
+public:
 	template <typename T> //
 	static T* Get()
 	{
-		return dynamic_cast<T*>(Instance());
+		// get if exist
+		const auto ClassId = typeid(T).hash_code();
+		for (auto Obj : Objects)
+		{
+			if (Obj->Id == ClassId)
+			{
+				return static_cast<T*>(Obj);
+			}
+		}
+
+		// create if not exist
+		if (std::is_base_of_v<Singleton, T>)
+		{
+			auto TRef		= new T;
+			auto SingletonT = static_cast<Singleton*>(TRef);
+			SingletonT->Id	= ClassId;
+			Objects.push_back(SingletonT);
+			return TRef;
+		}
+		return nullptr;
 	}
 
-	static bool DeleteInstance()
+	static bool DestroyAll()
 	{
-		if (_self)
+		for (auto Obj : Objects)
 		{
-			delete _self;
-			_self = nullptr;
-			return true;
+			delete Obj;
 		}
 		return false;
 	}
 };
 
-Singleton* Singleton ::_self = nullptr;
-
-class SingletonFactory
-{
-public:
-	template <typename T> //
-	static T* Get()
-	{
-
-	}
-};
+std::vector<Singleton*> SingletonFactory::Objects;

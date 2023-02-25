@@ -27,22 +27,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 	UNREFERENCED_PARAMETER(lpCmdLine);
 
 	// TODO: Place code here.
-	auto sys1 = DBMainSubsystem::Instance();
-	auto sys2 = DBMainSubsystem::Get<DBMainSubsystem>();
-	auto sys3 = dynamic_cast<DBMainSubsystem*>(sys1);
-	auto sys4 = DBMainSubsystem::Instance();
-	auto sys5 = Singleton::Instance();
-
-	if (sys2)
-	{
-		auto var1 = sys2->var1;
-		auto var2 = sys2->var2;
-	}
-	if (sys3)
-	{
-		auto var1 = sys3->var1;
-		auto var2 = sys3->var2;
-	}
 
 	// Initialize global strings
 	LoadStringW(hInstance, IDS_APP_TITLE, szTitle, MAX_LOADSTRING);
@@ -112,8 +96,8 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 {
 	hInst = hInstance; // Store instance handle in our global variable
 
-	MainWindow = CreateWindowW(
-		szWindowClass, szTitle, (WS_OVERLAPPEDWINDOW) - (WS_MAXIMIZEBOX | WS_THICKFRAME), CW_USEDEFAULT, 0, 740, 450, nullptr, nullptr, hInstance, nullptr);
+	MainWindow = CreateWindowW(szWindowClass, szTitle, (WS_OVERLAPPEDWINDOW) - (WS_MAXIMIZEBOX | WS_THICKFRAME), CW_USEDEFAULT, 0, 740, 450,
+		nullptr, nullptr, hInstance, nullptr);
 
 	if (! MainWindow)
 	{
@@ -167,6 +151,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		{
 			if (System)
 			{
+				SingletonFactory::DestroyAll();
 				delete System;
 				System = nullptr;
 			}
@@ -186,15 +171,14 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		// TCHAR greeting[] = _T("Hello, Windows desktop!");
 		// TextOut(hdc, 5, 5, greeting, _tcslen(greeting));
 
-
 		if (System)
 		{
 			System->CallPaint(hWnd, message, wParam, lParam);
 		}
 
 		const Size2D ScreenSize = DBLib::GetScreenSize();
-		RECT Rect  = {0, 0, ScreenSize.X, ScreenSize.Y};
-		HBRUSH BrushColor = CreateSolidBrush(RGB(200, 200, 200));
+		RECT		 Rect		= {0, 0, ScreenSize.X, ScreenSize.Y};
+		HBRUSH		 BrushColor = CreateSolidBrush(RGB(200, 200, 200));
 
 		FillRect(hdc, &Rect, BrushColor);
 
@@ -206,6 +190,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	{
 		if (System)
 		{
+			SingletonFactory::DestroyAll();
 			delete System;
 			System = nullptr;
 		}
