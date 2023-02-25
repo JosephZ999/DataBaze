@@ -51,6 +51,15 @@
     <Filter Include="Source\Public\DataTypes">
       <UniqueIdentifier>{39294ec1-0ace-480c-9c99-97d3d3053c48}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Plugins">
+      <UniqueIdentifier>{4fe10015-7c9e-4df0-a67a-418a12d3670a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Plugins\Singleton">
+      <UniqueIdentifier>{9937f2a8-5757-437e-89bc-b3c4eb2136bf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Public\Subsystems">
+      <UniqueIdentifier>{0d5ef903-b897-4a58-8fdd-d0cd7a1387e9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -109,6 +118,12 @@
     </ClInclude>
     <ClInclude Include="Source\Public\Utils\DBCharCodes.h">
       <Filter>Source\Public\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Plugins\Singleton\Singleton.h">
+      <Filter>Plugins\Singleton</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Public\Subsystems\DBMainSubsystem.h">
+      <Filter>Source\Public\Subsystems</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -4,6 +4,7 @@
 #include "DataBaze.h"
 #include "DBWindowsManager.h"
 #include "DBFunctionLibrary.h"
+#include "DBMainSubsystem.h"
 
 // Global Variables:
 HINSTANCE hInst;						 // current instance
@@ -26,6 +27,22 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 	UNREFERENCED_PARAMETER(lpCmdLine);
 
 	// TODO: Place code here.
+	auto sys1 = DBMainSubsystem::Instance();
+	auto sys2 = DBMainSubsystem::Get<DBMainSubsystem>();
+	auto sys3 = dynamic_cast<DBMainSubsystem*>(sys1);
+	auto sys4 = DBMainSubsystem::Instance();
+	auto sys5 = Singleton::Instance();
+
+	if (sys2)
+	{
+		auto var1 = sys2->var1;
+		auto var2 = sys2->var2;
+	}
+	if (sys3)
+	{
+		auto var1 = sys3->var1;
+		auto var2 = sys3->var2;
+	}
 
 	// Initialize global strings
 	LoadStringW(hInstance, IDS_APP_TITLE, szTitle, MAX_LOADSTRING);
