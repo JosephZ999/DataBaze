@@ -57,8 +57,11 @@
     <Filter Include="Plugins\Singleton">
       <UniqueIdentifier>{9937f2a8-5757-437e-89bc-b3c4eb2136bf}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Public\Subsystems">
+    <Filter Include="Source\Public\Core">
       <UniqueIdentifier>{0d5ef903-b897-4a58-8fdd-d0cd7a1387e9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Private\Core">
+      <UniqueIdentifier>{9f35237e-0fc1-4367-973b-960f159dc0b2}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -122,8 +125,8 @@
     <ClInclude Include="Plugins\Singleton\Singleton.h">
       <Filter>Plugins\Singleton</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Public\Subsystems\DBMainSubsystem.h">
-      <Filter>Source\Public\Subsystems</Filter>
+    <ClInclude Include="Source\Public\Core\DBInstance.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -159,6 +162,12 @@
     </ClCompile>
     <ClCompile Include="Source\Private\DBJsonUtils.cpp">
       <Filter>Source\Private\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Private\Core\DBInstance.cpp">
+      <Filter>Source\Private\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Plugins\Singleton\Singleton.cpp">
+      <Filter>Plugins\Singleton</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

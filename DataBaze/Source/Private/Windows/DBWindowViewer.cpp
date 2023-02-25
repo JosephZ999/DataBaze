@@ -4,6 +4,7 @@
 #include "DBKeyCodes.h"
 #include "DBWindowsManager.h"
 #include "DBSystem.h"
+#include "DBInstance.h"
 
 DBWindowViewer* ViewerObj = nullptr;
 DBWindow		ViewerInfo;
@@ -128,12 +129,17 @@ LRESULT CALLBACK WndViewerProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lP
 	{
 		if (ViewerObj)
 		{
-			auto wp = (WPARAM)EDBWinCompId::IDC_NEWITEM;
-			auto Sys = Cast<DBSystem>(ViewerObj->GetSystem());
-			Sys->CallCommand(hWnd, 0, wp, lParam);
-
+			// auto wp = (WPARAM)EDBWinCompId::IDC_NEWITEM;
+			// auto Sys = Cast<DBSystem>(ViewerObj->GetSystem());
+			// Sys->CallCommand(hWnd, 0, wp, lParam);
 			// MAKEWORD()
 			// SendMessage()
+
+			auto Ins = SingletonManager::Get<DBInstance>();
+			if (Ins)
+			{
+				// DBDebug::CreateMessageBox(std::to_string(Ins->GetInitData().asd));
+			}
 		}
 		break;
 	}

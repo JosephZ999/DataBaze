@@ -3,7 +3,7 @@
 #include <vector>
 #include <type_traits>
 
-class SingletonFactory;
+class SingletonManager;
 
 class Singleton abstract
 {
@@ -14,11 +14,11 @@ protected:
 	virtual ~Singleton() {}
 
 public:
-	friend SingletonFactory;
+	friend SingletonManager;
 };
 
 // Factory
-class SingletonFactory
+class SingletonManager
 {
 private:
 	static std::vector<Singleton*> Objects;
@@ -58,5 +58,3 @@ public:
 		return false;
 	}
 };
-
-std::vector<Singleton*> SingletonFactory::Objects;

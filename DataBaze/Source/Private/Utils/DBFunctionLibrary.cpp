@@ -236,3 +236,10 @@ void DBDebug::CreateMessageBox(std::string Text)
 	DBConvert::StringToWString(Text, WText);
 	MessageBox(NULL, WText.c_str(), L"Dialog Box", MB_OK);
 }
+
+//-----------------------------------------------// System library
+
+HWND DBSysLib::GetMainHWND()
+{
+	return HWND();
+}

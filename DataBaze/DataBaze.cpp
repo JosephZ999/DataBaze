@@ -4,7 +4,7 @@
 #include "DataBaze.h"
 #include "DBWindowsManager.h"
 #include "DBFunctionLibrary.h"
-#include "DBMainSubsystem.h"
+#include "DBInstance.h"
 
 // Global Variables:
 HINSTANCE hInst;						 // current instance
@@ -113,6 +113,13 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 	// System Initialization
 	System->EndConstruct();
 
+	auto Ins = SingletonManager::Get<DBInstance>();
+	if (Ins)
+	{
+		auto Initializer = FDBInstanceInit(hInstance, MainWindow);
+		Ins->Initialize(Initializer);
+	}
+
 	return TRUE;
 }
 
@@ -151,7 +158,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		{
 			if (System)
 			{
-				SingletonFactory::DestroyAll();
+				SingletonManager::DestroyAll();
 				delete System;
 				System = nullptr;
 			}
@@ -190,7 +197,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	{
 		if (System)
 		{
-			SingletonFactory::DestroyAll();
+			SingletonManager::DestroyAll();
 			delete System;
 			System = nullptr;
 		}
