@@ -13,7 +13,7 @@ DBWindow		WriterEditBox;
 DBWindow		WriterInfoBox;
 DBWindow		WriterMoreInfoBox;
 
-LRESULT CALLBACK WndWriterProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
+LRESULT DBWindowWriter::CallProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	switch (message)
 	{
@@ -83,13 +83,13 @@ LRESULT CALLBACK WndWriterProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lP
 	case WM_DRAWITEM:
 	{
 		/*
-		 HDC	   hdc		  = GetDC(WriterInfoBox.Window);
-		 RECT   Rect		  = {0, 0, 520, 120};
-		 HBRUSH BrushColor = CreateSolidBrush(RGB(250, 0, 0));
+		HDC	   hdc		  = GetDC(WriterInfoBox.Window);
+		RECT   Rect		  = {0, 0, 520, 120};
+		HBRUSH BrushColor = CreateSolidBrush(RGB(250, 0, 0));
 
-		 FillRect(hdc, &Rect, BrushColor);
-		 SetTextColor(hdc, RGB(0, 0, 250));
-		 */
+		FillRect(hdc, &Rect, BrushColor);
+		SetTextColor(hdc, RGB(0, 0, 250));
+		*/
 		break;
 	}
 	case WM_CLOSE:

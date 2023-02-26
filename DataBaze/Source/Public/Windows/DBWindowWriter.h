@@ -8,8 +8,6 @@
 
 DECLARE_DELEGATE(OnWriteSuccessSignature);
 
-LRESULT CALLBACK WndWriterProc(HWND, UINT, WPARAM, LPARAM);
-
 struct FImagePath
 {
 	std::wstring Initial;
@@ -28,6 +26,7 @@ public:
 		: WindowHandle(InOwnerHWND)
 	{
 	}
+
 
 	OnWriteSuccessSignature OnWriteSuccess;
 
@@ -49,6 +48,8 @@ public:
 	int	   LastImageId = 1;
 
 public:
+	LRESULT CALLBACK CallProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
+
 	void OnConstruct();
 	bool CheckFormat();
 	void WriteData();

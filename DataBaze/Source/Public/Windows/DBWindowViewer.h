@@ -6,7 +6,7 @@
 
 #include "DBInterface.h"
 
-LRESULT CALLBACK WndViewerProc(HWND, UINT, WPARAM, LPARAM);
+LRESULT CALLBACK ViewerProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 
 struct FillData
 {
@@ -28,6 +28,8 @@ private:
 	std::string	 Info;
 
 public:
+	LRESULT CALLBACK CallProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
+
 	void OnConstruct();
 
 	void Autofill_Form1();
