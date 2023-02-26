@@ -6,8 +6,6 @@
 
 #include "DBInterface.h"
 
-LRESULT CALLBACK ViewerProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
-
 struct FillData
 {
 	std::wstring Title;

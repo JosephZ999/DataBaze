@@ -3,22 +3,21 @@
 #include "DBWindowWriter.h"
 #include "DBFunctionLibrary.h"
 
-DBWindowsManager* ManagerRef	= nullptr;
-HWND			  GViewerHandle = 0;
-HWND			  GWriterHandle = 0;
+DBWindowsManager* ManagerRef = nullptr;
 
 LRESULT CALLBACK WndManagerProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	if (! ManagerRef) return 0;
-	if (hWnd == GViewerHandle)
+
+	if (hWnd == ManagerRef->GetViewerHandle())
 	{
 		return ManagerRef->GetViewer()->CallProc(hWnd, message, wParam, lParam);
 	}
-	else if (hWnd == GWriterHandle)
+	else if (hWnd == ManagerRef->GetWriterHandle())
 	{
 		return ManagerRef->GetWriter()->CallProc(hWnd, message, wParam, lParam);
 	}
-	return 0;
+	return DefWindowProc(hWnd, message, wParam, lParam);
 }
 
 void DBWindowsManager::Initialize(HINSTANCE HInstance)
@@ -30,24 +29,23 @@ void DBWindowsManager::Initialize(HINSTANCE HInstance)
 
 	WNDCLASS Viewer_wc = {};
 
-	Viewer_wc.lpfnWndProc	= ViewerProc;
+	Viewer_wc.lpfnWndProc	= WndManagerProc;
 	Viewer_wc.hInstance		= HInstance;
 	Viewer_wc.lpszClassName = V_CLASS_NAME;
 	Viewer_wc.style			= CS_GLOBALCLASS;
 
 	RegisterClass(&Viewer_wc);
 
-	ViewerHandle  = CreateWindowEx(0,			  // Optional window styles. (Transparent bg WS_EX_TRANSPARENT)
-		 V_CLASS_NAME,							  // Window class
-		 L"Viewer",								  // Window text
-		 WS_OVERLAPPED | WS_SYSMENU | WS_CAPTION, // Window style (Transparent bg WS_POPUP)
-		 25, 25, 600, 430,						  // CW_USEDEFAULT
-		 NULL,									  // Parent window
-		 NULL,									  // Menu
-		 HInstance,								  // Instance handle
-		 NULL									  // Additional application data
-	 );
-	GViewerHandle = ViewerHandle;
+	ViewerHandle = CreateWindowEx(0,			 // Optional window styles. (Transparent bg WS_EX_TRANSPARENT)
+		V_CLASS_NAME,							 // Window class
+		L"Viewer",								 // Window text
+		WS_OVERLAPPED | WS_SYSMENU | WS_CAPTION, // Window style (Transparent bg WS_POPUP)
+		25, 25, 600, 430,						 // CW_USEDEFAULT
+		NULL,									 // Parent window
+		NULL,									 // Menu
+		HInstance,								 // Instance handle
+		NULL									 // Additional application data
+	);
 
 	// Writer
 	const wchar_t W_CLASS_NAME[] = L"WriterClass";
@@ -67,17 +65,19 @@ void DBWindowsManager::Initialize(HINSTANCE HInstance)
 	const Size2D ScreenCenter	= ScreenSize / 2;
 	const Size2D FinalWriterPos = ScreenCenter - WriterHalf;
 
-	WriterHandle  = CreateWindowEx(0,				   // Optional window styles. (Transparent bg WS_EX_TRANSPARENT)
-		 W_CLASS_NAME,								   // Window class
-		 L"Writer",									   // Window text
-		 WS_OVERLAPPED | WS_SYSMENU | WS_CAPTION,	   // Window style (Transparent bg WS_POPUP)
-		 FinalWriterPos.X, FinalWriterPos.Y, 600, 400, // Size and position
-		 NULL,										   // Parent window
-		 NULL,										   // Menu
-		 HInstance,									   // Instance handle
-		 NULL										   // Additional application data
-	 );
-	GWriterHandle = WriterHandle;
+	WriterHandle = CreateWindowEx(0,				  // Optional window styles. (Transparent bg WS_EX_TRANSPARENT)
+		W_CLASS_NAME,								  // Window class
+		L"Writer",									  // Window text
+		WS_OVERLAPPED | WS_SYSMENU | WS_CAPTION,	  // Window style (Transparent bg WS_POPUP)
+		FinalWriterPos.X, FinalWriterPos.Y, 600, 400, // Size and position
+		NULL,										  // Parent window
+		NULL,										  // Menu
+		HInstance,									  // Instance handle
+		NULL										  // Additional application data
+	);
+
+	GetViewer()->CallProc(GetViewerHandle(), WM_CREATE, 0, 0);
+	GetWriter()->CallProc(GetWriterHandle(), WM_CREATE, 0, 0);
 }
 
 DBWindowsManager::~DBWindowsManager()
