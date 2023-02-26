@@ -52,4 +52,3 @@ int DBListBox::GetLastItemId() const
 {
 	return LastItemId;
 }
-

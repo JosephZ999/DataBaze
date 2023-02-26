@@ -22,10 +22,7 @@ DBSystem::DBSystem(HINSTANCE HInstance, HWND InMainWindow)
 
 void DBSystem::EndConstruct()
 {
-	CreateListBox();
 	CreateButtons();
-
-	InitListBox();
 
 	FolderText.Id		= EDBWinCompId::IDC_FolderId;
 	FolderText.Parent	= MainWindow;
@@ -52,32 +49,6 @@ void DBSystem::EndConstruct()
 DBInterface* DBSystem::GetSystem() const
 {
 	return Cast<DBInterface>(ThisObj);
-}
-
-void DBSystem::InitListBox()
-{
-	auto DataManager = DBSysLib::GetDataManager();
-	if (! DataManager) return;
-
-	ResetList();
-	ListData.clear();
-
-	DataManager->GetMembersList(ListData);
-	for (auto& Elem : ListData)
-	{
-		int ItemId = SendMessage(ListBox, LB_ADDSTRING, 0, (LPARAM)Elem.c_str());
-		SendMessage(ListBox, LB_SETITEMDATA, ItemId, ListBoxLastItem);
-		++ListBoxLastItem;
-	}
-	UpdateCount();
-}
-
-void DBSystem::CreateListBox()
-{
-	return;
-	ListBox = CreateWindow(L"LISTBOX", L"button", WS_VISIBLE | WS_CHILD | (LBS_NOTIFY | LBS_SORT | WS_VSCROLL), 200, 25, 500, 300,
-		MainWindow, (HMENU)IDC_LISTBOX, NULL, NULL);
-	DBLib::SetFontSize(ListBox, 20);
 }
 
 void DBSystem::CreateButtons()
@@ -111,13 +82,6 @@ void DBSystem::CreateButtons()
 		NewWindow.Window = Btn;
 		Buttons.Add(NewWindow);
 	}
-}
-
-void DBSystem::ResetList()
-{
-	SendMessage(ListBox, LB_RESETCONTENT, 0, 0);
-	ListBoxLastItem = 0;
-	ListData.clear();
 }
 
 void DBSystem::SetMinimizedMode(bool Enabled)
@@ -176,54 +140,6 @@ VOID DBSystem::DoubleClickTimer(HWND hWnd, UINT nMsg, UINT_PTR nIDEvent, DWORD d
 
 void DBSystem::CallCommand(HWND& hWnd, UINT Message, WPARAM& WParam, LPARAM& LParam)
 {
-	switch (LOWORD(WParam))
-	{
-	case IDC_LISTBOX:
-	{
-		switch (HIWORD(WParam))
-		{
-		case LBN_DBLCLK:
-		{
-			auto DataManager = DBSysLib::GetDataManager();
-			if (! DataManager) return;
-
-			auto WindowManager = DBSysLib::GetWindowsManager();
-			if (! WindowManager) return;
-
-			DBFamilyData SelectedData;
-			if (! DataManager->LoadMember(SelectedData))
-			{
-				assert(false && "Cannot load member by index - System");
-				return;
-			}
-			WindowManager->OpenWindowByType(EWindows::IDW_VIEWER);
-			if (WindowManager->GetViewer())
-			{
-				WindowManager->GetViewer()->SetMemberData(SelectedData);
-				WindowManager->EndConstruct();
-			}
-
-			return;
-		}
-		case LBN_SELCHANGE:
-		{
-			auto DataManager = DBSysLib::GetDataManager();
-			if (! DataManager) return;
-
-			// Get selected index.
-			int lbItem = (int)SendMessage(ListBox, LB_GETCURSEL, 0, 0);
-
-			// Get item data.
-			int i = (int)SendMessage(ListBox, LB_GETITEMDATA, lbItem, 0);
-
-			DataManager->SelectMember(i);
-			AnyItemSelected = true;
-			return;
-		}
-		} // switch end
-	}
-	} // switch end
-
 	EDBWinCompId BtnId = static_cast<EDBWinCompId>(LOWORD(WParam));
 	switch (BtnId)
 	{
@@ -294,7 +210,7 @@ void DBSystem::CallCommand(HWND& hWnd, UINT Message, WPARAM& WParam, LPARAM& LPa
 		{
 			std::wstring IdAsText = std::to_wstring(DataManager->GetFolderId());
 			DBLib::SetText(FolderText.Window, IdAsText);
-			InitListBox();
+			//InitListBox();
 			AnyItemSelected = false;
 		}
 		break;
@@ -308,31 +224,10 @@ void DBSystem::CallCommand(HWND& hWnd, UINT Message, WPARAM& WParam, LPARAM& LPa
 		{
 			std::wstring IdAsText = std::to_wstring(DataManager->GetFolderId());
 			DBLib::SetText(FolderText.Window, IdAsText);
-			InitListBox();
+			//InitListBox();
 			AnyItemSelected = false;
 		}
 		break;
 	}
 	} // switch end
-}
-
-void DBSystem::CallPaint(HWND& hWnd, UINT Message, WPARAM& WParam, LPARAM& LParam)
-{
-	return;
-}
-
-void DBSystem::OnMemberAddedHandle()
-{
-	auto DataManager = DBSysLib::GetDataManager();
-	if (! DataManager) return;
-
-	std::wstring LastMember;
-	DataManager->GetLastMemberStatus(LastMember);
-	ListData.push_back(LastMember);
-
-	int ItemId = SendMessage(ListBox, LB_ADDSTRING, 0, (LPARAM)LastMember.c_str());
-	SendMessage(ListBox, LB_SETITEMDATA, ItemId, ListBoxLastItem);
-	++ListBoxLastItem;
-
-	UpdateCount();
 }

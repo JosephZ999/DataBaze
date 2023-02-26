@@ -46,17 +46,11 @@ public:
 	void EndConstruct();
 
 	void CallCommand(HWND& hWnd, UINT Message, WPARAM& WParam, LPARAM& LParam);
-	void CallPaint(HWND& hWnd, UINT Message, WPARAM& WParam, LPARAM& LParam);
 
 	virtual DBInterface* GetSystem() const override;
 
-	void OnMemberAddedHandle();
-
 private:
-	void InitListBox();
-	void CreateListBox();
 	void CreateButtons();
-	void ResetList();
 	void SetMinimizedMode(bool Enabled);
 	void UpdateCount();
 

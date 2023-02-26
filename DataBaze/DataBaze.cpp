@@ -147,7 +147,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	{
 		if (System)
 		{
-			System->CallCommand(hWnd, message, wParam, lParam);
+			// System->CallCommand(hWnd, message, wParam, lParam);
 		}
 
 		if (DBIns)

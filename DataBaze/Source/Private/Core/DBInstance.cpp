@@ -72,10 +72,7 @@ void DBInstance::CallCommand(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPar
 		}
 		case LBN_SELCHANGE:
 		{
-			if (int ItemId = GetListBox()->GetSelectedItemId())
-			{
-				GetDataManager()->SelectMember(ItemId);
-			}
+			GetDataManager()->SelectMember(GetListBox()->GetSelectedItemId());
 			return;
 		}
 		} // switch end
