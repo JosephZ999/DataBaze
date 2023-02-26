@@ -33,15 +33,6 @@ DBSystem::DBSystem(HINSTANCE HInstance, HWND InMainWindow)
 	assert(DataManager);
 }
 
-DBSystem::~DBSystem()
-{
-	delete WindowManager;
-	WindowManager = nullptr;
-
-	delete DataManager;
-	DataManager = nullptr;
-}
-
 void DBSystem::EndConstruct()
 {
 	CreateListBox();

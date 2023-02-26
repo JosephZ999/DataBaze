@@ -126,7 +126,7 @@
       <Filter>Plugins\Singleton</Filter>
     </ClInclude>
     <ClInclude Include="Source\Public\Core\DBInstance.h">
-      <Filter>Header Files</Filter>
+      <Filter>Source\Public\Core</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

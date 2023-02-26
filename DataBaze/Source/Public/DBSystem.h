@@ -22,7 +22,6 @@ class DBSystem : public DBInterface
 
 public:
 	DBSystem(HINSTANCE HInstance, HWND InMainWindow);
-	~DBSystem();
 
 	// Global variables
 	HWND	  MainWindow;

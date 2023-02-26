@@ -5,14 +5,20 @@
 
 class DBInterface
 {
+public:
+	DBInterface();
+
 private:
-	DBInterface*			  Owner = nullptr;
+	DBInterface*			  Owner;
 	std::vector<DBInterface*> Components;
 
 public:
 	DBInterface*		 GetOwner() const;
 	void				 SetOwner(DBInterface* NewOwner);
-	virtual DBInterface* GetSystem() const;
+	virtual DBInterface* GetSystem() const; // remove this
+
+protected:
+	virtual ~DBInterface();
 
 	template <typename T> //
 	T* CreateComponent()
@@ -31,6 +37,9 @@ public:
 		return nullptr;
 	}
 
+	void RemoveAllComponents();
+
+public:
 	template <typename T> //
 	T* GetComponent() const
 	{

@@ -1,7 +1,11 @@
 #pragma once
 
 #include "Singleton/Singleton.h"
+#include "DBInterface.h"
 #include <windows.h>
+
+class DBDataManager;
+class DBWindowsManager;
 
 struct FDBInstanceInit
 {
@@ -16,28 +20,23 @@ struct FDBInstanceInit
 	HWND	  MainHWND = 0;
 };
 
-class DBInstance : public Singleton
+class DBInstance : public Singleton, public DBInterface
 {
 public:
+	DBInstance();
+
 private:
+	DBWindowsManager* WindowManager;
+	DBDataManager*	  DataManager;
+
 	bool			Initialized = false;
 	FDBInstanceInit InitData;
 
 public:
-	void Initialize(FDBInstanceInit& Param);
+	inline DBWindowsManager* GetWindowManager() const { return WindowManager; }
+	inline DBDataManager*	 GetDataManager() const { return DataManager; }
+
+public:
+	void			Initialize(FDBInstanceInit& Param);
 	FDBInstanceInit GetInitData() const;
 };
-
-/*
-Singletons:
-
-DBInstance
-{
-	MainWindow;
-	AllComponents;
-
-	// other global variables
-}
-
-
-*/
