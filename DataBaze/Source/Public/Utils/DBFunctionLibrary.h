@@ -63,6 +63,7 @@ namespace DBSysLib
 HWND GetMainHWND();
 DBDataManager* GetDataManager();
 DBWindowsManager* GetWindowsManager();
+HINSTANCE GetHIns();
 }
 
 template <typename To, typename From> //

@@ -23,6 +23,7 @@ HWND DBLib::CreateWindowComponent(
 	case WCT_Button:	CompType = L"button";	break;
 	case WCT_Edit:		CompType = L"edit";		break;
 	case WCT_ComboBox:	CompType = L"combobox"; break;
+	case WCT_ListBox:	CompType = L"listbox"; break;
 	} // clang-format on
 
 	return CreateWindow(CompType.c_str(), // Type
@@ -266,4 +267,13 @@ DBWindowsManager* DBSysLib::GetWindowsManager()
 		return DBIns->GetWindowManager();
 	}
 	return nullptr;
+}
+
+HINSTANCE DBSysLib::GetHIns()
+{
+	if (auto DBIns = SingletonManager::Get<DBInstance>())
+	{
+		return DBIns->GetInitData().HIns;
+	}
+	return HINSTANCE();
 }

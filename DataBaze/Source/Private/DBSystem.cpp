@@ -74,6 +74,7 @@ void DBSystem::InitListBox()
 
 void DBSystem::CreateListBox()
 {
+	return;
 	ListBox = CreateWindow(L"LISTBOX", L"button", WS_VISIBLE | WS_CHILD | (LBS_NOTIFY | LBS_SORT | WS_VSCROLL), 200, 25, 500, 300,
 		MainWindow, (HMENU)IDC_LISTBOX, NULL, NULL);
 	DBLib::SetFontSize(ListBox, 20);

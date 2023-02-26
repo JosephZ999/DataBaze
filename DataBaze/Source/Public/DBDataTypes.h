@@ -14,6 +14,7 @@ enum EDBWindowCompType
 	WCT_Button,
 	WCT_Edit,
 	WCT_ComboBox,
+	WCT_ListBox,
 };
 
 enum EDBWinCompId
@@ -24,6 +25,7 @@ enum EDBWinCompId
 	IDC_NEWITEM,
 	IDC_LOCK,
 	IDC_UNLOCK,
+	IDC_ListBox,
 
 	IDC_PrevFolder,
 	IDC_NextFolder,
