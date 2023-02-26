@@ -35,12 +35,15 @@ private:
 public:
 	inline DBWindowsManager* GetWindowManager() const { return WindowManager; }
 	inline DBDataManager*	 GetDataManager() const { return DataManager; }
+	inline DBListBox*		 GetListBox() const { return ListBox; }
 
-public:
-	void			Initialize(FDBInstanceInit& Param);
 	FDBInstanceInit GetInitData() const;
 
+public:
+	void Initialize(FDBInstanceInit& Param);
 	void OnMemberAddedHandle();
+
+	void CallCommand(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 
 private:
 	void InitWindows();

@@ -154,6 +154,11 @@ void DBWindowsManager::OnMemberAddedHandle()
 	CloseWindowByType(EWindows::IDW_WRITER);
 }
 
+void DBWindowsManager::SetViewerData(const DBFamilyData& InData)
+{
+	GetViewer()->SetMemberData(InData);
+}
+
 DBInterface* DBWindowsManager::GetSystem() const
 {
 	return GetOwner();

@@ -23,21 +23,21 @@ private:
 	DBWindowWriter* WindowWriter = nullptr;
 
 public:
+	virtual DBInterface*   GetSystem() const override;
+	HWND				   GetViewerHandle() const { return ViewerHandle; }
+	HWND				   GetWriterHandle() const { return WriterHandle; }
+	DBInterface*		   GetViewerClass() const;
+	DBInterface*		   GetWriterClass() const;
+	inline DBWindowViewer* GetViewer() { return WindowViewer; }
+	inline DBWindowWriter* GetWriter() { return WindowWriter; }
+
+public:
 	void OpenWindowByType(EWindows WindowType);
 	void CloseWindowByType(EWindows WindowType);
 	void EndConstruct();
 
-	DBWindowViewer* GetViewer() { return WindowViewer; }
-	DBWindowWriter* GetWriter() { return WindowWriter; }
-
 	void OnMemberAddedHandle();
-
-public:
-	virtual DBInterface* GetSystem() const override;
-	HWND				 GetViewerHandle() const { return ViewerHandle; }
-	HWND				 GetWriterHandle() const { return WriterHandle; }
-	DBInterface*		 GetViewerClass() const;
-	DBInterface*		 GetWriterClass() const;
+	void SetViewerData(const DBFamilyData& InData);
 
 private:
 	void CreateViewer();

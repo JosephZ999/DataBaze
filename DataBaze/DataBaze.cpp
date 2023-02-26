@@ -7,12 +7,13 @@
 #include "DBInstance.h"
 
 // Global Variables:
-HINSTANCE hInst;						 // current instance
-WCHAR	  szTitle[MAX_LOADSTRING];		 // The title bar text
-WCHAR	  szWindowClass[MAX_LOADSTRING]; // the main window class name
-HWND	  MainWindow;
-HWND	  ListBox;
-DBSystem* System;
+HINSTANCE	hInst;						   // current instance
+WCHAR		szTitle[MAX_LOADSTRING];	   // The title bar text
+WCHAR		szWindowClass[MAX_LOADSTRING]; // the main window class name
+HWND		MainWindow;
+HWND		ListBox;
+DBSystem*	System = nullptr;
+DBInstance* DBIns  = nullptr;
 
 // Forward declarations of functions included in this code module:
 ATOM MyRegisterClass(HINSTANCE hInstance);
@@ -107,11 +108,11 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 	ShowWindow(MainWindow, nCmdShow);
 	UpdateWindow(MainWindow);
 
-	auto Ins = SingletonManager::Initialize<DBInstance>();
-	if (Ins)
+	DBIns = SingletonManager::Initialize<DBInstance>();
+	if (DBIns)
 	{
 		auto Initializer = FDBInstanceInit(hInstance, MainWindow);
-		Ins->Initialize(Initializer);
+		DBIns->Initialize(Initializer);
 	}
 
 	System = new DBSystem(hInst, MainWindow);
@@ -149,6 +150,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			System->CallCommand(hWnd, message, wParam, lParam);
 		}
 
+		if (DBIns)
+		{
+			DBIns->CallCommand(hWnd, message, wParam, lParam);
+		}
+
 		int wmId = LOWORD(wParam);
 		// Parse the menu selections:
 		switch (wmId)
@@ -177,11 +183,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		// TODO: Add any drawing code that uses hdc here...
 		// TCHAR greeting[] = _T("Hello, Windows desktop!");
 		// TextOut(hdc, 5, 5, greeting, _tcslen(greeting));
-
-		if (System)
-		{
-			System->CallPaint(hWnd, message, wParam, lParam);
-		}
 
 		const Size2D ScreenSize = DBLib::GetScreenSize();
 		RECT		 Rect		= {0, 0, ScreenSize.X, ScreenSize.Y};

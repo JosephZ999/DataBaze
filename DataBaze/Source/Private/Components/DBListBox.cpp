@@ -25,9 +25,7 @@ void DBListBox::Initialize(const std::vector<std::wstring>& InList)
 	ClearList();
 	for (auto& Elem : InList)
 	{
-		int ItemId = SendMessage(ListBoxHWND, LB_ADDSTRING, 0, (LPARAM)Elem.c_str());
-		SendMessage(ListBoxHWND, LB_SETITEMDATA, ItemId, GetLastItemId());
-		++LastItemId;
+		AddItem(Elem);
 	}
 }
 
@@ -36,7 +34,6 @@ void DBListBox::AddItem(const std::wstring& InItem)
 	int ItemId = SendMessage(ListBoxHWND, LB_ADDSTRING, 0, (LPARAM)InItem.c_str());
 	SendMessage(ListBoxHWND, LB_SETITEMDATA, ItemId, GetLastItemId());
 	++LastItemId;
-	
 }
 
 void DBListBox::ClearList()
@@ -45,7 +42,14 @@ void DBListBox::ClearList()
 	LastItemId = 0;
 }
 
+int DBListBox::GetSelectedItemId()
+{
+	int Index = (int)SendMessage(ListBoxHWND, LB_GETCURSEL, 0, 0);
+	return (int)SendMessage(ListBoxHWND, LB_GETITEMDATA, Index, 0);;
+}
+
 int DBListBox::GetLastItemId() const
 {
 	return LastItemId;
 }
+

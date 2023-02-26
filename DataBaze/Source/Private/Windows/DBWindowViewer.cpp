@@ -175,6 +175,7 @@ void DBWindowViewer::OnConstruct()
 void DBWindowViewer::SetMemberData(const DBFamilyData& InData)
 {
 	MemberData = InData;
+	PrintData();
 }
 
 void DBWindowViewer::Autofill_Form1()

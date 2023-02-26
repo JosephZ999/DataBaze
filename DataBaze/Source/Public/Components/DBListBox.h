@@ -18,6 +18,8 @@ public:
 	void AddItem(const std::wstring& InItem);
 	void ClearList();
 
+	int GetSelectedItemId();
+
 	inline int GetLastItemId() const;
 
 private:
