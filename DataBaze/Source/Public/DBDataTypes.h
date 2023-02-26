@@ -116,15 +116,15 @@ struct DBPeopleData
 	std::string Name;		//
 	std::string FamilyName; //
 
-	int Gender;		// 1 Mele and 2 Femele
-	int BirthMonth; //
-	int BirthDay;	//
-	int BirthYear;	//
+	int Gender	   = 0; // 1 Mele and 2 Femele
+	int BirthMonth = 0; //
+	int BirthDay   = 0; //
+	int BirthYear  = 0; //
 
-	std::string BirthCountry;	 //
-	std::string WhereLive;		 //
-	std::string ImageFile;		 //
-	int			EducationDegree; //
+	std::string BirthCountry;		 //
+	std::string WhereLive;			 //
+	std::string ImageFile;			 //
+	int			EducationDegree = 0; //
 
 	bool IsMele() const { return Gender == 1; }
 
@@ -164,17 +164,17 @@ struct DBFamilyData
 	PeopleGroup Parents;
 	PeopleGroup Children;
 
-	bool bLocked;
+	bool bLocked = false;
 
-	int			MaritalStatus;	// use enum EMeritialStatus
-	int			ChildrenNum;	//
+	int MaritalStatus = 0; // use enum EMeritialStatus
+	int ChildrenNum	  = 0; //
 
-	std::string MailCountry;	//
-	std::string MailRegion;		//
-	std::string MailCity;		//
-	std::string MailStreet;		//
-	std::string MailHomeNumber; //
-	int			MailZipCode;	//
+	std::string MailCountry;	 //
+	std::string MailRegion;		 //
+	std::string MailCity;		 //
+	std::string MailStreet;		 //
+	std::string MailHomeNumber;	 //
+	int			MailZipCode = 0; //
 
 	bool IsHasChildren() const;
 	bool IsHasASpouse() const;

@@ -7,7 +7,7 @@ class SingletonManager;
 
 class Singleton abstract
 {
-	size_t Id;
+	size_t Id = 0;
 
 protected:
 	size_t GetId() { return Id; }
