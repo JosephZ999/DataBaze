@@ -7,7 +7,6 @@ void DBInstance::Initialize(FDBInstanceInit& Param)
 {
 	if (Initialized) return;
 	Initialized = true;
-	return;
 	InitData	= Param;
 
 	//-----------------------------------------------// Components

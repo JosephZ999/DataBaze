@@ -25,9 +25,9 @@ class DBInstance : public Singleton, public DBInterface
 {
 public:
 private:
-	DBWindowsManager* WindowManager;
-	DBDataManager*	  DataManager;
-	DBListBox*		  ListBox;
+	DBWindowsManager* WindowManager = nullptr;
+	DBDataManager*	  DataManager	= nullptr;
+	DBListBox*		  ListBox		= nullptr;
 
 	bool			Initialized = false;
 	FDBInstanceInit InitData;
@@ -44,5 +44,4 @@ public:
 
 private:
 	void InitWindows();
-
 };

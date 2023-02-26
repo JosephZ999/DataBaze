@@ -18,19 +18,6 @@ DBSystem::DBSystem(HINSTANCE HInstance, HWND InMainWindow)
 	, MainWindow(InMainWindow)
 {
 	ThisObj = this;
-
-	WindowManager = CreateComponent<DBWindowsManager>();
-	if (WindowManager)
-	{
-		WindowManager->Initialize(HInstance);
-	}
-	DataManager = CreateComponent<DBDataManager>();
-	if (DataManager)
-	{
-		DataManager->OnMemberAdded.Bind(this, &DBSystem::OnMemberAddedHandle);
-	}
-	assert(WindowManager);
-	assert(DataManager);
 }
 
 void DBSystem::EndConstruct()
@@ -69,8 +56,12 @@ DBInterface* DBSystem::GetSystem() const
 
 void DBSystem::InitListBox()
 {
+	auto DataManager = DBSysLib::GetDataManager();
+	if (! DataManager) return;
+
 	ResetList();
 	ListData.clear();
+
 	DataManager->GetMembersList(ListData);
 	for (auto& Elem : ListData)
 	{
@@ -192,25 +183,32 @@ void DBSystem::CallCommand(HWND& hWnd, UINT Message, WPARAM& WParam, LPARAM& LPa
 		{
 		case LBN_DBLCLK:
 		{
-			if (WindowManager && DataManager)
+			auto DataManager = DBSysLib::GetDataManager();
+			if (! DataManager) return;
+
+			auto WindowManager = DBSysLib::GetWindowsManager();
+			if (! WindowManager) return;
+
+			DBFamilyData SelectedData;
+			if (! DataManager->LoadMember(SelectedData))
 			{
-				DBFamilyData SelectedData;
-				if (! DataManager->LoadMember(SelectedData))
-				{
-					assert(false && "Cannot load member by index - System");
-					return;
-				}
-				WindowManager->OpenWindowByType(EWindows::IDW_VIEWER);
-				if (WindowManager->GetViewer())
-				{
-					WindowManager->GetViewer()->SetMemberData(SelectedData);
-					WindowManager->EndConstruct();
-				}
+				assert(false && "Cannot load member by index - System");
+				return;
 			}
+			WindowManager->OpenWindowByType(EWindows::IDW_VIEWER);
+			if (WindowManager->GetViewer())
+			{
+				WindowManager->GetViewer()->SetMemberData(SelectedData);
+				WindowManager->EndConstruct();
+			}
+
 			return;
 		}
 		case LBN_SELCHANGE:
 		{
+			auto DataManager = DBSysLib::GetDataManager();
+			if (! DataManager) return;
+
 			// Get selected index.
 			int lbItem = (int)SendMessage(ListBox, LB_GETCURSEL, 0, 0);
 
@@ -230,7 +228,13 @@ void DBSystem::CallCommand(HWND& hWnd, UINT Message, WPARAM& WParam, LPARAM& LPa
 	{
 	case IDC_VIEW:
 	{
-		if (AnyItemSelected && WindowManager && DataManager)
+		auto DataManager = DBSysLib::GetDataManager();
+		if (! DataManager) return;
+
+		auto WindowManager = DBSysLib::GetWindowsManager();
+		if (! WindowManager) return;
+
+		if (AnyItemSelected)
 		{
 			DBFamilyData SelectedData;
 			if (! DataManager->LoadMember(SelectedData))
@@ -249,7 +253,10 @@ void DBSystem::CallCommand(HWND& hWnd, UINT Message, WPARAM& WParam, LPARAM& LPa
 	}
 	case IDC_NEWITEM:
 	{
-		if (WindowManager && ListItemCount < MAX_MEMBERS_NUM)
+		auto WindowManager = DBSysLib::GetWindowsManager();
+		if (! WindowManager) return;
+
+		if (ListItemCount < MAX_MEMBERS_NUM)
 		{
 			WindowManager->OpenWindowByType(EWindows::IDW_WRITER);
 		}
@@ -279,6 +286,9 @@ void DBSystem::CallCommand(HWND& hWnd, UINT Message, WPARAM& WParam, LPARAM& LPa
 	}
 	case IDC_NextFolder:
 	{
+		auto DataManager = DBSysLib::GetDataManager();
+		if (! DataManager) return;
+
 		if (DataManager->ChangeFolder(true))
 		{
 			std::wstring IdAsText = std::to_wstring(DataManager->GetFolderId());
@@ -290,6 +300,9 @@ void DBSystem::CallCommand(HWND& hWnd, UINT Message, WPARAM& WParam, LPARAM& LPa
 	}
 	case IDC_PrevFolder:
 	{
+		auto DataManager = DBSysLib::GetDataManager();
+		if (! DataManager) return;
+
 		if (DataManager->ChangeFolder(false))
 		{
 			std::wstring IdAsText = std::to_wstring(DataManager->GetFolderId());
@@ -309,6 +322,9 @@ void DBSystem::CallPaint(HWND& hWnd, UINT Message, WPARAM& WParam, LPARAM& LPara
 
 void DBSystem::OnMemberAddedHandle()
 {
+	auto DataManager = DBSysLib::GetDataManager();
+	if (! DataManager) return;
+
 	std::wstring LastMember;
 	DataManager->GetLastMemberStatus(LastMember);
 	ListData.push_back(LastMember);

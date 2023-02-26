@@ -4,6 +4,8 @@
 #include <codecvt>
 #include <locale>
 
+#include "DBInstance.h"
+
 typedef EDBWindowCompType CompType;
 
 void DBLib::SetWindowVisibility(HWND Window, bool bShow)
@@ -197,7 +199,7 @@ std::wstring DBPaths::GetDataFolderPath(int Folder)
 
 std::wstring DBPaths::GetImagePath(int Folder, int ImageId)
 {
-	const std::wstring Prefix = (ImageId < 10) ? L"00" : ((ImageId < 100) ? L"0" : L"");
+	const std::wstring Prefix	 = (ImageId < 10) ? L"00" : ((ImageId < 100) ? L"0" : L"");
 	const std::wstring ImageName = std::wstring(Prefix).append(std::to_wstring(ImageId)).append(L".jpg");
 	return std::wstring(GetDataFolderPath(Folder)).append(L"\\").append(ImageName);
 }
@@ -242,4 +244,16 @@ void DBDebug::CreateMessageBox(std::string Text)
 HWND DBSysLib::GetMainHWND()
 {
 	return HWND();
+}
+
+DBDataManager* DBSysLib::GetDataManager()
+{
+	auto DBIns = SingletonManager::Get<DBInstance>();
+	return DBIns->GetDataManager();
+}
+
+DBWindowsManager* DBSysLib::GetWindowsManager()
+{
+	auto DBIns = SingletonManager::Get<DBInstance>();
+	return DBIns->GetWindowManager();
 }

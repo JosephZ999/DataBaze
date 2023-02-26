@@ -36,9 +36,7 @@ private:
 	bool			AnyItemSelected = false;
 
 	// Components
-	DBWindowsManager* WindowManager = nullptr;
-	DBDataManager*	  DataManager	= nullptr;
-	FWindowContainer	  Buttons;
+	FWindowContainer  Buttons;
 
 	ListElem ListData;
 	int		 ListBoxLastItem = 0;

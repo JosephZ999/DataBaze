@@ -7,6 +7,9 @@
 #include "DBDataTypes.h"
 #include "DBKeyCodes.h"
 
+class DBDataManager;
+class DBWindowsManager;
+
 namespace DBLib
 {
 
@@ -58,6 +61,8 @@ void CreateMessageBox(std::string Text);
 namespace DBSysLib
 {
 HWND GetMainHWND();
+DBDataManager* GetDataManager();
+DBWindowsManager* GetWindowsManager();
 }
 
 template <typename To, typename From> //
