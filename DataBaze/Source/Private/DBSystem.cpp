@@ -140,7 +140,7 @@ void DBSystem::SetMinimizedMode(bool Enabled)
 	}
 
 	const int Offset2 = MinimizedMode ? -190 : 0;
-	for (auto nBtn : Buttons.Buttons)
+	for (auto nBtn : Buttons.Windows)
 	{
 		switch (nBtn.Id)
 		{

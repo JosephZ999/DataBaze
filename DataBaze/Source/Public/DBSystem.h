@@ -38,7 +38,7 @@ private:
 	// Components
 	DBWindowsManager* WindowManager = nullptr;
 	DBDataManager*	  DataManager	= nullptr;
-	ButtonContainer	  Buttons;
+	FWindowContainer	  Buttons;
 
 	ListElem ListData;
 	int		 ListBoxLastItem = 0;

@@ -6,6 +6,7 @@
 
 class DBDataManager;
 class DBWindowsManager;
+class DBListBox;
 
 struct FDBInstanceInit
 {
@@ -23,11 +24,10 @@ struct FDBInstanceInit
 class DBInstance : public Singleton, public DBInterface
 {
 public:
-	DBInstance();
-
 private:
 	DBWindowsManager* WindowManager;
 	DBDataManager*	  DataManager;
+	DBListBox*		  ListBox;
 
 	bool			Initialized = false;
 	FDBInstanceInit InitData;
@@ -39,4 +39,10 @@ public:
 public:
 	void			Initialize(FDBInstanceInit& Param);
 	FDBInstanceInit GetInitData() const;
+
+	void OnMemberAddedHandle();
+
+private:
+	void InitWindows();
+
 };

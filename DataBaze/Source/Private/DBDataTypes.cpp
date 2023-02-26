@@ -1,19 +1,19 @@
 #include "DBDataTypes.h"
 #include "DBJsonUtils.h"
 
-void ButtonContainer::Add(const DBWindow& InButton)
+void FWindowContainer::Add(const DBWindow& InButton)
 {
-	if (ButtonLastIndex < 10)
+	if (LastIndex < 10)
 	{
-		Buttons[ButtonLastIndex] = InButton;
-		++ButtonLastIndex;
+		Windows[LastIndex] = InButton;
+		++LastIndex;
 		return;
 	}
 }
 
-bool ButtonContainer::FindByIndex(EDBWinCompId Id, DBWindow& OutWindow) const
+bool FWindowContainer::FindByIndex(EDBWinCompId Id, DBWindow& OutWindow) const
 {
-	for (auto& Elem : Buttons)
+	for (auto& Elem : Windows)
 	{
 		if (Elem.Id == Id)
 		{
@@ -24,9 +24,9 @@ bool ButtonContainer::FindByIndex(EDBWinCompId Id, DBWindow& OutWindow) const
 	return false;
 }
 
-bool ButtonContainer::Contains(EDBWinCompId Id) const
+bool FWindowContainer::Contains(EDBWinCompId Id) const
 {
-	for (auto& Elem : Buttons)
+	for (auto& Elem : Windows)
 	{
 		if (Elem.Id == Id)
 		{

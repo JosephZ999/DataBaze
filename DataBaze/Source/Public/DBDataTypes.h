@@ -79,17 +79,17 @@ struct DBWindow
 	HINSTANCE	 HIns	  = NULL;
 };
 
-class ButtonContainer
+class FWindowContainer
 {
-	int ButtonLastIndex = 0;
+	int LastIndex = 0;
 
 public:
-	DBWindow Buttons[10];
+	DBWindow Windows[10];
 
 	void Add(const DBWindow& InButton);
 	bool FindByIndex(EDBWinCompId Id, DBWindow& OutWindow) const;
 	bool Contains(EDBWinCompId Id) const;
-	bool IsEmpty() { return ButtonLastIndex == 0; }
+	bool IsEmpty() { return LastIndex == 0; }
 };
 
 enum EEducationDegree
