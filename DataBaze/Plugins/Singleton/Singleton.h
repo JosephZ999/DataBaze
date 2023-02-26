@@ -25,7 +25,7 @@ private:
 
 public:
 	template <typename T> //
-	static T* Get()
+	static T* Initialize()
 	{
 		// get if exist
 		const auto ClassId = typeid(T).hash_code();
@@ -45,6 +45,21 @@ public:
 			SingletonT->Id	= ClassId;
 			Objects.push_back(SingletonT);
 			return TRef;
+		}
+		return nullptr;
+	}
+
+	template <typename T> //
+	static T* Get()
+	{
+		// get if exist
+		const auto ClassId = typeid(T).hash_code();
+		for (auto Obj : Objects)
+		{
+			if (Obj->Id == ClassId)
+			{
+				return static_cast<T*>(Obj);
+			}
 		}
 		return nullptr;
 	}

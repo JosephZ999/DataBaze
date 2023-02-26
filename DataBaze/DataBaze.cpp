@@ -107,18 +107,18 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 	ShowWindow(MainWindow, nCmdShow);
 	UpdateWindow(MainWindow);
 
-	System = new DBSystem(hInst, MainWindow);
-	if (! System) return FALSE;
-
-	// System Initialization
-	System->EndConstruct();
-
-	auto Ins = SingletonManager::Get<DBInstance>();
+	auto Ins = SingletonManager::Initialize<DBInstance>();
 	if (Ins)
 	{
 		auto Initializer = FDBInstanceInit(hInstance, MainWindow);
 		Ins->Initialize(Initializer);
 	}
+
+	System = new DBSystem(hInst, MainWindow);
+	if (! System) return FALSE;
+
+	// System Initialization
+	System->EndConstruct();
 
 	return TRUE;
 }
