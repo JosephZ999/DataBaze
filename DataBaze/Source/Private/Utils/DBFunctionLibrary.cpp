@@ -243,17 +243,27 @@ void DBDebug::CreateMessageBox(std::string Text)
 
 HWND DBSysLib::GetMainHWND()
 {
+	if (auto DBIns = SingletonManager::Get<DBInstance>())
+	{
+		return DBIns->GetInitData().MainHWND;
+	}
 	return HWND();
 }
 
 DBDataManager* DBSysLib::GetDataManager()
 {
-	auto DBIns = SingletonManager::Get<DBInstance>();
-	return DBIns->GetDataManager();
+	if (auto DBIns = SingletonManager::Get<DBInstance>())
+	{
+		return DBIns->GetDataManager();
+	}
+	return nullptr;
 }
 
 DBWindowsManager* DBSysLib::GetWindowsManager()
 {
-	auto DBIns = SingletonManager::Get<DBInstance>();
-	return DBIns->GetWindowManager();
+	if (auto DBIns = SingletonManager::Get<DBInstance>())
+	{
+		return DBIns->GetWindowManager();
+	}
+	return nullptr;
 }
