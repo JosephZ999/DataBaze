@@ -180,6 +180,7 @@
     <ClInclude Include="JsonInterface\JsonInterface.h" />
     <ClInclude Include="Plugins\Singleton\Singleton.h" />
     <ClInclude Include="Resource.h" />
+    <ClInclude Include="Source\Public\Components\DBButtonManager.h" />
     <ClInclude Include="Source\Public\Components\DBListBox.h" />
     <ClInclude Include="Source\Public\DataTypes\Size2D.h" />
     <ClInclude Include="Source\Public\DBDataTypes.h" />
@@ -203,6 +204,7 @@
     <ClCompile Include="DataBaze.cpp" />
     <ClCompile Include="Plugins\Singleton\Singleton.cpp" />
     <ClCompile Include="Source\Private\Components\DBButton.cpp" />
+    <ClCompile Include="Source\Private\Components\DBButtonManager.cpp" />
     <ClCompile Include="Source\Private\Components\DBDataManager.cpp" />
     <ClCompile Include="Source\Private\Components\DBListBox.cpp" />
     <ClCompile Include="Source\Private\Components\DBWindowsManager.cpp" />

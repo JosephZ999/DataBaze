@@ -131,6 +131,9 @@
     <ClInclude Include="Source\Public\Components\DBListBox.h">
       <Filter>Source\Public\Components</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Public\Components\DBButtonManager.h">
+      <Filter>Source\Public\Components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DataBaze.cpp">
@@ -173,6 +176,9 @@
       <Filter>Plugins\Singleton</Filter>
     </ClCompile>
     <ClCompile Include="Source\Private\Components\DBListBox.cpp">
+      <Filter>Source\Private\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Private\Components\DBButtonManager.cpp">
       <Filter>Source\Private\Components</Filter>
     </ClCompile>
   </ItemGroup>

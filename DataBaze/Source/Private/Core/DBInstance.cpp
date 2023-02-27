@@ -2,6 +2,7 @@
 #include "Components/DBDataManager.h"
 #include "Components/DBWindowsManager.h"
 #include "Components/DBListBox.h"
+#include "Components/DBButtonManager.h"
 
 void DBInstance::Initialize(FDBInstanceInit& Param)
 {
@@ -13,10 +14,12 @@ void DBInstance::Initialize(FDBInstanceInit& Param)
 	WindowManager = CreateComponent<DBWindowsManager>();
 	DataManager	  = CreateComponent<DBDataManager>();
 	ListBox		  = CreateComponent<DBListBox>();
+	ButtonManager = CreateComponent<DBButtonManager>();
 
 	assert(WindowManager);
 	assert(DataManager);
 	assert(ListBox);
+	assert(ButtonManager);
 
 	InitWindows(); // Create windows handlers
 
@@ -40,6 +43,21 @@ void DBInstance::Initialize(FDBInstanceInit& Param)
 		std::vector<std::wstring> InitList;
 		DataManager->GetMembersList(InitList);
 		ListBox->SetList(InitList);
+	}
+	if (ButtonManager)
+	{
+		std::vector<FButton> Buttons;
+
+		Buttons.push_back(FButton(IDC_VIEW, {25, 25}, {150, 30}, L"Show"));
+		Buttons.push_back(FButton(IDC_NEWITEM, {25, 75}, {150, 30}, L"Add New Item"));
+		Buttons.push_back(FButton(IDC_LOCK, {25, 125}, {150, 30}, L"Lock"));
+		Buttons.push_back(FButton(IDC_UNLOCK, {25, 175}, {150, 30}, L"Unlock"));
+
+		Buttons.push_back(FButton(IDC_PrevFolder, {200, 320}, {45, 30}, L" < "));
+		Buttons.push_back(FButton(IDC_NextFolder, {300, 320}, {45, 30}, L" > "));
+		Buttons.push_back(FButton(IDC_Minimize, {655, 320}, {45, 30}, L" << "));
+
+		ButtonManager->Initialize(InitData.MainHWND, Buttons);
 	}
 }
 

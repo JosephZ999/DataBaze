@@ -7,6 +7,7 @@
 class DBDataManager;
 class DBWindowsManager;
 class DBListBox;
+class DBButtonManager;
 
 struct FDBInstanceInit
 {
@@ -28,6 +29,7 @@ private:
 	DBWindowsManager* WindowManager = nullptr;
 	DBDataManager*	  DataManager	= nullptr;
 	DBListBox*		  ListBox		= nullptr;
+	DBButtonManager*  ButtonManager = nullptr;
 
 	bool			Initialized = false;
 	FDBInstanceInit InitData;
@@ -36,6 +38,7 @@ public:
 	inline DBWindowsManager* GetWindowManager() const { return WindowManager; }
 	inline DBDataManager*	 GetDataManager() const { return DataManager; }
 	inline DBListBox*		 GetListBox() const { return ListBox; }
+	inline DBButtonManager*	 GetButtonManager() const { return ButtonManager; }
 
 	FDBInstanceInit GetInitData() const;
 

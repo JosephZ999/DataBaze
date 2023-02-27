@@ -81,6 +81,24 @@ struct DBWindow
 	HINSTANCE	 HIns	  = NULL;
 };
 
+struct FButton
+{
+	FButton() {}
+	FButton(EDBWinCompId InId, Size2D InPosition, Size2D InSize, std::wstring InText)
+		: Id(InId)
+		, Position(InPosition)
+		, Size(InSize)
+		, Text(InText)
+	{
+	}
+
+	EDBWinCompId Id		= EDBWinCompId::IDC_NONE;
+	Size2D		 Position;
+	Size2D		 Size;
+	std::wstring Text	  = L"Button";
+	int			 FontSize = 16;
+};
+
 class FWindowContainer
 {
 	int LastIndex = 0;

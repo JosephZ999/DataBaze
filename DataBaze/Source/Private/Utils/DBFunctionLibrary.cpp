@@ -45,6 +45,16 @@ HWND DBLib::CreateButton(DBWindow& ButtonInfo)
 	return ButtonInfo.Window;
 }
 
+HWND DBLib::CreateButton(const HWND OwnerWnd, const FButton& ButtonInfo)
+{
+	DWORD BStyle = WS_VISIBLE | WS_CHILD;
+	HWND  Handle = CreateWindowComponent(
+		 CompType::WCT_Button, ButtonInfo.Text, BStyle, ButtonInfo.Position, ButtonInfo.Size, OwnerWnd, (HMENU)ButtonInfo.Id);
+
+	SetFontSize(Handle, ButtonInfo.FontSize);
+	return Handle;
+}
+
 void DBLib::SetFontSize(HWND Window, int FontSize)
 {
 	LOGFONT logfont;
