@@ -1,26 +1,21 @@
 #include "DBListBox.h"
 #include "DBFunctionLibrary.h"
 
-DBListBox::DBListBox()
+void DBListBox::Initialize(EDBWinCompId Id, DWORD Style, const Size2D& Position, const Size2D& Size, HWND OwnerWnd, int FontSize)
 {
-	const DWORD		Style	 = WS_VISIBLE | WS_CHILD | (LBS_NOTIFY | LBS_SORT | WS_VSCROLL);
-	const HINSTANCE HIns	 = DBSysLib::GetHIns();
-	const Size2D	Position = {200, 25};
-	const Size2D	Size	 = {500, 300};
-
 	ListBoxHWND = CreateWindow(L"LISTBOX", //
 		L"MemberList",					   //
 		Style,							   //
 		Position.X, Position.Y,			   //
 		Size.X, Size.Y,					   //
-		DBSysLib::GetMainHWND(),		   // Parent
-		(HMENU)IDC_ListBox,				   // Id
-		HIns, NULL);
+		OwnerWnd,						   // Parent
+		(HMENU)Id,						   // Id
+		NULL, NULL);
 
-	DBLib::SetFontSize(ListBoxHWND, 20);
+	DBLib::SetFontSize(ListBoxHWND, FontSize);
 }
 
-void DBListBox::Initialize(const std::vector<std::wstring>& InList)
+void DBListBox::SetList(const std::vector<std::wstring>& InList)
 {
 	ClearList();
 	for (auto& Elem : InList)
@@ -45,7 +40,7 @@ void DBListBox::ClearList()
 int DBListBox::GetSelectedItemId()
 {
 	int Index = (int)SendMessage(ListBoxHWND, LB_GETCURSEL, 0, 0);
-	return (int)SendMessage(ListBoxHWND, LB_GETITEMDATA, Index, 0);;
+	return (int)SendMessage(ListBoxHWND, LB_GETITEMDATA, Index, 0);
 }
 
 int DBListBox::GetLastItemId() const

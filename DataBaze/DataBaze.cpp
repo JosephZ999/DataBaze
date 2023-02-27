@@ -10,10 +10,8 @@
 HINSTANCE	hInst;						   // current instance
 WCHAR		szTitle[MAX_LOADSTRING];	   // The title bar text
 WCHAR		szWindowClass[MAX_LOADSTRING]; // the main window class name
-HWND		MainWindow;
 HWND		ListBox;
-DBSystem*	System = nullptr;
-DBInstance* DBIns  = nullptr;
+DBInstance* DBIns = nullptr;
 
 // Forward declarations of functions included in this code module:
 ATOM MyRegisterClass(HINSTANCE hInstance);
@@ -97,8 +95,8 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 {
 	hInst = hInstance; // Store instance handle in our global variable
 
-	MainWindow = CreateWindowW(szWindowClass, szTitle, (WS_OVERLAPPEDWINDOW) - (WS_MAXIMIZEBOX | WS_THICKFRAME), CW_USEDEFAULT, 0, 740, 450,
-		nullptr, nullptr, hInstance, nullptr);
+	HWND MainWindow = CreateWindowW(szWindowClass, szTitle, (WS_OVERLAPPEDWINDOW) - (WS_MAXIMIZEBOX | WS_THICKFRAME), CW_USEDEFAULT, 0, 740,
+		450, nullptr, nullptr, hInstance, nullptr);
 
 	if (! MainWindow)
 	{
@@ -114,13 +112,6 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 		auto Initializer = FDBInstanceInit(hInstance, MainWindow);
 		DBIns->Initialize(Initializer);
 	}
-
-	System = new DBSystem(hInst, MainWindow);
-	if (! System) return FALSE;
-
-	// System Initialization
-	System->EndConstruct();
-
 	return TRUE;
 }
 
@@ -145,11 +136,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	}
 	case WM_COMMAND:
 	{
-		if (System)
-		{
-			// System->CallCommand(hWnd, message, wParam, lParam);
-		}
-
 		if (DBIns)
 		{
 			DBIns->CallCommand(hWnd, message, wParam, lParam);
@@ -162,12 +148,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		case IDM_ABOUT: DialogBox(hInst, MAKEINTRESOURCE(IDD_ABOUTBOX), hWnd, About); break;
 		case IDM_EXIT:
 		{
-			if (System)
-			{
-				SingletonManager::DestroyAll();
-				delete System;
-				System = nullptr;
-			}
+			SingletonManager::DestroyAll();
 			DestroyWindow(hWnd);
 			break;
 		}
@@ -177,38 +158,23 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	break;
 	case WM_PAINT:
 	{
-		PAINTSTRUCT ps;
-		HDC			hdc = BeginPaint(hWnd, &ps);
-
-		// TODO: Add any drawing code that uses hdc here...
-		// TCHAR greeting[] = _T("Hello, Windows desktop!");
-		// TextOut(hdc, 5, 5, greeting, _tcslen(greeting));
-
+		PAINTSTRUCT	 ps;
+		HDC			 hdc		= BeginPaint(hWnd, &ps);
 		const Size2D ScreenSize = DBLib::GetScreenSize();
 		RECT		 Rect		= {0, 0, ScreenSize.X, ScreenSize.Y};
 		HBRUSH		 BrushColor = CreateSolidBrush(RGB(200, 200, 200));
 
 		FillRect(hdc, &Rect, BrushColor);
-
 		EndPaint(hWnd, &ps);
 		// return;
 	}
 	break;
 	case WM_CLOSE:
 	{
-		if (System)
-		{
-			SingletonManager::DestroyAll();
-			delete System;
-			System = nullptr;
-		}
+		SingletonManager::DestroyAll();
 		return DefWindowProc(hWnd, message, wParam, lParam);
 	}
-	case WM_DESTROY:
-		if (hWnd == MainWindow)
-		{
-			PostQuitMessage(0);
-		}
+	case WM_DESTROY: PostQuitMessage(0);
 	default: return DefWindowProc(hWnd, message, wParam, lParam);
 	}
 	return 0;

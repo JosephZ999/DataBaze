@@ -31,9 +31,15 @@ void DBInstance::Initialize(FDBInstanceInit& Param)
 	}
 	if (ListBox)
 	{
+		const DWORD	 Style	  = WS_VISIBLE | WS_CHILD | (LBS_NOTIFY | LBS_SORT | WS_VSCROLL);
+		const Size2D Position = {200, 25};
+		const Size2D Size	  = {500, 300};
+
+		ListBox->Initialize(IDC_ListBox, Style, Position, Size, InitData.MainHWND, 20);
+
 		std::vector<std::wstring> InitList;
 		DataManager->GetMembersList(InitList);
-		ListBox->Initialize(InitList);
+		ListBox->SetList(InitList);
 	}
 }
 

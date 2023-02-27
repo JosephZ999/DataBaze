@@ -6,7 +6,6 @@
 class DBListBox : public DBInterface
 {
 public:
-	DBListBox();
 
 private:
 	int	 LastItemId	 = 0;
@@ -14,7 +13,8 @@ private:
 
 	// functions
 public:
-	void Initialize(const std::vector<std::wstring>& InList);
+	void Initialize(EDBWinCompId Id, DWORD Style, const Size2D& Position, const Size2D& Size, HWND OwnerWnd, int FontSize);
+	void SetList(const std::vector<std::wstring>& InList);
 	void AddItem(const std::wstring& InItem);
 	void ClearList();
 
