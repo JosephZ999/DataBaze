@@ -179,6 +179,7 @@
     <ClInclude Include="framework.h" />
     <ClInclude Include="JsonInterface\JsonInterface.h" />
     <ClInclude Include="Plugins\Singleton\Singleton.h" />
+    <ClInclude Include="Plugins\UI\UIDataTypes.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="Source\Public\Components\DBButtonManager.h" />
     <ClInclude Include="Source\Public\Components\DBListBox.h" />

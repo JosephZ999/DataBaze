@@ -63,6 +63,15 @@
     <Filter Include="Source\Private\Core">
       <UniqueIdentifier>{9f35237e-0fc1-4367-973b-960f159dc0b2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Plugins\UI">
+      <UniqueIdentifier>{ba463699-f7cc-4de5-8a01-8fb7cb8b18f6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Plugins\UI\Private">
+      <UniqueIdentifier>{609f2eb5-80db-410b-b61b-74d3cbe27d83}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Plugins\UI\Public">
+      <UniqueIdentifier>{a4de67e8-811c-4a34-9172-1aa15531e90d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -133,6 +142,9 @@
     </ClInclude>
     <ClInclude Include="Source\Public\Components\DBButtonManager.h">
       <Filter>Source\Public\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Plugins\UI\UIDataTypes.h">
+      <Filter>Plugins\UI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
