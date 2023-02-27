@@ -72,6 +72,12 @@
     <Filter Include="Plugins\UI\Public">
       <UniqueIdentifier>{a4de67e8-811c-4a34-9172-1aa15531e90d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Plugins\UI\Public\Components">
+      <UniqueIdentifier>{2edd9923-a67f-438d-a917-287bf43d4cee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Plugins\UI\Private\Components">
+      <UniqueIdentifier>{d81bde5d-dba7-425b-b0a7-ba1ea5b72861}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -146,6 +152,15 @@
     <ClInclude Include="Plugins\UI\UIDataTypes.h">
       <Filter>Plugins\UI</Filter>
     </ClInclude>
+    <ClInclude Include="Plugins\UI\Public\Components\UIVerticalBox.h">
+      <Filter>Plugins\UI\Public\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Plugins\UI\Public\Components\UISlot.h">
+      <Filter>Plugins\UI\Public\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Plugins\UI\Public\UIContainer.h">
+      <Filter>Plugins\UI\Public</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DataBaze.cpp">
@@ -192,6 +207,15 @@
     </ClCompile>
     <ClCompile Include="Source\Private\Components\DBButtonManager.cpp">
       <Filter>Source\Private\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Plugins\UI\Private\Components\UIVerticalBox.cpp">
+      <Filter>Plugins\UI\Private\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Plugins\UI\Private\Components\UISlot.cpp">
+      <Filter>Plugins\UI\Private\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Plugins\UI\Private\UIContainer.cpp">
+      <Filter>Plugins\UI\Private</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
