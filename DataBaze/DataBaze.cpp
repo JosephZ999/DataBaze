@@ -2,9 +2,10 @@
 //
 
 #include "DataBaze.h"
-#include "DBWindowsManager.h"
 #include "DBFunctionLibrary.h"
 #include "DBInstance.h"
+
+#define MAX_LOADSTRING 100
 
 // Global Variables:
 HINSTANCE	hInst;						   // current instance
