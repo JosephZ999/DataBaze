@@ -2,8 +2,10 @@
 //
 
 #include "DataBaze.h"
-#include "DBFunctionLibrary.h"
 #include "DBInstance.h"
+#include "framework.h"
+#include "resource.h"
+#include "DBFunctionLibrary.h"
 
 #define MAX_LOADSTRING 100
 
@@ -11,7 +13,6 @@
 HINSTANCE	hInst;						   // current instance
 WCHAR		szTitle[MAX_LOADSTRING];	   // The title bar text
 WCHAR		szWindowClass[MAX_LOADSTRING]; // the main window class name
-HWND		ListBox;
 DBInstance* DBIns = nullptr;
 
 // Forward declarations of functions included in this code module:
