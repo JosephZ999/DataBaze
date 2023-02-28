@@ -34,7 +34,6 @@ public:
 public:
 	void OpenWindowByType(EWindows WindowType);
 	void CloseWindowByType(EWindows WindowType);
-	void EndConstruct();
 
 	void OnMemberAddedHandle();
 	void SetViewerData(const DBFamilyData& InData);

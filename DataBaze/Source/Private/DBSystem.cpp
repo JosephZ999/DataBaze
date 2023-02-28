@@ -163,7 +163,7 @@ void DBSystem::CallCommand(HWND& hWnd, UINT Message, WPARAM& WParam, LPARAM& LPa
 			if (WindowManager->GetViewer())
 			{
 				WindowManager->GetViewer()->SetMemberData(SelectedData);
-				WindowManager->EndConstruct();
+//				WindowManager->EndConstruct();
 			}
 		}
 		return;

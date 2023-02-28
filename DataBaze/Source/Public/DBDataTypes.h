@@ -96,6 +96,7 @@ struct FWndItem
 		: Type(InType)
 		, Id(InId)
 		, Text(InText)
+		, AddStyle(BS_NOTIFY)
 	{
 	}
 

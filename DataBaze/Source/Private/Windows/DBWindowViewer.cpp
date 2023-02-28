@@ -167,11 +167,6 @@ DBWindowViewer::DBWindowViewer(DBInterface* InOwner)
 	}
 }
 
-void DBWindowViewer::OnConstruct()
-{
-	PrintData();
-}
-
 void DBWindowViewer::SetMemberData(const DBFamilyData& InData)
 {
 	MemberData = InData;

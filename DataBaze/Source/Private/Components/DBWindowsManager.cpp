@@ -137,18 +137,6 @@ void DBWindowsManager::CloseWindowByType(EWindows WindowType)
 	} // switch end
 }
 
-void DBWindowsManager::EndConstruct()
-{
-	if (WindowViewer)
-	{
-		WindowViewer->OnConstruct();
-	}
-	if (WindowWriter)
-	{
-		WindowWriter->OnConstruct();
-	}
-}
-
 void DBWindowsManager::OnMemberAddedHandle()
 {
 	CloseWindowByType(EWindows::IDW_WRITER);

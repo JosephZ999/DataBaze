@@ -50,4 +50,6 @@ public:
 
 private:
 	void InitWindows();
+	void ResetListBox();
+	void UpdateFolderIdText();
 };
