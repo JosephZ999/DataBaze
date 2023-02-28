@@ -78,7 +78,7 @@ void DBInstance::Initialize(FDBInstanceInit& Param)
 		HButtons.push_back(FWndItem(WT_Button, IDC_PrevFolder, {60, 30}, L" < "));
 
 		DWORD StaticBoxStyle(WS_BORDER | SS_CENTER);
-		HButtons.push_back(FWndItem(WT_Static, IDC_FolderId, {60, 30}, L"1", 20, StaticBoxStyle));
+		HButtons.push_back(FWndItem(WT_Static, IDC_FolderId, {120, 30}, L"1", 20, StaticBoxStyle));
 		HButtons.push_back(FWndItem(WT_Button, IDC_NextFolder, {60, 30}, L" > "));
 		HButtons.push_back(FWndItem(WT_Button, IDC_Minimize, {60, 30}, L" << "));
 
@@ -98,6 +98,7 @@ void DBInstance::Initialize(FDBInstanceInit& Param)
 			HBox->AddChild(Slot);
 		}
 		ButtonManager->AddSlot(HBox);
+		UpdateFolderIdText();
 	}
 }
 
@@ -124,8 +125,9 @@ void DBInstance::ResetListBox()
 
 void DBInstance::UpdateFolderIdText()
 {
-	std::wstring IdAsText		= std::to_wstring(GetDataManager()->GetFolderId());
-	HWND		 FolderIdHandle = GetButtonManager()->GetWndHandler(EDBWinCompId::IDC_FolderId);
+	std::wstring IdAsText = std::to_wstring(GetDataManager()->GetFolderId());
+	IdAsText.append(L" - ").append(std::to_wstring(GetListBox()->GetLastItemId()));
+	HWND FolderIdHandle = GetButtonManager()->GetWndHandler(EDBWinCompId::IDC_FolderId);
 	DBLib::SetText(FolderIdHandle, IdAsText);
 }
 
@@ -212,8 +214,8 @@ void DBInstance::CallCommand(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPar
 	{
 		if (GetDataManager()->ChangeFolder(true))
 		{
-			UpdateFolderIdText();
 			ResetListBox();
+			UpdateFolderIdText();
 		}
 		break;
 	}
@@ -221,15 +223,15 @@ void DBInstance::CallCommand(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPar
 	{
 		if (GetDataManager()->ChangeFolder(false))
 		{
-			UpdateFolderIdText();
 			ResetListBox();
+			UpdateFolderIdText();
 		}
 		break;
 	}
-	// case IDC_Minimize:
-	//{
-	//	SetMinimizedMode(! MinimizedMode);
-	//	break;
-	//}
+		// case IDC_Minimize:
+		//{
+		//	SetMinimizedMode(! MinimizedMode);
+		//	break;
+		//}
 	} // switch end
 }
