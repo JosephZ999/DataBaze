@@ -161,6 +161,9 @@
     <ClInclude Include="Plugins\UI\Public\UIContainer.h">
       <Filter>Plugins\UI\Public</Filter>
     </ClInclude>
+    <ClInclude Include="Plugins\UI\Public\Components\UISpacer.h">
+      <Filter>Plugins\UI\Public\Components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DataBaze.cpp">
@@ -216,6 +219,9 @@
     </ClCompile>
     <ClCompile Include="Plugins\UI\Private\UIContainer.cpp">
       <Filter>Plugins\UI\Private</Filter>
+    </ClCompile>
+    <ClCompile Include="Plugins\UI\Private\Components\UISpacer.cpp">
+      <Filter>Plugins\UI\Private\Components</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

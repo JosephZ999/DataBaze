@@ -1,4 +1,5 @@
 #include "DBButtonManager.h"
+#include "Components/UISpacer.h"
 
 void DBButtonManager::Initialize(HWND OwnerWnd, std::vector<FButton>& Buttons)
 {
@@ -9,10 +10,11 @@ void DBButtonManager::Initialize(HWND OwnerWnd, std::vector<FButton>& Buttons)
 	{
 		auto Wnd = DBLib::CreateButton(OwnerWnd, Buttons[i]);
 		VerticalBox->AddChild(UISlot(Wnd));
-		// if (i + 1 != Buttons.size())
-		//{
-		//	VerticalBox->AddChild(UISlot(nullptr, ));
-		//}
+
+		if (i != Buttons.size() - 1)
+		{
+			VerticalBox->AddChild(UISpacer(Size2D(0, 50)));
+		}
 	}
 	VerticalBox->Draw(Size2D(25, 25), Size2D(150, 280));
 }

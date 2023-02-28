@@ -1,6 +1,7 @@
 #pragma once
 #include "Size2D.h"
 #include "framework.h"
+#include "UIDataTypes.h"
 
 class UISlot
 {
@@ -20,6 +21,9 @@ public:
 private:
 	HWND OwningWnd = nullptr;
 	bool bFill	   = false;
+
+	EVerticalAlignment	 VAlignment = VA_Center;
+	EHorizontalAlignment HAlignment = HA_Center;
 
 protected:
 	Size2D Position;
