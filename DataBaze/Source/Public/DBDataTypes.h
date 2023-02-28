@@ -7,14 +7,14 @@
 #include "Size2D.h"
 #include "framework.h"
 
-enum EDBWindowCompType
+enum EDBWindowType
 {
-	WCT_None,
-	WCT_Static,
-	WCT_Button,
-	WCT_Edit,
-	WCT_ComboBox,
-	WCT_ListBox,
+	WT_None,
+	WT_Static,
+	WT_Button,
+	WT_Edit,
+	WT_ComboBox,
+	WT_ListBox,
 };
 
 enum EDBWinCompId
@@ -81,22 +81,41 @@ struct DBWindow
 	HINSTANCE	 HIns	  = NULL;
 };
 
-struct FButton
+struct FWndItem
 {
-	FButton() {}
-	FButton(EDBWinCompId InId, Size2D InPosition, Size2D InSize, std::wstring InText)
-		: Id(InId)
-		, Position(InPosition)
+	FWndItem() {}
+	FWndItem(EDBWindowType InType, EDBWinCompId InId, Size2D InSize, std::wstring InText)
+		: Type(InType)
+		, Id(InId)
 		, Size(InSize)
 		, Text(InText)
 	{
 	}
 
-	EDBWinCompId Id		= EDBWinCompId::IDC_NONE;
-	Size2D		 Position;
-	Size2D		 Size;
-	std::wstring Text	  = L"Button";
-	int			 FontSize = 16;
+	FWndItem(EDBWindowType InType, EDBWinCompId InId, std::wstring InText)
+		: Type(InType)
+		, Id(InId)
+		, Text(InText)
+	{
+	}
+
+	FWndItem(EDBWindowType InType, EDBWinCompId InId, Size2D InSize, std::wstring InText, int InFontSize, DWORD InStyle)
+		: Type(InType)
+		, Id(InId)
+		, Size(InSize)
+		, Text(InText)
+		, FontSize(InFontSize)
+		, AddStyle(InStyle)
+	{
+	}
+
+	EDBWindowType Type = EDBWindowType::WT_None;
+	EDBWinCompId  Id   = EDBWinCompId::IDC_NONE;
+	Size2D		  Position;
+	Size2D		  Size;
+	std::wstring  Text	   = L"Text";
+	int			  FontSize = 16;
+	DWORD		  AddStyle = 0;
 };
 
 class FWindowContainer

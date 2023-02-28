@@ -54,5 +54,9 @@ inline int UIVerticalBox::GetFillersNum()
 			++Fillers;
 		}
 	}
+	if (Fillers == 0)
+	{
+		return 1;
+	}
 	return Fillers;
 }

@@ -2,23 +2,18 @@
 #include "Components/UISpacer.h"
 #include "UIDataTypes.h"
 
-void DBButtonManager::Initialize(HWND OwnerWnd, std::vector<FButton>& Buttons)
+void DBButtonManager::Initialize(HWND OwnerWnd, std::vector<FWndItem>& Buttons) {}
+
+HWND DBButtonManager::AddItem(HWND OwnerWnd, const FWndItem& Item)
 {
-	VerticalBox = std::unique_ptr<UIVerticalBox>(new UIVerticalBox);
+	DWORD Style = WS_VISIBLE | WS_CHILD | Item.AddStyle;
+	HWND  Wnd	= DBLib::CreateWindowComponent(Item.Type, Item.Text, Style, Item.Position, Item.Size, OwnerWnd, HMENU(Item.Id));
+	DBLib::SetFontSize(Wnd, Item.FontSize);
+	return Wnd;
+}
 
-	if (Buttons.size() == 0) return;
-	for (size_t i = 0; i < Buttons.size(); ++i)
-	{
-		auto Wnd = DBLib::CreateButton(OwnerWnd, Buttons[i]);
-
-		auto Slot = UISlot(Wnd);
-		// Slot.SetSize(Size2D(20, 20));
-		VerticalBox->AddChild(Slot);
-
-		if (i != Buttons.size() - 1)
-		{
-			VerticalBox->AddChild(UISpacer(Size2D(0, 25)));
-		}
-	}
-	VerticalBox->Draw(Size2D(25, 25), Size2D(150, 280));
+void DBButtonManager::AddSlot(UISlot* Slot)
+{
+	UISlots.push_back(Slot);
+	Slot->ReDraw();
 }

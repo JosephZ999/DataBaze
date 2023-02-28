@@ -179,10 +179,12 @@
     <ClInclude Include="framework.h" />
     <ClInclude Include="JsonInterface\JsonInterface.h" />
     <ClInclude Include="Plugins\Singleton\Singleton.h" />
+    <ClInclude Include="Plugins\UI\Public\Components\UIHorizontalBox.h" />
     <ClInclude Include="Plugins\UI\Public\Components\UISlot.h" />
     <ClInclude Include="Plugins\UI\Public\Components\UISpacer.h" />
     <ClInclude Include="Plugins\UI\Public\Components\UIVerticalBox.h" />
     <ClInclude Include="Plugins\UI\Public\UIContainer.h" />
+    <ClInclude Include="Plugins\UI\Public\UILibrary.h" />
     <ClInclude Include="Plugins\UI\UIDataTypes.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="Source\Public\Components\DBButtonManager.h" />
@@ -208,10 +210,12 @@
   <ItemGroup>
     <ClCompile Include="DataBaze.cpp" />
     <ClCompile Include="Plugins\Singleton\Singleton.cpp" />
+    <ClCompile Include="Plugins\UI\Private\Components\UIHorizontalBox.cpp" />
     <ClCompile Include="Plugins\UI\Private\Components\UISlot.cpp" />
     <ClCompile Include="Plugins\UI\Private\Components\UISpacer.cpp" />
     <ClCompile Include="Plugins\UI\Private\Components\UIVerticalBox.cpp" />
     <ClCompile Include="Plugins\UI\Private\UIContainer.cpp" />
+    <ClCompile Include="Plugins\UI\Private\UILibrary.cpp" />
     <ClCompile Include="Source\Private\Components\DBButton.cpp" />
     <ClCompile Include="Source\Private\Components\DBButtonManager.cpp" />
     <ClCompile Include="Source\Private\Components\DBDataManager.cpp" />

@@ -15,6 +15,7 @@ public:
 	UISlot(HWND InOwningWnd, Size2D InSize)
 		: OwningWnd(InOwningWnd)
 		, Size(InSize)
+		, bFill(true)
 	{
 	}
 

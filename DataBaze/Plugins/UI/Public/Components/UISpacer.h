@@ -8,5 +8,6 @@ public:
 	UISpacer(Size2D InSize)
 		: UISlot(nullptr, InSize)
 	{
+		SetFill(false);
 	}
 };
