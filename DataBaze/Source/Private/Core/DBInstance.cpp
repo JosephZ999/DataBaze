@@ -53,9 +53,9 @@ void DBInstance::Initialize(FDBInstanceInit& Param)
 		Buttons.push_back(FButton(IDC_LOCK, {25, 125}, {150, 30}, L"Lock"));
 		Buttons.push_back(FButton(IDC_UNLOCK, {25, 175}, {150, 30}, L"Unlock"));
 
-		Buttons.push_back(FButton(IDC_PrevFolder, {200, 320}, {45, 30}, L" < "));
-		Buttons.push_back(FButton(IDC_NextFolder, {300, 320}, {45, 30}, L" > "));
-		Buttons.push_back(FButton(IDC_Minimize, {655, 320}, {45, 30}, L" << "));
+		// Buttons.push_back(FButton(IDC_PrevFolder, {200, 320}, {45, 30}, L" < "));
+		// Buttons.push_back(FButton(IDC_NextFolder, {300, 320}, {45, 30}, L" > "));
+		// Buttons.push_back(FButton(IDC_Minimize, {655, 320}, {45, 30}, L" << "));
 
 		ButtonManager->Initialize(InitData.MainHWND, Buttons);
 	}

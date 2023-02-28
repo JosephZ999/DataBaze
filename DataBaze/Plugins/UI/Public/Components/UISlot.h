@@ -8,11 +8,18 @@ public:
 	UISlot() {}
 	UISlot(HWND InOwningWnd)
 		: OwningWnd(InOwningWnd)
+		, bFill(true)
+	{
+	}
+	UISlot(HWND InOwningWnd, Size2D InSize)
+		: OwningWnd(InOwningWnd)
+		, Size(InSize)
 	{
 	}
 
 private:
 	HWND OwningWnd = nullptr;
+	bool bFill	   = false;
 
 protected:
 	Size2D Position;

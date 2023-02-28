@@ -7,7 +7,10 @@ class UIContainer
 {
 	std::vector<UISlot> Children;
 
+protected:
+	inline std::vector<UISlot>& GetChildren() { return Children; }
+
 public:
 	void AddChild(const UISlot& InChild);
-	inline std::vector<UISlot>& GetChildren() { return Children; }
+	int GetChildrenNum();
 };

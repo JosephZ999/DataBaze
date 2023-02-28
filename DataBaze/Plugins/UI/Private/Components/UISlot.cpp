@@ -7,11 +7,26 @@ void UISlot::SetWindow(HWND InOwningWnd)
 
 void UISlot::Draw(Size2D InPos, Size2D InSize)
 {
+	if (! OwningWnd) return;
+
+	UINT Flags = SWP_NOSIZE | SWP_NOMOVE;
+
+	if (Size != InSize)
+	{
+		Flags = Flags - SWP_NOSIZE;
+		Size  = InSize;
+	}
+	if (Position != InPos)
+	{
+		Flags	 = Flags - SWP_NOMOVE;
+		Position = InPos;
+	}
+
 	if (OwningWnd)
 	{
 		SetWindowPos(OwningWnd, 0,	//
 			Position.X, Position.Y, //
 			Size.X, Size.Y,			//
-			SWP_NOSIZE);			// Options
+			Flags);					// Options
 	}
 }
