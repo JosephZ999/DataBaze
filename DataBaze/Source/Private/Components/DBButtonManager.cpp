@@ -1,5 +1,6 @@
 #include "DBButtonManager.h"
 #include "Components/UISpacer.h"
+#include "UIDataTypes.h"
 
 void DBButtonManager::Initialize(HWND OwnerWnd, std::vector<FButton>& Buttons)
 {
@@ -9,7 +10,10 @@ void DBButtonManager::Initialize(HWND OwnerWnd, std::vector<FButton>& Buttons)
 	for (size_t i = 0; i < Buttons.size(); ++i)
 	{
 		auto Wnd = DBLib::CreateButton(OwnerWnd, Buttons[i]);
-		VerticalBox->AddChild(UISlot(Wnd));
+
+		auto Slot = UISlot(Wnd);
+		// Slot.SetSize(Size2D(20, 20));
+		VerticalBox->AddChild(Slot);
 
 		if (i != Buttons.size() - 1)
 		{

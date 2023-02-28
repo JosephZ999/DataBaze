@@ -11,27 +11,23 @@ void UIVerticalBox::Draw(Size2D InPos, Size2D InSize)
 	const int FillerNum	  = GetFillersNum();
 	const int ElemHeight  = SpaceToFill / FillerNum;
 
-
 	int CurrentPosY = Position.Y;
 	for (size_t i = 0; i < GetChildren().size(); ++i)
 	{
 		if (GetChildren()[i].IsFill())
 		{
-			GetChildren()[i].SetPos(Size2D(Position.X, CurrentPosY));
-			GetChildren()[i].SetSize(Size2D(Size.X, ElemHeight));
+			const auto nPos	 = Size2D(Position.X, CurrentPosY);
+			const auto nSize = Size2D(Size.X, ElemHeight);
+			GetChildren()[i].Draw(nPos, nSize);
 			CurrentPosY += ElemHeight;
 		}
 		else
 		{
-			GetChildren()[i].SetPos(Size2D(Position.X, CurrentPosY));
-			GetChildren()[i].SetSize(Size2D(Size.X, GetChildren()[i].GetSize().Y));
+			const auto nPos	 = Size2D(Position.X, CurrentPosY);
+			const auto nSize = Size2D(Size.X, GetChildren()[i].GetSize().Y);
+			GetChildren()[i].Draw(nPos, nSize);
 			CurrentPosY += GetChildren()[i].GetSize().Y;
 		}
-	}
-
-	for (auto& Elem : GetChildren())
-	{
-		Elem.ReDraw();
 	}
 }
 
