@@ -15,8 +15,3 @@ void UIVerticalBox::Draw(Size2D InPos, Size2D InSize)
 		GetChildren()[i].Draw(Size2D(Position.X, PosY), Size2D(Size.X, ElemHeight));
 	}
 }
-
-void UIVerticalBox::ReDraw()
-{
-	Draw(Position, Size);
-}

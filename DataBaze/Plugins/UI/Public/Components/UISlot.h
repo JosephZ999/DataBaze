@@ -33,4 +33,6 @@ public:
 	void SetWindow(HWND InOwningWnd);
 
 	virtual void Draw(Size2D InPos, Size2D InSize);
+
+	void ReDraw();
 };

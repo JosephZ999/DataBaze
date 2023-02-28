@@ -30,3 +30,8 @@ void UISlot::Draw(Size2D InPos, Size2D InSize)
 			Flags);					// Options
 	}
 }
+
+void UISlot::ReDraw()
+{
+	Draw(Position, Size);
+}
