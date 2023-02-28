@@ -13,7 +13,7 @@ void DBButtonManager::Initialize(HWND OwnerWnd, std::vector<FButton>& Buttons)
 
 		if (i != Buttons.size() - 1)
 		{
-			VerticalBox->AddChild(UISpacer(Size2D(0, 50)));
+			VerticalBox->AddChild(UISpacer(Size2D(0, 25)));
 		}
 	}
 	VerticalBox->Draw(Size2D(25, 25), Size2D(150, 280));

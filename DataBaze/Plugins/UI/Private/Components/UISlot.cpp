@@ -33,5 +33,9 @@ void UISlot::Draw(Size2D InPos, Size2D InSize)
 
 void UISlot::ReDraw()
 {
-	Draw(Position, Size);
+	Size2D nPos	 = Position;
+	Size2D nSize = Size;
+	Position	 = {0, 0};
+	Size		 = {0, 0};
+	Draw(nPos, nSize);
 }

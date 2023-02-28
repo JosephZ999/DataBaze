@@ -20,7 +20,8 @@ public:
 
 private:
 	HWND OwningWnd = nullptr;
-	bool bFill	   = false;
+
+	bool bFill = false;
 
 	EVerticalAlignment	 VAlignment = VA_Center;
 	EHorizontalAlignment HAlignment = HA_Center;
@@ -35,4 +36,11 @@ public:
 	virtual void Draw(Size2D InPos, Size2D InSize);
 
 	void ReDraw();
+
+	bool IsFill() const { return bFill; }
+
+	Size2D GetPos() const { return Position; }
+	Size2D GetSize() const { return Size; }
+	void   SetPos(const Size2D& NewPos) { Position = NewPos; }
+	void   SetSize(const Size2D& NewSize) { Size = NewSize; }
 };
