@@ -50,55 +50,54 @@ void DBInstance::Initialize(FDBInstanceInit& Param)
 	}
 	if (ButtonManager)
 	{
+
+		//-----------------------------------------------// Make Vertical Buttons
+		std::vector<FWndItem> Buttons;
+		Buttons.push_back(FWndItem(WT_Button, IDC_VIEW, L"Show"));
+		Buttons.push_back(FWndItem(WT_Button, IDC_NEWITEM, L"Add New Item"));
+		Buttons.push_back(FWndItem(WT_Button, IDC_LOCK, L"Lock"));
+		Buttons.push_back(FWndItem(WT_Button, IDC_UNLOCK, L"Unlock"));
+
+		UIVerticalBox* VerticalBox = UILib::CreateVerticalBox(Size2D(25, 25), Size2D(150, 200));
+		for (size_t i = 0; i < Buttons.size(); ++i)
 		{
-			std::vector<FWndItem> Buttons;
-			Buttons.push_back(FWndItem(WT_Button, IDC_VIEW, L"Show"));
-			Buttons.push_back(FWndItem(WT_Button, IDC_NEWITEM, L"Add New Item"));
-			Buttons.push_back(FWndItem(WT_Button, IDC_LOCK, L"Lock"));
-			Buttons.push_back(FWndItem(WT_Button, IDC_UNLOCK, L"Unlock"));
+			HWND   NewWnd = ButtonManager->AddItem(InitData.MainHWND, Buttons[i]);
+			UISlot Slot(NewWnd, Buttons[i].Size);
 
-			UIVerticalBox* VerticalBox = UILib::CreateVerticalBox(Size2D(25, 25), Size2D(150, 200));
-			for (size_t i = 0; i < Buttons.size(); ++i)
+			VerticalBox->AddChild(Slot);
+
+			if (i != Buttons.size() - 1)
 			{
-				HWND   NewWnd = ButtonManager->AddItem(InitData.MainHWND, Buttons[i]);
-				UISlot Slot(NewWnd, Buttons[i].Size);
-
-				VerticalBox->AddChild(Slot);
-
-				if (i != Buttons.size() - 1)
-				{
-					VerticalBox->AddChild(UISpacer(Size2D(0, 15)));
-				}
+				VerticalBox->AddChild(UISpacer(Size2D(0, 15)));
 			}
-			ButtonManager->AddSlot(VerticalBox);
 		}
+		ButtonManager->AddSlot(VerticalBox);
 
+		//-----------------------------------------------// Horizontal Buttons
+		std::vector<FWndItem> HButtons;
+		HButtons.push_back(FWndItem(WT_Button, IDC_PrevFolder, {60, 30}, L" < "));
+
+		DWORD StaticBoxStyle(WS_BORDER | SS_CENTER);
+		HButtons.push_back(FWndItem(WT_Static, IDC_FolderId, {60, 30}, L"1", 20, StaticBoxStyle));
+		HButtons.push_back(FWndItem(WT_Button, IDC_NextFolder, {60, 30}, L" > "));
+		HButtons.push_back(FWndItem(WT_Button, IDC_Minimize, {60, 30}, L" << "));
+
+		UIHorizontalBox* HBox = UILib::CreateHorizontalBox(Size2D(200, 320), Size2D(500, 30));
+		for (size_t i = 0; i < HButtons.size(); ++i)
 		{
-			std::vector<FWndItem> Buttons;
-			Buttons.push_back(FWndItem(WT_Button, IDC_PrevFolder, {60, 30}, L" < "));
+			HWND NewWnd = ButtonManager->AddItem(InitData.MainHWND, HButtons[i]);
 
-			DWORD StaticBoxStyle(WS_BORDER | SS_CENTER);
-			Buttons.push_back(FWndItem(WT_Static, IDC_FolderId, {60, 30}, L"1", 20, StaticBoxStyle));
-			Buttons.push_back(FWndItem(WT_Button, IDC_NextFolder, {60, 30}, L" > "));
-			Buttons.push_back(FWndItem(WT_Button, IDC_Minimize, {60, 30}, L" << "));
-
-			UIHorizontalBox* HBox = UILib::CreateHorizontalBox(Size2D(200, 320), Size2D(500, 30));
-			for (size_t i = 0; i < Buttons.size(); ++i)
+			UISlot Slot(NewWnd, HButtons[i].Size);
+			Slot.SetFill(false);
+			if (i == 3)
 			{
-				HWND NewWnd = ButtonManager->AddItem(InitData.MainHWND, Buttons[i]);
-
-				UISlot Slot(NewWnd, Buttons[i].Size);
-				Slot.SetFill(false);
-				if (i == 3)
-				{
-					Slot.SetFill(true);
-					Slot.SetHAlign(HA_Right);
-				}
-
-				HBox->AddChild(Slot);
+				Slot.SetFill(true);
+				Slot.SetHAlign(HA_Right);
 			}
-			ButtonManager->AddSlot(HBox);
+
+			HBox->AddChild(Slot);
 		}
+		ButtonManager->AddSlot(HBox);
 	}
 }
 
