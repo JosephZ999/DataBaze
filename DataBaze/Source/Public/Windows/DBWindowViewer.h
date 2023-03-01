@@ -28,10 +28,10 @@ public:
 
 private:
 	DBButtonManager* ButtonManager;
-	bool		 HasSpouse = false;
-	bool		 HasChild  = false;
-	std::wstring Title;
-	std::string	 Info;
+	bool			 HasSpouse = false;
+	bool			 HasChild  = false;
+	std::wstring	 Title;
+	std::string		 Info;
 
 public:
 	LRESULT CALLBACK CallProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);

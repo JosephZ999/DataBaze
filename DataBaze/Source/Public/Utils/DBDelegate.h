@@ -3,7 +3,7 @@
 class IDelegate
 {
 public:
-	virtual ~IDelegate(){}
+	virtual ~IDelegate() {}
 	virtual void Call() {}
 };
 
@@ -20,8 +20,7 @@ public:
 		: Object(InObject)
 		, CallbackFunction(InFunc)
 
-	{
-	}
+	{}
 
 	virtual ~Delegate() override
 	{

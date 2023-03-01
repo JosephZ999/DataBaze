@@ -26,7 +26,7 @@ public:
 
 	OnWriterCloseSignature OnClose;
 
-	HWND WindowHandle = 0;
+	HWND		 WindowHandle = 0;
 	DBFamilyData MembersData;
 
 	// Writing progress

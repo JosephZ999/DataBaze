@@ -12,8 +12,8 @@ private:
 	std::vector<DBInterface*> Components;
 
 public:
-	DBInterface*		 GetOwner() const;
-	void				 SetOwner(DBInterface* NewOwner);
+	DBInterface* GetOwner() const;
+	void		 SetOwner(DBInterface* NewOwner);
 
 protected:
 	virtual ~DBInterface();

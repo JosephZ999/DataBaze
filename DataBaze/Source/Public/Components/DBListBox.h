@@ -6,7 +6,6 @@
 class DBListBox : public DBInterface
 {
 public:
-
 private:
 	int	 LastItemId	 = 0;
 	HWND ListBoxHWND = nullptr;

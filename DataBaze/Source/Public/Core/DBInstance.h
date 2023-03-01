@@ -20,8 +20,7 @@ struct FDBInstanceInit
 	explicit FDBInstanceInit(HINSTANCE InHIns, HWND InMainWindow)
 		: HIns(InHIns)
 		, MainHWND(InMainWindow)
-	{
-	}
+	{}
 	HINSTANCE HIns	   = 0;
 	HWND	  MainHWND = 0;
 };
