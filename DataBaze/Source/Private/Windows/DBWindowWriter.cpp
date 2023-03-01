@@ -589,15 +589,15 @@ void DBWindowWriter::UpdateEditStyle()
 {
 	switch (PeopleData)
 	{	// clang-format off
-	case PD_Gender:				SetEditboxStyle(1);				break;
+	case PD_Gender:				SetEditboxStyle(EDIT_STYLE_BASE, 1); break;
 	case PD_BirthMonth:			SetEditboxStyle(ES_NUMBER, 2);	break;
 	case PD_BirthDay:			SetEditboxStyle(ES_NUMBER, 2);	break;
 	case PD_BirthYear:			SetEditboxStyle(ES_NUMBER, 4);	break;
-	case PD_EducationDegree:	SetEditboxStyle(2);				break;
-	case PD_MaritalStatus:		SetEditboxStyle(1);				break;
-	case PD_ChildrenNum:		SetEditboxStyle(ES_NUMBER, 1);	break;
-	case PD_MailZipCode:		SetEditboxStyle(ES_NUMBER);		break;
-	default:					SetEditboxStyle();				break;
+	case PD_EducationDegree:	SetEditboxStyle(EDIT_STYLE_BASE, 2);	break;
+	case PD_MaritalStatus:		SetEditboxStyle(EDIT_STYLE_BASE, 1);	break;
+	case PD_ChildrenNum:		SetEditboxStyle(ES_NUMBER, 1);		break;
+	case PD_MailZipCode:		SetEditboxStyle(ES_NUMBER);			break;
+	default:					SetEditboxStyle(EDIT_STYLE_BASE);	break;
 		// clang-format on
 	}	// Switch PeopleData
 }
