@@ -19,6 +19,7 @@ LRESULT DBWindowWriter::CallProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM 
 	{
 		if (wParam == WM_SHOWWINDOW)
 		{
+			ShowWindow(hWnd, SW_SHOWDEFAULT);
 			SetFocus(ButtonManager->GetWndHandler(IDC_W_Edit));
 			SelectWriteData(PeopleType);
 			break;

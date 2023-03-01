@@ -91,8 +91,6 @@ void DBWindowsManager::OpenWindowByType(EWindows WindowType)
 	case EWindows::IDW_VIEWER:
 	{
 		CreateViewer();
-		CloseWindowByType(IDW_WRITER);
-		ShowWindow(ViewerHandle, SW_SHOWDEFAULT);
 		SendMessage(ViewerHandle, WM_COMMAND, WM_SHOWWINDOW, 0);
 		if (WindowViewer)
 		{
@@ -103,8 +101,6 @@ void DBWindowsManager::OpenWindowByType(EWindows WindowType)
 	case EWindows::IDW_WRITER:
 	{
 		CreateWriter();
-		CloseWindowByType(IDW_VIEWER);
-		ShowWindow(WriterHandle, SW_SHOWDEFAULT);
 		SendMessage(WriterHandle, WM_COMMAND, WM_SHOWWINDOW, 0);
 		if (WindowWriter)
 		{
@@ -123,14 +119,12 @@ void DBWindowsManager::CloseWindowByType(EWindows WindowType)
 	{
 		DestroyViewer();
 		ShowWindow(ViewerHandle, SW_HIDE);
-		DBDebug::CreateMessageBox("Close viewer");
 		return;
 	}
 	case EWindows::IDW_WRITER:
 	{
 		DestroyWriter();
 		ShowWindow(WriterHandle, SW_HIDE);
-		DBDebug::CreateMessageBox("Close writer");
 		return;
 	}
 	} // switch end
@@ -163,12 +157,10 @@ DBInterface* DBWindowsManager::GetWriterClass() const
 
 void DBWindowsManager::CreateViewer()
 {
-	if (WindowViewer)
+	if (! WindowViewer)
 	{
-		delete WindowViewer;
-		WindowViewer = nullptr;
+		WindowViewer = new DBWindowViewer(this);
 	}
-	WindowViewer = new DBWindowViewer(this);
 }
 
 void DBWindowsManager::DestroyViewer()
@@ -182,12 +174,10 @@ void DBWindowsManager::DestroyViewer()
 
 void DBWindowsManager::CreateWriter()
 {
-	if (WindowWriter)
+	if (! WindowWriter)
 	{
-		delete WindowWriter;
-		WindowWriter = nullptr;
+		WindowWriter = new DBWindowWriter(this);
 	}
-	WindowWriter = new DBWindowWriter(this);
 }
 
 void DBWindowsManager::DestroyWriter()
