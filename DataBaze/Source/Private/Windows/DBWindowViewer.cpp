@@ -117,7 +117,7 @@ DBWindowViewer::DBWindowViewer(DBInterface* InOwner)
 			HBox1->SetFill(true);
 
 			FWndItem SlotElem1(WT_Static, IDC_V_InfoTitle, Size2D(200, 300), L"", 18, SS_RIGHT);
-			FWndItem SlotElem2(WT_Static, IDC_V_Info, Size2D(335, 300), L"", 18, 0);
+			FWndItem SlotElem2(WT_Edit, IDC_V_Info, Size2D(335, 300), L"", 18, ES_MULTILINE | ES_READONLY);
 			HWND	 SlotWnd1 = ButtonManager->AddItem(WindowHandle, SlotElem1);
 			HWND	 SlotWnd2 = ButtonManager->AddItem(WindowHandle, SlotElem2);
 
@@ -265,7 +265,7 @@ void DBWindowViewer::PrintPeople(const DBPeopleData& People, bool IsChild)
 	for (auto Elem : DataArray)
 	{
 		Title.append(Elem.Title).append(L"\n");
-		Info.append(Elem.Info).append("\n");
+		Info.append(Elem.Info).append("\r\n");
 	}
 }
 
@@ -283,7 +283,7 @@ void DBWindowViewer::PrintMail()
 	for (auto Elem : DataArray)
 	{
 		Title.append(Elem.Title).append(L"\n");
-		Info.append(Elem.Info).append("\n");
+		Info.append(Elem.Info).append("\r\n");
 	}
 }
 
