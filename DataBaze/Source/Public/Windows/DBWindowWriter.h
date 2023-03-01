@@ -50,7 +50,6 @@ public:
 public:
 	LRESULT CALLBACK CallProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 
-	void OnConstruct();
 	bool CheckFormat();
 	void WriteData();
 	void SelectWriteData(EPeopleType PT);

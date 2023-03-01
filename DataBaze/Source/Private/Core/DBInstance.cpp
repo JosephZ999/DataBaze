@@ -58,17 +58,16 @@ void DBInstance::Initialize(FDBInstanceInit& Param)
 		Buttons.push_back(FWndItem(WT_Button, IDC_LOCK, L"Lock"));
 		Buttons.push_back(FWndItem(WT_Button, IDC_UNLOCK, L"Unlock"));
 
-		UIVerticalBox* VerticalBox = UILib::CreateVerticalBox(Size2D(25, 25), Size2D(150, 200));
+		auto VerticalBox = UILib::CreateVerticalBox(Size2D(25, 25), Size2D(150, 200));
 		for (size_t i = 0; i < Buttons.size(); ++i)
 		{
-			HWND   NewWnd = ButtonManager->AddItem(InitData.MainHWND, Buttons[i]);
-			UISlot Slot(NewWnd, Buttons[i].Size);
+			HWND NewWnd = ButtonManager->AddItem(InitData.MainHWND, Buttons[i]);
 
+			auto Slot = UILib::CreateSlot(NewWnd, Buttons[i].Size);
 			VerticalBox->AddChild(Slot);
-
 			if (i != Buttons.size() - 1)
 			{
-				VerticalBox->AddChild(UISpacer(Size2D(0, 15)));
+				VerticalBox->AddChild(UILib::CreateSpacer(Size2D(0, 15)));
 			}
 		}
 		ButtonManager->AddSlot(VerticalBox);
@@ -82,20 +81,20 @@ void DBInstance::Initialize(FDBInstanceInit& Param)
 		HButtons.push_back(FWndItem(WT_Button, IDC_NextFolder, {60, 30}, L" > "));
 		HButtons.push_back(FWndItem(WT_Button, IDC_Minimize, {60, 30}, L" << "));
 
-		UIHorizontalBox* HBox = UILib::CreateHorizontalBox(Size2D(200, 320), Size2D(500, 30));
+		auto HBox = UILib::CreateHorizontalBox(Size2D(200, 320), Size2D(500, 30));
 		for (size_t i = 0; i < HButtons.size(); ++i)
 		{
 			HWND NewWnd = ButtonManager->AddItem(InitData.MainHWND, HButtons[i]);
 
-			UISlot Slot(NewWnd, HButtons[i].Size);
-			Slot.SetFill(false);
+			auto HSlot = UILib::CreateSlot(NewWnd, HButtons[i].Size);
+			HSlot->SetFill(false);
 			if (i == 3)
 			{
-				Slot.SetFill(true);
-				Slot.SetHAlign(HA_Right);
+				HSlot->SetFill(true);
+				HSlot->SetHAlign(HA_Right);
 			}
 
-			HBox->AddChild(Slot);
+			HBox->AddChild(HSlot);
 		}
 		ButtonManager->AddSlot(HBox);
 		UpdateFolderIdText();

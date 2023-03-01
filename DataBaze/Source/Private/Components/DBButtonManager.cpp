@@ -2,7 +2,15 @@
 #include "Components/UISpacer.h"
 #include "UIDataTypes.h"
 
-void DBButtonManager::Initialize(HWND OwnerWnd, std::vector<FWndItem>& Buttons) {}
+DBButtonManager::~DBButtonManager()
+{
+	auto it = Handlers.begin();
+	while (it != Handlers.end())
+	{
+		DestroyWindow(it->second);
+		++it;
+	}
+}
 
 HWND DBButtonManager::AddItem(HWND OwnerWnd, const FWndItem& Item)
 {
@@ -13,7 +21,7 @@ HWND DBButtonManager::AddItem(HWND OwnerWnd, const FWndItem& Item)
 	return Wnd;
 }
 
-void DBButtonManager::AddSlot(UISlot* Slot)
+void DBButtonManager::AddSlot(SlotPtr Slot)
 {
 	UISlots.push_back(Slot);
 	Slot->ReDraw();

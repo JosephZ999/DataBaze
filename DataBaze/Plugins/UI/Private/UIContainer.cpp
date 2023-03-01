@@ -1,7 +1,7 @@
 #include "UIContainer.h"
 #include "Components/UISlot.h"
 
-void UIContainer::AddChild(const UISlot& InChild)
+void UIContainer::AddChild(const SlotPtr InChild)
 {
 	Children.push_back(InChild);
 }

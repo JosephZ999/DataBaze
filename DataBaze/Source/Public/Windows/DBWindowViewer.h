@@ -6,6 +6,8 @@
 
 #include "DBInterface.h"
 
+class DBButtonManager;
+
 struct FillData
 {
 	std::wstring Title;
@@ -16,10 +18,12 @@ class DBWindowViewer : public DBInterface
 {
 public:
 	DBWindowViewer(DBInterface* InOwner);
+	~DBWindowViewer();
 	HWND		 WindowHandle = 0;
 	DBFamilyData MemberData;
 
 private:
+	DBButtonManager* ButtonManager;
 	bool		 HasSpouse = false;
 	bool		 HasChild  = false;
 	std::wstring Title;
@@ -27,8 +31,6 @@ private:
 
 public:
 	LRESULT CALLBACK CallProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
-
-	void OnConstruct();
 
 	void Autofill_Form1();
 	void Autofill_Form2();

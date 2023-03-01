@@ -76,8 +76,8 @@ void DBWindowsManager::Initialize(HINSTANCE HInstance)
 		NULL										  // Additional application data
 	);
 
-	GetViewer()->CallProc(GetViewerHandle(), WM_CREATE, 0, 0);
-	GetWriter()->CallProc(GetWriterHandle(), WM_CREATE, 0, 0);
+	//GetViewer()->CallProc(GetViewerHandle(), WM_CREATE, 0, 0);
+	//GetWriter()->CallProc(GetWriterHandle(), WM_CREATE, 0, 0);
 }
 
 DBWindowsManager::~DBWindowsManager()

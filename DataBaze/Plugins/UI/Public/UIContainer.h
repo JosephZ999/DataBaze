@@ -1,16 +1,20 @@
 #pragma once
 #include <vector>
+#include <memory>
 
 class UISlot;
 
 class UIContainer
 {
-	std::vector<UISlot> Children;
+	typedef std::shared_ptr<UISlot> SlotPtr;
+	typedef std::vector<SlotPtr>	SlotPtrArr;
+
+	SlotPtrArr Children;
 
 protected:
-	inline std::vector<UISlot>& GetChildren() { return Children; }
+	SlotPtrArr GetChildren() { return Children; }
 
 public:
-	void AddChild(const UISlot& InChild);
-	int GetChildrenNum();
+	void AddChild(const SlotPtr InChild);
+	int	 GetChildrenNum();
 };

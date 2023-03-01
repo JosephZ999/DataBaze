@@ -159,11 +159,6 @@ DBWindowWriter::DBWindowWriter(DBInterface* InOwner)
 	LastImageId = DataManager->ReadImageId();
 }
 
-void DBWindowWriter::OnConstruct()
-{
-	// we can reset all data
-}
-
 void DBWindowWriter::SelectWriteData(EPeopleType PT)
 {
 	if (Finish) return;
