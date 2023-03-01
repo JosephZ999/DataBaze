@@ -59,14 +59,6 @@ namespace DBDebug
 void CreateMessageBox(std::string Text);
 }
 
-namespace DBSysLib
-{
-HWND			  GetMainHWND();
-DBDataManager*	  GetDataManager();
-DBWindowsManager* GetWindowsManager();
-HINSTANCE		  GetHIns();
-} // namespace DBSysLib
-
 template <typename To, typename From> //
 To* Cast(From* Param)
 {

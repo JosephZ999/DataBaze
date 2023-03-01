@@ -159,7 +159,7 @@ void DBWindowsManager::CreateViewer()
 {
 	if (! WindowViewer)
 	{
-		WindowViewer = new DBWindowViewer(this);
+		WindowViewer = new DBWindowViewer(GetViewerHandle());
 	}
 }
 
@@ -176,7 +176,7 @@ void DBWindowsManager::CreateWriter()
 {
 	if (! WindowWriter)
 	{
-		WindowWriter = new DBWindowWriter(this);
+		WindowWriter = new DBWindowWriter(GetWriterHandle());
 	}
 }
 

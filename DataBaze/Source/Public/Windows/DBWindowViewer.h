@@ -20,8 +20,7 @@ struct FillData
 class DBWindowViewer : public DBInterface
 {
 public:
-	DBWindowViewer(DBInterface* InOwner);
-
+	DBWindowViewer(HWND OwningWnd);
 	OnViewerCloseSignature OnClose;
 
 	HWND		 WindowHandle = 0;

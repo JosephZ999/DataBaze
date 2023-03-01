@@ -22,7 +22,7 @@ class DBWindowWriter : public DBInterface
 	typedef std::vector<FImagePath> Images;
 
 public:
-	DBWindowWriter(DBInterface* InOwner);
+	DBWindowWriter(HWND OwningWnd);
 
 	OnWriterCloseSignature OnClose;
 

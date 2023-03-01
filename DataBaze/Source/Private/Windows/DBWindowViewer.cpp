@@ -1,9 +1,5 @@
 #include "DBWindowViewer.h"
-#include "DBFunctionLibrary.h"
-#include <Windows.h>
 #include "DBKeyCodes.h"
-#include "DBWindowsManager.h"
-#include "DBInstance.h"
 
 #include "Components/DBButtonManager.h"
 #include "Components/UIVerticalBox.h"
@@ -67,19 +63,6 @@ LRESULT DBWindowViewer::CallProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM 
 	{
 	case EDBWinCompId::IDC_V_Edit:
 	{
-
-		// auto wp = (WPARAM)EDBWinCompId::IDC_NEWITEM;
-		// auto Sys = Cast<DBSystem>(ViewerObj->GetSystem());
-		// Sys->CallCommand(hWnd, 0, wp, lParam);
-		// MAKEWORD()
-		// SendMessage()
-
-		auto Ins = SingletonManager::Get<DBInstance>();
-		if (Ins)
-		{
-			// DBDebug::CreateMessageBox(std::to_string(Ins->GetInitData().asd));
-		}
-
 		break;
 	}
 	case EDBWinCompId::IDC_V_Prev:
@@ -95,14 +78,10 @@ LRESULT DBWindowViewer::CallProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM 
 	return DefWindowProc(hWnd, message, wParam, lParam);
 }
 
-DBWindowViewer::DBWindowViewer(DBInterface* InOwner)
+DBWindowViewer::DBWindowViewer(HWND OwningWnd)
 {
-	SetOwner(InOwner);
-	auto Manager = Cast<DBWindowsManager>(GetOwner());
-	if (Manager)
-	{
-		WindowHandle = Manager->GetViewerHandle();
-	}
+	WindowHandle = OwningWnd;
+
 	ButtonManager = CreateComponent<DBButtonManager>();
 	if (ButtonManager)
 	{

@@ -1,9 +1,7 @@
 
 #include "DBWindowWriter.h"
-#include "DBFunctionLibrary.h"
 #include <commdlg.h>
 #include <comdef.h>
-#include "DBWindowsManager.h"
 #include "DBDataManager.h"
 #include "DBButtonManager.h"
 
@@ -101,16 +99,11 @@ LRESULT DBWindowWriter::CallProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM 
 	return DefWindowProc(hWnd, message, wParam, lParam);
 }
 
-DBWindowWriter::DBWindowWriter(DBInterface* InOwner)
+DBWindowWriter::DBWindowWriter(HWND OwningWnd)
 {
-	SetOwner(InOwner);
-	auto Manager = DBSysLib::GetWindowsManager();
-	if (Manager)
-	{
-		WindowHandle = Manager->GetWriterHandle();
-	}
+	WindowHandle = OwningWnd;
 
-	auto DataManager = DBSysLib::GetDataManager();
+	auto DataManager = cmd::get::GetDataManager();
 	if (! DataManager) return;
 
 	LastImageId = DataManager->ReadImageId();
@@ -120,10 +113,9 @@ DBWindowWriter::DBWindowWriter(DBInterface* InOwner)
 	{
 		auto VBox = UILib::CreateVerticalBox(Size2D(25, 25), Size2D(530, 275));
 
-		FWndItem Item1(WT_Static, IDC_W_Info, Size2D(0, 100),
-			L"Parent 1 Parent 1 Parent 1 Parent 1 Parent 1 Parent 1 Parent 1 Parent 1 Parent 1 Parent 1", 24, 0);
+		FWndItem Item1(WT_Static, IDC_W_Info, Size2D(0, 100), L"", 24, 0);
 		FWndItem Item2(WT_Edit, IDC_W_Edit, Size2D(100, 40), L"", 28, ES_CENTER | ES_UPPERCASE | ES_WANTRETURN);
-		FWndItem Item3(WT_Static, IDC_W_MoreInfo, Size2D(100, 100), L"Info", 18, 0);
+		FWndItem Item3(WT_Static, IDC_W_MoreInfo, Size2D(100, 100), L"", 18, 0);
 
 		HWND Wnd1 = ButtonManager->AddItem(WindowHandle, Item1);
 		HWND Wnd2 = ButtonManager->AddItem(WindowHandle, Item2);
@@ -655,7 +647,7 @@ void DBWindowWriter::OpenImage()
 
 bool DBWindowWriter::SaveImage(const std::wstring& InImagePath)
 {
-	auto DataManager = DBSysLib::GetDataManager();
+	auto DataManager = cmd::get::GetDataManager();
 	if (! DataManager) return false;
 
 	FImagePath NewImage;
@@ -687,7 +679,7 @@ void DBWindowWriter::CopySavedImages()
 		CopyFile(Elem.Initial.c_str(), Elem.Final.c_str(), false);
 		LastImageId = Elem.ImageId;
 	}
-	auto DataManager = DBSysLib::GetDataManager();
+	auto DataManager = cmd::get::GetDataManager();
 	if (! DataManager) return;
 
 	DataManager->WriteImageId(LastImageId);
@@ -829,7 +821,7 @@ void DBWindowWriter::FinishWriting()
 
 	if (Finish)
 	{
-		auto DataManager = DBSysLib::GetDataManager();
+		auto DataManager = cmd::get::GetDataManager();
 		if (! DataManager) return;
 
 		DataManager->AddMember(MembersData);

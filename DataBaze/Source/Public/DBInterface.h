@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <cassert>
+#include "Core/DBCommandCenter.h"
 
 class DBInterface
 {
