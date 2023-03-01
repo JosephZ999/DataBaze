@@ -167,6 +167,9 @@
     <ClInclude Include="Plugins\UI\Public\Components\UIHorizontalBox.h">
       <Filter>Plugins\UI\Public\Components</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Public\Core\DBCommandCenter.h">
+      <Filter>Source\Public\Core</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DataBaze.cpp">
@@ -228,6 +231,9 @@
     </ClCompile>
     <ClCompile Include="Plugins\UI\Private\Components\UIHorizontalBox.cpp">
       <Filter>Plugins\UI\Private\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Private\Core\DBCommandCenter.cpp">
+      <Filter>Source\Private\Core</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

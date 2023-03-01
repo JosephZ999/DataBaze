@@ -189,6 +189,7 @@
     <ClInclude Include="Resource.h" />
     <ClInclude Include="Source\Public\Components\DBButtonManager.h" />
     <ClInclude Include="Source\Public\Components\DBListBox.h" />
+    <ClInclude Include="Source\Public\Core\DBCommandCenter.h" />
     <ClInclude Include="Source\Public\DataTypes\Size2D.h" />
     <ClInclude Include="Source\Public\DBDataTypes.h" />
     <ClInclude Include="Source\Public\Components\DBButton.h" />
@@ -219,6 +220,7 @@
     <ClCompile Include="Source\Private\Components\DBDataManager.cpp" />
     <ClCompile Include="Source\Private\Components\DBListBox.cpp" />
     <ClCompile Include="Source\Private\Components\DBWindowsManager.cpp" />
+    <ClCompile Include="Source\Private\Core\DBCommandCenter.cpp" />
     <ClCompile Include="Source\Private\Core\DBInstance.cpp" />
     <ClCompile Include="Source\Private\DBDataTypes.cpp" />
     <ClCompile Include="Source\Private\DBInterface.cpp" />
