@@ -9,6 +9,10 @@ class DBWindowsManager;
 class DBListBox;
 class DBButtonManager;
 
+#ifdef _M_IX86
+typedef UINT UINT_PTR;
+#endif
+
 struct FDBInstanceInit
 {
 	FDBInstanceInit() {}

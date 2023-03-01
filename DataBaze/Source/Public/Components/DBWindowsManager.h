@@ -23,7 +23,6 @@ private:
 	DBWindowWriter* WindowWriter = nullptr;
 
 public:
-	virtual DBInterface*   GetSystem() const override;
 	HWND				   GetViewerHandle() const { return ViewerHandle; }
 	HWND				   GetWriterHandle() const { return WriterHandle; }
 	DBInterface*		   GetViewerClass() const;

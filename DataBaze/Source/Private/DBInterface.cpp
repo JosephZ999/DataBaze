@@ -1,11 +1,5 @@
 #include "DBInterface.h"
 
-DBInterface::DBInterface()
-{
-	Owner = nullptr;
-	// Components.resize(10);
-}
-
 DBInterface* DBInterface::GetOwner() const
 {
 	return Owner;
@@ -14,15 +8,6 @@ DBInterface* DBInterface::GetOwner() const
 void DBInterface::SetOwner(DBInterface* NewOwner)
 {
 	Owner = NewOwner;
-}
-
-DBInterface* DBInterface::GetSystem() const
-{
-	if (Owner)
-	{
-		return Owner->GetSystem();
-	}
-	return nullptr;
 }
 
 DBInterface::~DBInterface()

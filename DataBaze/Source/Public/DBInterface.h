@@ -5,17 +5,14 @@
 
 class DBInterface
 {
-public:
-	DBInterface();
 
 private:
-	DBInterface*			  Owner;
+	DBInterface*			  Owner = nullptr;
 	std::vector<DBInterface*> Components;
 
 public:
 	DBInterface*		 GetOwner() const;
 	void				 SetOwner(DBInterface* NewOwner);
-	virtual DBInterface* GetSystem() const; // remove this
 
 protected:
 	virtual ~DBInterface();

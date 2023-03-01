@@ -145,11 +145,6 @@ void DBWindowsManager::SetViewerData(const DBFamilyData& InData)
 	GetViewer()->SetMemberData(InData);
 }
 
-DBInterface* DBWindowsManager::GetSystem() const
-{
-	return GetOwner();
-}
-
 DBInterface* DBWindowsManager::GetViewerClass() const
 {
 	return WindowViewer;

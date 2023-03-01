@@ -654,9 +654,7 @@ void DBWindowWriter::OpenImage()
 
 bool DBWindowWriter::SaveImage(const std::wstring& InImagePath)
 {
-	if (! GetSystem()) return false;
-	auto DataManager = GetSystem()->GetComponent<DBDataManager>();
-
+	auto DataManager = DBSysLib::GetDataManager();
 	if (! DataManager) return false;
 
 	FImagePath NewImage;
@@ -688,11 +686,9 @@ void DBWindowWriter::CopySavedImages()
 		CopyFile(Elem.Initial.c_str(), Elem.Final.c_str(), false);
 		LastImageId = Elem.ImageId;
 	}
-
-	if (! GetSystem()) return;
-	auto DataManager = GetSystem()->GetComponent<DBDataManager>();
-
+	auto DataManager = DBSysLib::GetDataManager();
 	if (! DataManager) return;
+
 	DataManager->WriteImageId(LastImageId);
 }
 
@@ -832,9 +828,7 @@ void DBWindowWriter::FinishWriting()
 
 	if (Finish)
 	{
-		if (! GetSystem()) return;
-
-		auto DataManager = GetSystem()->GetComponent<DBDataManager>();
+		auto DataManager = DBSysLib::GetDataManager();
 		if (! DataManager) return;
 
 		DataManager->AddMember(MembersData);

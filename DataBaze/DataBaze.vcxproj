@@ -195,8 +195,6 @@
     <ClInclude Include="Source\Public\Components\DBDataManager.h" />
     <ClInclude Include="Source\Public\Components\DBWindowsManager.h" />
     <ClInclude Include="Source\Public\DBInterface.h" />
-    <ClInclude Include="Source\Public\DBSystem.h">
-    </ClInclude>
     <ClInclude Include="Source\Public\Core\DBInstance.h" />
     <ClInclude Include="Source\Public\Utils\DBCharCodes.h" />
     <ClInclude Include="Source\Public\Utils\DBDelegate.h" />
@@ -225,8 +223,6 @@
     <ClCompile Include="Source\Private\DBDataTypes.cpp" />
     <ClCompile Include="Source\Private\DBInterface.cpp" />
     <ClCompile Include="Source\Private\DBJsonUtils.cpp" />
-    <ClCompile Include="Source\Private\DBSystem.cpp">
-    </ClCompile>
     <ClCompile Include="Source\Private\Utils\DBFunctionLibrary.cpp" />
     <ClCompile Include="Source\Private\Windows\DBWindowViewer.cpp" />
     <ClCompile Include="Source\Private\Windows\DBWindowWriter.cpp" />

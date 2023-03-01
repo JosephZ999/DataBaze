@@ -3,15 +3,12 @@
 #include <Windows.h>
 #include "DBKeyCodes.h"
 #include "DBWindowsManager.h"
-#include "DBSystem.h"
 #include "DBInstance.h"
 
 #include "Components/DBButtonManager.h"
 #include "Components/UIVerticalBox.h"
 #include "Components/UIHorizontalBox.h"
 #include "UILibrary.h"
-
-DBWindowViewer* ViewerObj = nullptr;
 
 LRESULT DBWindowViewer::CallProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
@@ -104,7 +101,6 @@ DBWindowViewer::DBWindowViewer(DBInterface* InOwner)
 	if (Manager)
 	{
 		WindowHandle = Manager->GetViewerHandle();
-		ViewerObj	 = this;
 	}
 	ButtonManager = CreateComponent<DBButtonManager>();
 	if (ButtonManager)
