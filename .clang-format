@@ -29,5 +29,6 @@ BraceWrapping:
   AfterEnum: true
   AfterStruct: true
   SplitEmptyFunction: false
+  AfterCaseLabel: true
 
 NamespaceIndentation: All
