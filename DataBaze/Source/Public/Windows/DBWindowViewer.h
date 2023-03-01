@@ -18,7 +18,6 @@ class DBWindowViewer : public DBInterface
 {
 public:
 	DBWindowViewer(DBInterface* InOwner);
-	~DBWindowViewer();
 	HWND		 WindowHandle = 0;
 	DBFamilyData MemberData;
 

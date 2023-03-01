@@ -44,8 +44,8 @@ void UISlot::Draw(Size2D InPos, Size2D InSize)
 	{
 	case HA_Left:
 	{
-		FinalPos.X	= InPos.Y;
-		FinalSize.X = Size.Y;
+		FinalPos.X	= InPos.X;
+		FinalSize.X = Size.X;
 		break;
 	}
 	case HA_Center:

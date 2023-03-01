@@ -12,12 +12,6 @@
 #include "UILibrary.h"
 
 DBWindowViewer* ViewerObj = nullptr;
-DBWindow		ViewerInfo;
-DBWindow		ViewerInfoTitle;
-
-DBWindow ViewerBtnEdit;
-DBWindow ViewerBtnPrev;
-DBWindow ViewerBtnNext;
 
 LRESULT DBWindowViewer::CallProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
@@ -47,14 +41,12 @@ LRESULT DBWindowViewer::CallProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM 
 
 	case WM_HOTKEY:
 	{
-		if (! ViewerObj) break;
-
 		switch (wParam)
 		{
-		case 1: ViewerObj->Autofill_Form1(); break;
-		case 2: ViewerObj->Autofill_Form2(); break;
-		case 3: ViewerObj->Autofill_Form3(); break;
-		case 4: ViewerObj->Autofill_Form4(); break;
+		case 1: Autofill_Form1(); break;
+		case 2: Autofill_Form2(); break;
+		case 3: Autofill_Form3(); break;
+		case 4: Autofill_Form4(); break;
 		}
 	}
 	case WM_PAINT:
@@ -77,20 +69,19 @@ LRESULT DBWindowViewer::CallProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM 
 	{
 	case EDBWinCompId::IDC_V_Edit:
 	{
-		if (ViewerObj)
-		{
-			// auto wp = (WPARAM)EDBWinCompId::IDC_NEWITEM;
-			// auto Sys = Cast<DBSystem>(ViewerObj->GetSystem());
-			// Sys->CallCommand(hWnd, 0, wp, lParam);
-			// MAKEWORD()
-			// SendMessage()
 
-			auto Ins = SingletonManager::Get<DBInstance>();
-			if (Ins)
-			{
-				// DBDebug::CreateMessageBox(std::to_string(Ins->GetInitData().asd));
-			}
+		// auto wp = (WPARAM)EDBWinCompId::IDC_NEWITEM;
+		// auto Sys = Cast<DBSystem>(ViewerObj->GetSystem());
+		// Sys->CallCommand(hWnd, 0, wp, lParam);
+		// MAKEWORD()
+		// SendMessage()
+
+		auto Ins = SingletonManager::Get<DBInstance>();
+		if (Ins)
+		{
+			// DBDebug::CreateMessageBox(std::to_string(Ins->GetInitData().asd));
 		}
+
 		break;
 	}
 	case EDBWinCompId::IDC_V_Prev:
@@ -121,91 +112,61 @@ DBWindowViewer::DBWindowViewer(DBInterface* InOwner)
 		auto VBox = UILib::CreateVerticalBox(Size2D(25, 25), Size2D(535, 350));
 
 		// Info boxes
-		auto HBox1 = UILib::CreateHorizontalBox(Size2D(), Size2D());
-		HBox1->SetFill(true);
+		{
+			auto HBox1 = UILib::CreateHorizontalBox(Size2D(), Size2D());
+			HBox1->SetFill(true);
 
-		FWndItem SlotElem1(WT_Static, EDBWinCompId::IDC_V_InfoTitle, Size2D(200, 300), L"", 18, SS_RIGHT);
-		FWndItem SlotElem2(WT_Static, EDBWinCompId::IDC_V_Info, Size2D(335, 300), L"", 18, 0);
-		HWND	 SlotWnd1 = ButtonManager->AddItem(WindowHandle, SlotElem1);
-		HWND	 SlotWnd2 = ButtonManager->AddItem(WindowHandle, SlotElem2);
+			FWndItem SlotElem1(WT_Static, IDC_V_InfoTitle, Size2D(200, 300), L"", 18, SS_RIGHT);
+			FWndItem SlotElem2(WT_Static, IDC_V_Info, Size2D(335, 300), L"", 18, 0);
+			HWND	 SlotWnd1 = ButtonManager->AddItem(WindowHandle, SlotElem1);
+			HWND	 SlotWnd2 = ButtonManager->AddItem(WindowHandle, SlotElem2);
 
-		auto Slot1 = UILib::CreateSlot(SlotWnd1, SlotElem1.Size);
-		auto Slot2 = UILib::CreateSlot(SlotWnd2, SlotElem2.Size);
-		// UISlot Slot2(SlotWnd2, SlotElem2.Size);
-		HBox1->AddChild(Slot1);
-		HBox1->AddChild(UILib::CreateSpacer(Size2D(20, 0)));
-		HBox1->AddChild(Slot2);
+			auto Slot1 = UILib::CreateSlot(SlotWnd1, SlotElem1.Size);
+			Slot1->SetHAlign(HA_Left);
+			Slot1->SetFill(false);
+
+			auto Slot2 = UILib::CreateSlot(SlotWnd2, SlotElem2.Size);
+
+			HBox1->AddChild(Slot1);
+			// HBox1->AddChild(UILib::CreateSpacer(Size2D(10, 0)));
+			HBox1->AddChild(Slot2);
+			VBox->AddChild(HBox1);
+		}
 
 		// Buttons
-		// auto HBox2 = UILib::CreateHorizontalBox(Size2D(25, 25), Size2D(535, 375));
-		VBox->AddChild(HBox1);
-		// VBox->AddChild(*HBox2);
+		{
+			auto HBox2 = UILib::CreateHorizontalBox(Size2D(), Size2D(0, 35));
+			HBox2->SetFill(false);
+			HBox2->SetVAlign(VA_Bottom);
+
+			FWndItem SlotElem1(WT_Button, IDC_V_Prev, Size2D(100, 35), L"< Prev");
+			FWndItem SlotElem2(WT_Button, IDC_V_Edit, Size2D(100, 35), L"Edit");
+			FWndItem SlotElem3(WT_Button, IDC_V_Next, Size2D(100, 35), L"Next >");
+			HWND	 SlotWnd1 = ButtonManager->AddItem(WindowHandle, SlotElem1);
+			HWND	 SlotWnd2 = ButtonManager->AddItem(WindowHandle, SlotElem2);
+			HWND	 SlotWnd3 = ButtonManager->AddItem(WindowHandle, SlotElem3);
+
+			auto Slot1 = UILib::CreateSlot(SlotWnd1, SlotElem1.Size);
+			Slot1->SetVAlign(VA_Bottom);
+			Slot1->SetHAlign(HA_Left);
+
+			auto Slot2 = UILib::CreateSlot(SlotWnd2, SlotElem2.Size);
+			Slot2->SetVAlign(VA_Bottom);
+			Slot2->SetHAlign(HA_Center);
+
+			auto Slot3 = UILib::CreateSlot(SlotWnd3, SlotElem3.Size);
+			Slot3->SetVAlign(VA_Bottom);
+			Slot3->SetHAlign(HA_Right);
+
+			HBox2->AddChild(Slot1);
+			HBox2->AddChild(Slot2);
+			HBox2->AddChild(Slot3);
+			VBox->AddChild(UILib::CreateSpacer(Size2D(15, 15)));
+			VBox->AddChild(HBox2);
+		}
 
 		ButtonManager->AddSlot(VBox);
 	}
-
-	return;
-	ViewerInfoTitle.Id		 = EDBWinCompId::IDC_V_InfoTitle;
-	ViewerInfoTitle.Parent	 = WindowHandle;
-	ViewerInfoTitle.Position = {25, 25};
-	ViewerInfoTitle.Size	 = {200, 300}; // x 265
-	ViewerInfoTitle.Text	 = L"Name : ";
-	ViewerInfoTitle.FontSize = 18;
-	ViewerInfoTitle.HIns	 = GetModuleHandle(NULL);
-	DBLib::CreateStaticBox(ViewerInfoTitle, WS_VISIBLE | WS_CHILD | SS_RIGHT);
-
-	ViewerInfo.Id		= EDBWinCompId::IDC_V_Info;
-	ViewerInfo.Parent	= WindowHandle;
-	ViewerInfo.Position = {225, 25};
-	ViewerInfo.Size		= {335, 300};
-	ViewerInfo.Text		= L"Moon";
-	ViewerInfo.FontSize = 18;
-	ViewerInfo.HIns		= GetModuleHandle(NULL);
-	DBLib::CreateStaticBox(ViewerInfo, WS_VISIBLE | WS_CHILD);
-
-	//-----------------------------------------------// Buttons
-	ViewerBtnEdit.Id		 = EDBWinCompId::IDC_V_Edit;
-	ViewerBtnEdit.Parent	 = WindowHandle;
-	ViewerBtnEdit.Size		 = {100, 35};
-	ViewerBtnEdit.Position.X = (int)(300 - ViewerBtnEdit.Size.X / 2.f);
-	ViewerBtnEdit.Position.Y = 340;
-	ViewerBtnEdit.Text		 = L"Edit";
-	ViewerBtnEdit.FontSize	 = 18;
-	ViewerBtnEdit.HIns		 = GetModuleHandle(NULL);
-
-	auto locvar = DBLib::GetScreenSize(WindowHandle);
-
-	DBLib::CreateButton(ViewerBtnEdit);
-
-	ViewerBtnPrev.Id		 = EDBWinCompId::IDC_V_Prev;
-	ViewerBtnPrev.Parent	 = WindowHandle;
-	ViewerBtnPrev.Size		 = {100, 35};
-	ViewerBtnPrev.Position.X = 25;
-	ViewerBtnPrev.Position.Y = 340;
-	ViewerBtnPrev.Text		 = L"Prev";
-	ViewerBtnPrev.FontSize	 = 18;
-	ViewerBtnPrev.HIns		 = GetModuleHandle(NULL);
-	DBLib::CreateButton(ViewerBtnPrev);
-
-	ViewerBtnNext.Id		 = EDBWinCompId::IDC_V_Next;
-	ViewerBtnNext.Parent	 = WindowHandle;
-	ViewerBtnNext.Size		 = {100, 35};
-	ViewerBtnNext.Position.X = 460;
-	ViewerBtnNext.Position.Y = 340;
-	ViewerBtnNext.Text		 = L"Next";
-	ViewerBtnNext.FontSize	 = 18;
-	ViewerBtnNext.HIns		 = GetModuleHandle(NULL);
-	DBLib::CreateButton(ViewerBtnNext);
-}
-
-DBWindowViewer::~DBWindowViewer()
-{
-	return;
-	DestroyWindow(ViewerInfoTitle.Window);
-	DestroyWindow(ViewerInfo.Window);
-	DestroyWindow(ViewerBtnEdit.Window);
-	DestroyWindow(ViewerBtnPrev.Window);
-	DestroyWindow(ViewerBtnNext.Window);
 }
 
 void DBWindowViewer::SetMemberData(const DBFamilyData& InData)
@@ -263,8 +224,8 @@ void DBWindowViewer::PrintData()
 	if (MemberData.Parents.size() == 0) return;
 
 	// Clear text
-	DBLib::SetText(ViewerInfoTitle.Window, L"");
-	DBLib::SetText(ViewerInfo.Window, L"");
+	DBLib::SetText(ButtonManager->GetWndHandler(IDC_V_InfoTitle), L"");
+	DBLib::SetText(ButtonManager->GetWndHandler(IDC_V_Info), L"");
 
 	HasSpouse = MemberData.Parents.size() > 1;
 	HasChild  = MemberData.Children.size() > 0;
@@ -280,8 +241,8 @@ void DBWindowViewer::PrintData()
 	std::wstring InfoAsWStr;
 	DBConvert::StringToWString(Info, InfoAsWStr);
 
-	DBLib::SetText(ViewerInfoTitle.Window, Title);
-	DBLib::SetText(ViewerInfo.Window, InfoAsWStr);
+	DBLib::SetText(ButtonManager->GetWndHandler(IDC_V_InfoTitle), Title);
+	DBLib::SetText(ButtonManager->GetWndHandler(IDC_V_Info), InfoAsWStr);
 }
 
 void DBWindowViewer::PrintPeople(const DBPeopleData& People, bool IsChild)
