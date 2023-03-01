@@ -1,5 +1,6 @@
 #pragma once
 #include <Windows.h>
+#include "DBDataTypes.h"
 
 class DBDataManager;
 class DBWindowsManager;
@@ -12,5 +13,10 @@ namespace cmd
 		DBDataManager*	  GetDataManager();
 		DBWindowsManager* GetWindowsManager();
 		HINSTANCE		  GetHIns();
-	} // namespace DBSysLib
+	} // namespace get
+
+	namespace wnd
+	{
+
+	}
 } // namespace cmd

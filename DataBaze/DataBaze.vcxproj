@@ -192,7 +192,6 @@
     <ClInclude Include="Source\Public\Core\DBCommandCenter.h" />
     <ClInclude Include="Source\Public\DataTypes\Size2D.h" />
     <ClInclude Include="Source\Public\DBDataTypes.h" />
-    <ClInclude Include="Source\Public\Components\DBButton.h" />
     <ClInclude Include="Source\Public\Components\DBDataManager.h" />
     <ClInclude Include="Source\Public\Components\DBWindowsManager.h" />
     <ClInclude Include="Source\Public\DBInterface.h" />
@@ -215,7 +214,6 @@
     <ClCompile Include="Plugins\UI\Private\Components\UIVerticalBox.cpp" />
     <ClCompile Include="Plugins\UI\Private\UIContainer.cpp" />
     <ClCompile Include="Plugins\UI\Private\UILibrary.cpp" />
-    <ClCompile Include="Source\Private\Components\DBButton.cpp" />
     <ClCompile Include="Source\Private\Components\DBButtonManager.cpp" />
     <ClCompile Include="Source\Private\Components\DBDataManager.cpp" />
     <ClCompile Include="Source\Private\Components\DBListBox.cpp" />

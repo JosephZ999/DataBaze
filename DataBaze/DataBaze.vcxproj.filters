@@ -95,9 +95,6 @@
     <ClInclude Include="DataBaze.h">
       <Filter>Source\Public</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Public\Components\DBButton.h">
-      <Filter>Source\Public\Components</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Public\Utils\DBFunctionLibrary.h">
       <Filter>Source\Public\Utils</Filter>
     </ClInclude>
@@ -174,9 +171,6 @@
   <ItemGroup>
     <ClCompile Include="DataBaze.cpp">
       <Filter>Source\Private</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Private\Components\DBButton.cpp">
-      <Filter>Source\Private\Components</Filter>
     </ClCompile>
     <ClCompile Include="Source\Private\Utils\DBFunctionLibrary.cpp">
       <Filter>Source\Private\Utils</Filter>

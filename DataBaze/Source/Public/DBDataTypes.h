@@ -68,8 +68,7 @@ struct DBWindow
 		, Position(InPosition)
 		, Size(InSize)
 		, Text(InText)
-	{
-	}
+	{}
 
 	EDBWinCompId Id		= EDBWinCompId::IDC_NONE;
 	HWND		 Window = 0;
@@ -89,16 +88,14 @@ struct FWndItem
 		, Id(InId)
 		, Size(InSize)
 		, Text(InText)
-	{
-	}
+	{}
 
 	FWndItem(EDBWindowType InType, EDBWinCompId InId, std::wstring InText)
 		: Type(InType)
 		, Id(InId)
 		, Text(InText)
 		, AddStyle(BS_NOTIFY)
-	{
-	}
+	{}
 
 	FWndItem(EDBWindowType InType, EDBWinCompId InId, Size2D InSize, std::wstring InText, int InFontSize, DWORD InStyle)
 		: Type(InType)
@@ -107,8 +104,7 @@ struct FWndItem
 		, Text(InText)
 		, FontSize(InFontSize)
 		, AddStyle(InStyle)
-	{
-	}
+	{}
 
 	EDBWindowType Type = EDBWindowType::WT_None;
 	EDBWinCompId  Id   = EDBWinCompId::IDC_NONE;
@@ -150,8 +146,7 @@ struct DBPeopleData
 	DBPeopleData() {}
 	DBPeopleData(std::string InName)
 		: Name(InName)
-	{
-	}
+	{}
 
 	std::string Name;		//
 	std::string FamilyName; //
@@ -191,15 +186,13 @@ struct DBFamilyData
 		: Parents({})
 		, Children({})
 		, bLocked(false)
-	{
-	}
+	{}
 
 	DBFamilyData(PeopleGroup InParents, PeopleGroup InChildren, bool IsFamily)
 		: Parents(InParents)
 		, Children(InChildren)
 		, bLocked(false)
-	{
-	}
+	{}
 
 	PeopleGroup Parents;
 	PeopleGroup Children;

@@ -24,3 +24,10 @@ AllowShortCaseLabelsOnASingleLine: true
 AllowShortEnumsOnASingleLine: true
 AllowShortIfStatementsOnASingleLine: true
 
+BreakBeforeBraces: Custom
+BraceWrapping:
+  AfterEnum: true
+  AfterStruct: true
+  SplitEmptyFunction: false
+
+NamespaceIndentation: All
