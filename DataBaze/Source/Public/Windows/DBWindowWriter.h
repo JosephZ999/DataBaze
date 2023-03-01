@@ -6,13 +6,15 @@
 
 #include "DBDelegate.h"
 
+class DBButtonManager;
+
 DECLARE_DELEGATE(OnWriteSuccessSignature);
 
 struct FImagePath
 {
 	std::wstring Initial;
 	std::wstring Final;
-	int ImageId;
+	int			 ImageId;
 };
 
 class DBWindowWriter : public DBInterface
@@ -20,18 +22,11 @@ class DBWindowWriter : public DBInterface
 	typedef std::vector<FImagePath> Images;
 
 public:
-	DBWindowWriter() {}
 	DBWindowWriter(DBInterface* InOwner);
-	DBWindowWriter(HWND InOwnerHWND)
-		: WindowHandle(InOwnerHWND)
-	{
-	}
-
 
 	OnWriteSuccessSignature OnWriteSuccess;
 
 	HWND WindowHandle = 0;
-
 	DBFamilyData MembersData;
 
 	// Writing progress
@@ -42,10 +37,13 @@ public:
 	EMeritialStatus Status			   = EMeritialStatus::MS_Unmarried;
 	size_t			ChildrenNum		   = 0;
 	size_t			EnteredChildrenNum = 0;
-	bool			Finish = false;
+	bool			Finish			   = false;
 
 	Images ImagesToCopy;
 	int	   LastImageId = 1;
+
+private:
+	DBButtonManager* ButtonManager = nullptr;
 
 public:
 	LRESULT CALLBACK CallProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);

@@ -6,6 +6,7 @@
 
 class UIVerticalBox;
 class UIHorizontalBox;
+
 namespace UILib
 {
 typedef std::shared_ptr<UISlot> SlotPtr;

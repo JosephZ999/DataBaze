@@ -5,59 +5,22 @@
 #include <comdef.h>
 #include "DBWindowsManager.h"
 #include "DBDataManager.h"
+#include "DBButtonManager.h"
+
+#include "UILibrary.h"
 
 #define EDIT_STYLE_BASE WS_BORDER | WS_VISIBLE | WS_CHILD | ES_CENTER | ES_UPPERCASE | ES_WANTRETURN
-
-DBWindowWriter* WriterObj = nullptr;
-DBWindow		WriterEditBox;
-DBWindow		WriterInfoBox;
-DBWindow		WriterMoreInfoBox;
 
 LRESULT DBWindowWriter::CallProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	switch (message)
 	{
-	case WM_CREATE:
-	{
-		WriterEditBox.Id	   = EDBWinCompId::IDC_W_Edit;
-		WriterEditBox.Parent   = hWnd;
-		WriterEditBox.Position = {25, 150};
-		WriterEditBox.Size	   = {530, 40};
-		WriterEditBox.Text	   = {};
-		WriterEditBox.FontSize = 28;
-		WriterEditBox.HIns	   = GetModuleHandle(NULL);
-
-		DBLib::CreateEditBox(WriterEditBox, WS_VISIBLE | WS_CHILD | ES_CENTER | ES_UPPERCASE | ES_WANTRETURN);
-
-		WriterInfoBox.Id	   = EDBWinCompId::IDC_W_Info;
-		WriterInfoBox.Parent   = hWnd;
-		WriterInfoBox.Position = {25, 25};
-		WriterInfoBox.Size	   = {525, 125};
-		WriterInfoBox.Text	   = L"Info Info Info Info Info Info Info Info Info Info Info Info Info Info";
-		WriterInfoBox.FontSize = 24;
-		WriterInfoBox.HIns	   = GetModuleHandle(NULL);
-
-		DBLib::CreateStaticBox(WriterInfoBox, WS_VISIBLE | WS_CHILD);
-
-		WriterMoreInfoBox.Id	   = EDBWinCompId::IDC_W_MoreInfo;
-		WriterMoreInfoBox.Parent   = hWnd;
-		WriterMoreInfoBox.Position = {50, 220};
-		WriterMoreInfoBox.Size	   = {475, 100};
-		WriterMoreInfoBox.Text	   = L"";
-		WriterMoreInfoBox.FontSize = 18;
-		WriterMoreInfoBox.HIns	   = GetModuleHandle(NULL);
-
-		DBLib::CreateStaticBox(WriterMoreInfoBox, WS_VISIBLE | WS_CHILD);
-	}
 	case WM_COMMAND:
 	{
 		if (wParam == WM_SHOWWINDOW)
 		{
-			if (! WriterObj) break;
-
-			SetFocus(WriterEditBox.Window);
-
-			WriterObj->SelectWriteData(WriterObj->PeopleType);
+			SetFocus(ButtonManager->GetWndHandler(IDC_W_Edit));
+			SelectWriteData(PeopleType);
 			break;
 		}
 		break;
@@ -70,7 +33,7 @@ LRESULT DBWindowWriter::CallProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM 
 
 		Size2D WindowSize  = DBLib::GetScreenSize(hWnd);
 		RECT   Rect		   = {0, 0, WindowSize.X, WindowSize.Y};
-		RECT   Rect2	   = {15, 15, 565, 340};
+		RECT   Rect2	   = {15, 15, 565, 310};
 		HBRUSH BrushColor  = CreateSolidBrush(RGB(200, 200, 220));
 		HBRUSH BrushColor2 = CreateSolidBrush(RGB(240, 240, 240));
 
@@ -94,23 +57,19 @@ LRESULT DBWindowWriter::CallProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM 
 	}
 	case WM_CLOSE:
 	{
-		if (WriterObj)
-		{
-			WriterObj->OnWriteSuccess.Broadcast();
-		}
+		OnWriteSuccess.Broadcast();
 		return 0;
 	}
 	case WM_HOTKEY:
 	{
-		if (! WriterObj) break;
 
-		if (WriterObj->CheckFormat())
+		if (CheckFormat())
 		{
-			WriterObj->WriteData();
-			WriterObj->SelectWriteData(WriterObj->PeopleType);
+			WriteData();
+			SelectWriteData(PeopleType);
 		}
 
-		SendMessage(WriterEditBox.Window, WM_SETTEXT, 0, (LPARAM)L"");
+		SendMessage(ButtonManager->GetWndHandler(IDC_W_Edit), WM_SETTEXT, 0, (LPARAM)L"");
 		break;
 	}
 	} // switch end
@@ -144,19 +103,46 @@ LRESULT DBWindowWriter::CallProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM 
 DBWindowWriter::DBWindowWriter(DBInterface* InOwner)
 {
 	SetOwner(InOwner);
-	// auto Manager = static_cast<DBWindowsManager*>(GetOwner());
-	auto Manager = Cast<DBWindowsManager>(GetOwner());
+	auto Manager = DBSysLib::GetWindowsManager();
 	if (Manager)
 	{
 		WindowHandle = Manager->GetWriterHandle();
-		WriterObj	 = this;
 	}
 
-	if (! GetSystem()) return;
-	auto DataManager = GetSystem()->GetComponent<DBDataManager>();
-
+	auto DataManager = DBSysLib::GetDataManager();
 	if (! DataManager) return;
+
 	LastImageId = DataManager->ReadImageId();
+
+	ButtonManager = CreateComponent<DBButtonManager>();
+	if (ButtonManager)
+	{
+		auto VBox = UILib::CreateVerticalBox(Size2D(25, 25), Size2D(530, 275));
+
+		FWndItem Item1(WT_Static, IDC_W_Info, Size2D(0, 100),
+			L"Parent 1 Parent 1 Parent 1 Parent 1 Parent 1 Parent 1 Parent 1 Parent 1 Parent 1 Parent 1", 24, 0);
+		FWndItem Item2(WT_Edit, IDC_W_Edit, Size2D(100, 40), L"", 28, ES_CENTER | ES_UPPERCASE | ES_WANTRETURN);
+		FWndItem Item3(WT_Static, IDC_W_MoreInfo, Size2D(100, 100), L"Info", 18, 0);
+
+		HWND Wnd1 = ButtonManager->AddItem(WindowHandle, Item1);
+		HWND Wnd2 = ButtonManager->AddItem(WindowHandle, Item2);
+		HWND Wnd3 = ButtonManager->AddItem(WindowHandle, Item3);
+
+		auto Slot1 = UILib::CreateSlot(Wnd1, Item1.Size);
+		Slot1->SetVAlign(VA_Top);
+		Slot1->SetFill(false);
+		auto Slot2 = UILib::CreateSlot(Wnd2, Item2.Size);
+		Slot2->SetVAlign(VA_Top);
+		Slot2->SetFill(false);
+		auto Slot3 = UILib::CreateSlot(Wnd3, Item3.Size);
+
+		VBox->AddChild(Slot1);
+		VBox->AddChild(Slot2);
+		VBox->AddChild(UILib::CreateSpacer(Size2D(0, 20)));
+		VBox->AddChild(Slot3);
+
+		ButtonManager->AddSlot(VBox);
+	}
 }
 
 void DBWindowWriter::SelectWriteData(EPeopleType PT)
@@ -199,8 +185,8 @@ void DBWindowWriter::SelectWriteData(EPeopleType PT)
 	case PT_Child_8: SelectChild(8); break;
 	case PT_Child_9: SelectChild(9); break;
 	}
-	WriterObj->UpdateInfo();
-	WriterObj->UpdateEditStyle();
+	UpdateInfo();
+	UpdateEditStyle();
 }
 
 void DBWindowWriter::WriteData()
@@ -208,7 +194,7 @@ void DBWindowWriter::WriteData()
 	if (! DataToChange) return;
 
 	TCHAR buff[256];
-	GetWindowText(WriterEditBox.Window, buff, 256);
+	GetWindowText(ButtonManager->GetWndHandler(IDC_W_Edit), buff, 256);
 
 	std::string OutValue;
 	DBConvert::WStringToString(buff, OutValue);
@@ -394,8 +380,8 @@ void DBWindowWriter::UpdateInfo()
 	}
 	}
 
-	DBLib::SetText(WriterInfoBox.Window, InfoText);
-	DBLib::SetText(WriterMoreInfoBox.Window, MoreInfoText);
+	DBLib::SetText(ButtonManager->GetWndHandler(IDC_W_Info), InfoText);
+	DBLib::SetText(ButtonManager->GetWndHandler(IDC_W_MoreInfo), MoreInfoText);
 }
 
 void DBWindowWriter::SelectChild(size_t Index)
@@ -415,8 +401,9 @@ void DBWindowWriter::SelectChild(size_t Index)
 
 bool DBWindowWriter::CheckFormat()
 {
+	HWND  EditBoxWnd = ButtonManager->GetWndHandler(IDC_W_Edit);
 	TCHAR buff[256];
-	GetWindowText(WriterEditBox.Window, buff, 256);
+	GetWindowText(EditBoxWnd, buff, 256);
 	std::string Text;
 	DBConvert::WStringToString(buff, Text);
 
@@ -436,12 +423,12 @@ bool DBWindowWriter::CheckFormat()
 	{
 		if (Text == "M" || Text == "1")
 		{
-			DBLib::SetText(WriterEditBox.Window, L"1");
+			DBLib::SetText(EditBoxWnd, L"1");
 			return true;
 		}
 		if (Text == "F" || Text == "2")
 		{
-			DBLib::SetText(WriterEditBox.Window, L"2");
+			DBLib::SetText(EditBoxWnd, L"2");
 			return true;
 		}
 		return false;
@@ -481,47 +468,47 @@ bool DBWindowWriter::CheckFormat()
 	{
 		if (Text == "1" || Text == "N")
 		{
-			DBLib::SetText(WriterEditBox.Window, L"1");
+			DBLib::SetText(EditBoxWnd, L"1");
 			return true;
 		}
 		if (Text == "2" || Text == "S")
 		{
-			DBLib::SetText(WriterEditBox.Window, L"2");
+			DBLib::SetText(EditBoxWnd, L"2");
 			return true;
 		}
 		if (Text == "3" || Text == "V")
 		{
-			DBLib::SetText(WriterEditBox.Window, L"3");
+			DBLib::SetText(EditBoxWnd, L"3");
 			return true;
 		}
 		if (Text == "4" || Text == "UC")
 		{
-			DBLib::SetText(WriterEditBox.Window, L"4");
+			DBLib::SetText(EditBoxWnd, L"4");
 			return true;
 		}
 		if (Text == "5" || Text == "U")
 		{
-			DBLib::SetText(WriterEditBox.Window, L"5");
+			DBLib::SetText(EditBoxWnd, L"5");
 			return true;
 		}
 		if (Text == "6" || Text == "GC")
 		{
-			DBLib::SetText(WriterEditBox.Window, L"6");
+			DBLib::SetText(EditBoxWnd, L"6");
 			return true;
 		}
 		if (Text == "7" || Text == "M")
 		{
-			DBLib::SetText(WriterEditBox.Window, L"7");
+			DBLib::SetText(EditBoxWnd, L"7");
 			return true;
 		}
 		if (Text == "8" || Text == "SD")
 		{
-			DBLib::SetText(WriterEditBox.Window, L"8");
+			DBLib::SetText(EditBoxWnd, L"8");
 			return true;
 		}
 		if (Text == "9" || Text == "D")
 		{
-			DBLib::SetText(WriterEditBox.Window, L"9");
+			DBLib::SetText(EditBoxWnd, L"9");
 			return true;
 		}
 		return false;
@@ -534,27 +521,27 @@ bool DBWindowWriter::CheckFormat()
 	{
 		if (Text == "1" || Text == "U")
 		{
-			DBLib::SetText(WriterEditBox.Window, L"1");
+			DBLib::SetText(EditBoxWnd, L"1");
 			return true;
 		}
 		if (Text == "2" || Text == "M")
 		{
-			DBLib::SetText(WriterEditBox.Window, L"2");
+			DBLib::SetText(EditBoxWnd, L"2");
 			return true;
 		}
 		if (Text == "3" || Text == "US")
 		{
-			DBLib::SetText(WriterEditBox.Window, L"3");
+			DBLib::SetText(EditBoxWnd, L"3");
 			return true;
 		}
 		if (Text == "4" || Text == "D")
 		{
-			DBLib::SetText(WriterEditBox.Window, L"4");
+			DBLib::SetText(EditBoxWnd, L"4");
 			return true;
 		}
 		if (Text == "5" || Text == "W")
 		{
-			DBLib::SetText(WriterEditBox.Window, L"5");
+			DBLib::SetText(EditBoxWnd, L"5");
 			return true;
 		}
 		return false;
@@ -592,7 +579,7 @@ bool DBWindowWriter::CheckFormat()
 	{
 		if (Text.size() < 3)
 		{
-			DBLib::SetText(WriterEditBox.Window, L"");
+			DBLib::SetText(EditBoxWnd, L"");
 			return true;
 		}
 		return true;
@@ -818,8 +805,8 @@ void DBWindowWriter::SetItem(std::string& Info)
 
 void DBWindowWriter::SetEditboxStyle(LONG Style, int TextLimit)
 {
-	SetWindowLongPtr(WriterEditBox.Window, GWL_STYLE, EDIT_STYLE_BASE | Style);
-	SendMessage(WriterEditBox.Window, EM_SETLIMITTEXT, TextLimit, 0);
+	SetWindowLongPtr(ButtonManager->GetWndHandler(IDC_W_Edit), GWL_STYLE, EDIT_STYLE_BASE | Style);
+	SendMessage(ButtonManager->GetWndHandler(IDC_W_Edit), EM_SETLIMITTEXT, TextLimit, 0);
 }
 
 void DBWindowWriter::FinishWriting()

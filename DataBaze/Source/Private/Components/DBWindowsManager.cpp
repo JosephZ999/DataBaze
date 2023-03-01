@@ -59,25 +59,23 @@ void DBWindowsManager::Initialize(HINSTANCE HInstance)
 
 	RegisterClass(&Writer_wc);
 
-	const Size2D WriterSize		= {600, 400};
+	const Size2D WriterSize		= {600, 365};
 	const Size2D WriterHalf		= WriterSize / 2;
 	const Size2D ScreenSize		= DBLib::GetScreenSize();
 	const Size2D ScreenCenter	= ScreenSize / 2;
 	const Size2D FinalWriterPos = ScreenCenter - WriterHalf;
 
-	WriterHandle = CreateWindowEx(0,				  // Optional window styles. (Transparent bg WS_EX_TRANSPARENT)
-		W_CLASS_NAME,								  // Window class
-		L"Writer",									  // Window text
-		WS_OVERLAPPED | WS_SYSMENU | WS_CAPTION,	  // Window style (Transparent bg WS_POPUP)
-		FinalWriterPos.X, FinalWriterPos.Y, 600, 400, // Size and position
-		NULL,										  // Parent window
-		NULL,										  // Menu
-		HInstance,									  // Instance handle
-		NULL										  // Additional application data
+	WriterHandle = CreateWindowEx(0,			 // Optional window styles. (Transparent bg WS_EX_TRANSPARENT)
+		W_CLASS_NAME,							 // Window class
+		L"Writer",								 // Window text
+		WS_OVERLAPPED | WS_SYSMENU | WS_CAPTION, // Window style (Transparent bg WS_POPUP)
+		FinalWriterPos.X, FinalWriterPos.Y,		 // position
+		WriterSize.X, WriterSize.Y,				 // Size
+		NULL,									 // Parent window
+		NULL,									 // Menu
+		HInstance,								 // Instance handle
+		NULL									 // Additional application data
 	);
-
-	//GetViewer()->CallProc(GetViewerHandle(), WM_CREATE, 0, 0);
-	//GetWriter()->CallProc(GetWriterHandle(), WM_CREATE, 0, 0);
 }
 
 DBWindowsManager::~DBWindowsManager()
