@@ -17,6 +17,6 @@ namespace cmd
 
 	namespace wnd
 	{
-
+		void WriterEditMember(EPeopleType People);
 	}
 } // namespace cmd

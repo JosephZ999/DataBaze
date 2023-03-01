@@ -91,3 +91,22 @@ std::string DBPeopleData::GetEducationAsString() const
 	} // clang-format on
 	return OutValue;
 }
+
+std::string DBPeopleData::GetAsString(EPeopleData DataType)
+{
+	using namespace std;
+	switch (DataType)
+	{
+	case PD_Name: return Name;
+	case PD_FamilyName: return FamilyName;
+	case PD_Gender: return to_string(Gender);
+	case PD_BirthMonth: return to_string(BirthMonth);
+	case PD_BirthDay: return to_string(BirthDay);
+	case PD_BirthYear: return to_string(BirthYear);
+	case PD_BornCountry: return BirthCountry;
+	case PD_EducationDegree: return to_string(EducationDegree);
+	case PD_WhereLive: return WhereLive;
+	}
+
+	return std::string();
+}

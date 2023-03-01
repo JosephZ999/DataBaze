@@ -37,7 +37,8 @@ public:
 	EMeritialStatus Status			   = EMeritialStatus::MS_Unmarried;
 	size_t			ChildrenNum		   = 0;
 	size_t			EnteredChildrenNum = 0;
-	bool			Finish			   = false;
+	bool			bFinish			   = false;
+	bool			bEditMode		   = false;
 
 	Images ImagesToCopy;
 	int	   LastImageId = 1;
@@ -51,6 +52,7 @@ public:
 	bool CheckFormat();
 	void WriteData();
 	void SelectWriteData(EPeopleType PT);
+	void EditPeople(const DBFamilyData& Data,EPeopleType People);
 
 private:
 	void SetEditboxStyle(LONG Style = 0, int TextLimit = 0);
@@ -60,6 +62,7 @@ private:
 	void SelectChild(size_t Index);
 
 	void UpdateEditStyle();
+	void UpdateEditText();
 
 	void NextPeople();
 	void NextLine();

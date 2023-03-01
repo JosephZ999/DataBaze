@@ -11,11 +11,17 @@ LRESULT CALLBACK WndManagerProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM l
 
 	if (hWnd == ManagerRef->GetViewerHandle())
 	{
-		return ManagerRef->GetViewer()->CallProc(hWnd, message, wParam, lParam);
+		if (ManagerRef->GetViewer())
+		{
+			return ManagerRef->GetViewer()->CallProc(hWnd, message, wParam, lParam);
+		}
 	}
 	else if (hWnd == ManagerRef->GetWriterHandle())
 	{
-		return ManagerRef->GetWriter()->CallProc(hWnd, message, wParam, lParam);
+		if (ManagerRef->GetWriter())
+		{
+			return ManagerRef->GetWriter()->CallProc(hWnd, message, wParam, lParam);
+		}
 	}
 	return DefWindowProc(hWnd, message, wParam, lParam);
 }
@@ -143,6 +149,11 @@ void DBWindowsManager::OnViewerCloseHandle()
 void DBWindowsManager::SetViewerData(const DBFamilyData& InData)
 {
 	GetViewer()->SetMemberData(InData);
+}
+
+void DBWindowsManager::SetWriterData(const DBFamilyData& Data, EPeopleType People) 
+{
+	GetWriter()->EditPeople(Data, People);
 }
 
 DBInterface* DBWindowsManager::GetViewerClass() const

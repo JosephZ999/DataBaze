@@ -33,6 +33,8 @@ private:
 	std::wstring	 Title;
 	std::string		 Info;
 
+	EPeopleType CurrentPeople = PT_Parent;
+
 public:
 	LRESULT CALLBACK CallProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 

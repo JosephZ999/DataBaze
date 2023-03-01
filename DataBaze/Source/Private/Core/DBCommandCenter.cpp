@@ -37,3 +37,11 @@ HINSTANCE cmd::get::GetHIns()
 {
 	return GetCoreIns()->GetInitData().HIns;
 }
+
+void cmd::wnd::WriterEditMember(EPeopleType People)
+{
+	get::GetWindowsManager()->OpenWindowByType(IDW_WRITER);
+	DBFamilyData SelectedData;
+	get::GetDataManager()->LoadMember(SelectedData);
+	get::GetWindowsManager()->SetWriterData(SelectedData, People);
+}

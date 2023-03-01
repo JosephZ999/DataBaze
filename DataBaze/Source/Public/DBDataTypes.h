@@ -59,6 +59,57 @@ enum EWindows
 	IDW_MAX,
 };
 
+// Writer Data
+
+enum EPeopleType
+{
+	PT_None,
+	PT_Parent,
+	PT_Spouse,
+	PT_Child_1,
+	PT_Child_2,
+	PT_Child_3,
+	PT_Child_4,
+	PT_Child_5,
+	PT_Child_6,
+	PT_Child_7,
+	PT_Child_8,
+	PT_Child_9,
+};
+
+enum EPeopleData
+{
+	PD_None = 0,
+	PD_Name,
+	PD_FamilyName,
+	PD_Gender,
+
+	PD_BirthMonth,
+	PD_BirthDay,
+	PD_BirthYear,
+
+	PD_BornCountry,
+	PD_ImageFile,
+
+	PD_NotChildInfo,
+
+	PD_EducationDegree,
+	PD_WhereLive,
+
+	PD_OnlyParentInfo,
+
+	PD_MaritalStatus,
+	PD_ChildrenNum,
+
+	PD_MailCountry,
+	PD_MailRegion,
+	PD_MailCity,
+	PD_MailStreet,
+	PD_MailHomeNumber,
+	PD_MailZipCode,
+	PD_Max,
+};
+
 struct DBWindow
 {
 	DBWindow() {}
@@ -167,6 +218,7 @@ struct DBPeopleData
 	std::string		 GetBirthDataAsString() const;
 	std::string		 GetGenderAsString() const;
 	std::string		 GetEducationAsString() const;
+	std::string		 GetAsString(EPeopleData DataType);
 };
 
 enum EMeritialStatus
@@ -236,55 +288,4 @@ enum EHotKeyId
 
 	// Writer
 	HKW_Enter,
-};
-
-// Writer Data
-
-enum EPeopleType
-{
-	PT_None,
-	PT_Parent,
-	PT_Spouse,
-	PT_Child_1,
-	PT_Child_2,
-	PT_Child_3,
-	PT_Child_4,
-	PT_Child_5,
-	PT_Child_6,
-	PT_Child_7,
-	PT_Child_8,
-	PT_Child_9,
-};
-
-enum EPeopleData
-{
-	PD_None = 0,
-	PD_Name,
-	PD_FamilyName,
-	PD_Gender,
-
-	PD_BirthMonth,
-	PD_BirthDay,
-	PD_BirthYear,
-
-	PD_BornCountry,
-	PD_ImageFile,
-
-	PD_NotChildInfo,
-
-	PD_EducationDegree,
-	PD_WhereLive,
-
-	PD_OnlyParentInfo,
-
-	PD_MaritalStatus,
-	PD_ChildrenNum,
-
-	PD_MailCountry,
-	PD_MailRegion,
-	PD_MailCity,
-	PD_MailStreet,
-	PD_MailHomeNumber,
-	PD_MailZipCode,
-	PD_Max,
 };

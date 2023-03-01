@@ -42,6 +42,26 @@ LRESULT DBWindowWriter::CallProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM 
 		EndPaint(hWnd, &ps);
 		break;
 	}
+	case WM_CLOSE:
+	{
+		OnClose.Broadcast();
+		return 0;
+	}
+	case WM_HOTKEY:
+	{
+		if (CheckFormat())
+		{
+			WriteData();
+			SelectWriteData(PeopleType);
+		}
+		if (! bEditMode)
+		{
+			SendMessage(ButtonManager->GetWndHandler(IDC_W_Edit), WM_SETTEXT, 0, (LPARAM)L"");
+			break;
+		}
+		UpdateEditText();
+		break;
+	}
 	case WM_DRAWITEM:
 	{
 		/*
@@ -52,23 +72,6 @@ LRESULT DBWindowWriter::CallProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM 
 		FillRect(hdc, &Rect, BrushColor);
 		SetTextColor(hdc, RGB(0, 0, 250));
 		*/
-		break;
-	}
-	case WM_CLOSE:
-	{
-		OnClose.Broadcast();
-		return 0;
-	}
-	case WM_HOTKEY:
-	{
-
-		if (CheckFormat())
-		{
-			WriteData();
-			SelectWriteData(PeopleType);
-		}
-
-		SendMessage(ButtonManager->GetWndHandler(IDC_W_Edit), WM_SETTEXT, 0, (LPARAM)L"");
 		break;
 	}
 	} // switch end
@@ -89,13 +92,6 @@ LRESULT DBWindowWriter::CallProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM 
 		break;
 	}
 	}
-
-	/*
-	char str[30];
-	sprintf_s(str, sizeof(str), "Unfocus");
-	OutputDebugStringA(str);
-	*/
-
 	return DefWindowProc(hWnd, message, wParam, lParam);
 }
 
@@ -140,7 +136,7 @@ DBWindowWriter::DBWindowWriter(HWND OwningWnd)
 
 void DBWindowWriter::SelectWriteData(EPeopleType PT)
 {
-	if (Finish) return;
+	if (bFinish) return;
 
 	switch (PT)
 	{
@@ -180,6 +176,14 @@ void DBWindowWriter::SelectWriteData(EPeopleType PT)
 	}
 	UpdateInfo();
 	UpdateEditStyle();
+	UpdateEditText();
+}
+
+void DBWindowWriter::EditPeople(const DBFamilyData& Data, EPeopleType People)
+{
+	bEditMode	= true;
+	PeopleType	= People;
+	MembersData = Data;
 }
 
 void DBWindowWriter::WriteData()
@@ -598,6 +602,17 @@ void DBWindowWriter::UpdateEditStyle()
 	}	// Switch PeopleData
 }
 
+void DBWindowWriter::UpdateEditText()
+{
+	if (bEditMode)
+	{
+		std::wstring Text;
+		DBConvert::StringToWString(std::string(DataToChange->GetAsString(PeopleData)), Text);
+		HWND EditBox = ButtonManager->GetWndHandler(EDBWinCompId::IDC_W_Edit);
+		DBLib::SetText(EditBox, Text);
+	}
+}
+
 void DBWindowWriter::NextPeople()
 {
 	PeopleData = EPeopleData::PD_Name;
@@ -607,6 +622,8 @@ void DBWindowWriter::NextPeople()
 void DBWindowWriter::NextLine()
 {
 	PeopleData = static_cast<EPeopleData>(PeopleData + 1);
+	UpdateEditText();
+	UpdateEditStyle();
 }
 
 void DBWindowWriter::OpenImage()
@@ -806,20 +823,26 @@ void DBWindowWriter::FinishWriting()
 
 	if (IsParent)
 	{
-		Finish = Status != EMeritialStatus::MS_Married && ChildrenNum == EnteredChildrenNum;
+		bFinish = Status != EMeritialStatus::MS_Married && ChildrenNum == EnteredChildrenNum;
 	}
 
 	if (IsSpouse)
 	{
-		Finish = ChildrenNum == EnteredChildrenNum;
+		bFinish = ChildrenNum == EnteredChildrenNum;
 	}
 
 	if (IsChild)
 	{
-		Finish = ChildrenNum == EnteredChildrenNum;
+		bFinish = ChildrenNum == EnteredChildrenNum;
 	}
 
-	if (Finish)
+	if (bEditMode)
+	{
+		// Save data
+		OnClose.Broadcast();
+		return;
+	}
+	else if (bFinish)
 	{
 		auto DataManager = cmd::get::GetDataManager();
 		if (! DataManager) return;
@@ -831,7 +854,6 @@ void DBWindowWriter::FinishWriting()
 			DataManager->AddMember(MembersData);
 		}
 		CopySavedImages();
-
 		OnClose.Broadcast();
 	}
 }

@@ -63,6 +63,7 @@ LRESULT DBWindowViewer::CallProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM 
 	{
 	case EDBWinCompId::IDC_V_Edit:
 	{
+		cmd::wnd::WriterEditMember(CurrentPeople);
 		break;
 	}
 	case EDBWinCompId::IDC_V_Prev:

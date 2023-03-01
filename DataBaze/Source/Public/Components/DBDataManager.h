@@ -62,9 +62,13 @@ public:
 
 	bool SearchValidFolders();
 	int	 GetValidFoldersNum();
+	
 	void AddMember(const DBFamilyData& MemberData);
+	void SetMember(const DBFamilyData& MemberData);
+
 	bool LoadMember(DBFamilyData& OutMemberData);
 	bool LoadMemberByIndex(int Id, DBFamilyData& OutMemberData);
+
 	void GetMembersList(std::vector<std::wstring>& OutList);
 	void GetLastMemberStatus(std::wstring& OutList);
 
