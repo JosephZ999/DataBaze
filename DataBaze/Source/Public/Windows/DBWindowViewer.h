@@ -5,8 +5,11 @@
 #include "DBDataTypes.h"
 
 #include "DBInterface.h"
+#include "DBDelegate.h"
 
 class DBButtonManager;
+
+DECLARE_DELEGATE(OnViewerCloseSignature);
 
 struct FillData
 {
@@ -18,6 +21,9 @@ class DBWindowViewer : public DBInterface
 {
 public:
 	DBWindowViewer(DBInterface* InOwner);
+
+	OnViewerCloseSignature OnClose;
+
 	HWND		 WindowHandle = 0;
 	DBFamilyData MemberData;
 

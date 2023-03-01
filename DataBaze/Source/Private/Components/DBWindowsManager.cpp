@@ -91,25 +91,24 @@ void DBWindowsManager::OpenWindowByType(EWindows WindowType)
 	case EWindows::IDW_VIEWER:
 	{
 		CreateViewer();
-		DestroyWriter();
+		CloseWindowByType(IDW_WRITER);
 		ShowWindow(ViewerHandle, SW_SHOWDEFAULT);
-		CloseWindowByType(EWindows::IDW_WRITER);
 		SendMessage(ViewerHandle, WM_COMMAND, WM_SHOWWINDOW, 0);
 		if (WindowViewer)
 		{
+			WindowViewer->OnClose.Bind(this, &DBWindowsManager::OnViewerCloseHandle);
 		}
 		return;
 	}
 	case EWindows::IDW_WRITER:
 	{
 		CreateWriter();
-		DestroyViewer();
+		CloseWindowByType(IDW_VIEWER);
 		ShowWindow(WriterHandle, SW_SHOWDEFAULT);
-		CloseWindowByType(EWindows::IDW_VIEWER);
 		SendMessage(WriterHandle, WM_COMMAND, WM_SHOWWINDOW, 0);
 		if (WindowWriter)
 		{
-			WindowWriter->OnWriteSuccess.Bind(this, &DBWindowsManager::OnMemberAddedHandle);
+			WindowWriter->OnClose.Bind(this, &DBWindowsManager::OnWriterCloseHandle);
 		}
 		return;
 	}
@@ -124,20 +123,27 @@ void DBWindowsManager::CloseWindowByType(EWindows WindowType)
 	{
 		DestroyViewer();
 		ShowWindow(ViewerHandle, SW_HIDE);
+		DBDebug::CreateMessageBox("Close viewer");
 		return;
 	}
 	case EWindows::IDW_WRITER:
 	{
 		DestroyWriter();
 		ShowWindow(WriterHandle, SW_HIDE);
+		DBDebug::CreateMessageBox("Close writer");
 		return;
 	}
 	} // switch end
 }
 
-void DBWindowsManager::OnMemberAddedHandle()
+void DBWindowsManager::OnWriterCloseHandle()
 {
-	CloseWindowByType(EWindows::IDW_WRITER);
+	CloseWindowByType(IDW_WRITER);
+}
+
+void DBWindowsManager::OnViewerCloseHandle()
+{
+	CloseWindowByType(IDW_VIEWER);
 }
 
 void DBWindowsManager::SetViewerData(const DBFamilyData& InData)

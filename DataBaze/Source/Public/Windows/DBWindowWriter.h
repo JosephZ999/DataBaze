@@ -8,7 +8,7 @@
 
 class DBButtonManager;
 
-DECLARE_DELEGATE(OnWriteSuccessSignature);
+DECLARE_DELEGATE(OnWriterCloseSignature);
 
 struct FImagePath
 {
@@ -24,7 +24,7 @@ class DBWindowWriter : public DBInterface
 public:
 	DBWindowWriter(DBInterface* InOwner);
 
-	OnWriteSuccessSignature OnWriteSuccess;
+	OnWriterCloseSignature OnClose;
 
 	HWND WindowHandle = 0;
 	DBFamilyData MembersData;

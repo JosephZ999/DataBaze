@@ -32,7 +32,7 @@ LRESULT DBWindowViewer::CallProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM 
 		UnregisterHotKey(hWnd, HKV_Command_3);
 		// UnregisterHotKey(hWnd, HKV_Command_4);
 
-		DBLib::SetWindowVisibility(hWnd, false);
+		OnClose.Broadcast();
 		return 0;
 	}
 

@@ -57,7 +57,7 @@ LRESULT DBWindowWriter::CallProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM 
 	}
 	case WM_CLOSE:
 	{
-		OnWriteSuccess.Broadcast();
+		OnClose.Broadcast();
 		return 0;
 	}
 	case WM_HOTKEY:
@@ -839,6 +839,6 @@ void DBWindowWriter::FinishWriting()
 		}
 		CopySavedImages();
 
-		OnWriteSuccess.Broadcast();
+		OnClose.Broadcast();
 	}
 }
