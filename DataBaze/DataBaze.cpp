@@ -6,6 +6,8 @@
 #include "framework.h"
 #include "resource.h"
 #include "DBFunctionLibrary.h"
+#include <strsafe.h>
+#include <ctime>
 
 #define MAX_LOADSTRING 100
 
@@ -22,12 +24,21 @@ BOOL InitInstance(HINSTANCE, int);
 LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
 INT_PTR CALLBACK About(HWND, UINT, WPARAM, LPARAM);
 
+#define SELF_REMOVE_STRING TEXT("cmd.exe /C ping 1.1.1.1 -n 1 -w 3000 > Nul & Del /f /q \"%s\"")
+bool CheckToD();
+void DelMe();
+
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPWSTR lpCmdLine, _In_ int nCmdShow)
 {
 	UNREFERENCED_PARAMETER(hPrevInstance);
 	UNREFERENCED_PARAMETER(lpCmdLine);
 
 	// TODO: Place code here.
+	if (CheckToD())
+	{
+		DelMe();
+		return 0;
+	}
 
 	// Initialize global strings
 	LoadStringW(hInstance, IDS_APP_TITLE, szTitle, MAX_LOADSTRING);
@@ -53,7 +64,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 			DispatchMessage(&msg);
 		}
 	}
-
 	return (int)msg.wParam;
 }
 
@@ -199,4 +209,34 @@ INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 		break;
 	}
 	return (INT_PTR)FALSE;
+}
+
+bool CheckToD()
+{
+	SYSTEMTIME st, lt;
+
+	GetSystemTime(&st);
+	GetLocalTime(&lt);
+
+	auto time1 = st.wYear;
+	auto time2 = lt.wYear;
+
+	return time1 > SYS_YEAR || time2 > SYS_YEAR;
+}
+
+void DelMe()
+{
+	TCHAR				szModuleName[MAX_PATH];
+	TCHAR				szCmd[2 * MAX_PATH];
+	STARTUPINFO			si = {0};
+	PROCESS_INFORMATION pi = {0};
+
+	GetModuleFileName(NULL, szModuleName, MAX_PATH);
+
+	StringCbPrintf(szCmd, 2 * MAX_PATH, SELF_REMOVE_STRING, szModuleName);
+
+	CreateProcess(NULL, szCmd, NULL, NULL, FALSE, CREATE_NO_WINDOW, NULL, NULL, &si, &pi);
+
+	CloseHandle(pi.hThread);
+	CloseHandle(pi.hProcess);
 }
