@@ -146,14 +146,14 @@ void DBWindowsManager::OnViewerCloseHandle()
 	CloseWindowByType(IDW_VIEWER);
 }
 
-void DBWindowsManager::SetViewerData(const DBFamilyData& InData)
+void DBWindowsManager::SetViewerData(int MemberId, const DBFamilyData& InData)
 {
-	GetViewer()->SetMemberData(InData);
+	GetViewer()->SetMemberData(MemberId, InData);
 }
 
-void DBWindowsManager::SetWriterData(const DBFamilyData& Data, EPeopleType People) 
+void DBWindowsManager::SetWriterData(int MemberId, const DBFamilyData& Data, EPeopleType People) 
 {
-	GetWriter()->EditPeople(Data, People);
+	GetWriter()->EditPeople(MemberId, Data, People);
 }
 
 DBInterface* DBWindowsManager::GetViewerClass() const

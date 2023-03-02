@@ -41,7 +41,8 @@ public:
 	bool			bEditMode		   = false;
 
 	Images ImagesToCopy;
-	int	   LastImageId = 1;
+	int	   LastImageId	   = 1;
+	int	   CurrentFamilyId = 0; // edit mode only
 
 private:
 	DBButtonManager* ButtonManager = nullptr;
@@ -52,7 +53,7 @@ public:
 	bool CheckFormat();
 	void WriteData();
 	void SelectWriteData(EPeopleType PT);
-	void EditPeople(const DBFamilyData& Data,EPeopleType People);
+	void EditPeople(int FamilyId, const DBFamilyData& Data, EPeopleType People);
 
 private:
 	void SetEditboxStyle(LONG Style = 0, int TextLimit = 0);

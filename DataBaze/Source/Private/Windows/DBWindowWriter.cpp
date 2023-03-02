@@ -179,11 +179,12 @@ void DBWindowWriter::SelectWriteData(EPeopleType PT)
 	UpdateEditText();
 }
 
-void DBWindowWriter::EditPeople(const DBFamilyData& Data, EPeopleType People)
+void DBWindowWriter::EditPeople(int FamilyId, const DBFamilyData& Data, EPeopleType People)
 {
-	bEditMode	= true;
-	PeopleType	= People;
-	MembersData = Data;
+	CurrentFamilyId = FamilyId;
+	bEditMode		= true;
+	PeopleType		= People;
+	MembersData		= Data;
 }
 
 void DBWindowWriter::WriteData()

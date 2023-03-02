@@ -63,7 +63,7 @@ LRESULT DBWindowViewer::CallProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM 
 	{
 	case EDBWinCompId::IDC_V_Edit:
 	{
-		cmd::wnd::WriterEditMember(CurrentPeople);
+		cmd::wnd::WriterEditMember(SelectedMemberId, CurrentPeople);
 		break;
 	}
 	case EDBWinCompId::IDC_V_Prev:
@@ -146,9 +146,10 @@ DBWindowViewer::DBWindowViewer(HWND OwningWnd)
 	}
 }
 
-void DBWindowViewer::SetMemberData(const DBFamilyData& InData)
+void DBWindowViewer::SetMemberData(int MemberId, const DBFamilyData& InData)
 {
-	MemberData = InData;
+	SelectedMemberId = MemberId;
+	MemberData		 = InData;
 	PrintData();
 }
 

@@ -36,8 +36,8 @@ public:
 
 	void OnWriterCloseHandle();
 	void OnViewerCloseHandle();
-	void SetViewerData(const DBFamilyData& InData);
-	void SetWriterData(const DBFamilyData& Data, EPeopleType People);
+	void SetViewerData(int MemberId, const DBFamilyData& InData);
+	void SetWriterData(int MemberId, const DBFamilyData& Data, EPeopleType People);
 
 private:
 	void CreateViewer();

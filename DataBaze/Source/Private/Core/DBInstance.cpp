@@ -145,7 +145,7 @@ void DBInstance::CallCommand(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPar
 			if (GetDataManager()->LoadMember(SelectedData))
 			{
 				GetWindowManager()->OpenWindowByType(EWindows::IDW_VIEWER);
-				GetWindowManager()->SetViewerData(SelectedData);
+				GetWindowManager()->SetViewerData(GetDataManager()->GetSelectedMemberId(), SelectedData);
 			}
 			break;
 		}
@@ -163,7 +163,7 @@ void DBInstance::CallCommand(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPar
 		if (GetDataManager()->LoadMember(SelectedData))
 		{
 			GetWindowManager()->OpenWindowByType(EWindows::IDW_VIEWER);
-			GetWindowManager()->SetViewerData(SelectedData);
+			GetWindowManager()->SetViewerData(GetDataManager()->GetSelectedMemberId(), SelectedData);
 		}
 		break;
 	}
