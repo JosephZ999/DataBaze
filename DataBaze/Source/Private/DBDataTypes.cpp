@@ -58,6 +58,99 @@ void DBFamilyData::SwitchParents()
 	Parents[1] = Cache;
 }
 
+DBPeopleData& DBFamilyData::operator[](EPeopleType Type)
+{
+	switch (Type)
+	{
+	case PT_Spouse:
+	{
+		if (Parents.size() > 1)
+		{
+			return Parents[1];
+		}
+		break;
+	}
+	case PT_Child_1:
+	{
+		if (Children.size() >= 1)
+		{
+			return Children[0];
+		}
+		break;
+	}
+	case PT_Child_2:
+	{
+		if (Children.size() >= 2)
+		{
+			return Children[1];
+		}
+		break;
+	}
+	case PT_Child_3:
+	{
+		if (Children.size() >= 3)
+		{
+			return Children[2];
+		}
+		break;
+	}
+	case PT_Child_4:
+	{
+		if (Children.size() >= 4)
+		{
+			return Children[3];
+		}
+		break;
+	}
+	case PT_Child_5:
+	{
+		if (Children.size() >= 5)
+		{
+			return Children[4];
+		}
+		break;
+	}
+	case PT_Child_6:
+	{
+		if (Children.size() >= 6)
+		{
+			return Children[5];
+		}
+		break;
+	}
+	case PT_Child_7:
+	{
+		if (Children.size() >= 7)
+		{
+			return Children[6];
+		}
+		break;
+	}
+	case PT_Child_8:
+	{
+		if (Children.size() >= 8)
+		{
+			return Children[7];
+		}
+		break;
+	}
+	case PT_Child_9:
+	{
+		if (Children.size() >= 9)
+		{
+			return Children[8];
+		}
+		break;
+	}
+	}
+
+	if (Parents.size() == 0)
+	{
+		Parents.push_back(DBPeopleData());
+	}
+	return Parents[0];
+}
+
 EEducationDegree DBPeopleData::GetEducation() const
 {
 	return static_cast<EEducationDegree>(EducationDegree);

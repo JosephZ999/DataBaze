@@ -19,7 +19,11 @@ LRESULT DBWindowWriter::CallProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM 
 		{
 			ShowWindow(hWnd, SW_SHOWDEFAULT);
 			SetFocus(ButtonManager->GetWndHandler(IDC_W_Edit));
-			SelectWriteData(PeopleType);
+			if (! bEditMode)
+			{
+				SelectWriteData(PeopleType);
+			}
+
 			break;
 		}
 		break;
@@ -188,7 +192,7 @@ void DBWindowWriter::EditPeople(int FamilyId, int FolderId, const DBFamilyData& 
 	MembersData		= Data;
 	UpdateInfo();
 	UpdateEditStyle();
-	UpdateEditText();
+	SelectWriteData(PeopleType);
 }
 
 void DBWindowWriter::WriteData()
@@ -233,6 +237,33 @@ void DBWindowWriter::WriteData()
 		}
 		} // switch
 		break;
+	}
+	default:
+	{
+		if (PeopleType != PT_None)
+		{
+			switch (PeopleData)
+			{
+			case PD_NotChildInfo:
+			{
+				FinishWriting();
+				NextPeople();
+			}
+			case PD_EducationDegree:
+			{
+				FinishWriting();
+				NextPeople();
+			}
+			case PD_ImageFile:
+			{
+				if (bEditMode)
+				{
+					FinishWriting();
+					return;
+				}
+			}
+			}
+		}
 	}
 	} // switch
 
@@ -394,10 +425,21 @@ void DBWindowWriter::UpdateInfo()
 
 void DBWindowWriter::SelectChild(size_t Index)
 {
-	if (Index > ChildrenNum)
+	if (!bEditMode)
 	{
-		NextPeople();
-		return;
+		if (Index > ChildrenNum)
+		{
+			NextPeople();
+			return;
+		}
+	}
+	else
+	{
+		if (Index > MembersData.Children.size())
+		{
+			NextPeople();
+			return;
+		}
 	}
 
 	if (MembersData.Children.size() < Index)

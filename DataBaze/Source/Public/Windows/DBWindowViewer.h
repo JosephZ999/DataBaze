@@ -48,6 +48,8 @@ public:
 	void SetMemberData(int MemberId, int FolderId, const DBFamilyData& InData);
 
 private:
+	void ChangePeople(bool Next);
+
 	void PrintData();
 	void PrintPeople(const DBPeopleData& People, bool IsChild);
 	void PrintMail();

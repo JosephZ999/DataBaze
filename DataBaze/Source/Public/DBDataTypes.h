@@ -267,6 +267,8 @@ struct DBFamilyData
 	EMeritialStatus GetStatus() const;
 
 	void SwitchParents();
+
+	DBPeopleData& operator[](EPeopleType Type);
 };
 
 class DBListContainer

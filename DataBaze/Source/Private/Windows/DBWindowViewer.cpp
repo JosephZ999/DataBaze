@@ -69,10 +69,12 @@ LRESULT DBWindowViewer::CallProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM 
 	}
 	case EDBWinCompId::IDC_V_Prev:
 	{
+		ChangePeople(false);
 		break;
 	}
 	case EDBWinCompId::IDC_V_Next:
 	{
+		ChangePeople(true);
 		break;
 	}
 	}
@@ -199,6 +201,131 @@ void DBWindowViewer::Autofill_Form3() {}
 
 void DBWindowViewer::Autofill_Form4() {}
 
+void DBWindowViewer::ChangePeople(bool Next)
+{
+	const bool HasSpouse = MemberData.Parents.size() > 1;
+	const bool HasChild	 = MemberData.Children.size() > 0;
+	if (													   //
+		(! Next && CurrentPeople == EPeopleType::PT_Parent) || //
+		(Next && ! HasSpouse && ! HasChild)					   //
+	)
+	{
+		return;
+	}
+
+	bool		bChanged = false;
+	EPeopleType NextP	 = (EPeopleType)((int)CurrentPeople + (Next ? 1 : -1));
+	switch (NextP)
+	{
+	case PT_Parent:
+	{
+		CurrentPeople = NextP;
+		bChanged	  = true;
+		break;
+	}
+	case PT_Spouse:
+	{
+		if (HasSpouse)
+		{
+			CurrentPeople = NextP;
+			bChanged	  = true;
+		}
+		else if (HasChild)
+		{
+			CurrentPeople = Next ? PT_Child_1 : PT_Parent;
+			bChanged	  = true;
+		}
+		break;
+	}
+	case PT_Child_1:
+	{
+		if (MemberData.Children.size() >= 1)
+		{
+			CurrentPeople = NextP;
+			bChanged	  = true;
+		}
+		break;
+	}
+	case PT_Child_2:
+	{
+		if (MemberData.Children.size() >= 2)
+		{
+			CurrentPeople = NextP;
+			bChanged	  = true;
+		}
+		break;
+	}
+	case PT_Child_3:
+	{
+		if (MemberData.Children.size() >= 3)
+		{
+			CurrentPeople = NextP;
+			bChanged	  = true;
+		}
+		break;
+	}
+	case PT_Child_4:
+	{
+		if (MemberData.Children.size() >= 4)
+		{
+			CurrentPeople = NextP;
+			bChanged	  = true;
+		}
+		break;
+	}
+	case PT_Child_5:
+	{
+		if (MemberData.Children.size() >= 5)
+		{
+			CurrentPeople = NextP;
+			bChanged	  = true;
+		}
+		break;
+	}
+	case PT_Child_6:
+	{
+		if (MemberData.Children.size() >= 6)
+		{
+			CurrentPeople = NextP;
+			bChanged	  = true;
+		}
+		break;
+	}
+	case PT_Child_7:
+	{
+		if (MemberData.Children.size() >= 7)
+		{
+			CurrentPeople = NextP;
+			bChanged	  = true;
+		}
+		break;
+	}
+	case PT_Child_8:
+	{
+		if (MemberData.Children.size() >= 8)
+		{
+			CurrentPeople = NextP;
+			bChanged	  = true;
+		}
+		break;
+	}
+	case PT_Child_9:
+	{
+		if (MemberData.Children.size() >= 9)
+		{
+			CurrentPeople = NextP;
+			bChanged	  = true;
+		}
+		break;
+	}
+	}
+
+	if (bChanged)
+	{
+		PrintData();
+	}
+}
+
 void DBWindowViewer::PrintData()
 {
 	if (MemberData.Parents.size() == 0) return;
@@ -212,7 +339,7 @@ void DBWindowViewer::PrintData()
 	HasSpouse = MemberData.Parents.size() > 1;
 	HasChild  = MemberData.Children.size() > 0;
 
-	PrintPeople(MemberData.Parents[0], false);
+	PrintPeople(MemberData[CurrentPeople], false);
 
 	if (true)
 	{
