@@ -21,7 +21,7 @@ LRESULT DBWindowWriter::CallProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM 
 			SetFocus(ButtonManager->GetWndHandler(IDC_W_Edit));
 			if (! bEditMode)
 			{
-				SelectWriteData(PeopleType);
+				SelectWriteData(PT_Parent);
 			}
 
 			break;
@@ -155,12 +155,6 @@ void DBWindowWriter::SelectWriteData(EPeopleType PT)
 	}
 	case PT_Spouse:
 	{
-		if (Status != EMeritialStatus::MS_Married)
-		{
-			NextPeople();
-			break;
-		}
-
 		if (MembersData.Parents.size() < 2)
 		{
 			MembersData.Parents.push_back(DBPeopleData());
@@ -219,6 +213,10 @@ void DBWindowWriter::WriteData()
 		{
 			FinishWriting();
 			NextPeople();
+			if (Status != EMeritialStatus::MS_Married)
+			{
+				NextPeople();
+			}
 			break;
 		}
 		}
@@ -240,28 +238,31 @@ void DBWindowWriter::WriteData()
 	}
 	default:
 	{
-		if (PeopleType != PT_None)
+		if (bEditMode)
 		{
-			switch (PeopleData)
+			if (PeopleType != PT_None)
 			{
-			case PD_NotChildInfo:
-			{
-				FinishWriting();
-				NextPeople();
-			}
-			case PD_EducationDegree:
-			{
-				FinishWriting();
-				NextPeople();
-			}
-			case PD_ImageFile:
-			{
-				if (bEditMode)
+				switch (PeopleData)
+				{
+				case PD_NotChildInfo:
 				{
 					FinishWriting();
-					return;
+					NextPeople();
 				}
-			}
+				case PD_EducationDegree:
+				{
+					FinishWriting();
+					NextPeople();
+				}
+				case PD_ImageFile:
+				{
+					if (bEditMode)
+					{
+						FinishWriting();
+						return;
+					}
+				}
+				}
 			}
 		}
 	}
@@ -425,7 +426,7 @@ void DBWindowWriter::UpdateInfo()
 
 void DBWindowWriter::SelectChild(size_t Index)
 {
-	if (!bEditMode)
+	if (! bEditMode)
 	{
 		if (Index > ChildrenNum)
 		{
