@@ -237,6 +237,12 @@ void DBWindowWriter::WriteData()
 
 	if (PeopleData == PD_ImageFile)
 	{
+		if (bEditMode)
+		{
+			NextLine();
+			NextLine();
+			return;
+		}
 		OpenImage();
 		if (IsParent || IsSpouse)
 		{
@@ -607,7 +613,28 @@ void DBWindowWriter::UpdateEditText()
 	if (bEditMode)
 	{
 		std::wstring Text;
-		DBConvert::StringToWString(std::string(DataToChange->GetAsString(PeopleData)), Text);
+		std::string	 SText;
+
+		switch (PeopleData)
+		{
+		case PD_MaritalStatus: SText = std::to_string(MembersData.MaritalStatus); break;
+		case PD_ChildrenNum: SText = std::to_string(MembersData.Children.size()); break;
+		case PD_MailCountry: SText = MembersData.MailCountry; break;
+		case PD_MailRegion: SText = MembersData.MailRegion; break;
+		case PD_MailCity: SText = MembersData.MailCity; break;
+		case PD_MailStreet: SText = MembersData.MailStreet; break;
+		case PD_MailHomeNumber: SText = MembersData.MailHomeNumber; break;
+		case PD_MailZipCode: SText = MembersData.MailZipCode; break;
+		default:
+		{
+			if (bFinish)
+			{
+				return;
+			}
+			SText = std::string(DataToChange->GetAsString(PeopleData));
+		}
+		}
+		DBConvert::StringToWString(SText, Text);
 		HWND EditBox = ButtonManager->GetWndHandler(EDBWinCompId::IDC_W_Edit);
 		DBLib::SetText(EditBox, Text);
 	}
@@ -839,6 +866,7 @@ void DBWindowWriter::FinishWriting()
 	if (bEditMode)
 	{
 		// Save data
+		bFinish = true;
 		OnClose.Broadcast();
 		return;
 	}
