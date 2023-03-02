@@ -6,6 +6,24 @@
 #include "Components/UIHorizontalBox.h"
 #include "UILibrary.h"
 
+#include <map>
+
+static std::map<char, WORD> VKeys = {
+	//
+	{'Q', VK_Q}, {'W', VK_W}, {'E', VK_E}, {'R', VK_R}, {'T', VK_T}, {'Y', VK_Y}, //
+	{'U', VK_U}, {'I', VK_I}, {'O', VK_O}, {'P', VK_P},							  //
+
+	{'A', VK_A}, {'S', VK_S}, {'D', VK_D}, {'F', VK_F}, {'G', VK_G}, {'H', VK_H}, //
+	{'J', VK_J}, {'K', VK_K}, {'L', VK_L},										  //
+
+	{'Z', VK_Z}, {'X', VK_X}, {'C', VK_C}, {'V', VK_V}, //
+	{'B', VK_B}, {'N', VK_N}, {'M', VK_M},				//
+
+	{'.', VK_OEM_PERIOD}, {'1', VK_1}, {'2', VK_2}, {'3', VK_3}, {'4', VK_4}, {'5', VK_5}, //
+	{'6', VK_6}, {'7', VK_7}, {'8', VK_8}, {'9', VK_9}, {'0', VK_0}						   //
+
+};
+
 LRESULT DBWindowViewer::CallProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	switch (message)
@@ -192,6 +210,7 @@ void DBWindowViewer::Autofill_Form1()
 	DBInput::PressKey(VK_RETURN);
 
 	WriteEMail();
+	DBInput::PressKey(VK_RETURN);
 }
 
 void DBWindowViewer::Autofill_Form2()
@@ -407,27 +426,23 @@ inline void DBWindowViewer::PasteString(const std::string Text)
 
 inline void DBWindowViewer::WriteEMail()
 {
-	DBInput::PressKey(VK_D);
-	DBInput::PressKey(VK_E);
-	DBInput::PressKey(VK_V);
-	DBInput::PressKey(VK_I);
-	DBInput::PressKey(VK_L);
-	DBInput::PressKey(VK_N);
-	DBInput::PressKey(VK_O);
-	DBInput::PressKey(VK_I);
-	DBInput::PressKey(VK_S);
-	DBInput::PressKey(VK_Y);
-	DBInput::PressKey(VK_9);
-	DBInput::PressKey(VK_9);
-	DBInput::PressKey(VK_9);
+	WriteString("DEVILNOISY999");
 	DBInput::PressKeys(VK_SHIFT, VK_2);
-	DBInput::PressKey(VK_G);
-	DBInput::PressKey(VK_M);
-	DBInput::PressKey(VK_A);
-	DBInput::PressKey(VK_I);
-	DBInput::PressKey(VK_L);
-	DBInput::PressKey(VK_OEM_PERIOD);
-	DBInput::PressKey(VK_C);
-	DBInput::PressKey(VK_O);
-	DBInput::PressKey(VK_M);
+	WriteString("GMAIL.COM");
+}
+
+void DBWindowViewer::WriteString(std::string Text)
+{
+	for (std::string::iterator it = Text.begin(); it != Text.end(); ++it)
+	{
+		if (VKeys.find(*it) != VKeys.end())
+		{
+			DBInput::PressKey(VKeys[*it]);
+		}
+		else
+		{
+			DBDebug::CreateMessageBox("Viewer: Error Writing Country");
+			break;
+		}
+	}
 }
