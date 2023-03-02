@@ -55,4 +55,5 @@ private:
 	void PrintMail();
 
 	inline void PasteString(const std::string Text);
+	inline void WriteEMail();
 };

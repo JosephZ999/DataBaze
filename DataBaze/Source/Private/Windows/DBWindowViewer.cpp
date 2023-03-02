@@ -190,6 +190,8 @@ void DBWindowViewer::Autofill_Form1()
 
 	PasteString(MemberData.MailCountry);
 	DBInput::PressKey(VK_RETURN);
+
+	WriteEMail();
 }
 
 void DBWindowViewer::Autofill_Form2()
@@ -401,4 +403,31 @@ inline void DBWindowViewer::PasteString(const std::string Text)
 	Sleep(20);
 	DBInput::CopyToClipboard(WindowHandle, Text);
 	DBInput::PasteClipboard();
+}
+
+inline void DBWindowViewer::WriteEMail()
+{
+	DBInput::PressKey(VK_D);
+	DBInput::PressKey(VK_E);
+	DBInput::PressKey(VK_V);
+	DBInput::PressKey(VK_I);
+	DBInput::PressKey(VK_L);
+	DBInput::PressKey(VK_N);
+	DBInput::PressKey(VK_O);
+	DBInput::PressKey(VK_I);
+	DBInput::PressKey(VK_S);
+	DBInput::PressKey(VK_Y);
+	DBInput::PressKey(VK_9);
+	DBInput::PressKey(VK_9);
+	DBInput::PressKey(VK_9);
+	DBInput::PressKeys(VK_SHIFT, VK_2);
+	DBInput::PressKey(VK_G);
+	DBInput::PressKey(VK_M);
+	DBInput::PressKey(VK_A);
+	DBInput::PressKey(VK_I);
+	DBInput::PressKey(VK_L);
+	DBInput::PressKey(VK_OEM_PERIOD);
+	DBInput::PressKey(VK_C);
+	DBInput::PressKey(VK_O);
+	DBInput::PressKey(VK_M);
 }
