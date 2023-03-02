@@ -186,6 +186,9 @@ void DBWindowWriter::EditPeople(int FamilyId, int FolderId, const DBFamilyData& 
 	bEditMode		= true;
 	PeopleType		= People;
 	MembersData		= Data;
+	UpdateInfo();
+	UpdateEditStyle();
+	UpdateEditText();
 }
 
 void DBWindowWriter::WriteData()

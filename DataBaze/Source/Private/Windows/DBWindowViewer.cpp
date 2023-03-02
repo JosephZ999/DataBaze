@@ -42,6 +42,7 @@ LRESULT DBWindowViewer::CallProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM 
 		case 3: Autofill_Form3(); break;
 		case 4: Autofill_Form4(); break;
 		}
+		break;
 	}
 	case WM_PAINT:
 	{

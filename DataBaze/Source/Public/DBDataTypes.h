@@ -20,7 +20,7 @@ enum EDBWindowType
 enum EDBWinCompId
 {
 	// Main window comps
-	IDC_NONE = 500,
+	IDC_NONE = 400,
 	IDC_VIEW,
 	IDC_NEWITEM,
 	IDC_LOCK,
