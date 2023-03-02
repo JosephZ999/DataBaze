@@ -17,6 +17,6 @@ namespace cmd
 
 	namespace wnd
 	{
-		void WriterEditMember(int FamilyId, const EPeopleType People);
+		void WriterEditMember(int FamilyId, int FolderId, const EPeopleType People, const DBFamilyData& Data);
 	}
 } // namespace cmd

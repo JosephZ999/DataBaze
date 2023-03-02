@@ -48,6 +48,7 @@ public:
 public:
 	void Initialize(FDBInstanceInit& Param);
 	void OnMemberAddedHandle();
+	void OnMemberChangedHandle();
 
 	void CallCommand(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 

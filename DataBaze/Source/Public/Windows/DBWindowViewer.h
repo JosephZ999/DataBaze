@@ -33,6 +33,7 @@ private:
 	std::wstring	 Title;
 	std::string		 Info;
 	int				 SelectedMemberId = 0;
+	int				 SelectedFolderId = 1;
 
 	EPeopleType CurrentPeople = PT_Parent;
 
@@ -44,7 +45,7 @@ public:
 	void Autofill_Form3();
 	void Autofill_Form4();
 
-	void SetMemberData(int MemberId, const DBFamilyData& InData);
+	void SetMemberData(int MemberId, int FolderId, const DBFamilyData& InData);
 
 private:
 	void PrintData();

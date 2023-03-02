@@ -35,6 +35,7 @@ void DBInstance::Initialize(FDBInstanceInit& Param)
 	if (DataManager)
 	{
 		DataManager->OnMemberAdded.Bind(this, &DBInstance::OnMemberAddedHandle);
+		DataManager->OnMemberChanged.Bind(this, &DBInstance::OnMemberChangedHandle);
 	}
 	if (ListBox)
 	{
@@ -113,6 +114,11 @@ void DBInstance::OnMemberAddedHandle()
 	ListBox->AddItem(LastMember);
 }
 
+void DBInstance::OnMemberChangedHandle()
+{
+	ResetListBox();
+}
+
 void DBInstance::InitWindows() {}
 
 void DBInstance::ResetListBox()
@@ -145,7 +151,7 @@ void DBInstance::CallCommand(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPar
 			if (GetDataManager()->LoadMember(SelectedData))
 			{
 				GetWindowManager()->OpenWindowByType(EWindows::IDW_VIEWER);
-				GetWindowManager()->SetViewerData(GetDataManager()->GetSelectedMemberId(), SelectedData);
+				GetWindowManager()->SetViewerData(GetDataManager()->GetSelectedMemberId(), GetDataManager()->GetFolderId(), SelectedData);
 			}
 			break;
 		}
@@ -163,7 +169,7 @@ void DBInstance::CallCommand(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPar
 		if (GetDataManager()->LoadMember(SelectedData))
 		{
 			GetWindowManager()->OpenWindowByType(EWindows::IDW_VIEWER);
-			GetWindowManager()->SetViewerData(GetDataManager()->GetSelectedMemberId(), SelectedData);
+			GetWindowManager()->SetViewerData(GetDataManager()->GetSelectedMemberId(), GetDataManager()->GetFolderId(), SelectedData);
 		}
 		break;
 	}

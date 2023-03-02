@@ -179,9 +179,10 @@ void DBWindowWriter::SelectWriteData(EPeopleType PT)
 	UpdateEditText();
 }
 
-void DBWindowWriter::EditPeople(int FamilyId, const DBFamilyData& Data, EPeopleType People)
+void DBWindowWriter::EditPeople(int FamilyId, int FolderId, const DBFamilyData& Data, EPeopleType People)
 {
 	CurrentFamilyId = FamilyId;
+	CurrentFolderId = FolderId;
 	bEditMode		= true;
 	PeopleType		= People;
 	MembersData		= Data;
@@ -866,7 +867,11 @@ void DBWindowWriter::FinishWriting()
 
 	if (bEditMode)
 	{
-		// Save data
+		auto DataManager = cmd::get::GetDataManager();
+		if (! DataManager) return;
+
+		DataManager->SetMember(CurrentFamilyId, CurrentFolderId, MembersData);
+
 		bFinish = true;
 		OnClose.Broadcast();
 		return;

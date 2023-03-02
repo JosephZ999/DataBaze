@@ -49,6 +49,7 @@ public:
 	DBDataManager();
 
 	OnListChangedSignature OnMemberAdded;
+	OnItemChangedSignature OnMemberChanged;
 
 private:
 	int		SelectedFolderId;
@@ -64,7 +65,7 @@ public:
 	int	 GetValidFoldersNum();
 
 	void AddMember(const DBFamilyData& MemberData);
-	void SetMember(const DBFamilyData& MemberData);
+	void SetMember(int MemberId, int FolderId, const DBFamilyData& MemberData);
 
 	bool LoadMember(DBFamilyData& OutMemberData);
 	bool LoadMemberByIndex(int Id, DBFamilyData& OutMemberData);

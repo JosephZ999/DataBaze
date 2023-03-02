@@ -19,7 +19,6 @@ DBDataManager::DBDataManager()
 void DBDataManager::AddMember(const DBFamilyData& MemberData)
 {
 	const auto FileName = GenerateJsonPath();
-	DBPaths::CreatePath(DBPaths::GetDataFolderPath(GetFolderId()));
 
 	Json::Reader FileReader;
 	Json::Value	 FileData;
@@ -60,6 +59,51 @@ void DBDataManager::AddMember(const DBFamilyData& MemberData)
 		FileStream.close();
 	}
 	OnMemberAdded.Broadcast();
+}
+
+void DBDataManager::SetMember(int MemberId, int FolderId, const DBFamilyData& MemberData)
+{
+	const auto FileName = GenerateJsonPath(FolderId);
+
+	Json::Reader FileReader;
+	Json::Value	 FileData;
+
+	// Read Json file
+	if (CheckFile(FileName))
+	{
+		// Read file data
+		std::ifstream File(FileName);
+		FileReader.parse(File, FileData);
+		File.close();
+
+		// Add New Member
+		Json::Value Family;
+		FillFamilyInfo(MemberData, Family);
+		FileData["Main"][MemberId] = Family;
+
+		// Save to file
+		std::ofstream FileStream(FileName);
+
+		Json::StreamWriterBuilder			Builder;
+		std::unique_ptr<Json::StreamWriter> Writer(Builder.newStreamWriter());
+		Writer->write(FileData, &FileStream);
+		FileStream.close();
+	}
+	else
+	{
+		std::ofstream FileStream(FileName);
+
+		// Add New Member
+		Json::Value Family;
+		FillFamilyInfo(MemberData, Family);
+		FileData["Main"][MemberId] = Family;
+
+		Json::StreamWriterBuilder			Builder;
+		std::unique_ptr<Json::StreamWriter> Writer(Builder.newStreamWriter());
+		Writer->write(FileData, &FileStream);
+		FileStream.close();
+	}
+	OnMemberChanged.Broadcast();
 }
 
 bool DBDataManager::LoadMember(DBFamilyData& OutMemberData)
