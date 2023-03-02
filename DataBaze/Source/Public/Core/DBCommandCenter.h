@@ -18,5 +18,6 @@ namespace cmd
 	namespace wnd
 	{
 		void WriterEditMember(int FamilyId, int FolderId, const EPeopleType People, const DBFamilyData& Data);
-	}
+		void SetViewerData(int FamilyId, int FolderId, const DBFamilyData& Data);
+	} // namespace wnd
 } // namespace cmd

@@ -629,7 +629,7 @@ void DBWindowWriter::UpdateEditText()
 		case PD_MailCity: SText = MembersData.MailCity; break;
 		case PD_MailStreet: SText = MembersData.MailStreet; break;
 		case PD_MailHomeNumber: SText = MembersData.MailHomeNumber; break;
-		case PD_MailZipCode: SText = MembersData.MailZipCode; break;
+		case PD_MailZipCode: SText = std::to_string(MembersData.MailZipCode); break;
 		default:
 		{
 			if (bFinish)
@@ -874,6 +874,7 @@ void DBWindowWriter::FinishWriting()
 		if (! DataManager) return;
 
 		DataManager->SetMember(CurrentFamilyId, CurrentFolderId, MembersData);
+		cmd::wnd::SetViewerData(CurrentFamilyId, CurrentFolderId, MembersData);
 
 		bFinish = true;
 		OnClose.Broadcast();

@@ -43,3 +43,9 @@ void cmd::wnd::WriterEditMember(int FamilyId, int FolderId, const EPeopleType Pe
 	get::GetWindowsManager()->OpenWindowByType(IDW_WRITER);
 	get::GetWindowsManager()->SetWriterData(FamilyId, FolderId, Data, People);
 }
+
+void cmd::wnd::SetViewerData(int FamilyId, int FolderId, const DBFamilyData& Data)
+{
+	//get::GetWindowsManager()->OpenWindowByType(IDW_VIEWER);
+	get::GetWindowsManager()->SetViewerData(FamilyId, FolderId, Data);
+}

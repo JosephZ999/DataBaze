@@ -206,6 +206,8 @@ void DBWindowViewer::PrintData()
 	// Clear text
 	DBLib::SetText(ButtonManager->GetWndHandler(IDC_V_InfoTitle), L"");
 	DBLib::SetText(ButtonManager->GetWndHandler(IDC_V_Info), L"");
+	Title.clear();
+	Info.clear();
 
 	HasSpouse = MemberData.Parents.size() > 1;
 	HasChild  = MemberData.Children.size() > 0;
