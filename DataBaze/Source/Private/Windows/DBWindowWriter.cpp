@@ -847,8 +847,10 @@ void DBWindowWriter::SetItem(std::string& Info)
 	}
 	case PD_ChildrenNum:
 	{
-		MembersData.ChildrenNum = DBConvert::StringToInt(Info);
-		ChildrenNum				= MembersData.ChildrenNum; // local
+		const size_t ArrSize = DBConvert::StringToInt(Info);
+		MembersData.Children.resize(ArrSize);
+		MembersData.ChildrenNum = ArrSize;
+		ChildrenNum				= ArrSize; // local
 		break;
 	}
 	case PD_MailCountry:
