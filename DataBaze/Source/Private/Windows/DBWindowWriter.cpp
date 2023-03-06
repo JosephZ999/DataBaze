@@ -258,7 +258,7 @@ void DBWindowWriter::WriteData()
 				}
 				case PD_ImageFile:
 				{
-					if (bEditMode)
+					if (bEditMode && DataToChange->ImageFile.length() != 0)
 					{
 						FinishWriting();
 						return;
@@ -276,7 +276,7 @@ void DBWindowWriter::WriteData()
 
 	if (PeopleData == PD_ImageFile)
 	{
-		if (bEditMode)
+		if (DataToChange->ImageFile.length() != 0)
 		{
 			NextLine();
 			NextLine();
@@ -870,6 +870,7 @@ void DBWindowWriter::FinishWriting()
 		DataManager->SetMember(CurrentFamilyId, CurrentFolderId, MembersData);
 		cmd::wnd::SetViewerData(CurrentFamilyId, CurrentFolderId, MembersData);
 
+		CopySavedImages();
 		bFinish = true;
 		OnClose.Broadcast();
 		return;
