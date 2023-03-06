@@ -53,6 +53,7 @@ private:
 	void PrintData();
 	void PrintPeople(const DBPeopleData& People, bool IsChild);
 	void PrintMail();
+	void PressTab(size_t Times = 1);
 
 	inline void PasteString(const std::string Text);
 	inline void WriteEMail();

@@ -417,6 +417,16 @@ void DBWindowViewer::PrintMail()
 	}
 }
 
+void DBWindowViewer::PressTab(size_t Times)
+{
+	if (Times == 0) return;
+
+	for (size_t i = 0; i < Times; ++i)
+	{
+		DBInput::PressKey(VK_TAB);
+	}
+}
+
 inline void DBWindowViewer::PasteString(const std::string Text)
 {
 	Sleep(20);
