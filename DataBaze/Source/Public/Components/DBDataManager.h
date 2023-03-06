@@ -82,6 +82,9 @@ public:
 
 private:
 	bool SetFolder(int FolderId);
+	void WriteToDisk(const std::wstring& InFileName, const Json::Value& InData);
+	void WriteJsonToDisk(const std::wstring& InFileName, const Json::Value& InData);
+	void WriteJsonToDiskBackup(const Json::Value& InData);
 
 	bool CheckFile(const std::wstring& InFilePath);
 	void FillFamilyInfo(const DBFamilyData& MemberData, Json::Value& OutValue);

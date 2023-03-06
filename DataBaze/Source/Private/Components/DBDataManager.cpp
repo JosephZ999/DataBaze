@@ -37,26 +37,17 @@ void DBDataManager::AddMember(const DBFamilyData& MemberData)
 		FileData["Main"].append(Family);
 
 		// Save to file
-		std::ofstream FileStream(FileName);
-
-		Json::StreamWriterBuilder			Builder;
-		std::unique_ptr<Json::StreamWriter> Writer(Builder.newStreamWriter());
-		Writer->write(FileData, &FileStream);
-		FileStream.close();
+		WriteToDisk(FileName, FileData);
 	}
 	else
 	{
-		std::ofstream FileStream(FileName);
-
 		// Add New Member
 		Json::Value Family;
 		FillFamilyInfo(MemberData, Family);
 		FileData["Main"].append(Family);
 
-		Json::StreamWriterBuilder			Builder;
-		std::unique_ptr<Json::StreamWriter> Writer(Builder.newStreamWriter());
-		Writer->write(FileData, &FileStream);
-		FileStream.close();
+		// Save to file
+		WriteToDisk(FileName, FileData);
 	}
 	OnMemberAdded.Broadcast();
 }
@@ -82,26 +73,17 @@ void DBDataManager::SetMember(int MemberId, int FolderId, const DBFamilyData& Me
 		FileData["Main"][MemberId] = Family;
 
 		// Save to file
-		std::ofstream FileStream(FileName);
-
-		Json::StreamWriterBuilder			Builder;
-		std::unique_ptr<Json::StreamWriter> Writer(Builder.newStreamWriter());
-		Writer->write(FileData, &FileStream);
-		FileStream.close();
+		WriteToDisk(FileName, FileData);
 	}
 	else
 	{
-		std::ofstream FileStream(FileName);
-
 		// Add New Member
 		Json::Value Family;
 		FillFamilyInfo(MemberData, Family);
 		FileData["Main"][MemberId] = Family;
 
-		Json::StreamWriterBuilder			Builder;
-		std::unique_ptr<Json::StreamWriter> Writer(Builder.newStreamWriter());
-		Writer->write(FileData, &FileStream);
-		FileStream.close();
+		// Save
+		WriteToDisk(FileName, FileData);
 	}
 	OnMemberChanged.Broadcast();
 }
@@ -424,4 +406,25 @@ bool DBDataManager::SetFolder(int FolderId)
 	}
 	SelectedFolderId = (*ValidFolders)[FolderId];
 	return InitialValue != SelectedFolderId;
+}
+
+void DBDataManager::WriteToDisk(const std::wstring& InFileName, const Json::Value& InData)
+{
+	WriteJsonToDiskBackup(InData);
+	WriteJsonToDisk(InFileName, InData);
+}
+
+void DBDataManager::WriteJsonToDisk(const std::wstring& InFileName, const Json::Value& InData)
+{
+	std::ofstream						FileStream(InFileName);
+	Json::StreamWriterBuilder			Builder;
+	std::unique_ptr<Json::StreamWriter> Writer(Builder.newStreamWriter());
+	Writer->write(InData, &FileStream);
+	FileStream.close();
+}
+
+void DBDataManager::WriteJsonToDiskBackup(const Json::Value& InData)
+{
+	const std::wstring BackupFileName = std::wstring(DBPaths::GetDataFolderPath(GetFolderId()).append(L"\\Backup.json"));
+	WriteJsonToDisk(BackupFileName, InData);
 }
