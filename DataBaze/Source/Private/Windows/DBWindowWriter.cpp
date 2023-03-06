@@ -1,9 +1,11 @@
 
 #include "DBWindowWriter.h"
-#include <commdlg.h>
-#include <comdef.h>
 #include "DBDataManager.h"
 #include "DBButtonManager.h"
+
+#include <commdlg.h>
+#include <comdef.h>
+#include <map>
 
 #include "UILibrary.h"
 
@@ -300,124 +302,71 @@ void DBWindowWriter::UpdateInfo()
 	std::wstring InfoText;
 	std::wstring MoreInfoText;
 
-	InfoText.append(L"<   ");
-	switch (PeopleType)
-	{ // clang-format off
-	case PT_Parent:		InfoText.append(L"Parent 1");	break;
-	case PT_Spouse:		InfoText.append(L"Parent 2");	break;
-	case PT_Child_1:	InfoText.append(L"Child 1");	break;
-	case PT_Child_2:	InfoText.append(L"Child 2");	break;
-	case PT_Child_3:	InfoText.append(L"Child 3");	break;
-	case PT_Child_4:	InfoText.append(L"Child 4");	break;
-	case PT_Child_5:	InfoText.append(L"Child 5");	break;
-	case PT_Child_6:	InfoText.append(L"Child 6");	break;
-	case PT_Child_7:	InfoText.append(L"Child 7");	break;
-	case PT_Child_8:	InfoText.append(L"Child 8");	break;
-	case PT_Child_9:	InfoText.append(L"Child 9");	break;
-	} // clang-format on
-	InfoText.append(L"   >\n");
+	std::map<EPeopleType, std::wstring> PeopleTitleText = {
+		{PT_Parent, L"Parent 1"}, //
+		{PT_Spouse, L"Parent 1"}, //
+		{PT_Child_1, L"Child 1"}, //
+		{PT_Child_2, L"Child 2"}, //
+		{PT_Child_3, L"Child 3"}, //
+		{PT_Child_4, L"Child 4"}, //
+		{PT_Child_5, L"Child 5"}, //
+		{PT_Child_6, L"Child 6"}, //
+		{PT_Child_7, L"Child 7"}, //
+		{PT_Child_8, L"Child 8"}, //
+		{PT_Child_9, L"Child 9"}  //
+	};
 
-	switch (PeopleData)
+	if (PeopleTitleText.find(PeopleType) != PeopleTitleText.end())
 	{
-	case PD_Name:
-	{
-		InfoText.append(L"Name");
-		break;
+		InfoText.append(L"<   ").append(PeopleTitleText[PeopleType]).append(L"   >\n");
 	}
-	case PD_FamilyName:
+
+	std::map<EPeopleData, std::wstring> DataTitleText = {
+		{PD_Name, L"Name"},							 //
+		{PD_FamilyName, L"Family Name"},			 //
+		{PD_Gender, L"Gender"},						 //
+		{PD_BirthMonth, L"Birth Month"},			 //
+		{PD_BirthDay, L"Birth Day"},				 //
+		{PD_BirthYear, L"Birth Year"},				 //
+		{PD_BornCountry, L"Country where Born"},	 //
+		{PD_EducationDegree, L"Education"},			 //
+		{PD_WhereLive, L"Country Where Live Today"}, //
+		{PD_MaritalStatus, L"Marital Status"},		 //
+		{PD_ChildrenNum, L"Children Num"},			 //
+		{PD_MailCountry, L"Mail Country"},			 //
+		{PD_MailRegion, L"Mail Region"},			 //
+		{PD_MailCity, L"Mail City"},				 //
+		{PD_MailStreet, L"Mail Street"},			 //
+		{PD_MailHomeNumber, L"Mail Home Number"},	 //
+		{PD_MailZipCode, L"Mail Zip"}				 //
+	};
+
+	if (DataTitleText.find(PeopleData) != DataTitleText.end())
 	{
-		InfoText.append(L"Family Name");
-		break;
+		InfoText.append(DataTitleText[PeopleData]);
 	}
-	case PD_Gender:
-	{
-		InfoText.append(L"Gender");
-		MoreInfoText.append(L"1 or M - Mele\n2 or F - Famele");
-		break;
-	}
-	case PD_BirthMonth:
-	{
-		InfoText.append(L"Birth Month");
-		break;
-	}
-	case PD_BirthDay:
-	{
-		InfoText.append(L"Birth Day");
-		break;
-	}
-	case PD_BirthYear:
-	{
-		InfoText.append(L"Birth Year");
-		break;
-	}
-	case PD_BornCountry:
-	{
-		InfoText.append(L"Country where Born");
-		MoreInfoText.append(L"Example - UZB");
-		break;
-	}
-	case PD_EducationDegree:
-	{
-		InfoText.append(L"Education");
-		MoreInfoText.append(
+
+	std::map<EPeopleData, std::wstring> DataInfoText = {
+		{PD_Gender, L"1 or M - Mele\n2 or F - Famele"}, //
+		{PD_BornCountry, L"Example - UZB"},				//
+		{PD_EducationDegree,
 			L"H.School no degree - 1 or N, H.School - 2 or S, Vocational - 3 or V, University Courses - 4 or UC, "
-			L"University - 5 or U, Graduate level Courses - 6 or GC, Masters - 7 or M, Doctoral Courses - 8 or SD, Doctorate - 9 or D");
-		break;
-	}
-	case PD_WhereLive:
+			L"University - 5 or U, Graduate level Courses - 6 or GC, Masters - 7 or M, Doctoral Courses - 8 or SD, Doctorate - 9 or D"}, //
+		{PD_WhereLive, L"Example - RUS"},																								 //
+		{PD_MaritalStatus,
+			L"Unmarried - 1 or U, Married - 2 or M, Spouse is a US citizen - 3 or US, Divorced - 4 or D, Widowed - 5 or W"}, //
+		{PD_ChildrenNum, L"Number 0-9"},																					 //
+		{PD_MailCountry, L"Example - UZB"},																					 //
+		{PD_MailRegion, L"Example - Samarkand"},																			 //
+		{PD_MailCity, L"Example - Samarkand"},																				 //
+		{PD_MailStreet, L"Example - Sattepo street"},																		 //
+		{PD_MailHomeNumber, L"Example - 4/25"},																				 //
+		{PD_MailZipCode, L"Disabling - Any enter whose length is below 3"},													 //
+	};
+
+	if (DataInfoText.find(PeopleData) != DataInfoText.end())
 	{
-		InfoText.append(L"Country Where Live Today");
-		MoreInfoText.append(L"Example - RUS");
-		break;
-	}
-	case PD_MaritalStatus:
-	{
-		InfoText.append(L"Marital Status");
-		MoreInfoText.append(L"Unmarried - 1 or U, Married - 2 or M, Spouse is a US citizen - 3 or US, Divorced - 4 or D, Widowed - 5 or W");
-		break;
-	}
-	case PD_ChildrenNum:
-	{
-		InfoText.append(L"Children Num");
-		MoreInfoText.append(L"Number 0-9");
-		break;
-	}
-	case PD_MailCountry:
-	{
-		InfoText.append(L"Mailing Country");
-		MoreInfoText.append(L"Example - UZB");
-		break;
-	}
-	case PD_MailRegion:
-	{
-		InfoText.append(L"Mailing Region");
-		MoreInfoText.append(L"Example - Samarkand");
-		break;
-	}
-	case PD_MailCity:
-	{
-		InfoText.append(L"Mailing City");
-		MoreInfoText.append(L"Example - Samarkand");
-		break;
-	}
-	case PD_MailStreet:
-	{
-		InfoText.append(L"Mailing Street");
-		MoreInfoText.append(L"Example - Sattepo street");
-		break;
-	}
-	case PD_MailHomeNumber:
-	{
-		InfoText.append(L"Mailing Home Number");
-		MoreInfoText.append(L"Example - 4/25");
-		break;
-	}
-	case PD_MailZipCode:
-	{
-		InfoText.append(L"Mailing ZipCode");
-		MoreInfoText.append(L"Disabling - Any enter whose length is below 3");
-		break;
-	}
+		MoreInfoText.append(DataInfoText[PeopleData]);
 	}
 
 	DBLib::SetText(ButtonManager->GetWndHandler(IDC_W_Info), InfoText);
