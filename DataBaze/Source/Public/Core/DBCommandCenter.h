@@ -20,4 +20,9 @@ namespace cmd
 		void WriterEditMember(int FamilyId, int FolderId, const EPeopleType People, const DBFamilyData& Data);
 		void SetViewerData(int FamilyId, int FolderId, const DBFamilyData& Data);
 	} // namespace wnd
+
+	namespace data
+	{
+		void SaveMemberCode(int MemberId, int FolderId, const std::wstring& FileName, const std::wstring& Data);
+	}
 } // namespace cmd

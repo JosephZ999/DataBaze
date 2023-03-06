@@ -31,6 +31,7 @@ namespace DBLib
 namespace DBInput
 {
 	void CopyToClipboard(HWND hwnd, const std::string& String);
+	void CopyToClipboard(HWND hwnd, const std::wstring& WString);
 	void PressKey(WORD Key);
 	void PressKeys(WORD Key1, WORD Key2);
 	void PasteClipboard();
@@ -42,6 +43,7 @@ namespace DBPaths
 	std::wstring GetDataPath();
 	std::wstring GetDataFolderPath(int Folder);
 	std::wstring GetImagePath(int Folder, int ImageId);
+	std::wstring GetConfirmationPath(int FolderId);
 
 	void CreatePath(std::wstring NewPath);
 } // namespace DBPaths
@@ -56,6 +58,7 @@ namespace DBConvert
 namespace DBDebug
 {
 	void CreateMessageBox(std::string Text);
+	void CreateMessageBox(std::wstring Text);
 }
 
 template <typename To, typename From> //

@@ -319,6 +319,15 @@ void DBDataManager::WriteImageId(int Id)
 	File.close();
 }
 
+void DBDataManager::SaveMemberCode(int MemberId, int FolderId, const std::wstring& FileName, const std::wstring& Data)
+{
+	const std::wstring Path = DBPaths::GetConfirmationPath(FolderId).append(FileName).append(L".txt");
+
+	std::wofstream FileStream(Path, std::ios_base::out | std::ios_base::trunc | std::ios_base::binary);
+	FileStream << Data;
+	FileStream.close();
+}
+
 std::wstring DBDataManager::GenerateJsonPath() const
 {
 	return std::wstring(DBPaths::GetDataFolderPath(GetFolderId()).append(L"\\Data.json"));

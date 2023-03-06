@@ -46,6 +46,11 @@ void cmd::wnd::WriterEditMember(int FamilyId, int FolderId, const EPeopleType Pe
 
 void cmd::wnd::SetViewerData(int FamilyId, int FolderId, const DBFamilyData& Data)
 {
-	//get::GetWindowsManager()->OpenWindowByType(IDW_VIEWER);
+	// get::GetWindowsManager()->OpenWindowByType(IDW_VIEWER);
 	get::GetWindowsManager()->SetViewerData(FamilyId, FolderId, Data);
+}
+
+void cmd::data::SaveMemberCode(int MemberId, int FolderId, const std::wstring& FileName, const std::wstring& Data)
+{
+	get::GetDataManager()->SaveMemberCode(MemberId, FolderId, FileName, Data);
 }

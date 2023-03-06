@@ -6,6 +6,8 @@
 
 #include "DBInstance.h"
 
+#pragma warning(disable : 4996)
+
 typedef EDBWindowType CompType;
 
 void DBLib::SetWindowVisibility(HWND Window, bool bShow)
@@ -116,6 +118,22 @@ void DBInput::CopyToClipboard(HWND hwnd, const std::string& String)
 	}
 }
 
+void DBInput::CopyToClipboard(HWND hwnd, const std::wstring& WString)
+{
+	if (OpenClipboard(hwnd))
+	{
+		EmptyClipboard();
+		HGLOBAL hClipboardData;
+		hClipboardData = GlobalAlloc(GMEM_DDESHARE, sizeof(WCHAR) * (wcslen(WString.c_str()) + 1));
+		WCHAR* pchData;
+		pchData = (WCHAR*)GlobalLock(hClipboardData);
+		wcscpy(pchData, WString.c_str());
+		GlobalUnlock(hClipboardData);
+		SetClipboardData(CF_UNICODETEXT, hClipboardData);
+		CloseClipboard();
+	}
+}
+
 void DBInput::PressKey(WORD Key)
 {
 	INPUT ip;
@@ -200,19 +218,28 @@ std::wstring DBPaths::GetProjectPath()
 
 std::wstring DBPaths::GetDataPath()
 {
-	return std::wstring(DBPaths::GetProjectPath()).append(L"\\Data");
+	return DBPaths::GetProjectPath().append(L"\\Data");
 }
 
 std::wstring DBPaths::GetDataFolderPath(int Folder)
 {
-	return std::wstring(DBPaths::GetDataPath()).append(L"\\Folder_").append(std::to_wstring(Folder));
+	return DBPaths::GetDataPath().append(L"\\Folder_").append(std::to_wstring(Folder));
 }
 
 std::wstring DBPaths::GetImagePath(int Folder, int ImageId)
 {
 	const std::wstring Prefix	 = (ImageId < 10) ? L"00" : ((ImageId < 100) ? L"0" : L"");
 	const std::wstring ImageName = std::wstring(Prefix).append(std::to_wstring(ImageId)).append(L".jpg");
-	return std::wstring(GetDataFolderPath(Folder)).append(L"\\").append(ImageName);
+	return GetDataFolderPath(Folder).append(L"\\").append(ImageName);
+}
+
+std::wstring DBPaths::GetConfirmationPath(int FolderId)
+{
+	const std::wstring ConfirmPath = DBPaths::GetDataPath().append(L"\\Confirmation");
+	const std::wstring FolderPath = std::wstring(ConfirmPath).append(L"\\Folder_").append(std::to_wstring(FolderId));
+	_wmkdir(ConfirmPath.c_str());
+	_wmkdir(FolderPath.c_str());
+	return FolderPath;
 }
 
 void DBPaths::CreatePath(std::wstring NewPath)
@@ -248,4 +275,9 @@ void DBDebug::CreateMessageBox(std::string Text)
 	std::wstring WText;
 	DBConvert::StringToWString(Text, WText);
 	MessageBox(NULL, WText.c_str(), L"Dialog Box", MB_OK);
+}
+
+void DBDebug::CreateMessageBox(std::wstring Text)
+{
+	MessageBox(NULL, Text.c_str(), L"Dialog Box", MB_OK);
 }

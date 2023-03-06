@@ -80,6 +80,8 @@ public:
 	int	 ReadImageId();
 	void WriteImageId(int Id);
 
+	void SaveMemberCode(int MemberId, int FolderId, const std::wstring& FileName, const std::wstring& Data);
+
 private:
 	bool SetFolder(int FolderId);
 	void WriteToDisk(const std::wstring& InFileName, const Json::Value& InData);

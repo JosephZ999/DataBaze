@@ -215,7 +215,7 @@ void DBWindowViewer::Autofill_Form1()
 
 void DBWindowViewer::Autofill_Form2()
 {
-	DBDebug::CreateMessageBox("Fill 2");
+	CopyAndSaveCode();
 }
 
 void DBWindowViewer::Autofill_Form3() {}
@@ -427,6 +427,25 @@ void DBWindowViewer::PressTab(size_t Times)
 	}
 }
 
+void DBWindowViewer::CopyAndSaveCode()
+{
+	DBInput::PressKeys(VK_CONTROL, VK_A);
+	DBInput::PressKeys(VK_CONTROL, VK_C);
+	Sleep(20);
+
+	if (OpenClipboard(NULL))
+	{
+		HANDLE		 clip = GetClipboardData(CF_UNICODETEXT);
+		std::wstring Code = std::wstring((wchar_t*)clip);
+		CloseClipboard();
+
+		cmd::data::SaveMemberCode(SelectedMemberId, //
+			SelectedFolderId,						//
+			GenerateFileName(),						//
+			Code);
+	}
+}
+
 inline void DBWindowViewer::PasteString(const std::string Text)
 {
 	Sleep(20);
@@ -439,6 +458,19 @@ inline void DBWindowViewer::WriteEMail()
 	WriteString("DEVILNOISY999");
 	DBInput::PressKeys(VK_SHIFT, VK_2);
 	WriteString("GMAIL.COM");
+}
+
+void DBWindowViewer::PasteImagePath(const DBPeopleData& People)
+{
+	// const std::string SImage = MemberData.Parents[0].ImageFile;
+
+	// std::wstring WImage;
+	// DBConvert::StringToWString(SImage, WImage);
+
+	// std::wstring FilePath = DBPaths::GetDataFolderPath(SelectedFolderId).append(WImage);
+	// DBInput::CopyToClipboard(0, FilePath);
+
+	// DBInput::PressKeys(VK_CONTROL, VK_V);
 }
 
 void DBWindowViewer::WriteString(std::string Text)
@@ -455,4 +487,15 @@ void DBWindowViewer::WriteString(std::string Text)
 			break;
 		}
 	}
+}
+
+std::wstring DBWindowViewer::GenerateFileName()
+{
+	const std::string MemberName  = MemberData.Parents[0].Name;
+	const std::string MemberFName = MemberData.Parents[0].FamilyName;
+	const std::string StringName  = std::string("\\").append(std::to_string(SelectedMemberId)).append(" - ").append(MemberFName).append(" ").append(MemberName);
+
+	std::wstring WStr;
+	DBConvert::StringToWString(StringName, WStr);
+	return WStr;
 }

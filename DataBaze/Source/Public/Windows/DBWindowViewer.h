@@ -55,7 +55,13 @@ private:
 	void PrintMail();
 	void PressTab(size_t Times = 1);
 
+	void CopyAndSaveCode();
+
 	inline void PasteString(const std::string Text);
 	inline void WriteEMail();
+
+	void PasteImagePath(const DBPeopleData& People);
 	void WriteString(std::string Text);
+	
+	std::wstring GenerateFileName();
 };
