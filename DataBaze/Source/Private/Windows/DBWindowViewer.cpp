@@ -360,9 +360,9 @@ void DBWindowViewer::PrintData()
 	HasSpouse = MemberData.Parents.size() > 1;
 	HasChild  = MemberData.Children.size() > 0;
 
-	PrintPeople(MemberData[CurrentPeople], false);
+	PrintPeople(MemberData[CurrentPeople], CurrentPeople > EPeopleType::PT_Spouse);
 
-	if (true)
+	if (CurrentPeople == EPeopleType::PT_Parent)
 	{
 		PrintMail();
 	}
