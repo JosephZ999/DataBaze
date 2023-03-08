@@ -49,7 +49,7 @@ void DBInstance::Initialize(FDBInstanceInit& Param)
 		const Size2D Position = {200, 25};
 		const Size2D Size	  = {500, 300};
 
-		ListBox->Initialize(IDC_ListBox, Style, Position, Size, InitData.MainHWND, 20);
+		ListBox->Initialize(IDC_ListBox, Style, Position, Size, InitData.MainHWND, 28);
 
 		std::vector<std::wstring> InitList;
 		DataManager->GetMembersList(InitList);

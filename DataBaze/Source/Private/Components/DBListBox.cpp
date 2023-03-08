@@ -15,8 +15,13 @@ void DBListBox::Initialize(EDBWinCompId Id, DWORD Style, const Size2D& Position,
 		(HMENU)Id,						   // Id
 		NULL, NULL);
 
-	DBLib::SetFontSize(ListBoxHWND, FontSize);
 	SetWindowPos(ListBoxHWND, HWND_TOP, Position.X, Position.Y, Size.X, Size.Y, 0);
+
+	HFONT hFont = CreateFont(FontSize, 0, 0, 0, FW_DONTCARE, FALSE, FALSE, FALSE, DEFAULT_CHARSET, OUT_OUTLINE_PRECIS, CLIP_DEFAULT_PRECIS,
+		CLEARTYPE_QUALITY, VARIABLE_PITCH, TEXT("consolas"));
+	SendMessage(ListBoxHWND, WM_SETFONT, (WPARAM)hFont, 0);
+
+	// DBLib::SetFontSize(ListBoxHWND, FontSize);
 }
 
 void DBListBox::SetList(const std::vector<std::wstring>& InList)
@@ -65,7 +70,7 @@ void DBListBox::SetPosition(const Size2D& InPos)
 void DBListBox::SetSelectedItemText(const std::wstring& InText)
 {
 	const int Index = (int)SendMessage(ListBoxHWND, LB_GETCURSEL, 0, 0);
-	const int Data = (int)SendMessage(ListBoxHWND, LB_GETITEMDATA, Index, 0);
+	const int Data	= (int)SendMessage(ListBoxHWND, LB_GETITEMDATA, Index, 0);
 
 	// del
 	SendMessage(ListBoxHWND, LB_DELETESTRING, Index, 0);

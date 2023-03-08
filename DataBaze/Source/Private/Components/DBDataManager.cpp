@@ -422,7 +422,14 @@ std::wstring DBDataManager::GetMemberStatus(Json::Value& InData, int InId)
 	std::wstring Status;
 	DBConvert::StringToWString(Info, Status);
 
-	const bool bLocked = InData[InId][JCK_GLOBALS][JGK_LOCK].asBool();
+	const bool bLocked		  = InData[InId][JCK_GLOBALS][JGK_LOCK].asBool();
+
+	const int  SymbolPosition = 35 - Status.length();
+	for (int i = 0; i < SymbolPosition; ++i)
+	{
+		Status.append(L" ");
+	}
+
 	Status.append(bLocked ? (CC_CHECK) : L"");
 
 	return Status;
