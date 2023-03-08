@@ -3,6 +3,9 @@
 
 void DBListBox::Initialize(EDBWinCompId Id, DWORD Style, const Size2D& Position, const Size2D& Size, HWND OwnerWnd, int FontSize)
 {
+	InitialPos	= Position;
+	InitialSize = Size;
+
 	ListBoxHWND = CreateWindow(L"LISTBOX", //
 		L"MemberList",					   //
 		Style,							   //
@@ -13,6 +16,7 @@ void DBListBox::Initialize(EDBWinCompId Id, DWORD Style, const Size2D& Position,
 		NULL, NULL);
 
 	DBLib::SetFontSize(ListBoxHWND, FontSize);
+	SetWindowPos(ListBoxHWND, HWND_TOP, Position.X, Position.Y, Size.X, Size.Y, 0);
 }
 
 void DBListBox::SetList(const std::vector<std::wstring>& InList)
@@ -46,4 +50,12 @@ int DBListBox::GetSelectedItemId()
 int DBListBox::GetLastItemId() const
 {
 	return LastItemId;
+}
+
+void DBListBox::SetSize(const Size2D& InSize)
+{
+}
+
+void DBListBox::SetPosition(const Size2D & InPos)
+{
 }

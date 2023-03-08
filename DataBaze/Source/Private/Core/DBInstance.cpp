@@ -88,7 +88,7 @@ void DBInstance::Initialize(FDBInstanceInit& Param)
 		HButtons.push_back(FWndItem(WT_Button, IDC_NextFolder, {60, 30}, L" > "));
 		HButtons.push_back(FWndItem(WT_Button, IDC_Minimize, {60, 30}, L" << "));
 
-		auto HBox = UILib::CreateHorizontalBox(Size2D(200, 320), Size2D(500, 30));
+		auto HBox = UILib::CreateHorizontalBox(Size2D(200, 340), Size2D(500, 30));
 		for (size_t i = 0; i < HButtons.size(); ++i)
 		{
 			HWND NewWnd = ButtonManager->AddItem(InitData.MainHWND, HButtons[i]);
@@ -140,6 +140,36 @@ void DBInstance::UpdateFolderIdText()
 	IdAsText.append(L" - ").append(std::to_wstring(GetListBox()->GetLastItemId()));
 	HWND FolderIdHandle = GetButtonManager()->GetWndHandler(EDBWinCompId::IDC_FolderId);
 	DBLib::SetText(FolderIdHandle, IdAsText);
+}
+
+void DBInstance::SetMinimizeMode(bool Enabled)
+{
+	bMinimizeMode = Enabled;
+
+	// Vertical buttons pos
+	const int VBoxOffset = Enabled ? -200 : 0;
+	GetButtonManager()->GetSlot(BBI_Vertical)->SetOffset(Size2D(VBoxOffset, 0));
+
+	// Horizontal buttons pos
+	UILib::SlotPtr HBox			= GetButtonManager()->GetSlot(BBI_Horizontal);
+	const int	   HBoxNewSizeX = Enabled ? 450 : 500;
+	const int	   HBoxSizeY	= HBox->GetSize().Y;
+	HBox->SetSize(Size2D(HBoxNewSizeX, HBoxSizeY));
+
+	const int HBoxOffset = Enabled ? -180 : 0;
+	HBox->SetOffset(Size2D(HBoxOffset, 0));
+
+	// ListBox Pos and Size
+	const Size2D ListInitPos  = GetListBox()->GetInitialPos();
+	const Size2D ListInitSize = GetListBox()->GetInitialSize();
+	const Size2D ListPos	  = Size2D(Enabled ? ListInitPos.X - 180 : ListInitPos.X, ListInitPos.Y);
+	const Size2D ListSize	  = Size2D(Enabled ? ListInitSize.X - 50 : ListInitSize.X, ListInitSize.Y);
+	SetWindowPos(GetListBox()->GetWnd(), HWND_TOP, ListPos.X, ListPos.Y, ListSize.X, ListSize.Y, 0);
+
+	// Window Size
+	const Size2D MainWndPos(25, 25);
+	const Size2D MainWndSize(Enabled ? 505 : 740, 450);
+	SetWindowPos(InitData.MainHWND, HWND_TOP, MainWndPos.X, MainWndPos.Y, MainWndSize.X, MainWndSize.Y, 0);
 }
 
 void DBInstance::CallCommand(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
@@ -198,7 +228,7 @@ void DBInstance::CallCommand(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPar
 		}
 		case BN_CLICKED:
 		{
-			// DBDebug::CreateMessageBox("Lock does not work");
+			DBDebug::CreateMessageBox("Lock does not work");
 			break;
 		}
 		}
@@ -239,10 +269,10 @@ void DBInstance::CallCommand(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPar
 		}
 		break;
 	}
-		// case IDC_Minimize:
-		//{
-		//	SetMinimizedMode(! MinimizedMode);
-		//	break;
-		//}
+	case IDC_Minimize:
+	{
+		SetMinimizeMode(! IsMinimized());
+		break;
+	}
 	} // switch end
 }

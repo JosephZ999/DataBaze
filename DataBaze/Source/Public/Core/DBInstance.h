@@ -36,6 +36,7 @@ private:
 
 	bool			Initialized = false;
 	FDBInstanceInit InitData;
+	bool			bMinimizeMode = false;
 
 public:
 	inline DBWindowsManager* GetWindowManager() const { return WindowManager; }
@@ -56,4 +57,7 @@ private:
 	void InitWindows();
 	void ResetListBox();
 	void UpdateFolderIdText();
+	void SetMinimizeMode(bool Enabled);
+	bool IsMinimized() { return bMinimizeMode; }
+
 };
