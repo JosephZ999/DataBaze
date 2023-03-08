@@ -54,8 +54,26 @@ int DBListBox::GetLastItemId() const
 
 void DBListBox::SetSize(const Size2D& InSize)
 {
+	SetWindowPos(ListBoxHWND, HWND_TOP, 0, 0, InSize.X, InSize.Y, SWP_NOMOVE);
 }
 
-void DBListBox::SetPosition(const Size2D & InPos)
+void DBListBox::SetPosition(const Size2D& InPos)
 {
+	SetWindowPos(ListBoxHWND, HWND_TOP, InPos.X, InPos.Y, 0, 0, SWP_NOSIZE);
+}
+
+void DBListBox::SetSelectedItemText(const std::wstring& InText)
+{
+	const int Index = (int)SendMessage(ListBoxHWND, LB_GETCURSEL, 0, 0);
+	const int Data = (int)SendMessage(ListBoxHWND, LB_GETITEMDATA, Index, 0);
+
+	// del
+	SendMessage(ListBoxHWND, LB_DELETESTRING, Index, 0);
+
+	// create
+	int ItemId = SendMessage(ListBoxHWND, LB_ADDSTRING, 0, (LPARAM)InText.c_str());
+	SendMessage(ListBoxHWND, LB_SETITEMDATA, ItemId, Data);
+
+	// scroll
+	SendMessage(ListBoxHWND, LB_SETCURSEL, Index, 0);
 }

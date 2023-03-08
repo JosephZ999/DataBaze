@@ -69,11 +69,12 @@ public:
 
 	bool LoadMember(DBFamilyData& OutMemberData);
 	bool LoadMemberByIndex(int Id, DBFamilyData& OutMemberData);
-	int	 GetSelectedMemberId() { return SelectedMemberId; }
 
 	void GetMembersList(std::vector<std::wstring>& OutList);
+	bool GetMemberStatus(int MemberId, std::wstring& OutList);
 	void GetLastMemberStatus(std::wstring& OutList);
 
+	int GetSelectedMemberId() { return SelectedMemberId; }
 	int GetFolderId() const { return SelectedFolderId; }
 	int GetSelectedFolderIndex() const;
 
@@ -81,6 +82,7 @@ public:
 	void WriteImageId(int Id);
 
 	void SaveMemberCode(int MemberId, int FolderId, const std::wstring& FileName, const std::wstring& Data);
+	void LockSelectedItem(bool Lock);
 
 private:
 	bool SetFolder(int FolderId);

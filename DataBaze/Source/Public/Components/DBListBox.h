@@ -30,5 +30,7 @@ public:
 	void SetPosition(const Size2D& InPos);
 	HWND GetWnd() const { return ListBoxHWND; }
 
+	void SetSelectedItemText(const std::wstring& InText);
+
 private:
 };

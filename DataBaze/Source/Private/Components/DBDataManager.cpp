@@ -1,6 +1,7 @@
 #include "DBDataManager.h"
 #include <iostream>
 #include <fstream>
+#include "DBCharCodes.h"
 
 DBDataManager::DBDataManager()
 {
@@ -328,6 +329,23 @@ void DBDataManager::SaveMemberCode(int MemberId, int FolderId, const std::wstrin
 	FileStream.close();
 }
 
+void DBDataManager::LockSelectedItem(bool Lock)
+{
+	const auto FileName = GenerateJsonPath();
+
+	Json::Reader FileReader;
+	Json::Value	 FileData;
+
+	std::ifstream File(FileName);
+	if (File.good())
+	{
+		FileReader.parse(File, FileData);
+		FileData["Main"][GetSelectedMemberId()][JCK_GLOBALS][JGK_LOCK] = Json::Value(Lock);
+		File.close();
+		WriteToDisk(FileName, FileData);
+	}
+}
+
 std::wstring DBDataManager::GenerateJsonPath() const
 {
 	return std::wstring(DBPaths::GetDataFolderPath(GetFolderId()).append(L"\\Data.json"));
@@ -360,6 +378,25 @@ void DBDataManager::GetMembersList(std::vector<std::wstring>& OutList)
 	}
 }
 
+bool DBDataManager::GetMemberStatus(int MemberId, std::wstring& OutList)
+{
+	auto FilePath = GenerateJsonPath();
+
+	Json::Reader FileReader;
+	Json::Value	 FileData;
+
+	std::ifstream File(FilePath);
+	FileReader.parse(File, FileData);
+	File.close();
+
+	if ((int)FileData["Main"].size() > MemberId)
+	{
+		OutList = GetMemberStatus(FileData["Main"], MemberId);
+		return true;
+	}
+	return false;
+}
+
 void DBDataManager::GetLastMemberStatus(std::wstring& OutList)
 {
 	auto FilePath = GenerateJsonPath();
@@ -384,6 +421,10 @@ std::wstring DBDataManager::GetMemberStatus(Json::Value& InData, int InId)
 
 	std::wstring Status;
 	DBConvert::StringToWString(Info, Status);
+
+	const bool bLocked = InData[InId][JCK_GLOBALS][JGK_LOCK].asBool();
+	Status.append(bLocked ? (CC_CHECK) : L"");
+
 	return Status;
 }
 

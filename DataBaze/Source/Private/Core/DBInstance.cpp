@@ -164,7 +164,8 @@ void DBInstance::SetMinimizeMode(bool Enabled)
 	const Size2D ListInitSize = GetListBox()->GetInitialSize();
 	const Size2D ListPos	  = Size2D(Enabled ? ListInitPos.X - 180 : ListInitPos.X, ListInitPos.Y);
 	const Size2D ListSize	  = Size2D(Enabled ? ListInitSize.X - 50 : ListInitSize.X, ListInitSize.Y);
-	SetWindowPos(GetListBox()->GetWnd(), HWND_TOP, ListPos.X, ListPos.Y, ListSize.X, ListSize.Y, 0);
+	GetListBox()->SetPosition(ListPos);
+	GetListBox()->SetSize(ListSize);
 
 	// Window Size
 	const Size2D MainWndPos(25, 25);
@@ -223,12 +224,16 @@ void DBInstance::CallCommand(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPar
 		{
 		case BN_DBLCLK:
 		{
-			DBDebug::CreateMessageBox("Lock does not work");
-			break;
-		}
-		case BN_CLICKED:
-		{
-			DBDebug::CreateMessageBox("Lock does not work");
+			if (GetListBox()->GetLastItemId() > 0)
+			{
+				GetDataManager()->LockSelectedItem(true);
+
+				std::wstring NewText;
+				if (GetDataManager()->GetMemberStatus(GetDataManager()->GetSelectedMemberId(), NewText))
+				{
+					GetListBox()->SetSelectedItemText(NewText);
+				}
+			}
 			break;
 		}
 		}
@@ -240,12 +245,16 @@ void DBInstance::CallCommand(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPar
 		{
 		case BN_DBLCLK:
 		{
-			DBDebug::CreateMessageBox("Lock does not work");
-			break;
-		}
-		case BN_CLICKED:
-		{
-			// DBDebug::CreateMessageBox("Lock does not work");
+			if (GetListBox()->GetLastItemId() > 0)
+			{
+				GetDataManager()->LockSelectedItem(false);
+
+				std::wstring NewText;
+				if (GetDataManager()->GetMemberStatus(GetDataManager()->GetSelectedMemberId(), NewText))
+				{
+					GetListBox()->SetSelectedItemText(NewText);
+				}
+			}
 			break;
 		}
 		}
