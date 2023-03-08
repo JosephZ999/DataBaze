@@ -80,5 +80,5 @@ void DBListBox::SetSelectedItemText(const std::wstring& InText)
 	SendMessage(ListBoxHWND, LB_SETITEMDATA, ItemId, Data);
 
 	// scroll
-	SendMessage(ListBoxHWND, LB_SETCURSEL, Index, 0);
+	SendMessage(ListBoxHWND, LB_SETCURSEL, ItemId, 0);
 }
