@@ -11,8 +11,8 @@
 DECLARE_DELEGATE(OnListChangedSignature);
 DECLARE_DELEGATE(OnItemChangedSignature);
 
-#define MAX_FOLDERS_NUM	   20
-#define MAX_MEMBERS_NUM	   500
+#define MAX_FOLDERS_NUM	   50
+#define MAX_MEMBERS_NUM	   300
 
 // Json keys
 
