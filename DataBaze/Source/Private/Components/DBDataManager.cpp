@@ -233,18 +233,19 @@ void DBDataManager::FillPeopleInfo(const DBPeopleData& People, Json::Value& OutV
 void DBDataManager::DeserializeFamily(const Json::Value& InFamily, DBFamilyData& OutFamily)
 {
 	// Globals
-	OutFamily.bLocked		 = InFamily[JCK_GLOBALS][JGK_LOCK].asBool();
-	OutFamily.MaritalStatus	 = InFamily[JCK_GLOBALS][JGK_STATUS].asInt();
-	OutFamily.ChildrenNum	 = InFamily[JCK_GLOBALS][JGK_CHILDNUM].asInt();
-	OutFamily.MailCountry	 = InFamily[JCK_GLOBALS][JGK_MAILCOUNTRY].asString();
-	OutFamily.MailRegion	 = InFamily[JCK_GLOBALS][JGK_MAILREGION].asString();
-	OutFamily.MailCity		 = InFamily[JCK_GLOBALS][JGK_MAILCITY].asString();
-	OutFamily.MailStreet	 = InFamily[JCK_GLOBALS][JGK_MAILSTREET].asString();
-	OutFamily.MailHomeNumber = InFamily[JCK_GLOBALS][JGK_MAILHOMENUMBER].asString();
-	OutFamily.MailZipCode	 = InFamily[JCK_GLOBALS][JGK_MAILZIP].asInt();
+	Json::Value Globals		 = InFamily[JCK_GLOBALS];
+	OutFamily.bLocked		 = Globals[JGK_LOCK].asBool();
+	OutFamily.MaritalStatus	 = Globals[JGK_STATUS].asInt();
+	OutFamily.ChildrenNum	 = Globals[JGK_CHILDNUM].asInt();
+	OutFamily.MailCountry	 = Globals[JGK_MAILCOUNTRY].asString();
+	OutFamily.MailRegion	 = Globals[JGK_MAILREGION].asString();
+	OutFamily.MailCity		 = Globals[JGK_MAILCITY].asString();
+	OutFamily.MailStreet	 = Globals[JGK_MAILSTREET].asString();
+	OutFamily.MailHomeNumber = Globals[JGK_MAILHOMENUMBER].asString();
+	OutFamily.MailZipCode	 = Globals[JGK_MAILZIP].asInt();
 
 	// Parents info
-	const bool IsMarried = InFamily[JCK_GLOBALS][JGK_STATUS].asInt() == 2;
+	const bool IsMarried = Globals[JGK_STATUS].asInt() == 2;
 	for (int i = 1; i <= (IsMarried ? 2 : 1); ++i)
 	{
 		std::string Key;
@@ -416,15 +417,17 @@ std::wstring DBDataManager::GetMemberStatus(Json::Value& InData, int InId)
 	std::string Info;
 	std::string ParamId = JCK_PARENT;
 	ParamId.append(std::to_string(1));
-	Info.append(InData[InId][ParamId][JPK_NAME].asString()).append(" ");
-	Info.append(InData[InId][ParamId][JPK_FAMILYNAME].asString());
+
+	Json::Value Member = InData[InId];
+	Info.append(Member[ParamId][JPK_NAME].asString()).append(" ");
+	Info.append(Member[ParamId][JPK_FAMILYNAME].asString());
 
 	std::wstring Status;
 	DBConvert::StringToWString(Info, Status);
 
-	const bool bLocked		  = InData[InId][JCK_GLOBALS][JGK_LOCK].asBool();
+	const bool bLocked = Member[JCK_GLOBALS][JGK_LOCK].asBool();
 
-	const int  SymbolPosition = 35 - Status.length();
+	const int SymbolPosition = 35 - Status.length();
 	for (int i = 0; i < SymbolPosition; ++i)
 	{
 		Status.append(L" ");
