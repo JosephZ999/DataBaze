@@ -21,10 +21,15 @@ HWND DBButtonManager::AddItem(HWND OwnerWnd, const FWndItem& Item)
 	return Wnd;
 }
 
-void DBButtonManager::AddSlot(SlotPtr Slot)
+void DBButtonManager::AddSlot(int SlotId, SlotPtr Slot)
 {
-	UISlots.push_back(Slot);
+	UISlots.insert({SlotId, Slot});
 	Slot->ReDraw();
+}
+
+DBButtonManager::SlotPtr DBButtonManager::GetSlot(int SlotId)
+{
+	return UISlots[SlotId];
 }
 
 HWND DBButtonManager::GetWndHandler(EDBWinCompId Id)

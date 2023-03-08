@@ -5,26 +5,28 @@ void UIVerticalBox::Draw(Size2D InPos, Size2D InSize)
 	Position = InPos;
 	Size	 = InSize;
 
+	InPos += Offset;
+
 	if (GetChildren().size() == 0) return;
 
 	const int SpaceToFill = GetEmptySpace();
 	const int FillerNum	  = GetFillersNum();
 	const int ElemHeight  = SpaceToFill / FillerNum;
 
-	int CurrentPosY = Position.Y;
+	int CurrentPosY = InPos.Y;
 	for (size_t i = 0; i < GetChildren().size(); ++i)
 	{
 		if (GetChildren()[i]->IsFill())
 		{
-			const auto nPos	 = Size2D(Position.X, CurrentPosY);
-			const auto nSize = Size2D(Size.X, ElemHeight);
+			const auto nPos	 = Size2D(InPos.X, CurrentPosY);
+			const auto nSize = Size2D(InSize.X, ElemHeight);
 			GetChildren()[i]->Draw(nPos, nSize);
 			CurrentPosY += ElemHeight;
 		}
 		else
 		{
-			const auto nPos	 = Size2D(Position.X, CurrentPosY);
-			const auto nSize = Size2D(Size.X, GetChildren()[i]->GetSize().Y);
+			const auto nPos	 = Size2D(InPos.X, CurrentPosY);
+			const auto nSize = Size2D(InSize.X, GetChildren()[i]->GetSize().Y);
 			GetChildren()[i]->Draw(nPos, nSize);
 			CurrentPosY += GetChildren()[i]->GetSize().Y;
 		}
@@ -33,7 +35,7 @@ void UIVerticalBox::Draw(Size2D InPos, Size2D InSize)
 
 inline int UIVerticalBox::GetEmptySpace()
 {
-	int EmptySpace = Size.Y;
+	int EmptySpace = GetSize().Y;
 	for (auto& Elem : GetChildren())
 	{
 		if (! Elem->IsFill())

@@ -20,6 +20,9 @@ struct Size2D
 	Size2D	operator-(const Size2D& OtherSize) const;
 	bool	operator==(const Size2D& A) const;
 	bool	operator!=(const Size2D& A) const;
+
+	Size2D operator+(const Size2D& OtherSize) const;
+	Size2D& operator+=(const Size2D& OtherSize);
 };
 
 inline Size2D& Size2D::operator=(const Size2D& NewSize)
@@ -51,4 +54,16 @@ inline bool Size2D::operator==(const Size2D& A) const
 inline bool Size2D::operator!=(const Size2D& A) const
 {
 	return ! (*this == A);
+}
+
+inline Size2D Size2D::operator+(const Size2D& OtherSize) const
+{
+	return Size2D(X + OtherSize.X, Y + OtherSize.Y);
+}
+
+inline Size2D & Size2D::operator+=(const Size2D & OtherSize)
+{
+	X += OtherSize.X;
+	Y += OtherSize.Y;
+	return *this;
 }

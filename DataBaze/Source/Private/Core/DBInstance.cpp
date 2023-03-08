@@ -8,6 +8,12 @@
 #include "Components/UISpacer.h"
 #include "UILibrary.h"
 
+enum EButtonBoxId
+{
+	BBI_Vertical = 0,
+	BBI_Horizontal,
+};
+
 void DBInstance::Initialize(FDBInstanceInit& Param)
 {
 	if (Initialized) return;
@@ -71,7 +77,7 @@ void DBInstance::Initialize(FDBInstanceInit& Param)
 				VerticalBox->AddChild(UILib::CreateSpacer(Size2D(0, 15)));
 			}
 		}
-		ButtonManager->AddSlot(VerticalBox);
+		ButtonManager->AddSlot(BBI_Vertical, VerticalBox);
 
 		//-----------------------------------------------// Horizontal Buttons
 		std::vector<FWndItem> HButtons;
@@ -97,7 +103,7 @@ void DBInstance::Initialize(FDBInstanceInit& Param)
 
 			HBox->AddChild(HSlot);
 		}
-		ButtonManager->AddSlot(HBox);
+		ButtonManager->AddSlot(BBI_Horizontal, HBox);
 		UpdateFolderIdText();
 	}
 }

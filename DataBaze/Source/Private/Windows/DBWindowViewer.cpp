@@ -163,7 +163,7 @@ DBWindowViewer::DBWindowViewer(HWND OwningWnd)
 			VBox->AddChild(HBox2);
 		}
 
-		ButtonManager->AddSlot(VBox);
+		ButtonManager->AddSlot(0, VBox);
 	}
 }
 

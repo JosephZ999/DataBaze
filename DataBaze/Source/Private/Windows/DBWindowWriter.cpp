@@ -136,7 +136,7 @@ DBWindowWriter::DBWindowWriter(HWND OwningWnd)
 		VBox->AddChild(UILib::CreateSpacer(Size2D(0, 20)));
 		VBox->AddChild(Slot3);
 
-		ButtonManager->AddSlot(VBox);
+		ButtonManager->AddSlot(0, VBox);
 	}
 }
 

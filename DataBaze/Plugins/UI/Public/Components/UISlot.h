@@ -10,14 +10,12 @@ public:
 	UISlot(HWND InOwningWnd)
 		: OwningWnd(InOwningWnd)
 		, bFill(true)
-	{
-	}
+	{}
 	UISlot(HWND InOwningWnd, Size2D InSize)
 		: OwningWnd(InOwningWnd)
 		, Size(InSize)
 		, bFill(true)
-	{
-	}
+	{}
 
 private:
 	HWND OwningWnd = nullptr;
@@ -30,6 +28,7 @@ private:
 protected:
 	Size2D Position;
 	Size2D Size;
+	Size2D Offset;
 
 public:
 	void SetWindow(HWND InOwningWnd);
@@ -45,6 +44,7 @@ public:
 	Size2D GetSize() const { return Size; }
 	void   SetPos(const Size2D& NewPos) { Position = NewPos; }
 	void   SetSize(const Size2D& NewSize) { Size = NewSize; }
+	void   SetOffset(const Size2D& NewOffset);
 
 	void SetVAlign(EVerticalAlignment InAlign) { VAlignment = InAlign; }
 	void SetHAlign(EHorizontalAlignment InAlign) { HAlignment = InAlign; }

@@ -9,7 +9,7 @@
 class DBButtonManager : public DBInterface
 {
 	typedef std::shared_ptr<UISlot>		 SlotPtr;
-	typedef std::vector<SlotPtr>		 UIElems;
+	typedef std::map<int, SlotPtr>		 UIElems;
 	typedef std::map<EDBWinCompId, HWND> UIHandlers;
 
 public:
@@ -20,9 +20,10 @@ private:
 	UIHandlers Handlers;
 
 public:
-	HWND AddItem(HWND OwnerWnd, const FWndItem& Item);
-	void AddSlot(SlotPtr Slot);
-	HWND GetWndHandler(EDBWinCompId Id);
+	HWND	AddItem(HWND OwnerWnd, const FWndItem& Item);
+	void	AddSlot(int SlotId, SlotPtr Slot);
+	SlotPtr GetSlot(int SlotId);
+	HWND	GetWndHandler(EDBWinCompId Id);
 
 private:
 };

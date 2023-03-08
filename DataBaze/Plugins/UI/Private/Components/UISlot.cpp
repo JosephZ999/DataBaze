@@ -9,6 +9,8 @@ void UISlot::Draw(Size2D InPos, Size2D InSize)
 {
 	if (! OwningWnd) return;
 
+	InPos += Offset;
+
 	Size2D FinalPos;
 	Size2D FinalSize;
 
@@ -80,4 +82,10 @@ void UISlot::Draw(Size2D InPos, Size2D InSize)
 void UISlot::ReDraw()
 {
 	Draw(Position, Size);
+}
+
+void UISlot::SetOffset(const Size2D& NewOffset)
+{
+	Offset = NewOffset;
+	ReDraw();
 }
