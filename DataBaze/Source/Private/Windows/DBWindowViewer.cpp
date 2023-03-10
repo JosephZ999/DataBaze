@@ -197,17 +197,18 @@ void DBWindowViewer::InitializeSteps()
 	{
 		SecondFormAvailable = false;
 	}
-	StepMap.push_back(AFS_Check);
+	// StepMap.push_back(AFS_Check);
 	StepMap.push_back(AFS_SaveResult);
 }
 
 void DBWindowViewer::AutoFill()
 {
-	if (StepMap.size() == 0 || MemberData.bLocked) return;
+	if (StepMap.size() == 0 || MemberData.bLocked || FillingInProgress) return;
 
 	CurrentStep = StepMap[0];
 	StepMap.erase(StepMap.begin());
 
+	FillingInProgress = true;
 	switch (CurrentStep)
 	{
 	case AFS_Part1: Autofill_Form1(); break;
@@ -215,6 +216,8 @@ void DBWindowViewer::AutoFill()
 	case AFS_Check: Autofill_Check(); break;
 	case AFS_SaveResult: Autofill_SaveResult(); break;
 	}
+	Sleep(1000);
+	FillingInProgress = false;
 }
 
 void DBWindowViewer::Autofill_Form1()

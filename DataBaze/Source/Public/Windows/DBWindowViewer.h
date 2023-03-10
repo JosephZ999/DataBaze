@@ -52,6 +52,8 @@ private:
 
 	bool SecondFormAvailable = false;
 
+	bool FillingInProgress = false;
+
 public:
 	LRESULT CALLBACK CallProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 
