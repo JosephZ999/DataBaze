@@ -215,6 +215,7 @@ struct DBPeopleData
 	int			EducationDegree = 0; //
 
 	bool IsMele() const { return Gender == 1; }
+	bool IsBirthCityValid() const;
 
 	EEducationDegree GetEducation() const;
 	std::string		 GetBirthDataAsString() const;
@@ -265,6 +266,7 @@ struct DBFamilyData
 
 	bool IsHasChildren() const;
 	bool IsHasASpouse() const;
+	bool IsHasZipCode() const;
 
 	EMeritialStatus GetStatus() const;
 

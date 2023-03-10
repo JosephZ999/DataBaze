@@ -46,6 +46,11 @@ bool DBFamilyData::IsHasASpouse() const
 	return Parents.size() > 1;
 }
 
+bool DBFamilyData::IsHasZipCode() const
+{
+	return MailZipCode > 99;
+}
+
 EMeritialStatus DBFamilyData::GetStatus() const
 {
 	return EMeritialStatus(static_cast<EMeritialStatus>(MaritalStatus));
@@ -149,6 +154,11 @@ DBPeopleData& DBFamilyData::operator[](EPeopleType Type)
 		Parents.push_back(DBPeopleData());
 	}
 	return Parents[0];
+}
+
+bool DBPeopleData::IsBirthCityValid() const
+{
+	return BirthCity.size() > 2;
 }
 
 EEducationDegree DBPeopleData::GetEducation() const

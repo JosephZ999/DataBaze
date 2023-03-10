@@ -191,54 +191,13 @@ void DBWindowViewer::AutoFill()
 	switch (CurrentStep)
 	{
 	case AFS_Part1: Autofill_Form1(); break;
-	case AFS_Part2: Autofill_Form1(); break;
+	case AFS_Part2: Autofill_Form2(); break;
 	case AFS_Check: Autofill_Check(); break;
 	case AFS_SaveResult: Autofill_SaveResult(); break;
 	}
 }
 
-void DBWindowViewer::Autofill_Form1()
-{
-	if (MemberData.Parents.size() == 0 || MemberData.bLocked) return;
-
-	FillPeopleData(MemberData.Parents[0]);
-
-	PasteString(MemberData.MailStreet);
-	DBInput::PressKey(VK_RETURN);
-
-	PasteString(MemberData.MailHomeNumber);
-	DBInput::PressKey(VK_RETURN);
-
-	PasteString(MemberData.MailCity);
-	DBInput::PressKey(VK_RETURN);
-
-	PasteString(MemberData.MailRegion);
-	DBInput::PressKey(VK_RETURN);
-
-	PasteString(MemberData.MailCountry);
-	DBInput::PressKey(VK_RETURN);
-
-	WriteEMail();
-	DBInput::PressKey(VK_RETURN);
-}
-
-void DBWindowViewer::Autofill_Form2()
-{
-	if (MemberData.bLocked) return;
-	CopyAndSaveCode();
-}
-
-void DBWindowViewer::Autofill_Check()
-{
-	if (MemberData.bLocked) return;
-}
-
-void DBWindowViewer::Autofill_SaveResult()
-{
-	if (MemberData.bLocked) return;
-}
-
-void DBWindowViewer::FillPeopleData(const DBPeopleData& InPeople)
+void DBWindowViewer::FillPeopleData(const DBPeopleData& InPeople, bool bPartOne)
 {
 	PasteString(MemberData.Parents[0].Name);
 	PressTab(1);
@@ -271,7 +230,74 @@ void DBWindowViewer::FillPeopleData(const DBPeopleData& InPeople)
 	PasteString(std::to_string(InPeople.BirthYear));
 	PressTab(1);
 
+	// Fill City
+	if (InPeople.IsBirthCityValid())
+	{
+		PasteString(InPeople.BirthCity);
+		PressTab(2);
+	}
+	else
+	{
+		PressTab(1);
+		DBInput::PressKey(VK_SPACE);
+		PressTab(1);
+	}
 
+	// country
+	WriteString(InPeople.BirthCountry);
+	PressTab(1);
+
+	if (bPartOne)
+	{
+		PressTab(3);
+	}
+
+	// Image
+	PressTab(2);
+	PasteImagePath(InPeople);
+	PressTab(2);
+}
+
+void DBWindowViewer::Autofill_Form1()
+{
+	if (MemberData.Parents.size() == 0 || MemberData.bLocked) return;
+
+	FillPeopleData(MemberData.Parents[0], true);
+
+	PasteMailInfo();
+	SelectEducationDegree();
+	SelectMeritialStatus();
+	PasteString(std::to_string(MemberData.ChildrenNum));
+	PressTab(1);
+	DBInput::PressKey(VK_SPACE);
+}
+
+void DBWindowViewer::Autofill_Form2()
+{
+	if (MemberData.bLocked || !SecondFormAvailable) return;
+
+	if (MemberData.IsHasASpouse())
+	{
+		FillPeopleData(MemberData.Parents[1], false);
+	}
+
+	if (MemberData.IsHasChildren)
+	{
+		for (auto& Child : MemberData.Children)
+		{
+			FillPeopleData(Child, false);
+		}
+	}
+}
+
+void DBWindowViewer::Autofill_Check()
+{
+	if (MemberData.bLocked) return;
+}
+
+void DBWindowViewer::Autofill_SaveResult()
+{
+	if (MemberData.bLocked) return;
 }
 
 void DBWindowViewer::InitializeSteps()
@@ -284,6 +310,11 @@ void DBWindowViewer::InitializeSteps()
 	if (MemberData.IsHasASpouse() || MemberData.IsHasChildren())
 	{
 		StepMap.push_back(AFS_Part2);
+		SecondFormAvailable = true;
+	}
+	else
+	{
+		SecondFormAvailable = false;
 	}
 	StepMap.push_back(AFS_Check);
 	StepMap.push_back(AFS_SaveResult);
@@ -557,6 +588,46 @@ void DBWindowViewer::WriteString(std::string Text)
 		}
 	}
 }
+
+void DBWindowViewer::PasteMailInfo()
+{
+	PressTab(1);
+	PasteString(MemberData.MailStreet);
+	PressTab(1);
+	PasteString(MemberData.MailHomeNumber);
+	PressTab(1);
+	PasteString(MemberData.MailCity);
+	PressTab(1);
+	PasteString(MemberData.MailRegion);
+	PressTab(1);
+
+	if (MemberData.IsHasZipCode())
+	{
+		PasteString(std::to_string(MemberData.MailZipCode));
+		PressTab(2);
+	}
+	else
+	{
+		PressTab(1);
+		DBInput::PressKey(VK_SPACE);
+		PressTab(1);
+	}
+
+	WriteString(MemberData.MailCountry);
+	PressTab(1);
+
+	WriteString(MemberData.Parents[0].WhereLive);
+	PressTab(2);
+
+	WriteEMail();
+	PressTab(1);
+	WriteEMail();
+	PressTab(1);
+}
+
+void DBWindowViewer::SelectEducationDegree() {}
+
+void DBWindowViewer::SelectMeritialStatus() {}
 
 std::wstring DBWindowViewer::GenerateFileName()
 {

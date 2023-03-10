@@ -48,7 +48,9 @@ private:
 	EPeopleType CurrentPeople = PT_Parent;
 
 	std::vector<EAutoFillStep> StepMap;
-	EAutoFillStep CurrentStep = EAutoFillStep::AFS_None;
+	EAutoFillStep			   CurrentStep = EAutoFillStep::AFS_None;
+
+	bool SecondFormAvailable = false;
 
 public:
 	LRESULT CALLBACK CallProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
@@ -65,14 +67,14 @@ private:
 	void Autofill_SaveResult();
 
 	/*
-	* Will fill people:
-	* name
-	* family name
-	* Gender
-	* birth data
-	* country where was born
-	*/ 
-	void FillPeopleData(const DBPeopleData& InPeople);
+	 * Will fill people:
+	 * name
+	 * family name
+	 * Gender
+	 * birth data
+	 * country where was born
+	 */
+	void FillPeopleData(const DBPeopleData& InPeople, bool bPartOne);
 
 	void ChangePeople(bool Next);
 
@@ -88,6 +90,10 @@ private:
 
 	void PasteImagePath(const DBPeopleData& People);
 	void WriteString(std::string Text);
-	
+
+	void PasteMailInfo();
+	void SelectEducationDegree();
+	void SelectMeritialStatus();
+
 	std::wstring GenerateFileName();
 };
