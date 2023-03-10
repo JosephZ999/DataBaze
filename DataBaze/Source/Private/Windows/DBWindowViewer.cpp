@@ -60,7 +60,7 @@ LRESULT DBWindowViewer::CallProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM 
 		case HKV_Command_1: Autofill_Form1(); break;
 		case HKV_Command_2: Autofill_Form2(); break;
 		case HKV_Command_3: Autofill_Form3(); break;
-		case HKV_Next: Autofill_Form4(); break;
+		case HKV_Next: AutoFill(); break;
 		}
 		break;
 	}
@@ -175,7 +175,10 @@ void DBWindowViewer::SetMemberData(int MemberId, int FolderId, const DBFamilyDat
 	SelectedFolderId = FolderId;
 	MemberData		 = InData;
 	PrintData();
+	InitializeSteps();
 }
+
+void DBWindowViewer::AutoFill() {}
 
 void DBWindowViewer::Autofill_Form1()
 {
@@ -223,6 +226,21 @@ void DBWindowViewer::Autofill_Form2()
 void DBWindowViewer::Autofill_Form3() {}
 
 void DBWindowViewer::Autofill_Form4() {}
+
+void DBWindowViewer::InitializeSteps()
+{
+	StepMap.clear();
+	CurrentStep = EAutoFillStep::AFS_Part1;
+
+	StepMap.push_back(AFS_Part1);
+
+	if (MemberData.IsHasASpouse() || MemberData.IsHasChildren())
+	{
+		StepMap.push_back(AFS_Part2);
+	}
+	StepMap.push_back(AFS_Check);
+	StepMap.push_back(AFS_CopyResult);
+}
 
 void DBWindowViewer::ChangePeople(bool Next)
 {
@@ -346,6 +364,7 @@ void DBWindowViewer::ChangePeople(bool Next)
 	if (bChanged)
 	{
 		PrintData();
+		InitializeSteps();
 	}
 }
 
@@ -495,7 +514,8 @@ std::wstring DBWindowViewer::GenerateFileName()
 {
 	const std::string MemberName  = MemberData.Parents[0].Name;
 	const std::string MemberFName = MemberData.Parents[0].FamilyName;
-	const std::string StringName  = std::string("\\").append(std::to_string(SelectedMemberId)).append(" - ").append(MemberFName).append(" ").append(MemberName);
+	const std::string StringName =
+		std::string("\\").append(std::to_string(SelectedMemberId)).append(" - ").append(MemberFName).append(" ").append(MemberName);
 
 	std::wstring WStr;
 	DBConvert::StringToWString(StringName, WStr);

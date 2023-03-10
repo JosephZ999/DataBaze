@@ -24,6 +24,16 @@ enum EHotKeyId
 	HKW_Enter,
 };
 
+enum EAutoFillStep
+{
+	AFS_None,
+	AFS_Part1,
+	AFS_Part2,
+	AFS_Check,
+	AFS_CopyResult,
+	AFS_Max,
+};
+
 DECLARE_DELEGATE(OnViewerCloseSignature);
 
 struct FillData
@@ -52,9 +62,13 @@ private:
 
 	EPeopleType CurrentPeople = PT_Parent;
 
+	std::vector<EAutoFillStep> StepMap;
+	EAutoFillStep CurrentStep = EAutoFillStep::AFS_None;
+
 public:
 	LRESULT CALLBACK CallProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 
+	void AutoFill();
 	void Autofill_Form1();
 	void Autofill_Form2();
 	void Autofill_Form3();
@@ -63,6 +77,7 @@ public:
 	void SetMemberData(int MemberId, int FolderId, const DBFamilyData& InData);
 
 private:
+	void InitializeSteps();
 	void ChangePeople(bool Next);
 
 	void PrintData();
