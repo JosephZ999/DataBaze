@@ -36,6 +36,7 @@ LRESULT DBWindowViewer::CallProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM 
 			RegisterHotKey(hWnd, HKV_Command_1, MOD_CONTROL, VK_NUMPAD1);
 			RegisterHotKey(hWnd, HKV_Command_2, MOD_CONTROL, VK_NUMPAD2);
 			RegisterHotKey(hWnd, HKV_Command_3, MOD_CONTROL, VK_NUMPAD3);
+			RegisterHotKey(hWnd, HKV_Next, MOD_CONTROL, VK_SPACE);
 			// RegisterHotKey(hWnd, HKV_Command_4, MOD_CONTROL, VK_NUMPAD4);
 		}
 		break;
@@ -45,6 +46,7 @@ LRESULT DBWindowViewer::CallProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM 
 		UnregisterHotKey(hWnd, HKV_Command_1);
 		UnregisterHotKey(hWnd, HKV_Command_2);
 		UnregisterHotKey(hWnd, HKV_Command_3);
+		UnregisterHotKey(hWnd, HKV_Next);
 		// UnregisterHotKey(hWnd, HKV_Command_4);
 
 		OnClose.Broadcast();
@@ -55,10 +57,10 @@ LRESULT DBWindowViewer::CallProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM 
 	{
 		switch (wParam)
 		{
-		case 1: Autofill_Form1(); break;
-		case 2: Autofill_Form2(); break;
-		case 3: Autofill_Form3(); break;
-		case 4: Autofill_Form4(); break;
+		case HKV_Command_1: Autofill_Form1(); break;
+		case HKV_Command_2: Autofill_Form2(); break;
+		case HKV_Command_3: Autofill_Form3(); break;
+		case HKV_Next: Autofill_Form4(); break;
 		}
 		break;
 	}
