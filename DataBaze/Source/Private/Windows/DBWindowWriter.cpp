@@ -719,16 +719,18 @@ bool DBWindowWriter::SaveImage(const std::wstring& InImagePath)
 
 void DBWindowWriter::CopySavedImages()
 {
-	int LastImageId = 0;
+	if (ImagesToCopy.size() == 0) return;
+
+	int LocLastImgId = 0;
 	for (auto& Elem : ImagesToCopy)
 	{
 		CopyFile(Elem.Initial.c_str(), Elem.Final.c_str(), false);
-		LastImageId = Elem.ImageId;
+		LocLastImgId = Elem.ImageId;
 	}
 	auto DataManager = cmd::get::GetDataManager();
 	if (! DataManager) return;
 
-	DataManager->WriteImageId(LastImageId);
+	DataManager->WriteImageId(LocLastImgId);
 }
 
 int DBWindowWriter::GetNextImageId() const
