@@ -112,7 +112,7 @@ DBWindowViewer::DBWindowViewer(HWND OwningWnd)
 	ButtonManager = CreateComponent<DBButtonManager>();
 	if (ButtonManager)
 	{
-		auto VBox = UILib::CreateVerticalBox(Size2D(25, 25), Size2D(535, 350));
+		auto VBox = UILib::CreateVerticalBox(Size2D(25, 25), Size2D(535, 380));
 
 		// Info boxes
 		{
@@ -451,6 +451,7 @@ void DBWindowViewer::PrintPeople(const DBPeopleData& People, bool IsChild)
 	DataArray.push_back({L"Family Name : ", People.FamilyName});
 	DataArray.push_back({L"Birth Data (d/m/y) : ", People.GetBirthDataAsString()});
 	DataArray.push_back({L"Gender : ", People.GetGenderAsString()});
+	DataArray.push_back({L"Birth City : ", People.BirthCity});
 	DataArray.push_back({L"Birth Country : ", People.BirthCountry});
 
 	if (! IsChild)

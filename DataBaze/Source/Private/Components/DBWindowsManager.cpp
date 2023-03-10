@@ -46,7 +46,7 @@ void DBWindowsManager::Initialize(HINSTANCE HInstance)
 		V_CLASS_NAME,							 // Window class
 		L"Viewer",								 // Window text
 		WS_OVERLAPPED | WS_SYSMENU | WS_CAPTION, // Window style (Transparent bg WS_POPUP)
-		25, 25, 600, 430,						 // CW_USEDEFAULT
+		25, 25, 600, 460,						 // CW_USEDEFAULT
 		NULL,									 // Parent window
 		NULL,									 // Menu
 		HInstance,								 // Instance handle
