@@ -202,13 +202,13 @@ std::string DBPeopleData::GetAsString(EPeopleData DataType)
 	{
 	case PD_Name: return Name;
 	case PD_FamilyName: return FamilyName;
-	case PD_Gender: return to_string(Gender);
-	case PD_BirthMonth: return to_string(BirthMonth);
-	case PD_BirthDay: return to_string(BirthDay);
-	case PD_BirthYear: return to_string(BirthYear);
+	case PD_Gender: return Gender == 0 ? "" : to_string(Gender);
+	case PD_BirthMonth: return BirthMonth == 0 ? "" : to_string(BirthMonth);
+	case PD_BirthDay: return BirthDay == 0 ? "" : to_string(BirthDay);
+	case PD_BirthYear: return BirthYear == 0 ? "" : to_string(BirthYear);
 	case PD_BornCity: return BirthCity;
 	case PD_BornCountry: return BirthCountry;
-	case PD_EducationDegree: return to_string(EducationDegree);
+	case PD_EducationDegree: return EducationDegree == 0 ? "" : to_string(EducationDegree);
 	case PD_WhereLive: return WhereLive;
 	}
 

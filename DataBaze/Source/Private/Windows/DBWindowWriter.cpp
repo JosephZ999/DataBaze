@@ -186,9 +186,9 @@ void DBWindowWriter::EditPeople(int FamilyId, int FolderId, const DBFamilyData& 
 	bEditMode		= true;
 	PeopleType		= People;
 	MembersData		= Data;
+	SelectWriteData(PeopleType);
 	UpdateInfo();
 	UpdateEditStyle();
-	SelectWriteData(PeopleType);
 }
 
 void DBWindowWriter::WriteData()
@@ -304,7 +304,7 @@ void DBWindowWriter::UpdateInfo()
 
 	std::map<EPeopleType, std::wstring> PeopleTitleText = {
 		{PT_Parent, L"Parent 1"}, //
-		{PT_Spouse, L"Parent 1"}, //
+		{PT_Spouse, L"Parent 2"}, //
 		{PT_Child_1, L"Child 1"}, //
 		{PT_Child_2, L"Child 2"}, //
 		{PT_Child_3, L"Child 3"}, //
@@ -804,6 +804,7 @@ void DBWindowWriter::SetItem(std::string& Info)
 	{
 		MembersData.MaritalStatus = DBConvert::StringToInt(Info);
 		Status					  = MembersData.GetStatus(); // local
+		MembersData.Parents.resize((Status == EMeritialStatus::MS_Married) ? 2 : 1);
 		break;
 	}
 	case PD_ChildrenNum:
