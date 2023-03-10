@@ -247,6 +247,7 @@ void DBWindowViewer::Autofill_Form2()
 			FillPeopleData(Child, false);
 		}
 	}
+	DBInput::PressKey(VK_SPACE);
 }
 
 void DBWindowViewer::Autofill_Check()
