@@ -37,6 +37,7 @@ LRESULT DBWindowViewer::CallProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM 
 			RegisterHotKey(hWnd, HKV_Command_2, MOD_CONTROL, VK_NUMPAD2);
 			RegisterHotKey(hWnd, HKV_Command_3, MOD_CONTROL, VK_NUMPAD3);
 			RegisterHotKey(hWnd, HKV_Next, MOD_CONTROL, VK_SPACE);
+			RegisterHotKey(hWnd, HKV_Reset, MOD_CONTROL, VK_NUMPAD0);
 			// RegisterHotKey(hWnd, HKV_Command_4, MOD_CONTROL, VK_NUMPAD4);
 		}
 		break;
@@ -47,6 +48,7 @@ LRESULT DBWindowViewer::CallProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM 
 		UnregisterHotKey(hWnd, HKV_Command_2);
 		UnregisterHotKey(hWnd, HKV_Command_3);
 		UnregisterHotKey(hWnd, HKV_Next);
+		UnregisterHotKey(hWnd, HKV_Reset);
 		// UnregisterHotKey(hWnd, HKV_Command_4);
 
 		OnClose.Broadcast();
@@ -59,8 +61,9 @@ LRESULT DBWindowViewer::CallProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM 
 		{
 		case HKV_Command_1: Autofill_Form1(); break;
 		case HKV_Command_2: Autofill_Form2(); break;
-		case HKV_Command_3: Autofill_Form3(); break;
+		case HKV_Command_3: Autofill_Check(); break;
 		case HKV_Next: AutoFill(); break;
+		case HKV_Reset: InitializeSteps(); break;
 		}
 		break;
 	}
@@ -178,26 +181,27 @@ void DBWindowViewer::SetMemberData(int MemberId, int FolderId, const DBFamilyDat
 	InitializeSteps();
 }
 
-void DBWindowViewer::AutoFill() {}
+void DBWindowViewer::AutoFill()
+{
+	if (StepMap.size() == 0 || MemberData.bLocked) return;
+
+	CurrentStep = StepMap[0];
+	StepMap.erase(StepMap.begin());
+
+	switch (CurrentStep)
+	{
+	case AFS_Part1: Autofill_Form1(); break;
+	case AFS_Part2: Autofill_Form1(); break;
+	case AFS_Check: Autofill_Check(); break;
+	case AFS_SaveResult: Autofill_SaveResult(); break;
+	}
+}
 
 void DBWindowViewer::Autofill_Form1()
 {
-	if (MemberData.Parents.size() == 0) return;
+	if (MemberData.Parents.size() == 0 || MemberData.bLocked) return;
 
-	PasteString(MemberData.Parents[0].Name);
-	DBInput::PressKey(VK_TAB);
-
-	PasteString(MemberData.Parents[0].FamilyName);
-	DBInput::PressKey(VK_RETURN);
-
-	PasteString(std::to_string(MemberData.Parents[0].BirthMonth));
-	DBInput::PressKey(VK_TAB);
-
-	PasteString(std::to_string(MemberData.Parents[0].BirthDay));
-	DBInput::PressKey(VK_TAB);
-
-	PasteString(std::to_string(MemberData.Parents[0].BirthYear));
-	DBInput::PressKey(VK_RETURN);
+	FillPeopleData(MemberData.Parents[0]);
 
 	PasteString(MemberData.MailStreet);
 	DBInput::PressKey(VK_RETURN);
@@ -220,12 +224,55 @@ void DBWindowViewer::Autofill_Form1()
 
 void DBWindowViewer::Autofill_Form2()
 {
+	if (MemberData.bLocked) return;
 	CopyAndSaveCode();
 }
 
-void DBWindowViewer::Autofill_Form3() {}
+void DBWindowViewer::Autofill_Check()
+{
+	if (MemberData.bLocked) return;
+}
 
-void DBWindowViewer::Autofill_Form4() {}
+void DBWindowViewer::Autofill_SaveResult()
+{
+	if (MemberData.bLocked) return;
+}
+
+void DBWindowViewer::FillPeopleData(const DBPeopleData& InPeople)
+{
+	PasteString(MemberData.Parents[0].Name);
+	PressTab(1);
+
+	PasteString(MemberData.Parents[0].FamilyName);
+	PressTab(3);
+	DBInput::PressKey(VK_SPACE);
+	PressTab(1);
+
+	// Gender
+	if (InPeople.IsMele())
+	{
+		DBInput::PressKey(VK_SPACE);
+		PressTab(2);
+	}
+	else
+	{
+		PressTab(1);
+		DBInput::PressKey(VK_SPACE);
+		PressTab(1);
+	}
+
+	// Birth day
+	PasteString(std::to_string(InPeople.BirthMonth));
+	PressTab(1);
+
+	PasteString(std::to_string(InPeople.BirthDay));
+	PressTab(1);
+
+	PasteString(std::to_string(InPeople.BirthYear));
+	PressTab(1);
+
+
+}
 
 void DBWindowViewer::InitializeSteps()
 {
@@ -239,7 +286,7 @@ void DBWindowViewer::InitializeSteps()
 		StepMap.push_back(AFS_Part2);
 	}
 	StepMap.push_back(AFS_Check);
-	StepMap.push_back(AFS_CopyResult);
+	StepMap.push_back(AFS_SaveResult);
 }
 
 void DBWindowViewer::ChangePeople(bool Next)

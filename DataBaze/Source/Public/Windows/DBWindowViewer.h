@@ -9,28 +9,13 @@
 
 class DBButtonManager;
 
-enum EHotKeyId
-{
-	HK_None = 0,
-
-	// Viewer
-	HKV_Command_1,
-	HKV_Command_2,
-	HKV_Command_3,
-	HKV_Command_4,
-	HKV_Next,
-
-	// Writer
-	HKW_Enter,
-};
-
 enum EAutoFillStep
 {
 	AFS_None,
 	AFS_Part1,
 	AFS_Part2,
 	AFS_Check,
-	AFS_CopyResult,
+	AFS_SaveResult,
 	AFS_Max,
 };
 
@@ -68,16 +53,27 @@ private:
 public:
 	LRESULT CALLBACK CallProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 
-	void AutoFill();
-	void Autofill_Form1();
-	void Autofill_Form2();
-	void Autofill_Form3();
-	void Autofill_Form4();
-
 	void SetMemberData(int MemberId, int FolderId, const DBFamilyData& InData);
 
 private:
 	void InitializeSteps();
+
+	void AutoFill();
+	void Autofill_Form1();
+	void Autofill_Form2();
+	void Autofill_Check();
+	void Autofill_SaveResult();
+
+	/*
+	* Will fill people:
+	* name
+	* family name
+	* Gender
+	* birth data
+	* country where was born
+	*/ 
+	void FillPeopleData(const DBPeopleData& InPeople);
+
 	void ChangePeople(bool Next);
 
 	void PrintData();

@@ -278,3 +278,18 @@ public:
 	std::vector<DBFamilyData> Items;
 };
 
+enum EHotKeyId
+{
+	HK_None = 0,
+
+	// Viewer
+	HKV_Command_1,
+	HKV_Command_2,
+	HKV_Command_3,
+	HKV_Command_4,
+	HKV_Next,
+	HKV_Reset,
+
+	// Writer
+	HKW_Enter,
+};
