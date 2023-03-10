@@ -32,9 +32,10 @@ DECLARE_DELEGATE(OnItemChangedSignature);
 #define JPK_BIRTHMONTH	   "4.BirthM"
 #define JPK_BIRTHDAY	   "5.BirthD"
 #define JPK_BIRTHYEAR	   "6.BirthY"
-#define JPK_BIRTHCOUNTRY   "7.BirthCountry"
-#define JPK_LIVECOUNTRY	   "8.LiveCountry"
-#define JPK_EDUCATION	   "9.EducationDegree"
+#define JPK_BIRTHCITY	   "7.BirthCity"
+#define JPK_BIRTHCOUNTRY   "8.BirthCountry"
+#define JPK_LIVECOUNTRY	   "9.LiveCountry"
+#define JPK_EDUCATION	   "EducationDegree"
 #define JPK_IMAGE		   "Image"
 
 #define JCK_GLOBALS		   "1.Global"

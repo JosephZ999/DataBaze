@@ -88,6 +88,7 @@ enum EPeopleData
 	PD_BirthDay,
 	PD_BirthYear,
 
+	PD_BornCity,
 	PD_BornCountry,
 	PD_ImageFile,
 
@@ -207,6 +208,7 @@ struct DBPeopleData
 	int BirthDay   = 0; //
 	int BirthYear  = 0; //
 
+	std::string BirthCity;			 //
 	std::string BirthCountry;		 //
 	std::string WhereLive;			 //
 	std::string ImageFile;			 //

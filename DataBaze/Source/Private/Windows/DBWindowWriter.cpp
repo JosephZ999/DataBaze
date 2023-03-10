@@ -328,6 +328,7 @@ void DBWindowWriter::UpdateInfo()
 		{PD_BirthMonth, L"Birth Month"},			 //
 		{PD_BirthDay, L"Birth Day"},				 //
 		{PD_BirthYear, L"Birth Year"},				 //
+		{PD_BornCity, L"City where Born"},			 //
 		{PD_BornCountry, L"Country where Born"},	 //
 		{PD_EducationDegree, L"Education"},			 //
 		{PD_WhereLive, L"Country Where Live Today"}, //
@@ -459,6 +460,10 @@ bool DBWindowWriter::CheckFormat()
 			return true;
 		}
 		return false;
+	}
+	case PD_BornCity:
+	{
+		return true;
 	}
 	case PD_BornCountry:
 	{
@@ -592,15 +597,15 @@ void DBWindowWriter::UpdateEditStyle()
 {
 	switch (PeopleData)
 	{	// clang-format off
-	case PD_Gender:				SetEditboxStyle(EDIT_STYLE_BASE, 1); break;
-	case PD_BirthMonth:			SetEditboxStyle(ES_NUMBER, 2);	break;
-	case PD_BirthDay:			SetEditboxStyle(ES_NUMBER, 2);	break;
-	case PD_BirthYear:			SetEditboxStyle(ES_NUMBER, 4);	break;
+	case PD_Gender:				SetEditboxStyle(EDIT_STYLE_BASE, 1);	break;
+	case PD_BirthMonth:			SetEditboxStyle(ES_NUMBER, 2);			break;
+	case PD_BirthDay:			SetEditboxStyle(ES_NUMBER, 2);			break;
+	case PD_BirthYear:			SetEditboxStyle(ES_NUMBER, 4);			break;
 	case PD_EducationDegree:	SetEditboxStyle(EDIT_STYLE_BASE, 2);	break;
 	case PD_MaritalStatus:		SetEditboxStyle(EDIT_STYLE_BASE, 1);	break;
-	case PD_ChildrenNum:		SetEditboxStyle(ES_NUMBER, 1);		break;
-	case PD_MailZipCode:		SetEditboxStyle(ES_NUMBER);			break;
-	default:					SetEditboxStyle(EDIT_STYLE_BASE);	break;
+	case PD_ChildrenNum:		SetEditboxStyle(ES_NUMBER, 1);			break;
+	case PD_MailZipCode:		SetEditboxStyle(ES_NUMBER, 1);			break;
+	default:					SetEditboxStyle(EDIT_STYLE_BASE);		break;
 		// clang-format on
 	}	// Switch PeopleData
 }
@@ -766,6 +771,11 @@ void DBWindowWriter::SetItem(std::string& Info)
 	case PD_BirthYear:
 	{
 		DataToChange->BirthYear = DBConvert::StringToInt(Info);
+		break;
+	}
+	case PD_BornCity:
+	{
+		DataToChange->BirthCity = Info;
 		break;
 	}
 	case PD_BornCountry:

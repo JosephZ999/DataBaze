@@ -222,6 +222,7 @@ void DBDataManager::FillPeopleInfo(const DBPeopleData& People, Json::Value& OutV
 	OutValue[JPK_BIRTHDAY]	 = Json::Value(People.BirthDay);
 	OutValue[JPK_BIRTHYEAR]	 = Json::Value(People.BirthYear);
 
+	OutValue[JPK_BIRTHCITY]	   = Json::Value(People.BirthCity);
 	OutValue[JPK_BIRTHCOUNTRY] = Json::Value(People.BirthCountry);
 	OutValue[JPK_IMAGE]		   = Json::Value(People.ImageFile);
 
@@ -276,6 +277,7 @@ void DBDataManager::DeserializePeople(const Json::Value& InPeople, DBPeopleData&
 	OutPeople.BirthDay	 = InPeople[JPK_BIRTHDAY].asInt();
 	OutPeople.BirthYear	 = InPeople[JPK_BIRTHYEAR].asInt();
 
+	OutPeople.BirthCity	   = InPeople[JPK_BIRTHCITY].asString();
 	OutPeople.BirthCountry = InPeople[JPK_BIRTHCOUNTRY].asString();
 	OutPeople.ImageFile	   = InPeople[JPK_IMAGE].asString();
 

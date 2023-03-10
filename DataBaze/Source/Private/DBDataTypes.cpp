@@ -196,6 +196,7 @@ std::string DBPeopleData::GetAsString(EPeopleData DataType)
 	case PD_BirthMonth: return to_string(BirthMonth);
 	case PD_BirthDay: return to_string(BirthDay);
 	case PD_BirthYear: return to_string(BirthYear);
+	case PD_BornCity: return BirthCity;
 	case PD_BornCountry: return BirthCountry;
 	case PD_EducationDegree: return to_string(EducationDegree);
 	case PD_WhereLive: return WhereLive;
