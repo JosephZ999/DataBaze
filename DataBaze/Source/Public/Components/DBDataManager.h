@@ -58,7 +58,8 @@ private:
 	Folders	  InvalidFolders[MAX_FOLDERS_NUM];
 
 public:
-	void SelectMember(int InMemberId);
+	/* Foler id unused */
+	void SelectMember(FMemberId InMemberId);
 	bool ChangeFolder(bool bNext);
 
 	bool SearchValidFolders();

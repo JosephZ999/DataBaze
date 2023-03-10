@@ -262,6 +262,7 @@ void DBWindowViewer::Autofill_SaveResult()
 
 	CopyAndSaveCode();
 	cmd::data::SetLockMember(true, MemberId);
+	cmd::wnd::UpdateListBoxElem(MemberId);
 	cmd::wnd::CloseViewer();
 }
 

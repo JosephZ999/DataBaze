@@ -20,6 +20,8 @@ namespace cmd
 		void WriterEditMember(FMemberId InId, const EPeopleType People, const DBFamilyData& Data);
 		void SetViewerData(FMemberId InId, const DBFamilyData& Data);
 		void CloseViewer();
+		void UpdateListBoxElem(FMemberId InId);
+
 	} // namespace wnd
 
 	namespace data

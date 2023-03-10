@@ -46,10 +46,15 @@ void DBListBox::ClearList()
 	LastItemId = 0;
 }
 
-int DBListBox::GetSelectedItemId()
+int DBListBox::GetSelectedItemData()
 {
 	int Index = (int)SendMessage(ListBoxHWND, LB_GETCURSEL, 0, 0);
 	return (int)SendMessage(ListBoxHWND, LB_GETITEMDATA, Index, 0);
+}
+
+int DBListBox::GetSelectedItemId()
+{
+	return (int)SendMessage(ListBoxHWND, LB_GETCURSEL, 0, 0);
 }
 
 int DBListBox::GetLastItemId() const

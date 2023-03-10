@@ -4,7 +4,7 @@
 // Components
 #include "Components/DBDataManager.h"
 #include "Components/DBWindowsManager.h"
-
+#include "Components/DBListBox.h"
 static DBInstance* CoreInstance = nullptr;
 
 //-----------------------------------------------// System library
@@ -53,6 +53,13 @@ void cmd::wnd::SetViewerData(FMemberId InId, const DBFamilyData& Data)
 void cmd::wnd::CloseViewer()
 {
 	get::GetWindowsManager()->CloseWindowByType(IDW_VIEWER);
+}
+
+void cmd::wnd::UpdateListBoxElem(FMemberId InId)
+{
+	std::wstring MemberStatus;
+	get::GetDataManager()->GetMemberStatus(InId.MemberId, MemberStatus);
+	GetCoreIns()->GetListBox()->SetItemText(InId.ListItem, MemberStatus);
 }
 
 void cmd::data::SaveMemberCode(FMemberId InId, const std::wstring& FileName, const std::wstring& Data)

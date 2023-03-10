@@ -19,6 +19,7 @@ public:
 	void AddItem(const std::wstring& InItem);
 	void ClearList();
 
+	int GetSelectedItemData();
 	int GetSelectedItemId();
 
 	inline int GetLastItemId() const;

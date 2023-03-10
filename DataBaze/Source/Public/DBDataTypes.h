@@ -300,6 +300,14 @@ enum EHotKeyId
 
 struct FMemberId
 {
+	FMemberId() {}
+
+	FMemberId(int InMember, int InFolder, int InListItem)
+		: MemberId(InMember)
+		, FolderId(InFolder)
+		, ListItem(InListItem)
+	{}
+
 	int MemberId = 0;
 	int FolderId = 1;
 	int ListItem = 0;

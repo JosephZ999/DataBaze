@@ -457,9 +457,10 @@ std::wstring DBDataManager::GetMemberStatus(Json::Value& InData, int InId)
 	return Status;
 }
 
-void DBDataManager::SelectMember(int InMemberId)
+void DBDataManager::SelectMember(FMemberId InMemberId)
 {
-	SelectedMemberId.MemberId = InMemberId;
+	SelectedMemberId.MemberId = InMemberId.MemberId;
+	SelectedMemberId.ListItem = InMemberId.ListItem;
 }
 
 bool DBDataManager::ChangeFolder(bool bNext)
