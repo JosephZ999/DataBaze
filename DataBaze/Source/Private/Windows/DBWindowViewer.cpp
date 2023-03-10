@@ -181,6 +181,26 @@ void DBWindowViewer::SetMemberData(int MemberId, int FolderId, const DBFamilyDat
 	InitializeSteps();
 }
 
+void DBWindowViewer::InitializeSteps()
+{
+	StepMap.clear();
+	CurrentStep = EAutoFillStep::AFS_Part1;
+
+	StepMap.push_back(AFS_Part1);
+
+	if (MemberData.IsHasASpouse() || MemberData.IsHasChildren())
+	{
+		StepMap.push_back(AFS_Part2);
+		SecondFormAvailable = true;
+	}
+	else
+	{
+		SecondFormAvailable = false;
+	}
+	StepMap.push_back(AFS_Check);
+	StepMap.push_back(AFS_SaveResult);
+}
+
 void DBWindowViewer::AutoFill()
 {
 	if (StepMap.size() == 0 || MemberData.bLocked) return;
@@ -197,12 +217,54 @@ void DBWindowViewer::AutoFill()
 	}
 }
 
+void DBWindowViewer::Autofill_Form1()
+{
+	if (MemberData.Parents.size() == 0 || MemberData.bLocked) return;
+
+	FillPeopleData(MemberData.Parents[0], true);
+
+	PasteMailInfo();
+	SelectEducationDegree();
+	SelectMeritialStatus();
+	PasteString(std::to_string(MemberData.ChildrenNum));
+	PressTab(1);
+	DBInput::PressKey(VK_SPACE);
+}
+
+void DBWindowViewer::Autofill_Form2()
+{
+	if (MemberData.bLocked || ! SecondFormAvailable) return;
+
+	if (MemberData.IsHasASpouse())
+	{
+		FillPeopleData(MemberData.Parents[1], false);
+	}
+
+	if (MemberData.IsHasChildren())
+	{
+		for (auto& Child : MemberData.Children)
+		{
+			FillPeopleData(Child, false);
+		}
+	}
+}
+
+void DBWindowViewer::Autofill_Check()
+{
+	if (MemberData.bLocked) return;
+}
+
+void DBWindowViewer::Autofill_SaveResult()
+{
+	if (MemberData.bLocked) return;
+}
+
 void DBWindowViewer::FillPeopleData(const DBPeopleData& InPeople, bool bPartOne)
 {
-	PasteString(MemberData.Parents[0].Name);
+	PasteString(InPeople.Name);
 	PressTab(1);
 
-	PasteString(MemberData.Parents[0].FamilyName);
+	PasteString(InPeople.FamilyName);
 	PressTab(3);
 	DBInput::PressKey(VK_SPACE);
 	PressTab(1);
@@ -256,68 +318,6 @@ void DBWindowViewer::FillPeopleData(const DBPeopleData& InPeople, bool bPartOne)
 	PressTab(2);
 	PasteImagePath(InPeople);
 	PressTab(2);
-}
-
-void DBWindowViewer::Autofill_Form1()
-{
-	if (MemberData.Parents.size() == 0 || MemberData.bLocked) return;
-
-	FillPeopleData(MemberData.Parents[0], true);
-
-	PasteMailInfo();
-	SelectEducationDegree();
-	SelectMeritialStatus();
-	PasteString(std::to_string(MemberData.ChildrenNum));
-	PressTab(1);
-	DBInput::PressKey(VK_SPACE);
-}
-
-void DBWindowViewer::Autofill_Form2()
-{
-	if (MemberData.bLocked || !SecondFormAvailable) return;
-
-	if (MemberData.IsHasASpouse())
-	{
-		FillPeopleData(MemberData.Parents[1], false);
-	}
-
-	if (MemberData.IsHasChildren)
-	{
-		for (auto& Child : MemberData.Children)
-		{
-			FillPeopleData(Child, false);
-		}
-	}
-}
-
-void DBWindowViewer::Autofill_Check()
-{
-	if (MemberData.bLocked) return;
-}
-
-void DBWindowViewer::Autofill_SaveResult()
-{
-	if (MemberData.bLocked) return;
-}
-
-void DBWindowViewer::InitializeSteps()
-{
-	StepMap.clear();
-	CurrentStep = EAutoFillStep::AFS_Part1;
-
-	StepMap.push_back(AFS_Part1);
-
-	if (MemberData.IsHasASpouse() || MemberData.IsHasChildren())
-	{
-		StepMap.push_back(AFS_Part2);
-		SecondFormAvailable = true;
-	}
-	else
-	{
-		SecondFormAvailable = false;
-	}
-	StepMap.push_back(AFS_Check);
-	StepMap.push_back(AFS_SaveResult);
 }
 
 void DBWindowViewer::ChangePeople(bool Next)
@@ -562,15 +562,16 @@ inline void DBWindowViewer::WriteEMail()
 
 void DBWindowViewer::PasteImagePath(const DBPeopleData& People)
 {
-	// const std::string SImage = MemberData.Parents[0].ImageFile;
+	Sleep(20);
+	const std::string SImage = People.ImageFile;
 
-	// std::wstring WImage;
-	// DBConvert::StringToWString(SImage, WImage);
+	std::wstring WImage;
+	DBConvert::StringToWString(SImage, WImage);
 
-	// std::wstring FilePath = DBPaths::GetDataFolderPath(SelectedFolderId).append(WImage);
-	// DBInput::CopyToClipboard(0, FilePath);
+	std::wstring FilePath = DBPaths::GetDataFolderPath(SelectedFolderId).append(WImage);
+	DBInput::CopyToClipboard(0, FilePath);
 
-	// DBInput::PressKeys(VK_CONTROL, VK_V);
+	DBInput::PressKeys(VK_CONTROL, VK_V);
 }
 
 void DBWindowViewer::WriteString(std::string Text)
@@ -625,9 +626,31 @@ void DBWindowViewer::PasteMailInfo()
 	PressTab(1);
 }
 
-void DBWindowViewer::SelectEducationDegree() {}
+void DBWindowViewer::SelectEducationDegree()
+{
+	const int Max = 10;
+	for (int i = 0; i < Max; ++i)
+	{
+		if (i == MemberData.Parents[0].EducationDegree - 1)
+		{
+			DBInput::PressKey(VK_SPACE);
+		}
+		PressTab(1);
+	}
+}
 
-void DBWindowViewer::SelectMeritialStatus() {}
+void DBWindowViewer::SelectMeritialStatus()
+{
+	const int Max = 6;
+	for (int i = 0; i < Max; ++i)
+	{
+		if (i == MemberData.MaritalStatus - 1)
+		{
+			DBInput::PressKey(VK_SPACE);
+		}
+		PressTab(1);
+	}
+}
 
 std::wstring DBWindowViewer::GenerateFileName()
 {
