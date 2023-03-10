@@ -82,3 +82,18 @@ void DBListBox::SetSelectedItemText(const std::wstring& InText)
 	// scroll
 	SendMessage(ListBoxHWND, LB_SETCURSEL, ItemId, 0);
 }
+
+void DBListBox::SetItemText(int InId, const std::wstring& InText)
+{
+	const int Data	= (int)SendMessage(ListBoxHWND, LB_GETITEMDATA, InId, 0);
+
+	// del
+	SendMessage(ListBoxHWND, LB_DELETESTRING, InId, 0);
+
+	// create
+	int ItemId = SendMessage(ListBoxHWND, LB_ADDSTRING, 0, (LPARAM)InText.c_str());
+	SendMessage(ListBoxHWND, LB_SETITEMDATA, ItemId, Data);
+
+	// scroll
+	SendMessage(ListBoxHWND, LB_SETCURSEL, ItemId, 0);
+}

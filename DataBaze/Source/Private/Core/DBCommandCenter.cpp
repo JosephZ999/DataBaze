@@ -38,19 +38,29 @@ HINSTANCE cmd::get::GetHIns()
 	return GetCoreIns()->GetInitData().HIns;
 }
 
-void cmd::wnd::WriterEditMember(int FamilyId, int FolderId, const EPeopleType People, const DBFamilyData& Data)
+void cmd::wnd::WriterEditMember(FMemberId InId, const EPeopleType People, const DBFamilyData& Data)
 {
 	get::GetWindowsManager()->OpenWindowByType(IDW_WRITER);
-	get::GetWindowsManager()->SetWriterData(FamilyId, FolderId, Data, People);
+	get::GetWindowsManager()->SetWriterData(InId, Data, People);
 }
 
-void cmd::wnd::SetViewerData(int FamilyId, int FolderId, const DBFamilyData& Data)
+void cmd::wnd::SetViewerData(FMemberId InId, const DBFamilyData& Data)
 {
 	// get::GetWindowsManager()->OpenWindowByType(IDW_VIEWER);
-	get::GetWindowsManager()->SetViewerData(FamilyId, FolderId, Data);
+	get::GetWindowsManager()->SetViewerData(InId, Data);
 }
 
-void cmd::data::SaveMemberCode(int MemberId, int FolderId, const std::wstring& FileName, const std::wstring& Data)
+void cmd::wnd::CloseViewer()
 {
-	get::GetDataManager()->SaveMemberCode(MemberId, FolderId, FileName, Data);
+	get::GetWindowsManager()->CloseWindowByType(IDW_VIEWER);
+}
+
+void cmd::data::SaveMemberCode(FMemberId InId, const std::wstring& FileName, const std::wstring& Data)
+{
+	get::GetDataManager()->SaveMemberCode(InId, FileName, Data);
+}
+
+void cmd::data::SetLockMember(bool InLock, FMemberId InId)
+{
+	get::GetDataManager()->LockMember(InLock, InId);
 }

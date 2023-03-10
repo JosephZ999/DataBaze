@@ -5,8 +5,8 @@
 
 DBDataManager::DBDataManager()
 {
-	SelectedFolderId = 1;
-	SelectedMemberId = 1;
+	SelectedMemberId.FolderId = 1;
+	SelectedMemberId.MemberId = 1;
 
 	using namespace DBPaths;
 	CreatePath(GetDataPath());
@@ -53,9 +53,9 @@ void DBDataManager::AddMember(const DBFamilyData& MemberData)
 	OnMemberAdded.Broadcast();
 }
 
-void DBDataManager::SetMember(int MemberId, int FolderId, const DBFamilyData& MemberData)
+void DBDataManager::SetMember(FMemberId InId, const DBFamilyData& MemberData)
 {
-	const auto FileName = GenerateJsonPath(FolderId);
+	const auto FileName = GenerateJsonPath(InId.FolderId);
 
 	Json::Reader FileReader;
 	Json::Value	 FileData;
@@ -71,7 +71,7 @@ void DBDataManager::SetMember(int MemberId, int FolderId, const DBFamilyData& Me
 		// Add New Member
 		Json::Value Family;
 		FillFamilyInfo(MemberData, Family);
-		FileData["Main"][MemberId] = Family;
+		FileData["Main"][InId.MemberId] = Family;
 
 		// Save to file
 		WriteToDisk(FileName, FileData);
@@ -81,7 +81,7 @@ void DBDataManager::SetMember(int MemberId, int FolderId, const DBFamilyData& Me
 		// Add New Member
 		Json::Value Family;
 		FillFamilyInfo(MemberData, Family);
-		FileData["Main"][MemberId] = Family;
+		FileData["Main"][InId.MemberId] = Family;
 
 		// Save
 		WriteToDisk(FileName, FileData);
@@ -91,7 +91,7 @@ void DBDataManager::SetMember(int MemberId, int FolderId, const DBFamilyData& Me
 
 bool DBDataManager::LoadMember(DBFamilyData& OutMemberData)
 {
-	return LoadMemberByIndex(SelectedMemberId, OutMemberData);
+	return LoadMemberByIndex(GetSelectedMemberId(), OutMemberData);
 }
 
 bool DBDataManager::LoadMemberByIndex(int Id, DBFamilyData& OutMemberData)
@@ -291,7 +291,7 @@ int DBDataManager::GetSelectedFolderIndex() const
 {
 	for (size_t i = 0; i < ValidFolders->size(); ++i)
 	{
-		if (SelectedFolderId == (*ValidFolders)[i])
+		if (GetSelectedFolderId() == (*ValidFolders)[i])
 		{
 			return i;
 		}
@@ -323,9 +323,9 @@ void DBDataManager::WriteImageId(int Id)
 	File.close();
 }
 
-void DBDataManager::SaveMemberCode(int MemberId, int FolderId, const std::wstring& FileName, const std::wstring& Data)
+void DBDataManager::SaveMemberCode(FMemberId InId, const std::wstring& FileName, const std::wstring& Data)
 {
-	const std::wstring Path = DBPaths::GetConfirmationPath(FolderId).append(FileName).append(L".txt");
+	const std::wstring Path = DBPaths::GetConfirmationPath(InId.FolderId).append(FileName).append(L".txt");
 
 	std::wofstream FileStream(Path, std::ios_base::out | std::ios_base::trunc | std::ios_base::binary);
 	FileStream << Data;
@@ -349,9 +349,26 @@ void DBDataManager::LockSelectedItem(bool Lock)
 	}
 }
 
+void DBDataManager::LockMember(bool InLock, FMemberId InId)
+{
+	const auto FileName = GenerateJsonPath(InId.FolderId);
+
+	Json::Reader FileReader;
+	Json::Value	 FileData;
+
+	std::ifstream File(FileName);
+	if (File.good())
+	{
+		FileReader.parse(File, FileData);
+		FileData["Main"][InId.MemberId][JCK_GLOBALS][JGK_LOCK] = Json::Value(InLock);
+		File.close();
+		WriteToDisk(FileName, FileData);
+	}
+}
+
 std::wstring DBDataManager::GenerateJsonPath() const
 {
-	return std::wstring(DBPaths::GetDataFolderPath(GetFolderId()).append(L"\\Data.json"));
+	return std::wstring(DBPaths::GetDataFolderPath(GetSelectedFolderId()).append(L"\\Data.json"));
 }
 
 std::wstring DBDataManager::GenerateJsonPath(int Id) const
@@ -361,7 +378,7 @@ std::wstring DBDataManager::GenerateJsonPath(int Id) const
 
 std::wstring DBDataManager::GenerateImageDataPath() const
 {
-	return std::wstring(DBPaths::GetDataFolderPath(GetFolderId())).append(L"\\ImageId.txt");
+	return std::wstring(DBPaths::GetDataFolderPath(GetSelectedFolderId())).append(L"\\ImageId.txt");
 }
 
 void DBDataManager::GetMembersList(std::vector<std::wstring>& OutList)
@@ -442,7 +459,7 @@ std::wstring DBDataManager::GetMemberStatus(Json::Value& InData, int InId)
 
 void DBDataManager::SelectMember(int InMemberId)
 {
-	SelectedMemberId = InMemberId;
+	SelectedMemberId.MemberId = InMemberId;
 }
 
 bool DBDataManager::ChangeFolder(bool bNext)
@@ -454,20 +471,20 @@ bool DBDataManager::SetFolder(int FolderId)
 {
 	if (ValidFolders->size() == 0) return false;
 
-	const int InitialValue = SelectedFolderId;
+	const int InitialValue = GetSelectedFolderId();
 
 	if (FolderId >= (int)ValidFolders->size())
 	{
-		SelectedFolderId = (*ValidFolders)[ValidFolders->size() - 1];
-		return InitialValue != SelectedFolderId;
+		SelectedMemberId.FolderId = (*ValidFolders)[ValidFolders->size() - 1];
+		return InitialValue != GetSelectedFolderId();
 	}
 	else if (FolderId < 0)
 	{
-		SelectedFolderId = (*ValidFolders)[0];
-		return InitialValue != SelectedFolderId;
+		SelectedMemberId.FolderId = (*ValidFolders)[0];
+		return InitialValue != GetSelectedFolderId();
 	}
-	SelectedFolderId = (*ValidFolders)[FolderId];
-	return InitialValue != SelectedFolderId;
+	SelectedMemberId.FolderId = (*ValidFolders)[FolderId];
+	return InitialValue != GetSelectedFolderId();
 }
 
 void DBDataManager::WriteToDisk(const std::wstring& InFileName, const Json::Value& InData)
@@ -487,6 +504,6 @@ void DBDataManager::WriteJsonToDisk(const std::wstring& InFileName, const Json::
 
 void DBDataManager::WriteJsonToDiskBackup(const Json::Value& InData)
 {
-	const std::wstring BackupFileName = std::wstring(DBPaths::GetDataFolderPath(GetFolderId()).append(L"\\Backup.json"));
+	const std::wstring BackupFileName = std::wstring(DBPaths::GetDataFolderPath(GetSelectedFolderId()).append(L"\\Backup.json"));
 	WriteJsonToDisk(BackupFileName, InData);
 }

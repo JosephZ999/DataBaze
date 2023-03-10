@@ -87,7 +87,7 @@ LRESULT DBWindowViewer::CallProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM 
 	{
 	case EDBWinCompId::IDC_V_Edit:
 	{
-		cmd::wnd::WriterEditMember(SelectedMemberId, SelectedFolderId, CurrentPeople, MemberData);
+		cmd::wnd::WriterEditMember(MemberId, CurrentPeople, MemberData);
 		break;
 	}
 	case EDBWinCompId::IDC_V_Prev:
@@ -172,11 +172,11 @@ DBWindowViewer::DBWindowViewer(HWND OwningWnd)
 	}
 }
 
-void DBWindowViewer::SetMemberData(int MemberId, int FolderId, const DBFamilyData& InData)
+void DBWindowViewer::SetMemberData(FMemberId InId, const DBFamilyData& InData)
 {
-	SelectedMemberId = MemberId;
-	SelectedFolderId = FolderId;
-	MemberData		 = InData;
+	MemberId   = InId;
+	MemberData = InData;
+	ListItemId = InId.ListItem;
 	PrintData();
 	InitializeSteps();
 }
@@ -252,11 +252,17 @@ void DBWindowViewer::Autofill_Form2()
 void DBWindowViewer::Autofill_Check()
 {
 	if (MemberData.bLocked) return;
+
+	DBInput::PressKey(VK_END);
 }
 
 void DBWindowViewer::Autofill_SaveResult()
 {
 	if (MemberData.bLocked) return;
+
+	CopyAndSaveCode();
+	cmd::data::SetLockMember(true, MemberId);
+	cmd::wnd::CloseViewer();
 }
 
 void DBWindowViewer::FillPeopleData(const DBPeopleData& InPeople, bool bPartOne)
@@ -539,9 +545,8 @@ void DBWindowViewer::CopyAndSaveCode()
 		std::wstring Code = std::wstring((wchar_t*)clip);
 		CloseClipboard();
 
-		cmd::data::SaveMemberCode(SelectedMemberId, //
-			SelectedFolderId,						//
-			GenerateFileName(),						//
+		cmd::data::SaveMemberCode(MemberId, //
+			GenerateFileName(),				//
 			Code);
 	}
 }
@@ -568,7 +573,7 @@ void DBWindowViewer::PasteImagePath(const DBPeopleData& People)
 	std::wstring WImage;
 	DBConvert::StringToWString(SImage, WImage);
 
-	std::wstring FilePath = DBPaths::GetDataFolderPath(SelectedFolderId).append(WImage);
+	std::wstring FilePath = DBPaths::GetDataFolderPath(MemberId.FolderId).append(WImage);
 	DBInput::CopyToClipboard(0, FilePath);
 
 	DBInput::PressKeys(VK_CONTROL, VK_V);
@@ -657,7 +662,7 @@ std::wstring DBWindowViewer::GenerateFileName()
 	const std::string MemberName  = MemberData.Parents[0].Name;
 	const std::string MemberFName = MemberData.Parents[0].FamilyName;
 	const std::string StringName =
-		std::string("\\").append(std::to_string(SelectedMemberId)).append(" - ").append(MemberFName).append(" ").append(MemberName);
+		std::string("\\").append(std::to_string(MemberId.MemberId)).append(" - ").append(MemberFName).append(" ").append(MemberName);
 
 	std::wstring WStr;
 	DBConvert::StringToWString(StringName, WStr);

@@ -53,10 +53,9 @@ public:
 	OnItemChangedSignature OnMemberChanged;
 
 private:
-	int		SelectedFolderId;
-	int		SelectedMemberId;
-	Folders ValidFolders[MAX_FOLDERS_NUM];
-	Folders InvalidFolders[MAX_FOLDERS_NUM];
+	FMemberId SelectedMemberId;
+	Folders	  ValidFolders[MAX_FOLDERS_NUM];
+	Folders	  InvalidFolders[MAX_FOLDERS_NUM];
 
 public:
 	void SelectMember(int InMemberId);
@@ -66,7 +65,7 @@ public:
 	int	 GetValidFoldersNum();
 
 	void AddMember(const DBFamilyData& MemberData);
-	void SetMember(int MemberId, int FolderId, const DBFamilyData& MemberData);
+	void SetMember(FMemberId InId, const DBFamilyData& MemberData);
 
 	bool LoadMember(DBFamilyData& OutMemberData);
 	bool LoadMemberByIndex(int Id, DBFamilyData& OutMemberData);
@@ -75,15 +74,18 @@ public:
 	bool GetMemberStatus(int MemberId, std::wstring& OutList);
 	void GetLastMemberStatus(std::wstring& OutList);
 
-	int GetSelectedMemberId() { return SelectedMemberId; }
-	int GetFolderId() const { return SelectedFolderId; }
+	int		  GetSelectedMemberId() { return SelectedMemberId.MemberId; }
+	int		  GetSelectedFolderId() const { return SelectedMemberId.FolderId; }
+	FMemberId GetMemberId() const { return SelectedMemberId; }
+
 	int GetSelectedFolderIndex() const;
 
 	int	 ReadImageId();
 	void WriteImageId(int Id);
 
-	void SaveMemberCode(int MemberId, int FolderId, const std::wstring& FileName, const std::wstring& Data);
+	void SaveMemberCode(FMemberId InId, const std::wstring& FileName, const std::wstring& Data);
 	void LockSelectedItem(bool Lock);
+	void LockMember(bool InLock, FMemberId InId);
 
 private:
 	bool SetFolder(int FolderId);

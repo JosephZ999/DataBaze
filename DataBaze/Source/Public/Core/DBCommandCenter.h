@@ -17,12 +17,14 @@ namespace cmd
 
 	namespace wnd
 	{
-		void WriterEditMember(int FamilyId, int FolderId, const EPeopleType People, const DBFamilyData& Data);
-		void SetViewerData(int FamilyId, int FolderId, const DBFamilyData& Data);
+		void WriterEditMember(FMemberId InId, const EPeopleType People, const DBFamilyData& Data);
+		void SetViewerData(FMemberId InId, const DBFamilyData& Data);
+		void CloseViewer();
 	} // namespace wnd
 
 	namespace data
 	{
-		void SaveMemberCode(int MemberId, int FolderId, const std::wstring& FileName, const std::wstring& Data);
+		void SaveMemberCode(FMemberId InId, const std::wstring& FileName, const std::wstring& Data);
+		void SetLockMember(bool InLock, FMemberId InId);
 	}
 } // namespace cmd

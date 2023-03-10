@@ -44,8 +44,7 @@ public:
 	int	   LastImageId = 1;
 
 private:
-	int CurrentFamilyId = 0; // edit mode only
-	int CurrentFolderId = 0; // edit mode only
+	FMemberId MemberId;
 
 private:
 	DBButtonManager* ButtonManager = nullptr;
@@ -56,7 +55,7 @@ public:
 	bool CheckFormat();
 	void WriteData();
 	void SelectWriteData(EPeopleType PT);
-	void EditPeople(int FamilyId, int FolderId, const DBFamilyData& Data, EPeopleType People);
+	void EditPeople(FMemberId InId, const DBFamilyData& Data, EPeopleType People);
 
 private:
 	void SetEditboxStyle(LONG Style = 0, int TextLimit = 0);

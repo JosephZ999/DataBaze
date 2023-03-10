@@ -42,8 +42,8 @@ private:
 	bool			 HasChild  = false;
 	std::wstring	 Title;
 	std::string		 Info;
-	int				 SelectedMemberId = 0;
-	int				 SelectedFolderId = 1;
+	FMemberId		 MemberId;
+	int				 ListItemId = 0;
 
 	EPeopleType CurrentPeople = PT_Parent;
 
@@ -55,7 +55,7 @@ private:
 public:
 	LRESULT CALLBACK CallProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 
-	void SetMemberData(int MemberId, int FolderId, const DBFamilyData& InData);
+	void SetMemberData(FMemberId InId, const DBFamilyData& InData);
 
 private:
 	void InitializeSteps();

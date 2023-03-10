@@ -136,7 +136,7 @@ void DBInstance::ResetListBox()
 
 void DBInstance::UpdateFolderIdText()
 {
-	std::wstring IdAsText = std::to_wstring(GetDataManager()->GetFolderId());
+	std::wstring IdAsText = std::to_wstring(GetDataManager()->GetSelectedFolderId());
 	IdAsText.append(L" - ").append(std::to_wstring(GetListBox()->GetLastItemId()));
 	HWND FolderIdHandle = GetButtonManager()->GetWndHandler(EDBWinCompId::IDC_FolderId);
 	DBLib::SetText(FolderIdHandle, IdAsText);
@@ -188,7 +188,7 @@ void DBInstance::CallCommand(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPar
 			if (GetDataManager()->LoadMember(SelectedData))
 			{
 				GetWindowManager()->OpenWindowByType(EWindows::IDW_VIEWER);
-				GetWindowManager()->SetViewerData(GetDataManager()->GetSelectedMemberId(), GetDataManager()->GetFolderId(), SelectedData);
+				GetWindowManager()->SetViewerData(GetDataManager()->GetMemberId(), SelectedData);
 			}
 			break;
 		}
@@ -206,7 +206,7 @@ void DBInstance::CallCommand(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPar
 		if (GetDataManager()->LoadMember(SelectedData))
 		{
 			GetWindowManager()->OpenWindowByType(EWindows::IDW_VIEWER);
-			GetWindowManager()->SetViewerData(GetDataManager()->GetSelectedMemberId(), GetDataManager()->GetFolderId(), SelectedData);
+			GetWindowManager()->SetViewerData(GetDataManager()->GetMemberId(), SelectedData);
 		}
 		break;
 	}

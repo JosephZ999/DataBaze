@@ -31,6 +31,7 @@ public:
 	HWND GetWnd() const { return ListBoxHWND; }
 
 	void SetSelectedItemText(const std::wstring& InText);
+	void SetItemText(int InId, const std::wstring& InText);
 
 private:
 };

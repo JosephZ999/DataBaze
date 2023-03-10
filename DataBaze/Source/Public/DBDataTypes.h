@@ -297,3 +297,10 @@ enum EHotKeyId
 	// Writer
 	HKW_Enter,
 };
+
+struct FMemberId
+{
+	int MemberId = 0;
+	int FolderId = 1;
+	int ListItem = 0;
+};

@@ -179,13 +179,12 @@ void DBWindowWriter::SelectWriteData(EPeopleType PT)
 	UpdateEditText();
 }
 
-void DBWindowWriter::EditPeople(int FamilyId, int FolderId, const DBFamilyData& Data, EPeopleType People)
+void DBWindowWriter::EditPeople(FMemberId InId, const DBFamilyData& Data, EPeopleType People)
 {
-	CurrentFamilyId = FamilyId;
-	CurrentFolderId = FolderId;
-	bEditMode		= true;
-	PeopleType		= People;
-	MembersData		= Data;
+	MemberId	= InId;
+	bEditMode	= true;
+	PeopleType	= People;
+	MembersData = Data;
 	SelectWriteData(PeopleType);
 	UpdateInfo();
 	UpdateEditStyle();
@@ -700,7 +699,7 @@ bool DBWindowWriter::SaveImage(const std::wstring& InImagePath)
 	NewImage.Initial = InImagePath;
 
 	const int ImageId = GetNextImageId() + ImagesToCopy.size();
-	NewImage.Final	  = DBPaths::GetImagePath(DataManager->GetFolderId(), ImageId);
+	NewImage.Final	  = DBPaths::GetImagePath(DataManager->GetSelectedFolderId(), ImageId);
 	NewImage.ImageId  = ImageId;
 	ImagesToCopy.push_back(NewImage);
 
@@ -880,8 +879,8 @@ void DBWindowWriter::FinishWriting()
 		auto DataManager = cmd::get::GetDataManager();
 		if (! DataManager) return;
 
-		DataManager->SetMember(CurrentFamilyId, CurrentFolderId, MembersData);
-		cmd::wnd::SetViewerData(CurrentFamilyId, CurrentFolderId, MembersData);
+		DataManager->SetMember(MemberId, MembersData);
+		cmd::wnd::SetViewerData(MemberId, MembersData);
 
 		CopySavedImages();
 		bFinish = true;

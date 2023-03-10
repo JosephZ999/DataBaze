@@ -146,16 +146,16 @@ void DBWindowsManager::OnViewerCloseHandle()
 	CloseWindowByType(IDW_VIEWER);
 }
 
-void DBWindowsManager::SetViewerData(int MemberId, int FolderId, const DBFamilyData& InData)
+void DBWindowsManager::SetViewerData(FMemberId InId, const DBFamilyData& InData)
 {
 	if (! GetViewer()) return;
-	GetViewer()->SetMemberData(MemberId, FolderId, InData);
+	GetViewer()->SetMemberData(InId, InData);
 }
 
-void DBWindowsManager::SetWriterData(int MemberId, int FolderId, const DBFamilyData& Data, EPeopleType People)
+void DBWindowsManager::SetWriterData(FMemberId InId, const DBFamilyData& Data, EPeopleType People)
 {
 	if (! GetWriter()) return;
-	GetWriter()->EditPeople(MemberId, FolderId, Data, People);
+	GetWriter()->EditPeople(InId, Data, People);
 }
 
 DBInterface* DBWindowsManager::GetViewerClass() const
