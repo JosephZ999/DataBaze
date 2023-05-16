@@ -326,9 +326,15 @@ void DBWindowViewer::FillPeopleData(const DBPeopleData& InPeople, bool bPartOne)
 	}
 
 	// Image
-	PressTab(2);
+	PressTab(3);
+	DBInput::PressKey(VK_SPACE); // Open Image Dialog Window
+
+	Sleep(1000);
 	PasteImagePath(InPeople);
-	PressTab(2);
+	DBInput::PressKey(VK_RETURN);
+	Sleep(1000);
+
+	PressTab(1);
 }
 
 void DBWindowViewer::ChangePeople(bool Next)
