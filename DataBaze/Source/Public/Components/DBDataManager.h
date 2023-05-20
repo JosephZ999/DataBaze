@@ -11,36 +11,37 @@
 DECLARE_DELEGATE(OnListChangedSignature);
 DECLARE_DELEGATE(OnItemChangedSignature);
 
-#define MAX_FOLDERS_NUM	   50
-#define MAX_MEMBERS_NUM	   300
+#define MAX_FOLDERS_NUM		 50
+#define MAX_MEMBERS_NUM		 500
+#define ADD_EMPTYFOLDERS_NUM 5
 
 // Json keys
 
-#define JGK_MAILCOUNTRY	   "1.MailCountry"
-#define JGK_MAILREGION	   "1.MailRegion"
-#define JGK_MAILCITY	   "2.MailCity"
-#define JGK_MAILSTREET	   "3.MailStreet"
-#define JGK_MAILHOMENUMBER "4.MailHomeNumber"
-#define JGK_MAILZIP		   "5.MailZipCode"
-#define JGK_STATUS		   "6.Status"
-#define JGK_CHILDNUM	   "7.ChildrenNum"
-#define JGK_LOCK		   "8.Lock"
+#define JGK_MAILCOUNTRY		 "1.MailCountry"
+#define JGK_MAILREGION		 "1.MailRegion"
+#define JGK_MAILCITY		 "2.MailCity"
+#define JGK_MAILSTREET		 "3.MailStreet"
+#define JGK_MAILHOMENUMBER	 "4.MailHomeNumber"
+#define JGK_MAILZIP			 "5.MailZipCode"
+#define JGK_STATUS			 "6.Status"
+#define JGK_CHILDNUM		 "7.ChildrenNum"
+#define JGK_LOCK			 "8.Lock"
 
-#define JPK_NAME		   "1.Name"
-#define JPK_FAMILYNAME	   "2.FamilyName"
-#define JPK_GENDER		   "3.Gender"
-#define JPK_BIRTHMONTH	   "4.BirthM"
-#define JPK_BIRTHDAY	   "5.BirthD"
-#define JPK_BIRTHYEAR	   "6.BirthY"
-#define JPK_BIRTHCITY	   "7.BirthCity"
-#define JPK_BIRTHCOUNTRY   "8.BirthCountry"
-#define JPK_LIVECOUNTRY	   "9.LiveCountry"
-#define JPK_EDUCATION	   "EducationDegree"
-#define JPK_IMAGE		   "Image"
+#define JPK_NAME			 "1.Name"
+#define JPK_FAMILYNAME		 "2.FamilyName"
+#define JPK_GENDER			 "3.Gender"
+#define JPK_BIRTHMONTH		 "4.BirthM"
+#define JPK_BIRTHDAY		 "5.BirthD"
+#define JPK_BIRTHYEAR		 "6.BirthY"
+#define JPK_BIRTHCITY		 "7.BirthCity"
+#define JPK_BIRTHCOUNTRY	 "8.BirthCountry"
+#define JPK_LIVECOUNTRY		 "9.LiveCountry"
+#define JPK_EDUCATION		 "EducationDegree"
+#define JPK_IMAGE			 "Image"
 
-#define JCK_GLOBALS		   "1.Global"
-#define JCK_PARENT		   "2.Parent "
-#define JCK_CHILD		   "3.Child "
+#define JCK_GLOBALS			 "1.Global"
+#define JCK_PARENT			 "2.Parent "
+#define JCK_CHILD			 "3.Child "
 
 class DBDataManager : public DBInterface
 {
