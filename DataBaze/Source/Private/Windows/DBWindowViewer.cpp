@@ -546,10 +546,6 @@ void DBWindowViewer::PressTab(size_t Times)
 
 void DBWindowViewer::CopyAndSaveCode()
 {
-	DBInput::PressKeys(VK_CONTROL, VK_A);
-	DBInput::PressKeys(VK_CONTROL, VK_C);
-	Sleep(100);
-
 	if (OpenClipboard(NULL))
 	{
 		HANDLE		 clip = GetClipboardData(CF_UNICODETEXT);
@@ -566,8 +562,9 @@ inline void DBWindowViewer::PasteString(const std::string Text)
 {
 	Sleep(20);
 	DBInput::CopyToClipboard(WindowHandle, Text);
+	Sleep(20);
 	DBInput::PasteClipboard();
-	//Sleep(20);
+	Sleep(20);
 }
 
 inline void DBWindowViewer::WriteEMail()
