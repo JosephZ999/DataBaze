@@ -118,6 +118,7 @@ void DBInstance::OnMemberAddedHandle()
 	std::wstring LastMember;
 	DataManager->GetLastMemberStatus(LastMember);
 	ListBox->AddItem(LastMember);
+	UpdateFolderIdText();
 }
 
 void DBInstance::OnMemberChangedHandle()
