@@ -123,15 +123,21 @@ void DBWindowsManager::CloseWindowByType(EWindows WindowType)
 	{
 	case EWindows::IDW_VIEWER:
 	{
-		DestroyViewer();
-		ShowWindow(ViewerHandle, SW_HIDE);
-		return;
+		if (WindowViewer)
+		{
+			DestroyViewer();
+			ShowWindow(ViewerHandle, SW_HIDE);
+		}
+		break;
 	}
 	case EWindows::IDW_WRITER:
 	{
-		DestroyWriter();
-		ShowWindow(WriterHandle, SW_HIDE);
-		return;
+		if (WindowWriter)
+		{
+			DestroyWriter();
+			ShowWindow(WriterHandle, SW_HIDE);
+		}
+		break;
 	}
 	} // switch end
 }
