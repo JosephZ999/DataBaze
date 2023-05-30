@@ -79,7 +79,10 @@ void DBLib::CreateText(HWND hWnd)
 
 void DBLib::SetText(HWND Window, std::wstring Text)
 {
-	SendMessage(Window, WM_SETTEXT, 0, (LPARAM)Text.c_str());
+	if (Window)
+	{
+		SendMessage(Window, WM_SETTEXT, 0, (LPARAM)Text.c_str());
+	}
 }
 
 HWND DBLib::CreateEditBox(DBWindow& ButtonInfo, DWORD Style)
@@ -236,7 +239,7 @@ std::wstring DBPaths::GetImagePath(int Folder, int ImageId)
 std::wstring DBPaths::GetConfirmationPath(int FolderId)
 {
 	const std::wstring ConfirmPath = DBPaths::GetDataPath().append(L"\\Confirmation");
-	const std::wstring FolderPath = std::wstring(ConfirmPath).append(L"\\Folder_").append(std::to_wstring(FolderId));
+	const std::wstring FolderPath  = std::wstring(ConfirmPath).append(L"\\Folder_").append(std::to_wstring(FolderId));
 	_wmkdir(ConfirmPath.c_str());
 	_wmkdir(FolderPath.c_str());
 	return FolderPath;
