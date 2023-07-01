@@ -53,6 +53,7 @@ LRESULT DBWindowWriter::CallProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM 
 	}
 	case WM_HOTKEY:
 	{
+		SetFocus(ButtonManager->GetWndHandler(IDC_W_Edit));
 		switch (wParam)
 		{
 		case HKW_Enter:
@@ -63,8 +64,6 @@ LRESULT DBWindowWriter::CallProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM 
 				SelectWriteData(PeopleType);
 			}
 			UpdateEditText();
-			// SendMessage(ButtonManager->GetWndHandler(IDC_W_Edit), WM_SETTEXT, 0, (LPARAM)L"");
-
 			break;
 		}
 		case HKW_Revert:
@@ -80,32 +79,16 @@ LRESULT DBWindowWriter::CallProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM 
 		}
 		break;
 	}
-	case WM_DRAWITEM:
+	case WM_ACTIVATE:
 	{
-		/*
-		HDC	   hdc		  = GetDC(WriterInfoBox.Window);
-		RECT   Rect		  = {0, 0, 520, 120};
-		HBRUSH BrushColor = CreateSolidBrush(RGB(250, 0, 0));
-
-		FillRect(hdc, &Rect, BrushColor);
-		SetTextColor(hdc, RGB(0, 0, 250));
-		*/
-		break;
-	}
-	} // switch end
-
-	// Edit control options
-	switch (LOWORD(wParam))
-	{
-	case IDC_W_Edit:
-	{
-		if (HIWORD(wParam) == EN_SETFOCUS)
+		// Window activation/deactivation handling
+		if (LOWORD(wParam) != WA_INACTIVE)
 		{
 			RegisterHotKey(hWnd, HKW_Enter, 0, VK_RETURN);
 			RegisterHotKey(hWnd, HKW_Revert, 0, VK_ESCAPE);
 			RegisterHotKey(hWnd, HKW_CloseWnd, 0, VK_F4);
 		}
-		if (HIWORD(wParam) == EN_KILLFOCUS)
+		else
 		{
 			UnregisterHotKey(hWnd, HKW_Enter);
 			UnregisterHotKey(hWnd, HKW_Revert);
@@ -113,7 +96,7 @@ LRESULT DBWindowWriter::CallProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM 
 		}
 		break;
 	}
-	}
+	} // switch end
 	return DefWindowProc(hWnd, message, wParam, lParam);
 }
 

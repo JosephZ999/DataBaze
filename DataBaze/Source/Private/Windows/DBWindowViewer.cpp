@@ -28,6 +28,19 @@ LRESULT DBWindowViewer::CallProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM 
 {
 	switch (message)
 	{
+	case WM_ACTIVATE:
+	{
+		// Window activation/deactivation handling
+		if (LOWORD(wParam) != WA_INACTIVE)
+		{
+			RegisterHotKey(hWnd, HKV_Close, 0, VK_F4);
+		}
+		else
+		{
+			UnregisterHotKey(hWnd, HKV_Close);
+		}
+		break;
+	}
 	case WM_COMMAND:
 	{
 		if (wParam == WM_SHOWWINDOW)
@@ -64,6 +77,11 @@ LRESULT DBWindowViewer::CallProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM 
 		case HKV_Command_3: Autofill_Check(); break;
 		case HKV_Next: AutoFill(); break;
 		case HKV_Reset: InitializeSteps(); break;
+		case HKV_Close:
+		{
+			SendMessage(hWnd, WM_CLOSE, 0, 0);
+			break;
+		}
 		}
 		break;
 	}

@@ -294,6 +294,7 @@ enum EHotKeyId
 	HKV_Command_4,
 	HKV_Next,
 	HKV_Reset,
+	HKV_Close,
 
 	// Writer
 	HKW_Enter,
