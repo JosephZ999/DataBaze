@@ -220,7 +220,7 @@ INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 		HWND hIconStatic = GetDlgItem(hDlg, IDC_IMGCONTROL);
 		if (hIconStatic)
 		{
-			HICON hIcon = (HICON)LoadImage(hInst, L"DataBaze.ico", IMAGE_ICON, 0, 0, LR_DEFAULTSIZE | LR_DEFAULTCOLOR | LR_LOADFROMFILE);
+			HICON hIcon = LoadIcon(hInst, MAKEINTRESOURCE(IDI_DATABAZE));
 			if (hIcon)
 			{
 				SendMessage(hIconStatic, STM_SETICON, (WPARAM)hIcon, 0);

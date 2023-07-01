@@ -155,24 +155,24 @@ void DBInstance::SetMinimizeMode(bool Enabled)
 
 	// Horizontal buttons pos
 	UILib::SlotPtr HBox			= GetButtonManager()->GetSlot(BBI_Horizontal);
-	const int	   HBoxNewSizeX = Enabled ? 450 : 500;
+	const int	   HBoxNewSizeX = Enabled ? 480 : 500;
 	const int	   HBoxSizeY	= HBox->GetSize().Y;
 	HBox->SetSize(Size2D(HBoxNewSizeX, HBoxSizeY));
 
-	const int HBoxOffset = Enabled ? -180 : 0;
+	const int HBoxOffset = Enabled ? -190 : 0;
 	HBox->SetOffset(Size2D(HBoxOffset, 0));
 
 	// ListBox Pos and Size
 	const Size2D ListInitPos  = GetListBox()->GetInitialPos();
 	const Size2D ListInitSize = GetListBox()->GetInitialSize();
-	const Size2D ListPos	  = Size2D(Enabled ? ListInitPos.X - 180 : ListInitPos.X, ListInitPos.Y);
-	const Size2D ListSize	  = Size2D(Enabled ? ListInitSize.X - 50 : ListInitSize.X, ListInitSize.Y);
+	const Size2D ListPos	  = Size2D(Enabled ? ListInitPos.X - 190 : ListInitPos.X, ListInitPos.Y);
+	const Size2D ListSize	  = Size2D(Enabled ? ListInitSize.X - 20 : ListInitSize.X, ListInitSize.Y);
 	GetListBox()->SetPosition(ListPos);
 	GetListBox()->SetSize(ListSize);
 
 	// Window Size
-	const Size2D MainWndPos(25, 25);
-	const Size2D MainWndSize(Enabled ? 505 : 740, 450);
+	const Size2D MainWndPos(15, 25);
+	const Size2D MainWndSize(Enabled ? 520 : 740, 450);
 	SetWindowPos(InitData.MainHWND, HWND_TOP, MainWndPos.X, MainWndPos.Y, MainWndSize.X, MainWndSize.Y, 0);
 }
 
