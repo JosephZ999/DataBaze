@@ -272,10 +272,10 @@ void DBWindowViewer::Autofill_SaveResult()
 
 void DBWindowViewer::FillPeopleData(const DBPeopleData& InPeople, bool bPartOne)
 {
-	PasteString(InPeople.Name);
+	PasteString(InPeople.FamilyName);
 	PressTab(1);
 
-	PasteString(InPeople.FamilyName);
+	PasteString(InPeople.Name);
 	PressTab(3);
 	DBInput::PressKey(VK_SPACE);
 	PressTab(1);
@@ -322,13 +322,19 @@ void DBWindowViewer::FillPeopleData(const DBPeopleData& InPeople, bool bPartOne)
 
 	if (bPartOne)
 	{
-		PressTab(3);
+		PressTab(4);
 	}
 
 	// Image
-	PressTab(2);
+	PressTab(3);
+	DBInput::PressKey(VK_SPACE); // Open Image Dialog Window
+
+	Sleep(1000);
 	PasteImagePath(InPeople);
-	PressTab(2);
+	DBInput::PressKey(VK_RETURN);
+	Sleep(1000);
+
+	PressTab(1);
 }
 
 void DBWindowViewer::ChangePeople(bool Next)
@@ -522,10 +528,6 @@ void DBWindowViewer::PressTab(size_t Times)
 
 void DBWindowViewer::CopyAndSaveCode()
 {
-	DBInput::PressKeys(VK_CONTROL, VK_A);
-	DBInput::PressKeys(VK_CONTROL, VK_C);
-	Sleep(20);
-
 	if (OpenClipboard(NULL))
 	{
 		HANDLE		 clip = GetClipboardData(CF_UNICODETEXT);
@@ -542,7 +544,9 @@ inline void DBWindowViewer::PasteString(const std::string Text)
 {
 	Sleep(20);
 	DBInput::CopyToClipboard(WindowHandle, Text);
+	Sleep(20);
 	DBInput::PasteClipboard();
+	Sleep(20);
 }
 
 inline void DBWindowViewer::WriteEMail()

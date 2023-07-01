@@ -130,11 +130,26 @@ bool DBDataManager::SearchValidFolders()
 			InvalidFolders->push_back(i);
 		}
 	}
-	if (InvalidFolders->size() > 0)
+	// if (InvalidFolders->size() > 0)
 	{
+		for (size_t i = 0; i < ADD_EMPTYFOLDERS_NUM; ++i)
+		{
+			if (i < InvalidFolders->size())
+			{
+				int AdditionalFolder = (*InvalidFolders)[i];
+				DBPaths::CreatePath(DBPaths::GetDataFolderPath(AdditionalFolder));
+				ValidFolders->push_back((*InvalidFolders)[i]);
+			}
+			else
+			{
+				break;
+			}
+		}
+		/*
 		int AdditionalFolder = (*InvalidFolders)[0];
 		DBPaths::CreatePath(DBPaths::GetDataFolderPath(AdditionalFolder));
 		ValidFolders->push_back((*InvalidFolders)[0]);
+		*/
 	}
 	/*
 	#ifdef _DEBUG

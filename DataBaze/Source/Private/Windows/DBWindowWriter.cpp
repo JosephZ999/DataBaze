@@ -864,21 +864,41 @@ void DBWindowWriter::SetItem(std::string& Info)
 	}
 	case PD_MailRegion:
 	{
+		if (Info == "0" || Info == " ")
+		{
+			MembersData.MailRegion = "";
+			break;
+		}
 		MembersData.MailRegion = Info;
 		break;
 	}
 	case PD_MailCity:
 	{
+		if (Info == "0" || Info == " ")
+		{
+			MembersData.MailCity = "";
+			break;
+		}
 		MembersData.MailCity = Info;
 		break;
 	}
 	case PD_MailStreet:
 	{
+		if (Info == "0" || Info == " ")
+		{
+			MembersData.MailStreet = "";
+			break;
+		}
 		MembersData.MailStreet = Info;
 		break;
 	}
 	case PD_MailHomeNumber:
 	{
+		if (Info == "0" || Info == " ")
+		{
+			MembersData.MailHomeNumber = "";
+			break;
+		}
 		MembersData.MailHomeNumber = Info;
 		break;
 	}

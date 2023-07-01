@@ -118,6 +118,7 @@ void DBInstance::OnMemberAddedHandle()
 	std::wstring LastMember;
 	DataManager->GetLastMemberStatus(LastMember);
 	ListBox->AddItem(LastMember);
+	UpdateFolderIdText();
 }
 
 void DBInstance::OnMemberChangedHandle()
@@ -136,6 +137,8 @@ void DBInstance::ResetListBox()
 
 void DBInstance::UpdateFolderIdText()
 {
+	if (! GetDataManager() || ! GetListBox() || ! GetButtonManager()) return;
+
 	std::wstring IdAsText = std::to_wstring(GetDataManager()->GetSelectedFolderId());
 	IdAsText.append(L" - ").append(std::to_wstring(GetListBox()->GetLastItemId()));
 	HWND FolderIdHandle = GetButtonManager()->GetWndHandler(EDBWinCompId::IDC_FolderId);
