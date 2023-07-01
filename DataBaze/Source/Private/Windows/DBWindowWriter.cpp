@@ -72,6 +72,11 @@ LRESULT DBWindowWriter::CallProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM 
 			Revert();
 			break;
 		}
+		case HKW_CloseWnd:
+		{
+			SendMessage(hWnd, WM_CLOSE, 0, 0);
+			break;
+		}
 		}
 		break;
 	}
@@ -98,11 +103,13 @@ LRESULT DBWindowWriter::CallProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM 
 		{
 			RegisterHotKey(hWnd, HKW_Enter, 0, VK_RETURN);
 			RegisterHotKey(hWnd, HKW_Revert, 0, VK_ESCAPE);
+			RegisterHotKey(hWnd, HKW_CloseWnd, 0, VK_F4);
 		}
 		if (HIWORD(wParam) == EN_KILLFOCUS)
 		{
 			UnregisterHotKey(hWnd, HKW_Enter);
 			UnregisterHotKey(hWnd, HKW_Revert);
+			UnregisterHotKey(hWnd, HKW_CloseWnd);
 		}
 		break;
 	}

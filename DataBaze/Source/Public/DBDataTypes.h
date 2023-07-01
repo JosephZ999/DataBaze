@@ -295,8 +295,7 @@ enum EHotKeyId
 	// Writer
 	HKW_Enter,
 	HKW_Revert,
-
-
+	HKW_CloseWnd,
 };
 
 struct FMemberId
