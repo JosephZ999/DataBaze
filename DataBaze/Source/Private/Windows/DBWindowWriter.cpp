@@ -274,8 +274,17 @@ void DBWindowWriter::WriteData()
 	{
 		if (DataToChange->ImageFile.length() != 0)
 		{
-			NextLine();
-			NextLine();
+			if (IsParent || IsSpouse)
+			{
+				NextLine();
+				NextLine();
+			}
+			else
+			{
+				++EnteredChildrenNum;
+				FinishWriting();
+				NextPeople();
+			}
 			return;
 		}
 		if (OpenImage())
@@ -604,7 +613,7 @@ void DBWindowWriter::UpdateEditStyle()
 	case PD_EducationDegree:	SetEditboxStyle(EDIT_STYLE_BASE, 2);	break;
 	case PD_MaritalStatus:		SetEditboxStyle(EDIT_STYLE_BASE, 1);	break;
 	case PD_ChildrenNum:		SetEditboxStyle(ES_NUMBER, 1);			break;
-	case PD_MailZipCode:		SetEditboxStyle(ES_NUMBER, 1);			break;
+	case PD_MailZipCode:		SetEditboxStyle(ES_NUMBER, 6);			break;
 	default:					SetEditboxStyle(EDIT_STYLE_BASE);		break;
 		// clang-format on
 	}	// Switch PeopleData
@@ -949,6 +958,8 @@ void DBWindowWriter::FinishWriting()
 	}
 }
 
+//==============================================================================//
+//==================================================//
 void DBWindowWriter::Revert()
 {
 	if (bFinish) return;
@@ -988,20 +999,27 @@ void DBWindowWriter::Revert()
 			}
 			else // no spose
 			{
-				PeopleType = static_cast<EPeopleType>(IntPeopleType - 2);
+				PeopleType = EPeopleType::PT_Parent;
 				PeopleData = (EPeopleData)((int)EPeopleData::PD_Max - 1);
 			}
 			break;
 		}
 		default: // Child info
 		{
+			--EnteredChildrenNum;
 			PeopleData = (EPeopleData)((int)EPeopleData::PD_NotChildInfo - 1);
+			while ((int)PeopleData >= EPeopleData::PD_NotChildInfo || //
+				   PeopleData == EPeopleData::PD_OnlyParentInfo ||	  //
+				   PeopleData == EPeopleData::PD_ImageFile)
+			{
+				PeopleData = static_cast<EPeopleData>((int)PeopleData - 1);
+			}
 			break;
 		}
 		} // end switch
 	}
 
-	UpdateInfo();
-	UpdateEditStyle();
+	// you must change people data ptr
+	SelectWriteData(PeopleType);
 	UpdateEditText();
 }
