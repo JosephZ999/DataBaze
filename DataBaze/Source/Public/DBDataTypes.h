@@ -73,8 +73,6 @@ enum EPeopleType
 	PT_Child_5,
 	PT_Child_6,
 	PT_Child_7,
-	PT_Child_8,
-	PT_Child_9,
 };
 
 enum EPeopleData

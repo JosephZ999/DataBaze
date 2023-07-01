@@ -25,8 +25,6 @@ LRESULT DBWindowWriter::CallProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM 
 			{
 				SelectWriteData(PT_Parent);
 			}
-
-			break;
 		}
 		break;
 	}
@@ -64,14 +62,9 @@ LRESULT DBWindowWriter::CallProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM 
 				WriteData();
 				SelectWriteData(PeopleType);
 			}
-			if (bEditMode || true)
-			{
-				UpdateEditText();
-			}
-			else
-			{
-				// SendMessage(ButtonManager->GetWndHandler(IDC_W_Edit), WM_SETTEXT, 0, (LPARAM)L"");
-			}
+			UpdateEditText();
+			// SendMessage(ButtonManager->GetWndHandler(IDC_W_Edit), WM_SETTEXT, 0, (LPARAM)L"");
+
 			break;
 		}
 		case HKW_Revert:
@@ -187,8 +180,6 @@ void DBWindowWriter::SelectWriteData(EPeopleType PT)
 	case PT_Child_5: SelectChild(5); break;
 	case PT_Child_6: SelectChild(6); break;
 	case PT_Child_7: SelectChild(7); break;
-	case PT_Child_8: SelectChild(8); break;
-	case PT_Child_9: SelectChild(9); break;
 	}
 	UpdateInfo();
 	UpdateEditStyle();
@@ -203,6 +194,7 @@ void DBWindowWriter::EditPeople(FMemberId InId, const DBFamilyData& Data, EPeopl
 	SelectWriteData(PeopleType);
 	UpdateInfo();
 	UpdateEditStyle();
+	UpdateEditText();
 }
 
 void DBWindowWriter::WriteData()
@@ -326,8 +318,6 @@ void DBWindowWriter::UpdateInfo()
 		{PT_Child_5, L"Child 5"}, //
 		{PT_Child_6, L"Child 6"}, //
 		{PT_Child_7, L"Child 7"}, //
-		{PT_Child_8, L"Child 8"}, //
-		{PT_Child_9, L"Child 9"}  //
 	};
 
 	if (PeopleTitleText.find(PeopleType) != PeopleTitleText.end())
@@ -568,7 +558,7 @@ bool DBWindowWriter::CheckFormat()
 	case PD_ChildrenNum:
 	{
 		int Value = DBConvert::StringToInt(Text);
-		if (Value >= 0 && Value < 10)
+		if (Value >= 0 && Value < 8)
 		{
 			return true;
 		}
@@ -926,6 +916,42 @@ void DBWindowWriter::Revert()
 	if (IntPeopleData > 1)
 	{
 		PeopleData = static_cast<EPeopleData>(IntPeopleData - 1);
+	}
+	else
+	{
+		if (bEditMode) return;
+
+		const int IntPeopleType = static_cast<int>(PeopleType);
+		if (IntPeopleType <= 1) return; // if its parent 1
+
+		PeopleType = static_cast<EPeopleType>(IntPeopleType - 1);
+
+		switch (PeopleType)
+		{
+		case EPeopleType::PT_Parent:
+		{
+			PeopleData = (EPeopleData)((int)EPeopleData::PD_Max - 1);
+			break;
+		}
+		case EPeopleType::PT_Spouse:
+		{
+			if (MembersData.Parents.size() == 2)
+			{
+				PeopleData = (EPeopleData)((int)EPeopleData::PD_OnlyParentInfo - 1);
+			}
+			else // no spose
+			{
+				PeopleType = static_cast<EPeopleType>(IntPeopleType - 2);
+				PeopleData = (EPeopleData)((int)EPeopleData::PD_Max - 1);
+			}
+			break;
+		}
+		default: // Child info
+		{
+			PeopleData = (EPeopleData)((int)EPeopleData::PD_NotChildInfo - 1);
+			break;
+		}
+		} // end switch
 	}
 
 	UpdateInfo();

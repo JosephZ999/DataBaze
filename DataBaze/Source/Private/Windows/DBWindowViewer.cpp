@@ -430,24 +430,6 @@ void DBWindowViewer::ChangePeople(bool Next)
 		}
 		break;
 	}
-	case PT_Child_8:
-	{
-		if (MemberData.Children.size() >= 8)
-		{
-			CurrentPeople = NextP;
-			bChanged	  = true;
-		}
-		break;
-	}
-	case PT_Child_9:
-	{
-		if (MemberData.Children.size() >= 9)
-		{
-			CurrentPeople = NextP;
-			bChanged	  = true;
-		}
-		break;
-	}
 	}
 
 	if (bChanged)

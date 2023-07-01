@@ -131,22 +131,6 @@ DBPeopleData& DBFamilyData::operator[](EPeopleType Type)
 		}
 		break;
 	}
-	case PT_Child_8:
-	{
-		if (Children.size() >= 8)
-		{
-			return Children[7];
-		}
-		break;
-	}
-	case PT_Child_9:
-	{
-		if (Children.size() >= 9)
-		{
-			return Children[8];
-		}
-		break;
-	}
 	}
 
 	if (Parents.size() == 0)
