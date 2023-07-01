@@ -61,9 +61,9 @@ private:
 	void SetEditboxStyle(LONG Style = 0, int TextLimit = 0);
 	void SetItem(std::string& Info);
 
-	void UpdateInfo();
 	void SelectChild(size_t Index);
 
+	void UpdateInfo();
 	void UpdateEditStyle();
 	void UpdateEditText();
 
@@ -76,4 +76,5 @@ private:
 	int	 GetNextImageId() const;
 
 	void FinishWriting();
+	void Revert();
 };

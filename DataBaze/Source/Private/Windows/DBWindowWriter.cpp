@@ -55,17 +55,31 @@ LRESULT DBWindowWriter::CallProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM 
 	}
 	case WM_HOTKEY:
 	{
-		if (CheckFormat())
+		switch (wParam)
 		{
-			WriteData();
-			SelectWriteData(PeopleType);
-		}
-		if (! bEditMode)
+		case HKW_Enter:
 		{
-			SendMessage(ButtonManager->GetWndHandler(IDC_W_Edit), WM_SETTEXT, 0, (LPARAM)L"");
+			if (CheckFormat())
+			{
+				WriteData();
+				SelectWriteData(PeopleType);
+			}
+			if (bEditMode || true)
+			{
+				UpdateEditText();
+			}
+			else
+			{
+				// SendMessage(ButtonManager->GetWndHandler(IDC_W_Edit), WM_SETTEXT, 0, (LPARAM)L"");
+			}
 			break;
 		}
-		UpdateEditText();
+		case HKW_Revert:
+		{
+			Revert();
+			break;
+		}
+		}
 		break;
 	}
 	case WM_DRAWITEM:
@@ -90,10 +104,12 @@ LRESULT DBWindowWriter::CallProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM 
 		if (HIWORD(wParam) == EN_SETFOCUS)
 		{
 			RegisterHotKey(hWnd, HKW_Enter, 0, VK_RETURN);
+			RegisterHotKey(hWnd, HKW_Revert, 0, VK_ESCAPE);
 		}
 		if (HIWORD(wParam) == EN_KILLFOCUS)
 		{
 			UnregisterHotKey(hWnd, HKW_Enter);
+			UnregisterHotKey(hWnd, HKW_Revert);
 		}
 		break;
 	}
@@ -176,7 +192,6 @@ void DBWindowWriter::SelectWriteData(EPeopleType PT)
 	}
 	UpdateInfo();
 	UpdateEditStyle();
-	UpdateEditText();
 }
 
 void DBWindowWriter::EditPeople(FMemberId InId, const DBFamilyData& Data, EPeopleType People)
@@ -611,34 +626,31 @@ void DBWindowWriter::UpdateEditStyle()
 
 void DBWindowWriter::UpdateEditText()
 {
-	if (bEditMode)
-	{
-		std::wstring Text;
-		std::string	 SText;
+	std::wstring Text;
+	std::string	 SText;
 
-		switch (PeopleData)
+	switch (PeopleData)
+	{
+	case PD_MaritalStatus: SText = std::to_string(MembersData.MaritalStatus); break;
+	case PD_ChildrenNum: SText = std::to_string(MembersData.Children.size()); break;
+	case PD_MailCountry: SText = MembersData.MailCountry; break;
+	case PD_MailRegion: SText = MembersData.MailRegion; break;
+	case PD_MailCity: SText = MembersData.MailCity; break;
+	case PD_MailStreet: SText = MembersData.MailStreet; break;
+	case PD_MailHomeNumber: SText = MembersData.MailHomeNumber; break;
+	case PD_MailZipCode: SText = std::to_string(MembersData.MailZipCode); break;
+	default:
+	{
+		if (bFinish)
 		{
-		case PD_MaritalStatus: SText = std::to_string(MembersData.MaritalStatus); break;
-		case PD_ChildrenNum: SText = std::to_string(MembersData.Children.size()); break;
-		case PD_MailCountry: SText = MembersData.MailCountry; break;
-		case PD_MailRegion: SText = MembersData.MailRegion; break;
-		case PD_MailCity: SText = MembersData.MailCity; break;
-		case PD_MailStreet: SText = MembersData.MailStreet; break;
-		case PD_MailHomeNumber: SText = MembersData.MailHomeNumber; break;
-		case PD_MailZipCode: SText = std::to_string(MembersData.MailZipCode); break;
-		default:
-		{
-			if (bFinish)
-			{
-				return;
-			}
-			SText = std::string(DataToChange->GetAsString(PeopleData));
+			return;
 		}
-		}
-		DBConvert::StringToWString(SText, Text);
-		HWND EditBox = ButtonManager->GetWndHandler(EDBWinCompId::IDC_W_Edit);
-		DBLib::SetText(EditBox, Text);
+		SText = std::string(DataToChange->GetAsString(PeopleData));
 	}
+	}
+	DBConvert::StringToWString(SText, Text);
+	HWND EditBox = ButtonManager->GetWndHandler(EDBWinCompId::IDC_W_Edit);
+	DBLib::SetText(EditBox, Text);
 }
 
 void DBWindowWriter::NextPeople()
@@ -650,8 +662,11 @@ void DBWindowWriter::NextPeople()
 void DBWindowWriter::NextLine()
 {
 	PeopleData = static_cast<EPeopleData>(PeopleData + 1);
-	UpdateEditText();
 	UpdateEditStyle();
+	if (bEditMode)
+	{
+		UpdateEditText();
+	}
 }
 
 void DBWindowWriter::OpenImage()
@@ -901,4 +916,19 @@ void DBWindowWriter::FinishWriting()
 		CopySavedImages();
 		OnClose.Broadcast();
 	}
+}
+
+void DBWindowWriter::Revert()
+{
+	if (bFinish) return;
+
+	const int IntPeopleData = static_cast<int>(PeopleData);
+	if (IntPeopleData > 1)
+	{
+		PeopleData = static_cast<EPeopleData>(IntPeopleData - 1);
+	}
+
+	UpdateInfo();
+	UpdateEditStyle();
+	UpdateEditText();
 }
