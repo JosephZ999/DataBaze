@@ -288,17 +288,23 @@ void DBWindowWriter::WriteData()
 			NextLine();
 			return;
 		}
-		OpenImage();
-		if (IsParent || IsSpouse)
+		if (OpenImage())
 		{
-			NextLine();
-			NextLine();
+			if (IsParent || IsSpouse)
+			{
+				NextLine();
+				NextLine();
+			}
+			else
+			{
+				++EnteredChildrenNum;
+				FinishWriting();
+				NextPeople();
+			}
 		}
 		else
 		{
-			++EnteredChildrenNum;
-			FinishWriting();
-			NextPeople();
+			Revert();
 		}
 	}
 }
@@ -621,14 +627,35 @@ void DBWindowWriter::UpdateEditText()
 
 	switch (PeopleData)
 	{
-	case PD_MaritalStatus: SText = std::to_string(MembersData.MaritalStatus); break;
-	case PD_ChildrenNum: SText = std::to_string(MembersData.Children.size()); break;
+	case PD_MaritalStatus:
+	{
+		if (MembersData.MaritalStatus)
+		{
+			SText = std::to_string(MembersData.MaritalStatus);
+		}
+		break;
+	}
+	case PD_ChildrenNum:
+	{
+		if (MembersData.Children.size())
+		{
+			SText = std::to_string(MembersData.Children.size());
+		}
+		break;
+	}
 	case PD_MailCountry: SText = MembersData.MailCountry; break;
 	case PD_MailRegion: SText = MembersData.MailRegion; break;
 	case PD_MailCity: SText = MembersData.MailCity; break;
 	case PD_MailStreet: SText = MembersData.MailStreet; break;
 	case PD_MailHomeNumber: SText = MembersData.MailHomeNumber; break;
-	case PD_MailZipCode: SText = std::to_string(MembersData.MailZipCode); break;
+	case PD_MailZipCode:
+	{
+		if (MembersData.MailZipCode)
+		{
+			SText = std::to_string(MembersData.MailZipCode);
+			break;
+		}
+	}
 	default:
 	{
 		if (bFinish)
@@ -641,6 +668,8 @@ void DBWindowWriter::UpdateEditText()
 	DBConvert::StringToWString(SText, Text);
 	HWND EditBox = ButtonManager->GetWndHandler(EDBWinCompId::IDC_W_Edit);
 	DBLib::SetText(EditBox, Text);
+
+	SendMessage(EditBox, EM_SETSEL, (WPARAM)SText.size(), (LPARAM)SText.size());
 }
 
 void DBWindowWriter::NextPeople()
@@ -659,40 +688,42 @@ void DBWindowWriter::NextLine()
 	}
 }
 
-void DBWindowWriter::OpenImage()
+bool DBWindowWriter::OpenImage()
 {
 	// Display the Open dialog box.
 
-	bool ImageSaved = false;
-	while (! ImageSaved)
+	// bool ImageSaved = false;
+	// while (! ImageSaved)
+
+	OPENFILENAME ofn;		  // common dialog box structure
+	wchar_t		 szFile[512]; // buffer for file name
+	// HANDLE    hf;	      // file handle
+
+	// Initialize OPENFILENAME
+	ZeroMemory(&ofn, sizeof(ofn));
+	ofn.lStructSize = sizeof(ofn);
+	ofn.hwndOwner	= WindowHandle;
+	ofn.lpstrFile	= (LPWSTR)szFile;
+	// Set lpstrFile[0] to '\0' so that GetOpenFileName does not
+	// use the contents of szFile to initialize itself.
+	ofn.lpstrFile[0]	= '\0';
+	ofn.nMaxFile		= sizeof(szFile);
+	ofn.lpstrFilter		= L"JPEG\0*.JP*G";
+	ofn.nFilterIndex	= 1;
+	ofn.lpstrFileTitle	= NULL;
+	ofn.nMaxFileTitle	= 0;
+	ofn.lpstrInitialDir = NULL;
+	ofn.Flags			= OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST;
+
+	// CDN_FILEOK
+
+	if (GetOpenFileName(&ofn) == TRUE)
 	{
-		OPENFILENAME ofn;		  // common dialog box structure
-		wchar_t		 szFile[512]; // buffer for file name
-		// HANDLE    hf;	      // file handle
-
-		// Initialize OPENFILENAME
-		ZeroMemory(&ofn, sizeof(ofn));
-		ofn.lStructSize = sizeof(ofn);
-		ofn.hwndOwner	= WindowHandle;
-		ofn.lpstrFile	= (LPWSTR)szFile;
-		// Set lpstrFile[0] to '\0' so that GetOpenFileName does not
-		// use the contents of szFile to initialize itself.
-		ofn.lpstrFile[0]	= '\0';
-		ofn.nMaxFile		= sizeof(szFile);
-		ofn.lpstrFilter		= L"JPEG\0*.JP*G";
-		ofn.nFilterIndex	= 1;
-		ofn.lpstrFileTitle	= NULL;
-		ofn.nMaxFileTitle	= 0;
-		ofn.lpstrInitialDir = NULL;
-		ofn.Flags			= OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST;
-
-		// CDN_FILEOK
-
-		if (GetOpenFileName(&ofn) == TRUE)
-		{
-			ImageSaved = SaveImage(ofn.lpstrFile);
-		}
+		// ImageSaved = SaveImage(ofn.lpstrFile);
+		SaveImage(ofn.lpstrFile);
+		return true;
 	}
+	return false;
 }
 
 bool DBWindowWriter::SaveImage(const std::wstring& InImagePath)
@@ -916,6 +947,12 @@ void DBWindowWriter::Revert()
 	if (IntPeopleData > 1)
 	{
 		PeopleData = static_cast<EPeopleData>(IntPeopleData - 1);
+		while (PeopleData == EPeopleData::PD_NotChildInfo ||   //
+			   PeopleData == EPeopleData::PD_OnlyParentInfo || //
+			   PeopleData == EPeopleData::PD_ImageFile)
+		{
+			PeopleData = static_cast<EPeopleData>((int)PeopleData - 1);
+		}
 	}
 	else
 	{

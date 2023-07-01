@@ -69,7 +69,7 @@ private:
 
 	void NextPeople();
 	void NextLine();
-	void OpenImage();
+	bool OpenImage();
 
 	bool SaveImage(const std::wstring& InImagePath);
 	void CopySavedImages();
