@@ -896,7 +896,7 @@ void DBWindowWriter::SetItem(std::string& Info)
 	{
 		if (Info == "0" || Info == " ")
 		{
-			MembersData.MailHomeNumber = "";
+			MembersData.MailHomeNumber = "0";
 			break;
 		}
 		MembersData.MailHomeNumber = Info;

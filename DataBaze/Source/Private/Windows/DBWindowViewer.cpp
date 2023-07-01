@@ -591,7 +591,12 @@ void DBWindowViewer::PasteMailInfo()
 	PressTab(1);
 	PasteString(MemberData.MailStreet);
 	PressTab(1);
-	PasteString(MemberData.MailHomeNumber);
+
+	if (MemberData.MailHomeNumber.size() > 0 && DBConvert::StringToInt(MemberData.MailHomeNumber) != 0)
+	{
+		PasteString(MemberData.MailHomeNumber);
+	}
+
 	PressTab(1);
 	PasteString(MemberData.MailCity);
 	PressTab(1);
