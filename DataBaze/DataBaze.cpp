@@ -10,6 +10,7 @@
 #include <ctime>
 #include <commctrl.h>
 #include <string>
+#include "DBKeyCodes.h"
 
 #define MAX_LOADSTRING 100
 
@@ -145,7 +146,19 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	{
 	case WM_CREATE:
 	{
-		// TODO:
+		RegisterHotKey(hWnd, HKM_AddNew, MOD_CONTROL, VK_D);
+		break;
+	}
+	case WM_HOTKEY:
+	{
+		switch (wParam)
+		{
+		case HKM_AddNew:
+		{
+			SendMessage(hWnd, WM_COMMAND, IDC_NEWITEM, 0);
+			break;
+		}
+		}
 		break;
 	}
 	case WM_COMMAND:
@@ -156,12 +169,14 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		}
 
 		int wmId = LOWORD(wParam);
+
 		// Parse the menu selections:
 		switch (wmId)
 		{
 		case IDM_ABOUT: DialogBox(hInst, MAKEINTRESOURCE(IDD_ABOUTBOX), hWnd, About); break;
 		case IDM_EXIT:
 		{
+			UnregisterHotKey(hWnd, HKM_AddNew);
 			SingletonManager::DestroyAll();
 			DestroyWindow(hWnd);
 			break;

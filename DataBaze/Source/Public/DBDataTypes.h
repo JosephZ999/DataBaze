@@ -284,6 +284,9 @@ enum EHotKeyId
 {
 	HK_None = 0,
 
+	// Main
+	HKM_AddNew,
+
 	// Viewer
 	HKV_Command_1,
 	HKV_Command_2,
