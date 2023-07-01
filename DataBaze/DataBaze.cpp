@@ -8,6 +8,8 @@
 #include "DBFunctionLibrary.h"
 #include <strsafe.h>
 #include <ctime>
+#include <commctrl.h>
+#include <string>
 
 #define MAX_LOADSTRING 100
 
@@ -195,16 +197,32 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 // Message handler for about box.
 INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 {
-	UNREFERENCED_PARAMETER(lParam);
+	// UNREFERENCED_PARAMETER(lParam);
 	switch (message)
 	{
-	case WM_INITDIALOG: return (INT_PTR)TRUE;
-
+	case WM_INITDIALOG:
+	{
+		HWND hIconStatic = GetDlgItem(hDlg, IDC_IMGCONTROL);
+		if (hIconStatic)
+		{
+			HICON hIcon = (HICON)LoadImage(hInst, L"DataBaze.ico", IMAGE_ICON, 0, 0, LR_DEFAULTSIZE | LR_DEFAULTCOLOR | LR_LOADFROMFILE);
+			if (hIcon)
+			{
+				SendMessage(hIconStatic, STM_SETICON, (WPARAM)hIcon, 0);
+			}
+		}
+		return (INT_PTR)TRUE;
+	}
 	case WM_COMMAND:
 		if (LOWORD(wParam) == IDOK || LOWORD(wParam) == IDCANCEL)
 		{
 			EndDialog(hDlg, LOWORD(wParam));
 			return (INT_PTR)TRUE;
+		}
+		if (LOWORD(wParam) == IDC_SUPPORTBTN)
+		{
+			// Open the link using ShellExecute
+			ShellExecute(NULL, L"open", L"https://t.me/MDLXP", NULL, NULL, SW_SHOWNORMAL);
 		}
 		break;
 	}

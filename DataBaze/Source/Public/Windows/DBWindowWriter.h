@@ -14,7 +14,7 @@ struct FImagePath
 {
 	std::wstring Initial;
 	std::wstring Final;
-	int			 ImageId;
+	int			 ImageId = 0;
 };
 
 class DBWindowWriter : public DBInterface
