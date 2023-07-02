@@ -125,6 +125,7 @@ void DBWindowsManager::CloseWindowByType(EWindows WindowType)
 	{
 		if (WindowViewer)
 		{
+			SendMessage(ViewerHandle, WM_SHOWWINDOW, FALSE, 0);
 			DestroyViewer();
 			ShowWindow(ViewerHandle, SW_HIDE);
 		}
@@ -134,6 +135,7 @@ void DBWindowsManager::CloseWindowByType(EWindows WindowType)
 	{
 		if (WindowWriter)
 		{
+			SendMessage(WriterHandle, WM_SHOWWINDOW, FALSE, 0);
 			DestroyWriter();
 			ShowWindow(WriterHandle, SW_HIDE);
 		}

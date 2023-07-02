@@ -15,6 +15,15 @@ LRESULT DBWindowWriter::CallProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM 
 {
 	switch (message)
 	{
+	case WM_SHOWWINDOW:
+	{
+		if (wParam == FALSE)
+		{
+			UnregisterHotKey(hWnd, HKW_Enter);
+			UnregisterHotKey(hWnd, HKW_Revert);
+			UnregisterHotKey(hWnd, HKW_CloseWnd);
+		}
+	}
 	case WM_COMMAND:
 	{
 		if (wParam == WM_SHOWWINDOW)
@@ -51,7 +60,6 @@ LRESULT DBWindowWriter::CallProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM 
 		UnregisterHotKey(hWnd, HKW_Enter);
 		UnregisterHotKey(hWnd, HKW_Revert);
 		UnregisterHotKey(hWnd, HKW_CloseWnd);
-		UnregisterHotKey(hWnd, HKW_CloseWnd);
 		OnClose.Broadcast();
 		return 0;
 	}
@@ -77,7 +85,10 @@ LRESULT DBWindowWriter::CallProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM 
 		}
 		case HKW_CloseWnd:
 		{
-			SendMessage(hWnd, WM_CLOSE, 0, 0);
+			OnClose.Broadcast();
+			UnregisterHotKey(hWnd, HKW_Enter);
+			UnregisterHotKey(hWnd, HKW_Revert);
+			UnregisterHotKey(hWnd, HKW_CloseWnd);
 			break;
 		}
 		}

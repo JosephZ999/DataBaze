@@ -78,7 +78,9 @@ LRESULT DBWindowViewer::CallProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM 
 		case HKV_Reset: InitializeSteps(); break;
 		case HKV_Close:
 		{
-			SendMessage(hWnd, WM_CLOSE, 0, 0);
+			//SendMessage(hWnd, WM_CLOSE, 0, 0);
+			OnClose.Broadcast();
+			UnregisterHotKey(hWnd, HKV_Close);
 			break;
 		}
 		}
