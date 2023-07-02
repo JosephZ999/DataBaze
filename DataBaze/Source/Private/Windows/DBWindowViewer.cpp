@@ -51,7 +51,6 @@ LRESULT DBWindowViewer::CallProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM 
 			RegisterHotKey(hWnd, HKV_Command_3, MOD_CONTROL, VK_NUMPAD3);
 			RegisterHotKey(hWnd, HKV_Next, MOD_CONTROL, VK_SPACE);
 			RegisterHotKey(hWnd, HKV_Reset, MOD_CONTROL, VK_NUMPAD0);
-			// RegisterHotKey(hWnd, HKV_Command_4, MOD_CONTROL, VK_NUMPAD4);
 		}
 		break;
 	}
@@ -62,7 +61,7 @@ LRESULT DBWindowViewer::CallProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM 
 		UnregisterHotKey(hWnd, HKV_Command_3);
 		UnregisterHotKey(hWnd, HKV_Next);
 		UnregisterHotKey(hWnd, HKV_Reset);
-		// UnregisterHotKey(hWnd, HKV_Command_4);
+		UnregisterHotKey(hWnd, HKV_Close);
 
 		OnClose.Broadcast();
 		return 0;

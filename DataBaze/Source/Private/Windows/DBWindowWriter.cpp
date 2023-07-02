@@ -48,6 +48,10 @@ LRESULT DBWindowWriter::CallProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM 
 	}
 	case WM_CLOSE:
 	{
+		UnregisterHotKey(hWnd, HKW_Enter);
+		UnregisterHotKey(hWnd, HKW_Revert);
+		UnregisterHotKey(hWnd, HKW_CloseWnd);
+		UnregisterHotKey(hWnd, HKW_CloseWnd);
 		OnClose.Broadcast();
 		return 0;
 	}
