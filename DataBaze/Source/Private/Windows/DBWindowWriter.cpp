@@ -325,6 +325,8 @@ void DBWindowWriter::WriteData()
 
 void DBWindowWriter::UpdateInfo()
 {
+	if (PeopleData == EPeopleData::PD_ImageFile) return;
+
 	std::wstring InfoText;
 	std::wstring MoreInfoText;
 
