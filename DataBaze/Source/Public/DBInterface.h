@@ -4,9 +4,14 @@
 #include <cassert>
 #include "Core/DBCommandCenter.h"
 
+/*
+* Its Component
+* Has Owner
+* Can Create SubObjects
+* Can Remove All SubObjects
+*/
 class DBInterface
 {
-
 private:
 	DBInterface*			  Owner = nullptr;
 	std::vector<DBInterface*> Components;

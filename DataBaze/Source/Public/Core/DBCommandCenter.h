@@ -4,6 +4,7 @@
 
 class DBDataManager;
 class DBWindowsManager;
+class DBSettingsComp;
 
 namespace cmd
 {
@@ -12,7 +13,9 @@ namespace cmd
 		HWND			  GetMainHWND();
 		DBDataManager*	  GetDataManager();
 		DBWindowsManager* GetWindowsManager();
-		HINSTANCE		  GetHIns();
+		DBSettingsComp*	  GetSettingsComp();
+
+		HINSTANCE GetHIns();
 	} // namespace get
 
 	namespace wnd
@@ -28,5 +31,5 @@ namespace cmd
 	{
 		void SaveMemberCode(FMemberId InId, const std::wstring& FileName, const std::wstring& Data);
 		void SetLockMember(bool InLock, FMemberId InId);
-	}
+	} // namespace data
 } // namespace cmd

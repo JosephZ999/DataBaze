@@ -8,6 +8,7 @@ class DBDataManager;
 class DBWindowsManager;
 class DBListBox;
 class DBButtonManager;
+class DBSettingsComp;
 
 #ifdef _M_IX86
 typedef UINT UINT_PTR;
@@ -33,6 +34,7 @@ private:
 	DBDataManager*	  DataManager	= nullptr;
 	DBListBox*		  ListBox		= nullptr;
 	DBButtonManager*  ButtonManager = nullptr;
+	DBSettingsComp*	  SettingsComp	= nullptr;
 
 	bool			Initialized = false;
 	FDBInstanceInit InitData;
@@ -43,6 +45,7 @@ public:
 	inline DBDataManager*	 GetDataManager() const { return DataManager; }
 	inline DBListBox*		 GetListBox() const { return ListBox; }
 	inline DBButtonManager*	 GetButtonManager() const { return ButtonManager; }
+	inline DBSettingsComp*	 GetSettingsComp() const { return SettingsComp; }
 
 	FDBInstanceInit GetInitData() const;
 
@@ -59,5 +62,4 @@ private:
 	void UpdateFolderIdText();
 	void SetMinimizeMode(bool Enabled);
 	bool IsMinimized() { return bMinimizeMode; }
-
 };

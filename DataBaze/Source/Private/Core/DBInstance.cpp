@@ -6,6 +6,8 @@
 #include "Components/UIVerticalBox.h"
 #include "Components/UIHorizontalBox.h"
 #include "Components/UISpacer.h"
+#include "Components/DBSettingsComp.h"
+
 #include "UILibrary.h"
 
 enum EButtonBoxId
@@ -25,11 +27,13 @@ void DBInstance::Initialize(FDBInstanceInit& Param)
 	DataManager	  = CreateComponent<DBDataManager>();
 	ListBox		  = CreateComponent<DBListBox>();
 	ButtonManager = CreateComponent<DBButtonManager>();
+	SettingsComp  = CreateComponent<DBSettingsComp>();
 
 	assert(WindowManager);
 	assert(DataManager);
 	assert(ListBox);
 	assert(ButtonManager);
+	assert(SettingsComp);
 
 	InitWindows(); // Create windows handlers
 
