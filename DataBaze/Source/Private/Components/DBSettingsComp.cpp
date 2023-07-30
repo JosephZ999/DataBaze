@@ -1,19 +1,32 @@
 #include "DBSettingsComp.h"
 #include <assert.h>
 
-const char* DBSettingsComp::IniFileName = "Settings.ini";
+// Initialize constants
+const DBIniItem DBIniItem::AutoFill_Delay = DBIniItem("Autofill", "FillDelay", "10.0");
+const DBIniItem DBIniItem::AutoFill_Other = DBIniItem("Autofill", "OtherParam", "20.0");
+
+const char*					 DBSettingsComp::IniFileName = "Settings.ini";
+const std::vector<DBIniItem> DBSettingsComp::DefaultItems =
+	{
+		DBIniItem::AutoFill_Delay,
+		DBIniItem::AutoFill_Other
+};
 
 namespace // ini file functions
 {
-	void CreateDefaultIni(CSimpleIniA* ini)
+	void CreateDefaultIni(CSimpleIniA * ini)
 	{
 		ini->Reset();
 		ini->SetUnicode();
-		ini->SetValue("Autofill", "FillDelay", "10.0");
+
+		for (auto& Elem : DBSettingsComp::DefaultItems)
+		{
+			ini->SetValue(Elem.Section.c_str(), Elem.Key.c_str(), Elem.Value.c_str());
+		}
 		ini->SaveFile(DBSettingsComp::IniFileName);
 	}
 
-	bool LoadIniFile(CSimpleIniA* ini)
+	bool LoadIniFile(CSimpleIniA * ini)
 	{
 		if (ini)
 		{
@@ -37,19 +50,19 @@ DBSettingsComp::DBSettingsComp()
 	if (LoadIniFile(&IniFile)) return;
 }
 
-int DBSettingsComp::GetIntValue(const char* Section, const char* Key)
+int DBSettingsComp::GetIntValue(DBIniItem Key)
 {
-	auto LongValue = IniFile.GetLongValue(Section, Key);
+	auto LongValue = IniFile.GetLongValue(Key.Section.c_str(), Key.Key.c_str());
 	return static_cast<int>(LongValue);
 }
 
-bool DBSettingsComp::GetBoolValue(const char* Section, const char* Key)
+bool DBSettingsComp::GetBoolValue(DBIniItem Key)
 {
-	return IniFile.GetBoolValue(Section, Key);
+	return IniFile.GetBoolValue(Key.Section.c_str(), Key.Key.c_str());
 }
 
-float DBSettingsComp::GetFloatValue(const char* Section, const char* Key)
+float DBSettingsComp::GetFloatValue(DBIniItem Key)
 {
-	auto DoubleValue = IniFile.GetDoubleValue(Section, Key);
+	auto DoubleValue = IniFile.GetDoubleValue(Key.Section.c_str(), Key.Key.c_str());
 	return static_cast<float>(DoubleValue);
 }
