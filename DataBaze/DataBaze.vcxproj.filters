@@ -78,6 +78,9 @@
     <Filter Include="Plugins\UI\Private\Components">
       <UniqueIdentifier>{d81bde5d-dba7-425b-b0a7-ba1ea5b72861}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Plugins\Simpleini">
+      <UniqueIdentifier>{749e99b3-752a-48e0-9678-85dd8892184a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -169,6 +172,12 @@
     </ClInclude>
     <ClInclude Include="Source\Public\Components\DBSettingsComp.h">
       <Filter>Source\Public\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Plugins\Simpleini\SimpleIni.h">
+      <Filter>Plugins\Simpleini</Filter>
+    </ClInclude>
+    <ClInclude Include="Plugins\Simpleini\ConvertUTF.h">
+      <Filter>Plugins\Simpleini</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
