@@ -1,6 +1,7 @@
 #pragma once
 #include <Windows.h>
 #include "DBDataTypes.h"
+#include "DBSettingsTypes.h"
 
 class DBDataManager;
 class DBWindowsManager;
@@ -32,4 +33,11 @@ namespace cmd
 		void SaveMemberCode(FMemberId InId, const std::wstring& FileName, const std::wstring& Data);
 		void SetLockMember(bool InLock, FMemberId InId);
 	} // namespace data
+
+	namespace ini
+	{
+		int	  GetIntValue(DBIniItem Key);
+		bool  GetBoolValue(DBIniItem Key);
+		float GetFloatValue(DBIniItem Key);
+	} // namespace ini
 } // namespace cmd

@@ -1,10 +1,6 @@
 #include "DBSettingsComp.h"
 #include <assert.h>
 
-// Initialize constants
-const DBIniItem DBIniItem::AutoFill_Delay = DBIniItem("Autofill", "FillDelay", "10.0");
-const DBIniItem DBIniItem::AutoFill_Other = DBIniItem("Autofill", "OtherParam", "20.0");
-
 const char*					 DBSettingsComp::IniFileName = "Settings.ini";
 const std::vector<DBIniItem> DBSettingsComp::DefaultItems =
 	{
@@ -50,18 +46,18 @@ DBSettingsComp::DBSettingsComp()
 	if (LoadIniFile(&IniFile)) return;
 }
 
-int DBSettingsComp::GetIntValue(DBIniItem Key)
+int DBSettingsComp::GetIntValue(const DBIniItem& Key)
 {
 	auto LongValue = IniFile.GetLongValue(Key.Section.c_str(), Key.Key.c_str());
 	return static_cast<int>(LongValue);
 }
 
-bool DBSettingsComp::GetBoolValue(DBIniItem Key)
+bool DBSettingsComp::GetBoolValue(const DBIniItem& Key)
 {
 	return IniFile.GetBoolValue(Key.Section.c_str(), Key.Key.c_str());
 }
 
-float DBSettingsComp::GetFloatValue(DBIniItem Key)
+float DBSettingsComp::GetFloatValue(const DBIniItem& Key)
 {
 	auto DoubleValue = IniFile.GetDoubleValue(Key.Section.c_str(), Key.Key.c_str());
 	return static_cast<float>(DoubleValue);

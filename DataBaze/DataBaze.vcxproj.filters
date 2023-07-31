@@ -81,6 +81,9 @@
     <Filter Include="Plugins\Simpleini">
       <UniqueIdentifier>{749e99b3-752a-48e0-9678-85dd8892184a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Private\DataTypes">
+      <UniqueIdentifier>{5fd19a99-bd10-44d7-85ea-fab752cf3dbd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -179,6 +182,9 @@
     <ClInclude Include="Plugins\Simpleini\ConvertUTF.h">
       <Filter>Plugins\Simpleini</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Public\DataTypes\DBSettingsTypes.h">
+      <Filter>Source\Public\DataTypes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DataBaze.cpp">
@@ -243,6 +249,9 @@
     </ClCompile>
     <ClCompile Include="Source\Private\Components\DBSettingsComp.cpp">
       <Filter>Source\Private\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Private\DataTypes\DBSettingsTypes.cpp">
+      <Filter>Source\Private\DataTypes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

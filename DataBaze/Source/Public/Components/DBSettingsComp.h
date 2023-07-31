@@ -2,24 +2,9 @@
 
 #include "DBInterface.h"
 #include "Simpleini/SimpleIni.h"
+#include "DBSettingsTypes.h"
 #include <vector>
 #include <string>
-
-struct DBIniItem
-{
-	DBIniItem(std::string InSection, std::string InKey, std::string InValue)
-		: Section(InSection)
-		, Key(InKey)
-		, Value(InValue)
-	{}
-
-	std::string Section;
-	std::string Key;
-	std::string Value;
-
-	static const DBIniItem AutoFill_Delay;
-	static const DBIniItem AutoFill_Other;
-};
 
 class DBSettingsComp : public DBInterface
 {
@@ -32,7 +17,7 @@ private:
 	CSimpleIniA IniFile;
 
 public:
-	int	  GetIntValue(DBIniItem Key);
-	bool  GetBoolValue(DBIniItem Key);
-	float GetFloatValue(DBIniItem Key);
+	int	  GetIntValue(const DBIniItem& Key);
+	bool  GetBoolValue(const DBIniItem& Key);
+	float GetFloatValue(const DBIniItem& Key);
 };

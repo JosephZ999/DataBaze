@@ -1,5 +1,6 @@
 #include "DBCommandCenter.h"
 #include "Core/DBInstance.h"
+#include <assert.h>
 
 // Components
 #include "Components/DBDataManager.h"
@@ -76,4 +77,46 @@ void cmd::data::SaveMemberCode(FMemberId InId, const std::wstring& FileName, con
 void cmd::data::SetLockMember(bool InLock, FMemberId InId)
 {
 	get::GetDataManager()->LockMember(InLock, InId);
+}
+
+int cmd::ini::GetIntValue(DBIniItem Key)
+{
+	if (GetCoreIns())
+	{
+		auto SettingsComp = GetCoreIns()->GetSettingsComp();
+		if (SettingsComp)
+		{
+			return SettingsComp->GetIntValue(Key);
+		}
+	}
+	assert(false);
+	return 0;
+}
+
+bool cmd::ini::GetBoolValue(DBIniItem Key)
+{
+	if (GetCoreIns())
+	{
+		auto SettingsComp = GetCoreIns()->GetSettingsComp();
+		if (SettingsComp)
+		{
+			return SettingsComp->GetBoolValue(Key);
+		}
+	}
+	assert(false);
+	return false;
+}
+
+float cmd::ini::GetFloatValue(DBIniItem Key)
+{
+	if (GetCoreIns())
+	{
+		auto SettingsComp = GetCoreIns()->GetSettingsComp();
+		if (SettingsComp)
+		{
+			return SettingsComp->GetFloatValue(Key);
+		}
+	}
+	assert(false);
+	return 0.f;
 }
