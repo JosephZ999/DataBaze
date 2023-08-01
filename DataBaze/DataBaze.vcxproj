@@ -178,7 +178,6 @@
     <ClInclude Include="DataBaze.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="JsonInterface\JsonInterface.h" />
-    <ClInclude Include="Plugins\FunctionPtr\TFunction.h" />
     <ClInclude Include="Plugins\Simpleini\ConvertUTF.h" />
     <ClInclude Include="Plugins\Simpleini\SimpleIni.h" />
     <ClInclude Include="Plugins\Singleton\Singleton.h" />
