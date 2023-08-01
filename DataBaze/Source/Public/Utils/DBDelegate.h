@@ -39,7 +39,7 @@ private:
 	IDelegate* DelegateObj;
 
 public:
-	~DBDelegateContainer()
+	virtual ~DBDelegateContainer()
 	{
 		if (DelegateObj)
 		{

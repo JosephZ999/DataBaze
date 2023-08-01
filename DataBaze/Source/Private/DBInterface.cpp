@@ -1,5 +1,10 @@
 #include "DBInterface.h"
 
+DBInterface::~DBInterface()
+{
+	Destroy();
+}
+
 DBInterface* DBInterface::GetOwner() const
 {
 	return Owner;

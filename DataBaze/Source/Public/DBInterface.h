@@ -20,6 +20,8 @@ protected:
 	bool PendingDestroy = false;
 
 public:
+	virtual ~DBInterface();
+
 	DBInterface* GetOwner() const;
 	void		 SetOwner(DBInterface* NewOwner);
 	virtual bool CanBeDestroyed() const;
