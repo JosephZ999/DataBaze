@@ -178,6 +178,7 @@
     <ClInclude Include="DataBaze.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="JsonInterface\JsonInterface.h" />
+    <ClInclude Include="Plugins\FunctionPtr\TFunction.h" />
     <ClInclude Include="Plugins\Simpleini\ConvertUTF.h" />
     <ClInclude Include="Plugins\Simpleini\SimpleIni.h" />
     <ClInclude Include="Plugins\Singleton\Singleton.h" />
@@ -189,11 +190,14 @@
     <ClInclude Include="Plugins\UI\Public\UILibrary.h" />
     <ClInclude Include="Plugins\UI\UIDataTypes.h" />
     <ClInclude Include="Resource.h" />
+    <ClInclude Include="Source\Public\Components\DBAutofill.h" />
     <ClInclude Include="Source\Public\Components\DBButtonManager.h" />
     <ClInclude Include="Source\Public\Components\DBListBox.h" />
     <ClInclude Include="Source\Public\Components\DBSettingsComp.h" />
+    <ClInclude Include="Source\Public\Components\DBThreadManager.h" />
     <ClInclude Include="Source\Public\Core\DBCommandCenter.h" />
     <ClInclude Include="Source\Public\DataTypes\DBSettingsTypes.h" />
+    <ClInclude Include="Source\Public\DataTypes\DBThreadTypes.h" />
     <ClInclude Include="Source\Public\DataTypes\Size2D.h" />
     <ClInclude Include="Source\Public\DBDataTypes.h" />
     <ClInclude Include="Source\Public\Components\DBDataManager.h" />
@@ -218,10 +222,12 @@
     <ClCompile Include="Plugins\UI\Private\Components\UIVerticalBox.cpp" />
     <ClCompile Include="Plugins\UI\Private\UIContainer.cpp" />
     <ClCompile Include="Plugins\UI\Private\UILibrary.cpp" />
+    <ClCompile Include="Source\Private\Components\DBAutofill.cpp" />
     <ClCompile Include="Source\Private\Components\DBButtonManager.cpp" />
     <ClCompile Include="Source\Private\Components\DBDataManager.cpp" />
     <ClCompile Include="Source\Private\Components\DBListBox.cpp" />
     <ClCompile Include="Source\Private\Components\DBSettingsComp.cpp" />
+    <ClCompile Include="Source\Private\Components\DBThreadManager.cpp" />
     <ClCompile Include="Source\Private\Components\DBWindowsManager.cpp" />
     <ClCompile Include="Source\Private\Core\DBCommandCenter.cpp" />
     <ClCompile Include="Source\Private\Core\DBInstance.cpp" />
