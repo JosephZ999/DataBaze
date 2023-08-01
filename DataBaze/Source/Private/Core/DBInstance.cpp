@@ -180,6 +180,17 @@ void DBInstance::SetMinimizeMode(bool Enabled)
 	SetWindowPos(InitData.MainHWND, HWND_TOP, MainWndPos.X, MainWndPos.Y, MainWndSize.X, MainWndSize.Y, 0);
 }
 
+void DBInstance::Destroy()
+{
+	RemoveAllComponents();
+	PendingDestroy = CanBeDestroyed();
+}
+
+// bool DBInstance::CanBeDestroyed() const
+//{
+//	return true;
+//}
+
 void DBInstance::CallCommand(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	EDBWinCompId BtnId = static_cast<EDBWinCompId>(LOWORD(wParam));

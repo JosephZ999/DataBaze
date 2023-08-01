@@ -12,6 +12,10 @@
 #include <string>
 #include "DBKeyCodes.h"
 
+#define _CRTDBG_MAP_ALLOC
+#include <stdlib.h>
+#include <crtdbg.h>
+
 #define MAX_LOADSTRING 100
 
 // Global Variables:
@@ -67,6 +71,18 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 			DispatchMessage(&msg);
 		}
 	}
+
+	while (DBIns)
+	{
+		DBIns->Destroy();
+		if (DBIns->IsPendingDestroy())
+		{
+			delete DBIns;
+			DBIns = nullptr;
+		}
+	}
+	Sleep(100);
+	_CrtDumpMemoryLeaks();
 	return (int)msg.wParam;
 }
 
@@ -110,8 +126,8 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 {
 	hInst = hInstance; // Store instance handle in our global variable
 
-	HWND MainWindow = CreateWindowW(szWindowClass, szTitle, (WS_OVERLAPPEDWINDOW) - (WS_MAXIMIZEBOX | WS_THICKFRAME), 15, 25, 740,
-		450, nullptr, nullptr, hInstance, nullptr);
+	HWND MainWindow = CreateWindowW(szWindowClass, szTitle, (WS_OVERLAPPEDWINDOW) - (WS_MAXIMIZEBOX | WS_THICKFRAME), 15, 25, 740, 450,
+		nullptr, nullptr, hInstance, nullptr);
 
 	if (! MainWindow)
 	{
@@ -177,7 +193,10 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		case IDM_EXIT:
 		{
 			UnregisterHotKey(hWnd, HKM_AddNew);
-			SingletonManager::DestroyAll();
+			// SingletonManager::DestroyAll();
+			// delete DBIns;
+			// DBIns = nullptr;
+
 			DestroyWindow(hWnd);
 			break;
 		}
@@ -200,7 +219,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	break;
 	case WM_CLOSE:
 	{
-		SingletonManager::DestroyAll();
+		// SingletonManager::DestroyAll();
 		return DefWindowProc(hWnd, message, wParam, lParam);
 	}
 	case WM_DESTROY: PostQuitMessage(0);

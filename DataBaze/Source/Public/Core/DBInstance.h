@@ -28,7 +28,6 @@ struct FDBInstanceInit
 
 class DBInstance : public Singleton, public DBInterface
 {
-public:
 private:
 	DBWindowsManager* WindowManager = nullptr;
 	DBDataManager*	  DataManager	= nullptr;
@@ -62,4 +61,8 @@ private:
 	void UpdateFolderIdText();
 	void SetMinimizeMode(bool Enabled);
 	bool IsMinimized() { return bMinimizeMode; }
+
+public:
+	virtual void Destroy() override;
+	// virtual bool CanBeDestroyed() const override;
 };
