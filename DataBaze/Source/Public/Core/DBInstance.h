@@ -10,6 +10,7 @@ class DBListBox;
 class DBButtonManager;
 class DBSettingsComp;
 class DBThreadManager;
+class STManager;
 
 #ifdef _M_IX86
 typedef UINT UINT_PTR;
@@ -35,7 +36,8 @@ private:
 	DBListBox*		  ListBox		= nullptr;
 	DBButtonManager*  ButtonManager = nullptr;
 	DBSettingsComp*	  SettingsComp	= nullptr;
-	DBThreadManager*  ThreadManager = nullptr;
+
+	std::shared_ptr<STManager> ThreadManager;
 
 	bool			Initialized = false;
 	FDBInstanceInit InitData;
@@ -47,7 +49,7 @@ public:
 	inline DBListBox*		 GetListBox() const { return ListBox; }
 	inline DBButtonManager*	 GetButtonManager() const { return ButtonManager; }
 	inline DBSettingsComp*	 GetSettingsComp() const { return SettingsComp; }
-	inline DBThreadManager*	 GetThreadManager() const { return ThreadManager; }
+	inline DBThreadManager*	 GetThreadManager() const { return nullptr; }
 
 	FDBInstanceInit GetInitData() const;
 

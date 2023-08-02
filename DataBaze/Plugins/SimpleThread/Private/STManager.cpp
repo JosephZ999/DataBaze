@@ -2,6 +2,7 @@
 #include "Plugins/SimpleThread/Public/STClient.h"
 #include <Windows.h>
 #include <chrono>
+// #include <string>
 
 class STUpdater* UpdaterInstance = nullptr;
 
@@ -29,11 +30,12 @@ public:
 DWORD WINAPI FirstThread(LPVOID Param)
 {
 	std::weak_ptr<STManager> Manager	  = STManager::GetInstance();
-	float					 DeltaSeconds = 0.f;
+	float					 DeltaSeconds = 0.016f;
 	while (! Manager.expired())
 	{
 		auto start_time = std::chrono::high_resolution_clock::now(); // get the current time
 
+		Sleep(10);
 		if (UpdaterInstance)
 		{
 			UpdaterInstance->Update(Manager, DeltaSeconds);
@@ -43,9 +45,14 @@ DWORD WINAPI FirstThread(LPVOID Param)
 			// assertion
 			return 0;
 		}
-		auto end_time	= std::chrono::high_resolution_clock::now();							   // get the current time again
-		auto delta_time = std::chrono::duration_cast<std::chrono::seconds>(end_time - start_time); // calculate the difference in seconds
-		DeltaSeconds	= delta_time.count();
+		auto end_time = std::chrono::high_resolution_clock::now(); // get the current time again
+		auto delta_time =
+			std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time); // calculate the difference in seconds
+		DeltaSeconds = static_cast<float>(delta_time.count()) / 1000.f;
+
+		// char msg[100];
+		// sprintf_s(msg, "Time is - %f \n", DeltaSeconds);
+		// OutputDebugStringA(msg);
 	}
 	return 0;
 }
@@ -73,7 +80,9 @@ std::shared_ptr<STManager> STManager::GetInstance()
 {
 	if (Instance.expired())
 	{
-		Instance = std::shared_ptr<STManager>();
+		auto Ins = std::shared_ptr<STManager>(new STManager);
+		Instance = Ins;
+		return Ins;
 	}
 	return Instance.lock();
 }

@@ -8,6 +8,7 @@
 #include "Components/UISpacer.h"
 #include "Components/DBSettingsComp.h"
 #include "Components/DBThreadManager.h"
+#include "Plugins/SimpleThread/Public/STManager.h"
 
 #include "UILibrary.h"
 
@@ -29,12 +30,14 @@ void DBInstance::Initialize(FDBInstanceInit& Param)
 	ListBox		  = CreateComponent<DBListBox>();
 	ButtonManager = CreateComponent<DBButtonManager>();
 	SettingsComp  = CreateComponent<DBSettingsComp>();
+	ThreadManager = STManager::GetInstance();
 
 	assert(WindowManager);
 	assert(DataManager);
 	assert(ListBox);
 	assert(ButtonManager);
 	assert(SettingsComp);
+	assert(ThreadManager);
 
 	InitWindows(); // Create windows handlers
 
