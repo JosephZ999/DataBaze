@@ -23,5 +23,6 @@ private:
 	std::vector<DBThreadData> Threads;
 
 public:
-	void NewThread(DBThreadUser* OuterObj, ThreadFuncType ThreadFunction);
+	void NewThread(DBThreadUser* Client, ThreadFuncType ThreadFunction);
+	void FinishThread(DBThreadUser* Client);
 };

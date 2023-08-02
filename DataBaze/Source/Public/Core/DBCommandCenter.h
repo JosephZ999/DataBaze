@@ -6,6 +6,7 @@
 class DBDataManager;
 class DBWindowsManager;
 class DBSettingsComp;
+class DBThreadManager;
 
 namespace cmd
 {
@@ -15,6 +16,7 @@ namespace cmd
 		DBDataManager*	  GetDataManager();
 		DBWindowsManager* GetWindowsManager();
 		DBSettingsComp*	  GetSettingsComp();
+		DBThreadManager*  GetThreadManager();
 
 		HINSTANCE GetHIns();
 	} // namespace get

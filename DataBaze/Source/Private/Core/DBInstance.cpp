@@ -7,6 +7,7 @@
 #include "Components/UIHorizontalBox.h"
 #include "Components/UISpacer.h"
 #include "Components/DBSettingsComp.h"
+#include "Components/DBThreadManager.h"
 
 #include "UILibrary.h"
 
