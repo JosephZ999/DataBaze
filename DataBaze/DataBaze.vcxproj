@@ -180,6 +180,9 @@
     <ClInclude Include="JsonInterface\JsonInterface.h" />
     <ClInclude Include="Plugins\Simpleini\ConvertUTF.h" />
     <ClInclude Include="Plugins\Simpleini\SimpleIni.h" />
+    <ClInclude Include="Plugins\SimpleThread\Public\STClient.h" />
+    <ClInclude Include="Plugins\SimpleThread\Public\STManager.h" />
+    <ClInclude Include="Plugins\SimpleThread\STDataTypes.h" />
     <ClInclude Include="Plugins\Singleton\Singleton.h" />
     <ClInclude Include="Plugins\UI\Public\Components\UIHorizontalBox.h" />
     <ClInclude Include="Plugins\UI\Public\Components\UISlot.h" />
@@ -214,6 +217,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DataBaze.cpp" />
+    <ClCompile Include="Plugins\SimpleThread\Private\STClient.cpp" />
+    <ClCompile Include="Plugins\SimpleThread\Private\STManager.cpp" />
     <ClCompile Include="Plugins\Singleton\Singleton.cpp" />
     <ClCompile Include="Plugins\UI\Private\Components\UIHorizontalBox.cpp" />
     <ClCompile Include="Plugins\UI\Private\Components\UISlot.cpp" />

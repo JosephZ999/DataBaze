@@ -84,6 +84,15 @@
     <Filter Include="Source\Private\DataTypes">
       <UniqueIdentifier>{5fd19a99-bd10-44d7-85ea-fab752cf3dbd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Plugins\SimpleThread">
+      <UniqueIdentifier>{86f2f4c2-17e4-4bb0-b957-f24c9bcf4f34}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Plugins\SimpleThread\Public">
+      <UniqueIdentifier>{21dd9391-cb75-4e39-8d53-31faa324c4c2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Plugins\SimpleThread\Private">
+      <UniqueIdentifier>{b52feb38-16cc-4ade-aa1c-19c91438a3d3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -194,6 +203,15 @@
     <ClInclude Include="Source\Public\DataTypes\DBThreadTypes.h">
       <Filter>Source\Public\DataTypes</Filter>
     </ClInclude>
+    <ClInclude Include="Plugins\SimpleThread\STDataTypes.h">
+      <Filter>Plugins\SimpleThread</Filter>
+    </ClInclude>
+    <ClInclude Include="Plugins\SimpleThread\Public\STClient.h">
+      <Filter>Plugins\SimpleThread\Public</Filter>
+    </ClInclude>
+    <ClInclude Include="Plugins\SimpleThread\Public\STManager.h">
+      <Filter>Plugins\SimpleThread\Public</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DataBaze.cpp">
@@ -267,6 +285,12 @@
     </ClCompile>
     <ClCompile Include="Source\Private\Components\DBAutofill.cpp">
       <Filter>Source\Private\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Plugins\SimpleThread\Private\STClient.cpp">
+      <Filter>Plugins\SimpleThread\Private</Filter>
+    </ClCompile>
+    <ClCompile Include="Plugins\SimpleThread\Private\STManager.cpp">
+      <Filter>Plugins\SimpleThread\Private</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
