@@ -7,7 +7,7 @@
 #include "Components/UIHorizontalBox.h"
 #include "Components/UISpacer.h"
 #include "Components/DBSettingsComp.h"
-#include "Components/DBThreadManager.h"
+
 #include "Plugins/SimpleThread/Public/STManager.h"
 
 #include "DBAutofill.h"

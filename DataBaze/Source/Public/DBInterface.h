@@ -3,6 +3,7 @@
 #include <vector>
 #include <cassert>
 #include "Core/DBCommandCenter.h"
+#include "DBMacroUtils.h"
 
 /*
  * Its Component

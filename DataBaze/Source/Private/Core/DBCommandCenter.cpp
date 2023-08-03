@@ -7,7 +7,7 @@
 #include "Components/DBWindowsManager.h"
 #include "Components/DBListBox.h"
 #include "Components/DBSettingsComp.h"
-#include "Components/DBThreadManager.h"
+
 static DBInstance* CoreInstance = nullptr;
 
 //-----------------------------------------------// System library
@@ -39,11 +39,6 @@ DBWindowsManager* cmd::get::GetWindowsManager()
 DBSettingsComp* cmd::get::GetSettingsComp()
 {
 	return GetCoreIns()->GetSettingsComp();
-}
-
-DBThreadManager * cmd::get::GetThreadManager()
-{
-	return GetCoreIns()->GetThreadManager();
 }
 
 HINSTANCE cmd::get::GetHIns()

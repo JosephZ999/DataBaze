@@ -9,14 +9,14 @@ public:
 private:
 	float WaitTime = 0.f;
 
+public:
+	// Interface
+	virtual void Tick(float DeltaTime) = 0;
+	void Wait(float Seconds);
+
 private:
 	void OnUpdate(float DeltaTime);
-
-public:
-	virtual void Tick(float DeltaTime);
-	virtual void BindToThread();
-
-	void Wait(float Seconds);
+	void BindToThread();
 
 private:
 	friend class STManager;

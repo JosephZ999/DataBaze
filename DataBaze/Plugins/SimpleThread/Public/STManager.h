@@ -1,5 +1,5 @@
 #pragma once
-#include "Plugins/SimpleThread/STDataTypes.h"
+#include "SimpleThread/STDataTypes.h"
 #include <memory>
 
 class STClient;

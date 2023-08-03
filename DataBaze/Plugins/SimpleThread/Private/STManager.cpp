@@ -1,5 +1,5 @@
-#include "Plugins/SimpleThread/Public/STManager.h"
-#include "Plugins/SimpleThread/Public/STClient.h"
+#include "SimpleThread/Public/STManager.h"
+#include "SimpleThread/Public/STClient.h"
 #include <Windows.h>
 #include <chrono>
 // #include <string>

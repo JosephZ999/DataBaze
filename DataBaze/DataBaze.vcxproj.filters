@@ -194,9 +194,6 @@
     <ClInclude Include="Source\Public\DataTypes\DBSettingsTypes.h">
       <Filter>Source\Public\DataTypes</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Public\Components\DBThreadManager.h">
-      <Filter>Source\Public\Components</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Public\Components\DBAutofill.h">
       <Filter>Source\Public\Components</Filter>
     </ClInclude>
@@ -211,6 +208,9 @@
     </ClInclude>
     <ClInclude Include="Plugins\SimpleThread\Public\STManager.h">
       <Filter>Plugins\SimpleThread\Public</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Public\Utils\DBMacroUtils.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -279,9 +279,6 @@
     </ClCompile>
     <ClCompile Include="Source\Private\DataTypes\DBSettingsTypes.cpp">
       <Filter>Source\Private\DataTypes</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Private\Components\DBThreadManager.cpp">
-      <Filter>Source\Private\Components</Filter>
     </ClCompile>
     <ClCompile Include="Source\Private\Components\DBAutofill.cpp">
       <Filter>Source\Private\Components</Filter>

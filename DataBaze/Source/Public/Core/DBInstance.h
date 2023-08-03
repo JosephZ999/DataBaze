@@ -9,7 +9,6 @@ class DBWindowsManager;
 class DBListBox;
 class DBButtonManager;
 class DBSettingsComp;
-class DBThreadManager;
 class STManager;
 class DBAutofill;
 
@@ -51,7 +50,6 @@ public:
 	inline DBListBox*		 GetListBox() const { return ListBox; }
 	inline DBButtonManager*	 GetButtonManager() const { return ButtonManager; }
 	inline DBSettingsComp*	 GetSettingsComp() const { return SettingsComp; }
-	inline DBThreadManager*	 GetThreadManager() const { return nullptr; }
 
 	FDBInstanceInit GetInitData() const;
 

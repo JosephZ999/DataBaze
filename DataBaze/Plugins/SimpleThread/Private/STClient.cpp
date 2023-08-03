@@ -1,5 +1,5 @@
-#include "Plugins/SimpleThread/Public/STClient.h"
-#include "Plugins/SimpleThread/Public/STManager.h"
+#include "SimpleThread/Public/STClient.h"
+#include "SimpleThread/Public/STManager.h"
 #include <Windows.h>
 #include "DBMacroUtils.h"
 
@@ -42,10 +42,4 @@ void STClient::OnUpdate(float DeltaTime)
 void STClient::Wait(float Seconds)
 {
 	WaitTime += Seconds;
-}
-
-void STClient::Tick(float DeltaTime)
-{
-	// LOG("Wait 2 seconds, delta %f \n", DeltaTime);
-	// Wait(2.f);
 }
