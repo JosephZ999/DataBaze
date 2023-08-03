@@ -1,6 +1,7 @@
 #include "Plugins/SimpleThread/Public/STClient.h"
 #include "Plugins/SimpleThread/Public/STManager.h"
 #include <Windows.h>
+#include "DBMacroUtils.h"
 
 STClient::STClient()
 {
@@ -45,8 +46,6 @@ void STClient::Wait(float Seconds)
 
 void STClient::Tick(float DeltaTime)
 {
-	// char msg[100];
-	// sprintf_s(msg, "Wait 2 seconds, delta %f \n", DeltaTime);
-	// OutputDebugStringA(msg);
+	// LOG("Wait 2 seconds, delta %f \n", DeltaTime);
 	// Wait(2.f);
 }
