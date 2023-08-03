@@ -30,7 +30,7 @@ public:
 DWORD WINAPI FirstThread(LPVOID Param)
 {
 	std::weak_ptr<STManager> Manager	  = STManager::GetInstance();
-	float					 DeltaSeconds = 0.016f;
+	float					 DeltaSeconds = 0.f;
 	while (! Manager.expired())
 	{
 		auto start_time = std::chrono::high_resolution_clock::now(); // get the current time
@@ -47,12 +47,12 @@ DWORD WINAPI FirstThread(LPVOID Param)
 		}
 		auto end_time = std::chrono::high_resolution_clock::now(); // get the current time again
 		auto delta_time =
-			std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time); // calculate the difference in seconds
-		DeltaSeconds = static_cast<float>(delta_time.count()) / 1000.f;
+			std::chrono::duration_cast<std::chrono::microseconds>(end_time - start_time); // calculate the difference in seconds
+		DeltaSeconds = static_cast<float>(delta_time.count()) * 0.000001f;
 
-		// char msg[100];
-		// sprintf_s(msg, "Time is - %f \n", DeltaSeconds);
-		// OutputDebugStringA(msg);
+		/* char msg[100];
+		 sprintf_s(msg, "Time is - %f \n", DeltaSeconds);
+		 OutputDebugStringA(msg);*/
 	}
 	return 0;
 }

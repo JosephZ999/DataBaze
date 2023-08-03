@@ -10,6 +10,8 @@
 #include "Components/DBThreadManager.h"
 #include "Plugins/SimpleThread/Public/STManager.h"
 
+#include "DBAutofill.h"
+
 #include "UILibrary.h"
 
 enum EButtonBoxId
@@ -25,12 +27,14 @@ void DBInstance::Initialize(FDBInstanceInit& Param)
 	InitData	= Param;
 
 	//-----------------------------------------------// Components
+	ThreadManager = STManager::GetInstance();
+
 	WindowManager = CreateComponent<DBWindowsManager>();
 	DataManager	  = CreateComponent<DBDataManager>();
 	ListBox		  = CreateComponent<DBListBox>();
 	ButtonManager = CreateComponent<DBButtonManager>();
 	SettingsComp  = CreateComponent<DBSettingsComp>();
-	ThreadManager = STManager::GetInstance();
+	Autofill	  = CreateComponent<DBAutofill>();
 
 	assert(WindowManager);
 	assert(DataManager);
