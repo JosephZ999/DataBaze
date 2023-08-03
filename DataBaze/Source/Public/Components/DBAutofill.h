@@ -13,14 +13,16 @@ class DBAutofill : public DBInterface, public STClient
 	typedef std::vector<WORD> buttons;
 
 private:
+	bool Enabled = false;
 	std::vector<DBAction*> ActionList;
 	int					   CurrentActionIndex = 0;
-	// DBFamilyData		   MemberData;
 	FMemberId MemberId;
 
 public:
+	~DBAutofill();
 	void Init(const DBFamilyData& InUserData, FMemberId InId);
 	void StartFilling();
+	void Clear();
 
 private:
 	virtual void Tick(float DeltaTime) override;

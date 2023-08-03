@@ -10,7 +10,6 @@ class DBListBox;
 class DBButtonManager;
 class DBSettingsComp;
 class STManager;
-class DBAutofill;
 
 #ifdef _M_IX86
 typedef UINT UINT_PTR;
@@ -36,7 +35,6 @@ private:
 	DBListBox*		  ListBox		= nullptr;
 	DBButtonManager*  ButtonManager = nullptr;
 	DBSettingsComp*	  SettingsComp	= nullptr;
-	DBAutofill*		  Autofill		= nullptr;
 
 	std::shared_ptr<STManager> ThreadManager;
 

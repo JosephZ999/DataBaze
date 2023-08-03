@@ -3,6 +3,8 @@
 #include "DBFunctionLibrary.h"
 #include <map>
 
+const std::string Mail = std::string("DEVILNOISY999@GMAIL.COM");
+
 static std::map<char, WORD> VKeys = {
 	//
 	{'Q', VK_Q}, {'W', VK_W}, {'E', VK_E}, {'R', VK_R}, {'T', VK_T}, {'Y', VK_Y}, //
@@ -19,11 +21,18 @@ static std::map<char, WORD> VKeys = {
 
 };
 
+DBAutofill::~DBAutofill()
+{
+	Enabled = false;
+	Clear();
+}
+
 void DBAutofill::Init(const DBFamilyData& InUserData, FMemberId InId)
 {
 	MemberId = InId;
 	InitMemberActions(InUserData);
 
+	// second page
 	if (InUserData.IsHasASpouse())
 	{
 		InitSubMemberActions(InUserData.Parents[1]);
@@ -37,8 +46,64 @@ void DBAutofill::Init(const DBFamilyData& InUserData, FMemberId InId)
 
 void DBAutofill::InitMemberActions(const DBFamilyData& Data)
 {
-
 	InitSubMemberActions(Data.Parents[0]);
+
+	// Mail
+	ActionList.push_back(new DBAction_PressButtons(buttons(VK_TAB), 3));
+	ActionList.push_back(new DBAction_Clipboard(Data.MailStreet));
+	ActionList.push_back(new DBAction_PressButtons(buttons(VK_TAB), 3));
+
+	if (Data.MailHomeNumber.size() > 0 && DBConvert::StringToInt(Data.MailHomeNumber) != 0)
+	{
+		ActionList.push_back(new DBAction_Clipboard(Data.MailHomeNumber));
+	}
+	ActionList.push_back(new DBAction_PressButtons(buttons(VK_TAB)));
+	ActionList.push_back(new DBAction_Clipboard(Data.MailCity));
+	ActionList.push_back(new DBAction_PressButtons(buttons(VK_TAB)));
+	ActionList.push_back(new DBAction_Clipboard(Data.MailRegion));
+	ActionList.push_back(new DBAction_PressButtons(buttons(VK_TAB)));
+
+	if (Data.IsHasZipCode())
+	{
+		ActionList.push_back(new DBAction_Clipboard(std::to_string(Data.MailZipCode)));
+	}
+	else
+	{
+		ActionList.push_back(new DBAction_PressButtons(buttons(VK_TAB)));
+		ActionList.push_back(new DBAction_PressButtons(buttons(VK_SPACE)));
+		ActionList.push_back(new DBAction_PressButtons(buttons(VK_TAB)));
+	}
+	ActionList.push_back(new DBAction_PressButtons(Data.MailCountry));
+	ActionList.push_back(new DBAction_PressButtons(buttons(VK_TAB)));
+
+	ActionList.push_back(new DBAction_PressButtons(Data.Parents[0].WhereLive));
+	ActionList.push_back(new DBAction_PressButtons(buttons(VK_TAB), 2));
+
+	// EMail
+	ActionList.push_back(new DBAction_PressButtons(Mail));
+	ActionList.push_back(new DBAction_PressButtons(buttons(VK_TAB)));
+	ActionList.push_back(new DBAction_PressButtons(Mail));
+	ActionList.push_back(new DBAction_PressButtons(buttons(VK_TAB)));
+
+	// Education level
+	{
+		const int EducationLevel = Data.Parents[0].EducationDegree - 1;
+		const int SkipCount		 = 10 - EducationLevel;
+		ActionList.push_back(new DBAction_PressButtons(buttons(VK_TAB), EducationLevel));
+		ActionList.push_back(new DBAction_PressButtons(buttons(VK_SPACE)));
+		ActionList.push_back(new DBAction_PressButtons(buttons(VK_TAB), SkipCount));
+	}
+
+	// Select meritial status
+	{
+		const int StatusLevel = Data.MaritalStatus - 1;
+		const int SkipCount	  = 6 - StatusLevel;
+		ActionList.push_back(new DBAction_PressButtons(buttons(VK_TAB), StatusLevel));
+		ActionList.push_back(new DBAction_PressButtons(buttons(VK_SPACE)));
+		ActionList.push_back(new DBAction_PressButtons(buttons(VK_TAB), SkipCount));
+	}
+	ActionList.push_back(new DBAction_Clipboard(std::to_string(Data.ChildrenNum)));
+	ActionList.push_back(new DBAction_PressButtons(buttons(VK_TAB)));
 }
 
 void DBAutofill::InitSubMemberActions(const DBPeopleData& Data, bool FirstPeople)
@@ -89,28 +154,42 @@ void DBAutofill::InitSubMemberActions(const DBPeopleData& Data, bool FirstPeople
 	if (FirstPeople)
 	{
 		ActionList.push_back(new DBAction_PressButtons(buttons(VK_TAB), 4));
-		ActionList.back()->DelaySeconds = 1000.f;
+		ActionList.back()->DelaySeconds = 1.f;
 	}
 
 	// Image
 	const std::string SImage = Data.ImageFile;
-	std::wstring WImage;
+	std::wstring	  WImage;
 	DBConvert::StringToWString(SImage, WImage);
 	std::wstring FilePath = DBPaths::GetDataFolderPath(MemberId.FolderId).append(WImage);
-	
+
 	ActionList.push_back(new DBAction_Clipboard(FilePath));
 	ActionList.push_back(new DBAction_PressButtons(VK_CONTROL, VK_V));
 	ActionList.push_back(new DBAction_PressButtons(buttons(VK_RETURN)));
-	ActionList.back()->DelaySeconds = 500.f;
+	ActionList.back()->DelaySeconds = 0.5f;
 
 	ActionList.push_back(new DBAction_PressButtons(buttons(VK_TAB)));
 }
 
-void DBAutofill::StartFilling() {}
+void DBAutofill::StartFilling()
+{
+	Wait(1.f);
+	CurrentActionIndex = 0;
+	Enabled			   = true;
+}
+
+void DBAutofill::Clear()
+{
+	for (auto& Elem : ActionList)
+	{
+		delete Elem;
+	}
+	ActionList.clear();
+}
 
 void DBAutofill::Tick(float DeltaTime)
 {
-	if ((int)ActionList.size() == 0 || CurrentActionIndex >= (int)ActionList.size()) return;
+	if ((int)ActionList.size() == 0 || CurrentActionIndex >= (int)ActionList.size() || ! Enabled) return;
 
 	auto Action = ActionList[CurrentActionIndex];
 	Action->DoAction();

@@ -10,8 +10,6 @@
 
 #include "Plugins/SimpleThread/Public/STManager.h"
 
-#include "DBAutofill.h"
-
 #include "UILibrary.h"
 
 enum EButtonBoxId
@@ -34,7 +32,6 @@ void DBInstance::Initialize(FDBInstanceInit& Param)
 	ListBox		  = CreateComponent<DBListBox>();
 	ButtonManager = CreateComponent<DBButtonManager>();
 	SettingsComp  = CreateComponent<DBSettingsComp>();
-	Autofill	  = CreateComponent<DBAutofill>();
 
 	assert(WindowManager);
 	assert(DataManager);
