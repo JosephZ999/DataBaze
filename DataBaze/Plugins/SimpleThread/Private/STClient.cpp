@@ -27,13 +27,12 @@ STClient::~STClient()
 
 void STClient::OnUpdate(float DeltaTime)
 {
-	const bool TimeIsUp = WaitTime <= 0.f;
-	if (! TimeIsUp)
+	if (WaitTime > 0.f)
 	{
 		WaitTime -= DeltaTime;
 	}
 
-	if (TimeIsUp)
+	if (WaitTime <= 0.f)
 	{
 		Tick(DeltaTime);
 	}
