@@ -176,6 +176,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="DataBaze.h" />
+    <ClInclude Include="DBAutofillTypes.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="JsonInterface\JsonInterface.h" />
     <ClInclude Include="Plugins\Simpleini\ConvertUTF.h" />
@@ -198,7 +199,6 @@
     <ClInclude Include="Source\Public\Components\DBSettingsComp.h" />
     <ClInclude Include="Source\Public\Core\DBCommandCenter.h" />
     <ClInclude Include="Source\Public\DataTypes\DBSettingsTypes.h" />
-    <ClInclude Include="Source\Public\DataTypes\DBThreadTypes.h" />
     <ClInclude Include="Source\Public\DataTypes\Size2D.h" />
     <ClInclude Include="Source\Public\DBDataTypes.h" />
     <ClInclude Include="Source\Public\Components\DBDataManager.h" />

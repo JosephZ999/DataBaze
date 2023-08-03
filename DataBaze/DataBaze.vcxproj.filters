@@ -197,9 +197,6 @@
     <ClInclude Include="Source\Public\Components\DBAutofill.h">
       <Filter>Source\Public\Components</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Public\DataTypes\DBThreadTypes.h">
-      <Filter>Source\Public\DataTypes</Filter>
-    </ClInclude>
     <ClInclude Include="Plugins\SimpleThread\STDataTypes.h">
       <Filter>Plugins\SimpleThread</Filter>
     </ClInclude>
@@ -211,6 +208,9 @@
     </ClInclude>
     <ClInclude Include="Source\Public\Utils\DBMacroUtils.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DBAutofillTypes.h">
+      <Filter>Source\Public\DataTypes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
