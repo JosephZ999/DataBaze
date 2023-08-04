@@ -6,8 +6,10 @@
 
 #include "DBInterface.h"
 #include "DBDelegate.h"
+#include <memory>
 
 class DBButtonManager;
+class DBAutofill;
 
 enum EAutoFillStep
 {
@@ -37,6 +39,7 @@ public:
 	DBFamilyData MemberData;
 
 private:
+	std::shared_ptr<DBAutofill> AutoFillObj;
 	DBButtonManager* ButtonManager;
 	bool			 HasSpouse = false;
 	bool			 HasChild  = false;

@@ -8,20 +8,32 @@
 
 class DBAction;
 
+enum class EAutofillStep
+{
+	None,
+	Page1,
+	Page2,
+	SaveResult,
+	Max,
+};
+
 class DBAutofill : public DBInterface, public STClient
 {
 	typedef std::vector<WORD> buttons;
 
 private:
-	bool Enabled = false;
+	bool				   Enabled = false;
 	std::vector<DBAction*> ActionList;
 	int					   CurrentActionIndex = 0;
-	FMemberId MemberId;
+	DBFamilyData		   UserData;
+	FMemberId			   MemberId;
+	EAutofillStep		   CurrentStep = EAutofillStep::None;
+	HWND				   OwnerWindow;
 
 public:
 	~DBAutofill();
-	void Init(const DBFamilyData& InUserData, FMemberId InId);
-	void StartFilling();
+	void Init(const DBFamilyData& InUserData, FMemberId InId, HWND InOwnerWindow);
+	void StartFilling(EAutofillStep Step = EAutofillStep::None);
 	void Clear();
 
 private:
@@ -29,6 +41,7 @@ private:
 
 	void InitMemberActions(const DBFamilyData& Data);
 	void InitSubMemberActions(const DBPeopleData& Data, bool FirstPeople = false);
+	void InitActionStep(EAutofillStep Step);
 };
 
 class DBAction abstract

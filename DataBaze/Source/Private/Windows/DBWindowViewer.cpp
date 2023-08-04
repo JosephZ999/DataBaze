@@ -5,6 +5,7 @@
 #include "Components/UIVerticalBox.h"
 #include "Components/UIHorizontalBox.h"
 #include "UILibrary.h"
+#include "DBAutofill.h"
 
 #include <map>
 
@@ -71,14 +72,49 @@ LRESULT DBWindowViewer::CallProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM 
 	{
 		switch (wParam)
 		{
-		case HKV_Command_1: Autofill_Form1(); break;
-		case HKV_Command_2: Autofill_Form2(); break;
-		case HKV_Command_3: Autofill_Check(); break;
-		case HKV_Next: AutoFill(); break;
-		case HKV_Reset: InitializeSteps(); break;
+		case HKV_Command_1:
+		{
+			if (AutoFillObj)
+			{
+				AutoFillObj->StartFilling(EAutofillStep::Page1);
+			}
+			break;
+		}
+		case HKV_Command_2:
+		{
+			if (AutoFillObj)
+			{
+				AutoFillObj->StartFilling(EAutofillStep::Page2);
+			}
+			break;
+		}
+		case HKV_Command_3:
+		{
+			if (AutoFillObj)
+			{
+				AutoFillObj->StartFilling(EAutofillStep::SaveResult);
+			}
+			break;
+		}
+		case HKV_Next:
+		{
+			if (AutoFillObj)
+			{
+				AutoFillObj->StartFilling();
+			}
+			break;
+		}
+		case HKV_Reset:
+		{
+			if (AutoFillObj)
+			{
+				AutoFillObj->StartFilling(EAutofillStep::Max);
+			}
+			break;
+		}
 		case HKV_Close:
 		{
-			//SendMessage(hWnd, WM_CLOSE, 0, 0);
+			// SendMessage(hWnd, WM_CLOSE, 0, 0);
 			OnClose.Broadcast();
 			UnregisterHotKey(hWnd, HKV_Close);
 			break;
@@ -127,6 +163,10 @@ LRESULT DBWindowViewer::CallProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM 
 DBWindowViewer::DBWindowViewer(HWND OwningWnd)
 {
 	WindowHandle = OwningWnd;
+
+	AutoFillObj = std::make_shared<DBAutofill>();
+
+	assert(AutoFillObj);
 
 	ButtonManager = CreateComponent<DBButtonManager>();
 	if (ButtonManager)
@@ -198,6 +238,11 @@ void DBWindowViewer::SetMemberData(FMemberId InId, const DBFamilyData& InData)
 	ListItemId = InId.ListItem;
 	PrintData();
 	InitializeSteps();
+
+	if (AutoFillObj)
+	{
+		AutoFillObj->Init(InData, InId, WindowHandle);
+	}
 }
 
 void DBWindowViewer::InitializeSteps()
