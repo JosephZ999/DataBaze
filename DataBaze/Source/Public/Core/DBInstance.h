@@ -58,6 +58,8 @@ public:
 
 	void CallCommand(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 
+	void OpenNextMember();
+
 private:
 	void InitWindows();
 	void ResetListBox();

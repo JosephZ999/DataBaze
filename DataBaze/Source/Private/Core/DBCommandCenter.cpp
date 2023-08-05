@@ -70,6 +70,14 @@ void cmd::wnd::UpdateListBoxElem(FMemberId InId)
 	GetCoreIns()->GetListBox()->SetItemText(InId.ListItem, MemberStatus);
 }
 
+void cmd::wnd::OpenNextMember()
+{
+	if (GetCoreIns())
+	{
+		GetCoreIns()->OpenNextMember();
+	}
+}
+
 void cmd::data::SaveMemberCode(FMemberId InId, const std::wstring& FileName, const std::wstring& Data)
 {
 	get::GetDataManager()->SaveMemberCode(InId, FileName, Data);

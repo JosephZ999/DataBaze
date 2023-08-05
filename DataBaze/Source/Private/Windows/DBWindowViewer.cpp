@@ -74,7 +74,7 @@ LRESULT DBWindowViewer::CallProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM 
 		{
 		case HKV_Command_1:
 		{
-			if (AutoFillObj)
+			if (AutoFillObj && ! MemberData.bLocked)
 			{
 				AutoFillObj->StartFilling(EAutofillStep::Page1);
 			}
@@ -82,7 +82,7 @@ LRESULT DBWindowViewer::CallProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM 
 		}
 		case HKV_Command_2:
 		{
-			if (AutoFillObj)
+			if (AutoFillObj && ! MemberData.bLocked)
 			{
 				AutoFillObj->StartFilling(EAutofillStep::Page2);
 			}
@@ -90,7 +90,7 @@ LRESULT DBWindowViewer::CallProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM 
 		}
 		case HKV_Command_3:
 		{
-			if (AutoFillObj)
+			if (AutoFillObj && ! MemberData.bLocked)
 			{
 				AutoFillObj->StartFilling(EAutofillStep::SaveResult);
 			}
@@ -98,7 +98,7 @@ LRESULT DBWindowViewer::CallProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM 
 		}
 		case HKV_Next:
 		{
-			if (AutoFillObj)
+			if (AutoFillObj && ! MemberData.bLocked)
 			{
 				AutoFillObj->StartFilling();
 			}
@@ -106,7 +106,7 @@ LRESULT DBWindowViewer::CallProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM 
 		}
 		case HKV_Reset:
 		{
-			if (AutoFillObj)
+			if (AutoFillObj && ! MemberData.bLocked)
 			{
 				AutoFillObj->StartFilling(EAutofillStep::Max);
 			}
@@ -240,6 +240,7 @@ void DBWindowViewer::SetMemberData(FMemberId InId, const DBFamilyData& InData)
 	MemberId   = InId;
 	MemberData = InData;
 	ListItemId = InId.ListItem;
+
 	PrintData();
 
 	if (AutoFillObj)
@@ -430,5 +431,5 @@ void DBWindowViewer::OnFillFinish()
 {
 	cmd::data::SetLockMember(true, MemberId);
 	cmd::wnd::UpdateListBoxElem(MemberId);
-	cmd::wnd::CloseViewer();
+	cmd::wnd::OpenNextMember();
 }

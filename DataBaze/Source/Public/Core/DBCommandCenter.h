@@ -25,6 +25,7 @@ namespace cmd
 		void SetViewerData(FMemberId InId, const DBFamilyData& Data);
 		void CloseViewer();
 		void UpdateListBoxElem(FMemberId InId);
+		void OpenNextMember();
 
 	} // namespace wnd
 

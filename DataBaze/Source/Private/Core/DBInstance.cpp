@@ -219,6 +219,7 @@ void DBInstance::CallCommand(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPar
 		{
 			FMemberId NewId(GetListBox()->GetSelectedItemData(), 0, GetListBox()->GetSelectedItemId());
 			GetDataManager()->SelectMember(NewId);
+			GetListBox()->SetLastSelectedItem(NewId.ListItem);
 			break;
 		}
 		} // switch end
@@ -308,4 +309,19 @@ void DBInstance::CallCommand(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPar
 		break;
 	}
 	} // switch end
+}
+
+void DBInstance::OpenNextMember()
+{
+	const int NextItemId = GetListBox()->GetLastSelectedItem() + 1;
+
+	FMemberId NewId(GetListBox()->GetItemData(NextItemId), GetDataManager()->GetSelectedFolderId(), NextItemId);
+	GetDataManager()->SelectMember(NewId);
+	GetListBox()->SetLastSelectedItem(NewId.ListItem);
+
+	DBFamilyData SelectedData;
+	if (GetDataManager()->LoadMember(SelectedData))
+	{
+		GetWindowManager()->SetViewerData(NewId, SelectedData);
+	}
 }

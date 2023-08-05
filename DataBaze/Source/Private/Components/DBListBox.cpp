@@ -57,6 +57,11 @@ int DBListBox::GetSelectedItemId()
 	return (int)SendMessage(ListBoxHWND, LB_GETCURSEL, 0, 0);
 }
 
+int DBListBox::GetItemData(int Id)
+{
+	return (int)SendMessage(ListBoxHWND, LB_GETITEMDATA, Id, 0);
+}
+
 int DBListBox::GetLastItemId() const
 {
 	return LastItemId;
