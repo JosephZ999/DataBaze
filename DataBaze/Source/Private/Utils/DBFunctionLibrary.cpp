@@ -147,7 +147,7 @@ void DBInput::PressKey(WORD Key)
 	ip.ki.wVk		  = Key;
 	ip.ki.dwFlags	  = 0;
 
-	SendInput(1, &ip, sizeof(INPUT));
+		SendInput(1, &ip, sizeof(INPUT));
 
 	ip.ki.dwFlags = KEYEVENTF_KEYUP;
 	SendInput(1, &ip, sizeof(INPUT));

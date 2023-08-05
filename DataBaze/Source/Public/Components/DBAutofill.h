@@ -22,8 +22,6 @@ enum class EAutofillStep
  */
 class DBAutofill : public DBInterface, public STClient
 {
-	typedef std::vector<WORD> buttons;
-
 private:
 	bool				   Enabled = false;
 	std::vector<DBAction*> ActionList;
@@ -73,11 +71,13 @@ class DBAction_PressButtons : public DBAction
 
 public:
 	// Simple pressing keys
-	DBAction_PressButtons(std::vector<WORD> InButtonList, int InTimes = 1)
-		: ButtonList(InButtonList)
-		, Times(InTimes)
+	DBAction_PressButtons(int InButton, int InTimes = 1)
+		: Times(InTimes)
 		, Type(Normal)
-	{}
+	{
+		ButtonList.push_back(InButton);
+		DelaySeconds = 0.05f;
+	}
 
 	// Typing text
 	DBAction_PressButtons(std::string InText)
@@ -87,17 +87,17 @@ public:
 	}
 
 	// Hotkeys
-	DBAction_PressButtons(WORD FirstKey, WORD SecondKey)
+	DBAction_PressButtons(const std::vector<int>& InButtons)
 		: Type(Hotkey)
+		, ButtonList(InButtons)
 	{
-		ButtonList.push_back(FirstKey);
-		ButtonList.push_back(SecondKey);
+		DelaySeconds = 0.05f;
 	}
 
 private:
-	std::vector<WORD> ButtonList;
-	int				  Times = 0;
-	EActionType		  Type	= Normal;
+	std::vector<int> ButtonList;
+	int				 Times	 = 0;
+	EActionType		 Type	 = Normal;
 
 public:
 	virtual void DoAction() override;
@@ -128,14 +128,14 @@ public:
 		: TextToClip(InText)
 		, WindowHandle(OuterWindow)
 	{
-		DelaySeconds = 100.f;
+		DelaySeconds = 0.05f;
 	}
 
 	DBAction_Clipboard(std::wstring InText, HWND OuterWindow)
 		: WTextToClip(InText)
 		, WindowHandle(OuterWindow)
 	{
-		DelaySeconds = 100.f;
+		DelaySeconds = 0.05f;
 	}
 
 private:
