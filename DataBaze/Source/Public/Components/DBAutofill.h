@@ -29,7 +29,8 @@ public:
 	OnFinishFillSignature OnFinish;
 
 private:
-	bool				   Enabled = false;
+	bool				   Enabled	  = false;
+	bool				   InProgress = false;
 	std::vector<DBAction*> ActionList;
 	int					   CurrentActionIndex = 0;
 	DBFamilyData		   UserData;
@@ -79,11 +80,11 @@ class DBAction_PressButtons : public DBAction
 public:
 	// Simple pressing keys
 	DBAction_PressButtons(int InButton, int InTimes = 1)
-		: Times(InTimes)
+		: SingleButton(InButton)
+		, Times(InTimes)
 		, Type(Normal)
 	{
-		ButtonList.push_back(InButton);
-		DelaySeconds = 0.05f;
+		DelaySeconds = 0.04f;
 	}
 
 	// Typing text
@@ -98,13 +99,14 @@ public:
 		: Type(Hotkey)
 		, ButtonList(InButtons)
 	{
-		DelaySeconds = 0.05f;
+		DelaySeconds = 0.04f;
 	}
 
 private:
 	std::vector<int> ButtonList;
-	int				 Times = 0;
-	EActionType		 Type  = Normal;
+	int				 SingleButton = 0;
+	int				 Times		  = 0;
+	EActionType		 Type		  = Normal;
 
 public:
 	virtual void DoAction() override;
@@ -135,14 +137,14 @@ public:
 		: TextToClip(InText)
 		, WindowHandle(OuterWindow)
 	{
-		DelaySeconds = 0.05f;
+		DelaySeconds = 0.04f;
 	}
 
 	DBAction_Clipboard(std::wstring InText, HWND OuterWindow)
 		: WTextToClip(InText)
 		, WindowHandle(OuterWindow)
 	{
-		DelaySeconds = 0.05f;
+		DelaySeconds = 0.04f;
 	}
 
 private:

@@ -35,11 +35,12 @@ void STClient::OnUpdate(float DeltaTime)
 
 	if (WaitTime <= 0.f)
 	{
+		WaitTime = 0.f;
 		Tick(DeltaTime);
 	}
 }
 
 void STClient::Wait(float Seconds)
 {
-	WaitTime += Seconds;
+	WaitTime = Seconds;
 }

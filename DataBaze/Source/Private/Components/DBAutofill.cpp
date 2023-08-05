@@ -292,10 +292,14 @@ void DBAutofill::Tick(float DeltaTime)
 	}
 	else
 	{
+		if (InProgress) return;
+
+		InProgress = true;
 		auto Action = ActionList[CurrentActionIndex];
-		Action->DoAction();
 		Wait(Action->DelaySeconds);
+		Action->DoAction();
 		++CurrentActionIndex;
+		InProgress = false;
 	}
 }
 
@@ -307,7 +311,7 @@ void DBAction_PressButtons::DoAction()
 	{
 		for (int i = 0; i < Times; ++i)
 		{
-			DBInput::PressKey(ButtonList[0]);
+			DBInput::PressKey(SingleButton);
 		}
 		break;
 	}
