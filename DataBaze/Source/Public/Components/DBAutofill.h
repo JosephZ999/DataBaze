@@ -5,6 +5,9 @@
 #include <vector>
 #include <string>
 #include <Windows.h>
+#include "DBDelegate.h"
+
+DECLARE_DELEGATE(OnFinishFillSignature);
 
 class DBAction;
 
@@ -22,6 +25,9 @@ enum class EAutofillStep
  */
 class DBAutofill : public DBInterface, public STClient
 {
+public:
+	OnFinishFillSignature OnFinish;
+
 private:
 	bool				   Enabled = false;
 	std::vector<DBAction*> ActionList;

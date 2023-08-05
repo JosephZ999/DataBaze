@@ -188,8 +188,8 @@ void DBAutofill::InitSaveResult()
 	const std::vector<int> Copy = {VK_CONTROL, VK_C};
 	ActionList.push_back(new DBAction_PressButtons(Copy));
 
-	ActionList.back()->DelaySeconds = 0.5f;
-	
+	ActionList.back()->DelaySeconds = 0.2f;
+
 	std::wstring FileName = DBPaths::GenerateConfirmFileName(UserData, MemberId);
 	ActionList.push_back(new DBAction_SaveToFile(FileName, MemberId));
 }
@@ -260,10 +260,10 @@ void DBAutofill::StartFilling(EAutofillStep Step)
 	Wait(1.f);
 
 	// Init Actions
+	CurrentActionIndex = 0;
 	InitActionStep(Step);
 
-	CurrentActionIndex = 0;
-	Enabled			   = true;
+	Enabled = true;
 }
 
 void DBAutofill::Clear()
@@ -283,6 +283,12 @@ void DBAutofill::Tick(float DeltaTime)
 	{
 		Enabled = false;
 		Clear();
+
+		if (CurrentStep == EAutofillStep::SaveResult)
+		{
+			OnFinish.Broadcast();
+		}
+		return;
 	}
 	else
 	{

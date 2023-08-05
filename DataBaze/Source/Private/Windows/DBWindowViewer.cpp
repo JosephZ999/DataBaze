@@ -165,8 +165,12 @@ DBWindowViewer::DBWindowViewer(HWND OwningWnd)
 	WindowHandle = OwningWnd;
 
 	AutoFillObj = std::make_shared<DBAutofill>();
-
 	assert(AutoFillObj);
+
+	if (AutoFillObj)
+	{
+		AutoFillObj->OnFinish.Bind(this, &DBWindowViewer::OnFillFinish);
+	}
 
 	ButtonManager = CreateComponent<DBButtonManager>();
 	if (ButtonManager)
@@ -422,8 +426,9 @@ void DBWindowViewer::PrintMail()
 	}
 }
 
-/*
-cmd::data::SetLockMember(true, MemberId);
-cmd::wnd::UpdateListBoxElem(MemberId);
-cmd::wnd::CloseViewer();
-*/
+void DBWindowViewer::OnFillFinish()
+{
+	cmd::data::SetLockMember(true, MemberId);
+	cmd::wnd::UpdateListBoxElem(MemberId);
+	cmd::wnd::CloseViewer();
+}

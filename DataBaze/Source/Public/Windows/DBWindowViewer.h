@@ -56,8 +56,9 @@ public:
 
 private:
 	void ChangePeople(bool Next);
-
 	void PrintData();
 	void PrintPeople(const DBPeopleData& People, bool IsChild);
 	void PrintMail();
+
+	void OnFillFinish();
 };
