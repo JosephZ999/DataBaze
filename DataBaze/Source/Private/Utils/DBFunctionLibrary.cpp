@@ -147,7 +147,7 @@ void DBInput::PressKey(WORD Key)
 	ip.ki.wVk		  = Key;
 	ip.ki.dwFlags	  = 0;
 
-		SendInput(1, &ip, sizeof(INPUT));
+	SendInput(1, &ip, sizeof(INPUT));
 
 	ip.ki.dwFlags = KEYEVENTF_KEYUP;
 	SendInput(1, &ip, sizeof(INPUT));
@@ -243,6 +243,18 @@ std::wstring DBPaths::GetConfirmationPath(int FolderId)
 	_wmkdir(ConfirmPath.c_str());
 	_wmkdir(FolderPath.c_str());
 	return FolderPath;
+}
+
+std::wstring DBPaths::GenerateConfirmFileName(const DBFamilyData& MemberData, const FMemberId& MemberId)
+{
+	const std::string MemberName  = MemberData.Parents[0].Name;
+	const std::string MemberFName = MemberData.Parents[0].FamilyName;
+	const std::string StringName =
+		std::string("\\").append(std::to_string(MemberId.MemberId)).append(" - ").append(MemberFName).append(" ").append(MemberName);
+
+	std::wstring WStr;
+	DBConvert::StringToWString(StringName, WStr);
+	return WStr;
 }
 
 void DBPaths::CreatePath(std::wstring NewPath)

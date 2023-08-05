@@ -43,6 +43,7 @@ private:
 	void InitMemberActions(const DBFamilyData& Data);
 	void InitSubMemberActions(const DBPeopleData& Data, bool FirstPeople = false);
 	void InitActionStep(EAutofillStep Step);
+	void InitSaveResult();
 };
 
 /*-----------------------------------------------------------------//
@@ -96,8 +97,8 @@ public:
 
 private:
 	std::vector<int> ButtonList;
-	int				 Times	 = 0;
-	EActionType		 Type	 = Normal;
+	int				 Times = 0;
+	EActionType		 Type  = Normal;
 
 public:
 	virtual void DoAction() override;
@@ -142,6 +143,22 @@ private:
 	HWND		 WindowHandle;
 	std::string	 TextToClip;
 	std::wstring WTextToClip;
+
+public:
+	virtual void DoAction() override;
+};
+
+class DBAction_SaveToFile : public DBAction
+{
+public:
+	DBAction_SaveToFile(std::wstring InFilePath, FMemberId InMemberId)
+		: FilePath(InFilePath)
+		, MemberId(InMemberId)
+	{}
+
+private:
+	std::wstring FilePath;
+	FMemberId	 MemberId;
 
 public:
 	virtual void DoAction() override;

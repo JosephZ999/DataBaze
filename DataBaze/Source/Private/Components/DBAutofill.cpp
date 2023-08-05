@@ -3,8 +3,7 @@
 #include "DBFunctionLibrary.h"
 #include <map>
 
-static const std::string	  Mail	   = std::string("DEVILNOISY999@GMAIL.COM");
-static const std::vector<int> HK_Paste = {VK_CONTROL, VK_V};
+static const std::string Mail = std::string("DEVILNOISY999@GMAIL.COM");
 
 static std::map<char, WORD> VKeys = {
 	//
@@ -37,6 +36,8 @@ void DBAutofill::Init(const DBFamilyData& InUserData, FMemberId InId, HWND InOwn
 
 void DBAutofill::InitMemberActions(const DBFamilyData& Data)
 {
+	const std::vector<int> HK_Paste = {VK_CONTROL, VK_V};
+
 	InitSubMemberActions(Data.Parents[0], true);
 
 	// Mail
@@ -107,6 +108,8 @@ void DBAutofill::InitMemberActions(const DBFamilyData& Data)
 
 void DBAutofill::InitSubMemberActions(const DBPeopleData& Data, bool FirstPeople)
 {
+	const std::vector<int> HK_Paste = {VK_CONTROL, VK_V};
+
 	ActionList.push_back(new DBAction_Clipboard(Data.FamilyName, OwnerWindow));
 	ActionList.push_back(new DBAction_PressButtons(HK_Paste));
 	ActionList.push_back(new DBAction_PressButtons(VK_TAB));
@@ -174,8 +177,21 @@ void DBAutofill::InitSubMemberActions(const DBPeopleData& Data, bool FirstPeople
 	ActionList.push_back(new DBAction_PressButtons(VK_RETURN));
 	ActionList.back()->DelaySeconds = 1.f;
 
-
 	ActionList.push_back(new DBAction_PressButtons(VK_TAB));
+}
+
+void DBAutofill::InitSaveResult()
+{
+	const std::vector<int> SelectAll = {VK_CONTROL, VK_A};
+	ActionList.push_back(new DBAction_PressButtons(SelectAll));
+
+	const std::vector<int> Copy = {VK_CONTROL, VK_C};
+	ActionList.push_back(new DBAction_PressButtons(Copy));
+
+	ActionList.back()->DelaySeconds = 0.5f;
+	
+	std::wstring FileName = DBPaths::GenerateConfirmFileName(UserData, MemberId);
+	ActionList.push_back(new DBAction_SaveToFile(FileName, MemberId));
 }
 
 void DBAutofill::InitActionStep(EAutofillStep Step)
@@ -223,7 +239,12 @@ void DBAutofill::InitActionStep(EAutofillStep Step)
 		}
 		break;
 	}
-	case EAutofillStep::SaveResult: break;
+	case EAutofillStep::SaveResult:
+	{
+		InitSaveResult();
+		CurrentStep = EAutofillStep::SaveResult;
+		break;
+	}
 	case EAutofillStep::Max:
 	{
 		CurrentStep = EAutofillStep::None;
@@ -350,5 +371,17 @@ void DBAction_Clipboard::DoAction()
 	if (! WTextToClip.empty())
 	{
 		DBInput::CopyToClipboard(WindowHandle, WTextToClip);
+	}
+}
+
+void DBAction_SaveToFile::DoAction()
+{
+	if (OpenClipboard(NULL))
+	{
+		HANDLE		 clip = GetClipboardData(CF_UNICODETEXT);
+		std::wstring Code = std::wstring((wchar_t*)clip);
+		CloseClipboard();
+
+		cmd::data::SaveMemberCode(MemberId, FilePath, Code);
 	}
 }
