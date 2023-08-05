@@ -17,6 +17,9 @@ enum class EAutofillStep
 	Max,
 };
 
+/*-----------------------------------------------------------------//
+ *
+ */
 class DBAutofill : public DBInterface, public STClient
 {
 	typedef std::vector<WORD> buttons;
@@ -44,6 +47,9 @@ private:
 	void InitActionStep(EAutofillStep Step);
 };
 
+/*-----------------------------------------------------------------//
+/*
+*/
 class DBAction abstract
 {
 public:
@@ -53,7 +59,7 @@ public:
 	virtual void DoAction() = 0;
 };
 
-/*
+/*-----------------------------------------------------------------//
 /* Press hotkey or type a text
 */
 class DBAction_PressButtons : public DBAction
@@ -100,21 +106,40 @@ private:
 	void StringToButtonList(std::string& InText);
 };
 
-/*
+/*-----------------------------------------------------------------//
+/* Email writer
+*/
+class DBAction_WriteMail : public DBAction
+{
+public:
+	virtual void DoAction() override;
+
+private:
+	void WriteString(std::string& Text);
+};
+
+/*-----------------------------------------------------------------//
 /* Copy to Clipboard
 */
 class DBAction_Clipboard : public DBAction
 {
 public:
-	DBAction_Clipboard(std::string InText)
+	DBAction_Clipboard(std::string InText, HWND OuterWindow)
 		: TextToClip(InText)
-	{}
+		, WindowHandle(OuterWindow)
+	{
+		DelaySeconds = 100.f;
+	}
 
-	DBAction_Clipboard(std::wstring InText)
+	DBAction_Clipboard(std::wstring InText, HWND OuterWindow)
 		: WTextToClip(InText)
-	{}
+		, WindowHandle(OuterWindow)
+	{
+		DelaySeconds = 100.f;
+	}
 
 private:
+	HWND		 WindowHandle;
 	std::string	 TextToClip;
 	std::wstring WTextToClip;
 

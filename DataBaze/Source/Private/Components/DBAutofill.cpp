@@ -40,28 +40,28 @@ void DBAutofill::InitMemberActions(const DBFamilyData& Data)
 
 	// Mail
 	ActionList.push_back(new DBAction_PressButtons(buttons(VK_TAB), 3));
-	ActionList.push_back(new DBAction_Clipboard(Data.MailStreet));
+	ActionList.push_back(new DBAction_Clipboard(Data.MailStreet, OwnerWindow));
 	ActionList.push_back(new DBAction_PressButtons(VK_CONTROL, VK_V));
 	ActionList.push_back(new DBAction_PressButtons(buttons(VK_TAB), 3));
 
 	if (Data.MailHomeNumber.size() > 0 && DBConvert::StringToInt(Data.MailHomeNumber) != 0)
 	{
-		ActionList.push_back(new DBAction_Clipboard(Data.MailHomeNumber));
+		ActionList.push_back(new DBAction_Clipboard(Data.MailHomeNumber, OwnerWindow));
 		ActionList.push_back(new DBAction_PressButtons(VK_CONTROL, VK_V));
 	}
 	ActionList.push_back(new DBAction_PressButtons(buttons(VK_TAB)));
 
-	ActionList.push_back(new DBAction_Clipboard(Data.MailCity));
+	ActionList.push_back(new DBAction_Clipboard(Data.MailCity, OwnerWindow));
 	ActionList.push_back(new DBAction_PressButtons(VK_CONTROL, VK_V));
 	ActionList.push_back(new DBAction_PressButtons(buttons(VK_TAB)));
 
-	ActionList.push_back(new DBAction_Clipboard(Data.MailRegion));
+	ActionList.push_back(new DBAction_Clipboard(Data.MailRegion, OwnerWindow));
 	ActionList.push_back(new DBAction_PressButtons(VK_CONTROL, VK_V));
 	ActionList.push_back(new DBAction_PressButtons(buttons(VK_TAB)));
 
 	if (Data.IsHasZipCode())
 	{
-		ActionList.push_back(new DBAction_Clipboard(std::to_string(Data.MailZipCode)));
+		ActionList.push_back(new DBAction_Clipboard(std::to_string(Data.MailZipCode), OwnerWindow));
 		ActionList.push_back(new DBAction_PressButtons(VK_CONTROL, VK_V));
 	}
 	else
@@ -71,17 +71,15 @@ void DBAutofill::InitMemberActions(const DBFamilyData& Data)
 		ActionList.push_back(new DBAction_PressButtons(buttons(VK_TAB)));
 	}
 	ActionList.push_back(new DBAction_PressButtons(Data.MailCountry));
-	ActionList.push_back(new DBAction_PressButtons(VK_CONTROL, VK_V));
 	ActionList.push_back(new DBAction_PressButtons(buttons(VK_TAB)));
 
 	ActionList.push_back(new DBAction_PressButtons(Data.Parents[0].WhereLive));
-	ActionList.push_back(new DBAction_PressButtons(VK_CONTROL, VK_V));
 	ActionList.push_back(new DBAction_PressButtons(buttons(VK_TAB), 2));
 
 	// EMail
-	ActionList.push_back(new DBAction_PressButtons(Mail));
+	ActionList.push_back(new DBAction_WriteMail());
 	ActionList.push_back(new DBAction_PressButtons(buttons(VK_TAB)));
-	ActionList.push_back(new DBAction_PressButtons(Mail));
+	ActionList.push_back(new DBAction_WriteMail());
 	ActionList.push_back(new DBAction_PressButtons(buttons(VK_TAB)));
 
 	// Education level
@@ -101,18 +99,18 @@ void DBAutofill::InitMemberActions(const DBFamilyData& Data)
 		ActionList.push_back(new DBAction_PressButtons(buttons(VK_SPACE)));
 		ActionList.push_back(new DBAction_PressButtons(buttons(VK_TAB), SkipCount));
 	}
-	ActionList.push_back(new DBAction_Clipboard(std::to_string(Data.ChildrenNum)));
+	ActionList.push_back(new DBAction_Clipboard(std::to_string(Data.ChildrenNum), OwnerWindow));
 	ActionList.push_back(new DBAction_PressButtons(VK_CONTROL, VK_V));
 	ActionList.push_back(new DBAction_PressButtons(buttons(VK_TAB)));
 }
 
 void DBAutofill::InitSubMemberActions(const DBPeopleData& Data, bool FirstPeople)
 {
-	ActionList.push_back(new DBAction_Clipboard(Data.FamilyName));
+	ActionList.push_back(new DBAction_Clipboard(Data.FamilyName, OwnerWindow));
 	ActionList.push_back(new DBAction_PressButtons(VK_CONTROL, VK_V));
 	ActionList.push_back(new DBAction_PressButtons(buttons(VK_TAB)));
 
-	ActionList.push_back(new DBAction_Clipboard(Data.Name));
+	ActionList.push_back(new DBAction_Clipboard(Data.Name, OwnerWindow));
 	ActionList.push_back(new DBAction_PressButtons(VK_CONTROL, VK_V));
 	ActionList.push_back(new DBAction_PressButtons(buttons(VK_TAB), 3));
 	ActionList.push_back(new DBAction_PressButtons(buttons(VK_SPACE)));
@@ -129,22 +127,22 @@ void DBAutofill::InitSubMemberActions(const DBPeopleData& Data, bool FirstPeople
 		ActionList.push_back(new DBAction_PressButtons(buttons(VK_SPACE)));
 		ActionList.push_back(new DBAction_PressButtons(buttons(VK_TAB)));
 	}
-	ActionList.push_back(new DBAction_Clipboard(std::to_string(Data.BirthMonth)));
+	ActionList.push_back(new DBAction_Clipboard(std::to_string(Data.BirthMonth), OwnerWindow));
 	ActionList.push_back(new DBAction_PressButtons(VK_CONTROL, VK_V));
 	ActionList.push_back(new DBAction_PressButtons(buttons(VK_TAB)));
 
-	ActionList.push_back(new DBAction_Clipboard(std::to_string(Data.BirthDay)));
+	ActionList.push_back(new DBAction_Clipboard(std::to_string(Data.BirthDay), OwnerWindow));
 	ActionList.push_back(new DBAction_PressButtons(VK_CONTROL, VK_V));
 	ActionList.push_back(new DBAction_PressButtons(buttons(VK_TAB)));
 
-	ActionList.push_back(new DBAction_Clipboard(std::to_string(Data.BirthYear)));
+	ActionList.push_back(new DBAction_Clipboard(std::to_string(Data.BirthYear), OwnerWindow));
 	ActionList.push_back(new DBAction_PressButtons(VK_CONTROL, VK_V));
 	ActionList.push_back(new DBAction_PressButtons(buttons(VK_TAB)));
 
 	// Fill City
 	if (Data.IsBirthCityValid())
 	{
-		ActionList.push_back(new DBAction_Clipboard(Data.BirthCity));
+		ActionList.push_back(new DBAction_Clipboard(Data.BirthCity, OwnerWindow));
 		ActionList.push_back(new DBAction_PressButtons(VK_CONTROL, VK_V));
 		ActionList.push_back(new DBAction_PressButtons(buttons(VK_TAB), 2));
 	}
@@ -171,7 +169,7 @@ void DBAutofill::InitSubMemberActions(const DBPeopleData& Data, bool FirstPeople
 	DBConvert::StringToWString(SImage, WImage);
 	std::wstring FilePath = DBPaths::GetDataFolderPath(MemberId.FolderId).append(WImage);
 
-	ActionList.push_back(new DBAction_Clipboard(FilePath));
+	ActionList.push_back(new DBAction_Clipboard(FilePath, OwnerWindow));
 	ActionList.push_back(new DBAction_PressButtons(VK_CONTROL, VK_V));
 	ActionList.push_back(new DBAction_PressButtons(buttons(VK_RETURN)));
 	ActionList.back()->DelaySeconds = 0.5f;
@@ -261,8 +259,8 @@ void DBAutofill::Tick(float DeltaTime)
 
 	if (CurrentActionIndex >= (int)ActionList.size())
 	{
-		// Finish
 		Enabled = false;
+		Clear();
 	}
 	else
 	{
@@ -279,14 +277,26 @@ void DBAction_PressButtons::DoAction()
 	{
 	case DBAction_PressButtons::Normal:
 	{
+		for (int i = 0; i < Times; ++i)
+		{
+			for (auto& Elem : ButtonList)
+			{
+				DBInput::PressKey(Elem);
+			}
+		}
 		break;
 	}
 	case DBAction_PressButtons::Text:
 	{
+		for (auto& Elem : ButtonList)
+		{
+			DBInput::PressKey(Elem);
+		}
 		break;
 	}
 	case DBAction_PressButtons::Hotkey:
 	{
+		DBInput::PressKeys(ButtonList[0], ButtonList[1]);
 		break;
 	}
 	} // switch end
@@ -303,4 +313,44 @@ void DBAction_PressButtons::StringToButtonList(std::string& InText)
 	}
 }
 
-void DBAction_Clipboard::DoAction() {}
+void DBAction_WriteMail::DoAction()
+{
+	char delimiter = '@';
+
+	// »щем позицию символа "@" в строке
+	size_t pos = Mail.find(delimiter);
+
+	if (pos != std::string::npos)
+	{
+		// »спользуем метод substr дл€ получени€ двух частей строки
+		std::string part1 = Mail.substr(0, pos); // от начала строки до "@" (не включа€ "@")
+		std::string part2 = Mail.substr(pos + 1);
+
+		WriteString(part1);
+		DBInput::PressKeys(VK_SHIFT, VK_2);
+		WriteString(part2);
+	}
+}
+
+void DBAction_WriteMail::WriteString(std::string& Text)
+{
+	for (std::string::iterator it = Text.begin(); it != Text.end(); ++it)
+	{
+		if (VKeys.find(*it) != VKeys.end())
+		{
+			DBInput::PressKey(VKeys[*it]);
+		}
+	}
+}
+
+void DBAction_Clipboard::DoAction()
+{
+	if (!TextToClip.empty())
+	{
+		DBInput::CopyToClipboard(WindowHandle, TextToClip);
+	}
+	if (!WTextToClip.empty())
+	{
+		DBInput::CopyToClipboard(WindowHandle, WTextToClip);
+	}
+}
