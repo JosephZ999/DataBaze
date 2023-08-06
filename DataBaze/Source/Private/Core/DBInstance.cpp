@@ -212,6 +212,7 @@ void DBInstance::CallCommand(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPar
 			{
 				GetWindowManager()->OpenWindowByType(EWindows::IDW_VIEWER);
 				GetWindowManager()->SetViewerData(GetDataManager()->GetMemberId(), SelectedData);
+				GetListBox()->SetLastSelectedItem(GetDataManager()->GetMemberId().ListItem);
 			}
 			break;
 		}
@@ -219,7 +220,6 @@ void DBInstance::CallCommand(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPar
 		{
 			FMemberId NewId(GetListBox()->GetSelectedItemData(), 0, GetListBox()->GetSelectedItemId());
 			GetDataManager()->SelectMember(NewId);
-			GetListBox()->SetLastSelectedItem(NewId.ListItem);
 			break;
 		}
 		} // switch end
@@ -232,6 +232,7 @@ void DBInstance::CallCommand(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPar
 		{
 			GetWindowManager()->OpenWindowByType(EWindows::IDW_VIEWER);
 			GetWindowManager()->SetViewerData(GetDataManager()->GetMemberId(), SelectedData);
+			GetListBox()->SetLastSelectedItem(GetDataManager()->GetMemberId().ListItem);
 		}
 		break;
 	}
