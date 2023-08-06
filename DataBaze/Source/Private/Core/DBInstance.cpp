@@ -6,6 +6,10 @@
 #include "Components/UIVerticalBox.h"
 #include "Components/UIHorizontalBox.h"
 #include "Components/UISpacer.h"
+#include "Components/DBSettingsComp.h"
+
+#include "Plugins/SimpleThread/Public/STManager.h"
+
 #include "UILibrary.h"
 
 enum EButtonBoxId
@@ -21,15 +25,20 @@ void DBInstance::Initialize(FDBInstanceInit& Param)
 	InitData	= Param;
 
 	//-----------------------------------------------// Components
+	ThreadManager = STManager::GetInstance();
+
 	WindowManager = CreateComponent<DBWindowsManager>();
 	DataManager	  = CreateComponent<DBDataManager>();
 	ListBox		  = CreateComponent<DBListBox>();
 	ButtonManager = CreateComponent<DBButtonManager>();
+	SettingsComp  = CreateComponent<DBSettingsComp>();
 
 	assert(WindowManager);
 	assert(DataManager);
 	assert(ListBox);
 	assert(ButtonManager);
+	assert(SettingsComp);
+	assert(ThreadManager);
 
 	InitWindows(); // Create windows handlers
 
@@ -155,26 +164,37 @@ void DBInstance::SetMinimizeMode(bool Enabled)
 
 	// Horizontal buttons pos
 	UILib::SlotPtr HBox			= GetButtonManager()->GetSlot(BBI_Horizontal);
-	const int	   HBoxNewSizeX = Enabled ? 450 : 500;
+	const int	   HBoxNewSizeX = Enabled ? 480 : 500;
 	const int	   HBoxSizeY	= HBox->GetSize().Y;
 	HBox->SetSize(Size2D(HBoxNewSizeX, HBoxSizeY));
 
-	const int HBoxOffset = Enabled ? -180 : 0;
+	const int HBoxOffset = Enabled ? -190 : 0;
 	HBox->SetOffset(Size2D(HBoxOffset, 0));
 
 	// ListBox Pos and Size
 	const Size2D ListInitPos  = GetListBox()->GetInitialPos();
 	const Size2D ListInitSize = GetListBox()->GetInitialSize();
-	const Size2D ListPos	  = Size2D(Enabled ? ListInitPos.X - 180 : ListInitPos.X, ListInitPos.Y);
-	const Size2D ListSize	  = Size2D(Enabled ? ListInitSize.X - 50 : ListInitSize.X, ListInitSize.Y);
+	const Size2D ListPos	  = Size2D(Enabled ? ListInitPos.X - 190 : ListInitPos.X, ListInitPos.Y);
+	const Size2D ListSize	  = Size2D(Enabled ? ListInitSize.X - 20 : ListInitSize.X, ListInitSize.Y);
 	GetListBox()->SetPosition(ListPos);
 	GetListBox()->SetSize(ListSize);
 
 	// Window Size
-	const Size2D MainWndPos(25, 25);
-	const Size2D MainWndSize(Enabled ? 505 : 740, 450);
+	const Size2D MainWndPos(15, 25);
+	const Size2D MainWndSize(Enabled ? 520 : 740, 450);
 	SetWindowPos(InitData.MainHWND, HWND_TOP, MainWndPos.X, MainWndPos.Y, MainWndSize.X, MainWndSize.Y, 0);
 }
+
+void DBInstance::Destroy()
+{
+	RemoveAllComponents();
+	PendingDestroy = CanBeDestroyed();
+}
+
+// bool DBInstance::CanBeDestroyed() const
+//{
+//	return true;
+//}
 
 void DBInstance::CallCommand(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
@@ -192,6 +212,7 @@ void DBInstance::CallCommand(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPar
 			{
 				GetWindowManager()->OpenWindowByType(EWindows::IDW_VIEWER);
 				GetWindowManager()->SetViewerData(GetDataManager()->GetMemberId(), SelectedData);
+				GetListBox()->SetLastSelectedItem(GetDataManager()->GetMemberId().ListItem);
 			}
 			break;
 		}
@@ -211,6 +232,7 @@ void DBInstance::CallCommand(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPar
 		{
 			GetWindowManager()->OpenWindowByType(EWindows::IDW_VIEWER);
 			GetWindowManager()->SetViewerData(GetDataManager()->GetMemberId(), SelectedData);
+			GetListBox()->SetLastSelectedItem(GetDataManager()->GetMemberId().ListItem);
 		}
 		break;
 	}
@@ -288,4 +310,19 @@ void DBInstance::CallCommand(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPar
 		break;
 	}
 	} // switch end
+}
+
+void DBInstance::OpenNextMember()
+{
+	const int NextItemId = GetListBox()->GetLastSelectedItem() + 1;
+
+	FMemberId NewId(GetListBox()->GetItemData(NextItemId), GetDataManager()->GetSelectedFolderId(), NextItemId);
+	GetDataManager()->SelectMember(NewId);
+	GetListBox()->SetLastSelectedItem(NewId.ListItem);
+
+	DBFamilyData SelectedData;
+	if (GetDataManager()->LoadMember(SelectedData))
+	{
+		GetWindowManager()->SetViewerData(NewId, SelectedData);
+	}
 }

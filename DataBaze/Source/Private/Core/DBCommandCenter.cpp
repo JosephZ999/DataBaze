@@ -1,10 +1,13 @@
 #include "DBCommandCenter.h"
 #include "Core/DBInstance.h"
+#include <assert.h>
 
 // Components
 #include "Components/DBDataManager.h"
 #include "Components/DBWindowsManager.h"
 #include "Components/DBListBox.h"
+#include "Components/DBSettingsComp.h"
+
 static DBInstance* CoreInstance = nullptr;
 
 //-----------------------------------------------// System library
@@ -31,6 +34,11 @@ DBDataManager* cmd::get::GetDataManager()
 DBWindowsManager* cmd::get::GetWindowsManager()
 {
 	return GetCoreIns()->GetWindowManager();
+}
+
+DBSettingsComp* cmd::get::GetSettingsComp()
+{
+	return GetCoreIns()->GetSettingsComp();
 }
 
 HINSTANCE cmd::get::GetHIns()
@@ -62,6 +70,14 @@ void cmd::wnd::UpdateListBoxElem(FMemberId InId)
 	GetCoreIns()->GetListBox()->SetItemText(InId.ListItem, MemberStatus);
 }
 
+void cmd::wnd::OpenNextMember()
+{
+	if (GetCoreIns())
+	{
+		GetCoreIns()->OpenNextMember();
+	}
+}
+
 void cmd::data::SaveMemberCode(FMemberId InId, const std::wstring& FileName, const std::wstring& Data)
 {
 	get::GetDataManager()->SaveMemberCode(InId, FileName, Data);
@@ -70,4 +86,60 @@ void cmd::data::SaveMemberCode(FMemberId InId, const std::wstring& FileName, con
 void cmd::data::SetLockMember(bool InLock, FMemberId InId)
 {
 	get::GetDataManager()->LockMember(InLock, InId);
+}
+
+int cmd::ini::GetIntValue(DBIniItem Key)
+{
+	if (GetCoreIns())
+	{
+		auto SettingsComp = GetCoreIns()->GetSettingsComp();
+		if (SettingsComp)
+		{
+			return SettingsComp->GetIntValue(Key);
+		}
+	}
+	assert(false);
+	return 0;
+}
+
+bool cmd::ini::GetBoolValue(DBIniItem Key)
+{
+	if (GetCoreIns())
+	{
+		auto SettingsComp = GetCoreIns()->GetSettingsComp();
+		if (SettingsComp)
+		{
+			return SettingsComp->GetBoolValue(Key);
+		}
+	}
+	assert(false);
+	return false;
+}
+
+float cmd::ini::GetFloatValue(DBIniItem Key)
+{
+	if (GetCoreIns())
+	{
+		auto SettingsComp = GetCoreIns()->GetSettingsComp();
+		if (SettingsComp)
+		{
+			return SettingsComp->GetFloatValue(Key);
+		}
+	}
+	assert(false);
+	return 0.f;
+}
+
+std::string cmd::ini::GetStringValue(DBIniItem Key)
+{
+	if (GetCoreIns())
+	{
+		auto SettingsComp = GetCoreIns()->GetSettingsComp();
+		if (SettingsComp)
+		{
+			return SettingsComp->GetStringValue(Key);
+		}
+	}
+	assert(false);
+	return std::string();
 }

@@ -7,8 +7,9 @@ class DBListBox : public DBInterface
 {
 public:
 private:
-	int	   LastItemId  = 0;
-	HWND   ListBoxHWND = nullptr;
+	int	   LastItemId		= 0;
+	int	   LastSelectedItem = 0;
+	HWND   ListBoxHWND		= nullptr;
 	Size2D InitialPos;
 	Size2D InitialSize;
 
@@ -21,6 +22,10 @@ public:
 
 	int GetSelectedItemData();
 	int GetSelectedItemId();
+
+	int	 GetItemData(int Id);
+	int	 GetLastSelectedItem() const { return LastSelectedItem; }
+	void SetLastSelectedItem(int InId) { LastSelectedItem = InId; }
 
 	inline int GetLastItemId() const;
 

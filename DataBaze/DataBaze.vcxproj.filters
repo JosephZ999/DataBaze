@@ -78,6 +78,21 @@
     <Filter Include="Plugins\UI\Private\Components">
       <UniqueIdentifier>{d81bde5d-dba7-425b-b0a7-ba1ea5b72861}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Plugins\Simpleini">
+      <UniqueIdentifier>{749e99b3-752a-48e0-9678-85dd8892184a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Private\DataTypes">
+      <UniqueIdentifier>{5fd19a99-bd10-44d7-85ea-fab752cf3dbd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Plugins\SimpleThread">
+      <UniqueIdentifier>{86f2f4c2-17e4-4bb0-b957-f24c9bcf4f34}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Plugins\SimpleThread\Public">
+      <UniqueIdentifier>{21dd9391-cb75-4e39-8d53-31faa324c4c2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Plugins\SimpleThread\Private">
+      <UniqueIdentifier>{b52feb38-16cc-4ade-aa1c-19c91438a3d3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -167,6 +182,33 @@
     <ClInclude Include="Source\Public\Core\DBCommandCenter.h">
       <Filter>Source\Public\Core</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Public\Components\DBSettingsComp.h">
+      <Filter>Source\Public\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Plugins\Simpleini\SimpleIni.h">
+      <Filter>Plugins\Simpleini</Filter>
+    </ClInclude>
+    <ClInclude Include="Plugins\Simpleini\ConvertUTF.h">
+      <Filter>Plugins\Simpleini</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Public\DataTypes\DBSettingsTypes.h">
+      <Filter>Source\Public\DataTypes</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Public\Components\DBAutofill.h">
+      <Filter>Source\Public\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Plugins\SimpleThread\STDataTypes.h">
+      <Filter>Plugins\SimpleThread</Filter>
+    </ClInclude>
+    <ClInclude Include="Plugins\SimpleThread\Public\STClient.h">
+      <Filter>Plugins\SimpleThread\Public</Filter>
+    </ClInclude>
+    <ClInclude Include="Plugins\SimpleThread\Public\STManager.h">
+      <Filter>Plugins\SimpleThread\Public</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Public\Utils\DBMacroUtils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DataBaze.cpp">
@@ -228,6 +270,18 @@
     </ClCompile>
     <ClCompile Include="Source\Private\Core\DBCommandCenter.cpp">
       <Filter>Source\Private\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Private\Components\DBSettingsComp.cpp">
+      <Filter>Source\Private\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Private\Components\DBAutofill.cpp">
+      <Filter>Source\Private\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Plugins\SimpleThread\Private\STClient.cpp">
+      <Filter>Plugins\SimpleThread\Private</Filter>
+    </ClCompile>
+    <ClCompile Include="Plugins\SimpleThread\Private\STManager.cpp">
+      <Filter>Plugins\SimpleThread\Private</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

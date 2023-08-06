@@ -8,6 +8,8 @@ class DBDataManager;
 class DBWindowsManager;
 class DBListBox;
 class DBButtonManager;
+class DBSettingsComp;
+class STManager;
 
 #ifdef _M_IX86
 typedef UINT UINT_PTR;
@@ -27,12 +29,14 @@ struct FDBInstanceInit
 
 class DBInstance : public Singleton, public DBInterface
 {
-public:
 private:
 	DBWindowsManager* WindowManager = nullptr;
 	DBDataManager*	  DataManager	= nullptr;
 	DBListBox*		  ListBox		= nullptr;
 	DBButtonManager*  ButtonManager = nullptr;
+	DBSettingsComp*	  SettingsComp	= nullptr;
+
+	std::shared_ptr<STManager> ThreadManager;
 
 	bool			Initialized = false;
 	FDBInstanceInit InitData;
@@ -43,6 +47,7 @@ public:
 	inline DBDataManager*	 GetDataManager() const { return DataManager; }
 	inline DBListBox*		 GetListBox() const { return ListBox; }
 	inline DBButtonManager*	 GetButtonManager() const { return ButtonManager; }
+	inline DBSettingsComp*	 GetSettingsComp() const { return SettingsComp; }
 
 	FDBInstanceInit GetInitData() const;
 
@@ -53,6 +58,8 @@ public:
 
 	void CallCommand(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 
+	void OpenNextMember();
+
 private:
 	void InitWindows();
 	void ResetListBox();
@@ -60,4 +67,7 @@ private:
 	void SetMinimizeMode(bool Enabled);
 	bool IsMinimized() { return bMinimizeMode; }
 
+public:
+	virtual void Destroy() override;
+	// virtual bool CanBeDestroyed() const override;
 };

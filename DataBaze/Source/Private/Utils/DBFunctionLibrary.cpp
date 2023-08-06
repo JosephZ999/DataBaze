@@ -245,6 +245,18 @@ std::wstring DBPaths::GetConfirmationPath(int FolderId)
 	return FolderPath;
 }
 
+std::wstring DBPaths::GenerateConfirmFileName(const DBFamilyData& MemberData, const FMemberId& MemberId)
+{
+	const std::string MemberName  = MemberData.Parents[0].Name;
+	const std::string MemberFName = MemberData.Parents[0].FamilyName;
+	const std::string StringName =
+		std::string("\\").append(std::to_string(MemberId.MemberId)).append(" - ").append(MemberFName).append(" ").append(MemberName);
+
+	std::wstring WStr;
+	DBConvert::StringToWString(StringName, WStr);
+	return WStr;
+}
+
 void DBPaths::CreatePath(std::wstring NewPath)
 {
 	_wmkdir(NewPath.c_str());

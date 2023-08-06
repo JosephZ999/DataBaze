@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -178,6 +178,11 @@
     <ClInclude Include="DataBaze.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="JsonInterface\JsonInterface.h" />
+    <ClInclude Include="Plugins\Simpleini\ConvertUTF.h" />
+    <ClInclude Include="Plugins\Simpleini\SimpleIni.h" />
+    <ClInclude Include="Plugins\SimpleThread\Public\STClient.h" />
+    <ClInclude Include="Plugins\SimpleThread\Public\STManager.h" />
+    <ClInclude Include="Plugins\SimpleThread\STDataTypes.h" />
     <ClInclude Include="Plugins\Singleton\Singleton.h" />
     <ClInclude Include="Plugins\UI\Public\Components\UIHorizontalBox.h" />
     <ClInclude Include="Plugins\UI\Public\Components\UISlot.h" />
@@ -187,9 +192,12 @@
     <ClInclude Include="Plugins\UI\Public\UILibrary.h" />
     <ClInclude Include="Plugins\UI\UIDataTypes.h" />
     <ClInclude Include="Resource.h" />
+    <ClInclude Include="Source\Public\Components\DBAutofill.h" />
     <ClInclude Include="Source\Public\Components\DBButtonManager.h" />
     <ClInclude Include="Source\Public\Components\DBListBox.h" />
+    <ClInclude Include="Source\Public\Components\DBSettingsComp.h" />
     <ClInclude Include="Source\Public\Core\DBCommandCenter.h" />
+    <ClInclude Include="Source\Public\DataTypes\DBSettingsTypes.h" />
     <ClInclude Include="Source\Public\DataTypes\Size2D.h" />
     <ClInclude Include="Source\Public\DBDataTypes.h" />
     <ClInclude Include="Source\Public\Components\DBDataManager.h" />
@@ -201,12 +209,15 @@
     <ClInclude Include="Source\Public\Utils\DBFunctionLibrary.h" />
     <ClInclude Include="Source\Public\Utils\DBJsonUtils.h" />
     <ClInclude Include="Source\Public\Utils\DBKeyCodes.h" />
+    <ClInclude Include="Source\Public\Utils\DBMacroUtils.h" />
     <ClInclude Include="Source\Public\Windows\DBWindowViewer.h" />
     <ClInclude Include="Source\Public\Windows\DBWindowWriter.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DataBaze.cpp" />
+    <ClCompile Include="Plugins\SimpleThread\Private\STClient.cpp" />
+    <ClCompile Include="Plugins\SimpleThread\Private\STManager.cpp" />
     <ClCompile Include="Plugins\Singleton\Singleton.cpp" />
     <ClCompile Include="Plugins\UI\Private\Components\UIHorizontalBox.cpp" />
     <ClCompile Include="Plugins\UI\Private\Components\UISlot.cpp" />
@@ -214,9 +225,11 @@
     <ClCompile Include="Plugins\UI\Private\Components\UIVerticalBox.cpp" />
     <ClCompile Include="Plugins\UI\Private\UIContainer.cpp" />
     <ClCompile Include="Plugins\UI\Private\UILibrary.cpp" />
+    <ClCompile Include="Source\Private\Components\DBAutofill.cpp" />
     <ClCompile Include="Source\Private\Components\DBButtonManager.cpp" />
     <ClCompile Include="Source\Private\Components\DBDataManager.cpp" />
     <ClCompile Include="Source\Private\Components\DBListBox.cpp" />
+    <ClCompile Include="Source\Private\Components\DBSettingsComp.cpp" />
     <ClCompile Include="Source\Private\Components\DBWindowsManager.cpp" />
     <ClCompile Include="Source\Private\Core\DBCommandCenter.cpp" />
     <ClCompile Include="Source\Private\Core\DBInstance.cpp" />

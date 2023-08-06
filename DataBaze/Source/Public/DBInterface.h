@@ -3,21 +3,33 @@
 #include <vector>
 #include <cassert>
 #include "Core/DBCommandCenter.h"
+#include "DBMacroUtils.h"
 
+/*
+ * Its Component
+ * Has Owner
+ * Can Create SubObjects
+ * Can Remove All SubObjects
+ */
 class DBInterface
 {
-
 private:
 	DBInterface*			  Owner = nullptr;
 	std::vector<DBInterface*> Components;
 
-public:
-	DBInterface* GetOwner() const;
-	void		 SetOwner(DBInterface* NewOwner);
-
 protected:
+	bool PendingDestroy = false;
+
+public:
 	virtual ~DBInterface();
 
+	DBInterface* GetOwner() const;
+	void		 SetOwner(DBInterface* NewOwner);
+	virtual bool CanBeDestroyed() const;
+	bool		 IsPendingDestroy() const { return PendingDestroy; }
+	virtual void Destroy();
+
+protected:
 	template <typename T> //
 	T* CreateComponent()
 	{
