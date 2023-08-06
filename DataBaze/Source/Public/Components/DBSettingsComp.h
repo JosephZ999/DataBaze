@@ -20,4 +20,5 @@ public:
 	int	  GetIntValue(const DBIniItem& Key);
 	bool  GetBoolValue(const DBIniItem& Key);
 	float GetFloatValue(const DBIniItem& Key);
+	std::string GetStringValue(const DBIniItem& Key);
 };

@@ -40,5 +40,6 @@ namespace cmd
 		int	  GetIntValue(DBIniItem Key);
 		bool  GetBoolValue(DBIniItem Key);
 		float GetFloatValue(DBIniItem Key);
+		std::string GetStringValue(DBIniItem Key);
 	} // namespace ini
 } // namespace cmd

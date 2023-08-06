@@ -209,9 +209,6 @@
     <ClInclude Include="Source\Public\Utils\DBMacroUtils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="DBAutofillTypes.h">
-      <Filter>Source\Public\DataTypes</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DataBaze.cpp">
@@ -276,9 +273,6 @@
     </ClCompile>
     <ClCompile Include="Source\Private\Components\DBSettingsComp.cpp">
       <Filter>Source\Private\Components</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Private\DataTypes\DBSettingsTypes.cpp">
-      <Filter>Source\Private\DataTypes</Filter>
     </ClCompile>
     <ClCompile Include="Source\Private\Components\DBAutofill.cpp">
       <Filter>Source\Private\Components</Filter>

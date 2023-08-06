@@ -20,6 +20,22 @@ enum class EAutofillStep
 	Max,
 };
 
+enum class ESettingType
+{
+	NormalPressing,
+	TypingText,
+	Hotkeys,
+	Clipboard,
+	ImageOpen,
+	ImageClose,
+};
+
+class DBAutofillSettings final
+{
+public:
+	static float LoadOption(ESettingType InType);
+};
+
 /*-----------------------------------------------------------------//
  *
  */
@@ -78,19 +94,20 @@ class DBAction_PressButtons : public DBAction
 	};
 
 public:
-	// Simple pressing keys
+	// Single pressing keys
 	DBAction_PressButtons(int InButton, int InTimes = 1)
 		: SingleButton(InButton)
 		, Times(InTimes)
 		, Type(Normal)
 	{
-		DelaySeconds = 0.04f;
+		DelaySeconds = DBAutofillSettings::LoadOption(ESettingType::NormalPressing);
 	}
 
 	// Typing text
 	DBAction_PressButtons(std::string InText)
 		: Type(Text)
 	{
+		DelaySeconds = DBAutofillSettings::LoadOption(ESettingType::TypingText);
 		StringToButtonList(InText);
 	}
 
@@ -99,7 +116,7 @@ public:
 		: Type(Hotkey)
 		, ButtonList(InButtons)
 	{
-		DelaySeconds = 0.04f;
+		DelaySeconds = DBAutofillSettings::LoadOption(ESettingType::Hotkeys);
 	}
 
 private:
@@ -137,14 +154,14 @@ public:
 		: TextToClip(InText)
 		, WindowHandle(OuterWindow)
 	{
-		DelaySeconds = 0.04f;
+		DelaySeconds = DBAutofillSettings::LoadOption(ESettingType::Clipboard); // 0.04f;
 	}
 
 	DBAction_Clipboard(std::wstring InText, HWND OuterWindow)
 		: WTextToClip(InText)
 		, WindowHandle(OuterWindow)
 	{
-		DelaySeconds = 0.04f;
+		DelaySeconds = DBAutofillSettings::LoadOption(ESettingType::Clipboard);
 	}
 
 private:

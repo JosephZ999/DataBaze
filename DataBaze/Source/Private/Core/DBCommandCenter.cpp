@@ -129,3 +129,17 @@ float cmd::ini::GetFloatValue(DBIniItem Key)
 	assert(false);
 	return 0.f;
 }
+
+std::string cmd::ini::GetStringValue(DBIniItem Key)
+{
+	if (GetCoreIns())
+	{
+		auto SettingsComp = GetCoreIns()->GetSettingsComp();
+		if (SettingsComp)
+		{
+			return SettingsComp->GetStringValue(Key);
+		}
+	}
+	assert(false);
+	return std::string();
+}

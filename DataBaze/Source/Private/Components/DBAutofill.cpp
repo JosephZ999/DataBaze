@@ -2,8 +2,8 @@
 #include "DBKeyCodes.h"
 #include "DBFunctionLibrary.h"
 #include <map>
-
-static const std::string Mail = std::string("DEVILNOISY999@GMAIL.COM");
+#include "DBSettingsComp.h"
+#include "DBCommandCenter.h"
 
 static std::map<char, WORD> VKeys = {
 	//
@@ -164,7 +164,7 @@ void DBAutofill::InitSubMemberActions(const DBPeopleData& Data, bool FirstPeople
 	{
 		ActionList.push_back(new DBAction_PressButtons(VK_TAB, 4));
 	}
-	ActionList.back()->DelaySeconds = 1.f;
+	ActionList.back()->DelaySeconds = DBAutofillSettings::LoadOption(ESettingType::ImageOpen);
 
 	// Image
 	const std::string SImage = Data.ImageFile;
@@ -175,7 +175,7 @@ void DBAutofill::InitSubMemberActions(const DBPeopleData& Data, bool FirstPeople
 	ActionList.push_back(new DBAction_Clipboard(FilePath, OwnerWindow));
 	ActionList.push_back(new DBAction_PressButtons(HK_Paste));
 	ActionList.push_back(new DBAction_PressButtons(VK_RETURN));
-	ActionList.back()->DelaySeconds = 1.f;
+	ActionList.back()->DelaySeconds = DBAutofillSettings::LoadOption(ESettingType::ImageClose);
 
 	ActionList.push_back(new DBAction_PressButtons(VK_TAB));
 }
@@ -294,7 +294,7 @@ void DBAutofill::Tick(float DeltaTime)
 	{
 		if (InProgress) return;
 
-		InProgress = true;
+		InProgress	= true;
 		auto Action = ActionList[CurrentActionIndex];
 		Wait(Action->DelaySeconds);
 		Action->DoAction();
@@ -344,6 +344,8 @@ void DBAction_PressButtons::StringToButtonList(std::string& InText)
 
 void DBAction_WriteMail::DoAction()
 {
+	std::string Mail = cmd::ini::GetStringValue(DBIniItem::AutoFill_Mail);
+
 	char delimiter = '@';
 
 	// »щем позицию символа "@" в строке
@@ -394,4 +396,36 @@ void DBAction_SaveToFile::DoAction()
 
 		cmd::data::SaveMemberCode(MemberId, FilePath, Code);
 	}
+}
+
+float DBAutofillSettings::LoadOption(ESettingType InType)
+{
+	switch (InType)
+	{
+	case ESettingType::NormalPressing:
+	{
+		return cmd::ini::GetFloatValue(DBIniItem::AutoFill_SinglePressingDelay);
+	}
+	case ESettingType::TypingText:
+	{
+		return cmd::ini::GetFloatValue(DBIniItem::AutoFill_TypingTextDelay);
+	}
+	case ESettingType::Hotkeys:
+	{
+		return cmd::ini::GetFloatValue(DBIniItem::AutoFill_HotkeyDelay);
+	}
+	case ESettingType::Clipboard:
+	{
+		return cmd::ini::GetFloatValue(DBIniItem::AutoFill_ClipboardDelay);
+	}
+	case ESettingType::ImageOpen:
+	{
+		return cmd::ini::GetFloatValue(DBIniItem::AutoFill_ImageOpen);
+	}
+	case ESettingType::ImageClose:
+	{
+		return cmd::ini::GetFloatValue(DBIniItem::AutoFill_ImageClose);
+	}
+	}
+	return 0.0f;
 }
