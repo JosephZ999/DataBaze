@@ -61,4 +61,5 @@ private:
 	void PrintMail();
 
 	void OnFillFinish();
+	void OnFillFinishError();
 };

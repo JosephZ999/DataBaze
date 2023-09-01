@@ -21,6 +21,8 @@ static std::map<char, WORD> VKeys = {
 
 };
 
+bool ConfirmationFound = false;
+
 DBAutofill::~DBAutofill()
 {
 	Enabled = false;
@@ -286,7 +288,15 @@ void DBAutofill::Tick(float DeltaTime)
 
 		if (CurrentStep == EAutofillStep::SaveResult)
 		{
-			OnFinish.Broadcast();
+			if (ConfirmationFound)
+			{
+				OnFinish.Broadcast();
+			}
+			else
+			{
+				CurrentStep = EAutofillStep::Page2;
+				OnFinishWithError.Broadcast();
+			}
 		}
 		return;
 	}
@@ -394,7 +404,17 @@ void DBAction_SaveToFile::DoAction()
 		std::wstring Code = std::wstring((wchar_t*)clip);
 		CloseClipboard();
 
-		cmd::data::SaveMemberCode(MemberId, FilePath, Code);
+		const std::wstring search = L"Confirmation";
+		const size_t	   pos	  = Code.find(search);
+		if (pos != std::wstring::npos)
+		{
+			cmd::data::SaveMemberCode(MemberId, FilePath, Code);
+			ConfirmationFound = true;
+		}
+		else
+		{
+			ConfirmationFound = false;
+		}
 	}
 }
 

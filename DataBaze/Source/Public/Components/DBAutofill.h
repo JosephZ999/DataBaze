@@ -43,6 +43,7 @@ class DBAutofill : public DBInterface, public STClient
 {
 public:
 	OnFinishFillSignature OnFinish;
+	OnFinishFillSignature OnFinishWithError;
 
 private:
 	bool				   Enabled	  = false;

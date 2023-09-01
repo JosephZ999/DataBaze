@@ -170,6 +170,7 @@ DBWindowViewer::DBWindowViewer(HWND OwningWnd)
 	if (AutoFillObj)
 	{
 		AutoFillObj->OnFinish.Bind(this, &DBWindowViewer::OnFillFinish);
+		AutoFillObj->OnFinishWithError.Bind(this, &DBWindowViewer::OnFillFinishError);
 	}
 
 	ButtonManager = CreateComponent<DBButtonManager>();
@@ -432,4 +433,9 @@ void DBWindowViewer::OnFillFinish()
 	cmd::data::SetLockMember(true, MemberId);
 	cmd::wnd::UpdateListBoxElem(MemberId);
 	cmd::wnd::OpenNextMember();
+}
+
+void DBWindowViewer::OnFillFinishError()
+{
+	MessageBox(NULL, L"Error: its not a confirmation page", L"Message", MB_OK | MB_ICONHAND);
 }
