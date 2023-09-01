@@ -67,6 +67,8 @@ private:
 	void SetMinimizeMode(bool Enabled);
 	bool IsMinimized() { return bMinimizeMode; }
 
+	void ResetListSelection();
+
 public:
 	virtual void Destroy() override;
 	// virtual bool CanBeDestroyed() const override;

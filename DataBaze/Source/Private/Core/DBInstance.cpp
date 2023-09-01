@@ -63,6 +63,7 @@ void DBInstance::Initialize(FDBInstanceInit& Param)
 		std::vector<std::wstring> InitList;
 		DataManager->GetMembersList(InitList);
 		ListBox->SetList(InitList);
+		ResetListSelection();
 	}
 	if (ButtonManager)
 	{
@@ -185,6 +186,14 @@ void DBInstance::SetMinimizeMode(bool Enabled)
 	SetWindowPos(InitData.MainHWND, HWND_TOP, MainWndPos.X, MainWndPos.Y, MainWndSize.X, MainWndSize.Y, 0);
 }
 
+void DBInstance::ResetListSelection()
+{
+	ListBox->SetLastSelectedItem(0);
+	FMemberId NewId(ListBox->GetItemData(0), GetDataManager()->GetSelectedFolderId(), 0);
+	GetDataManager()->SelectMember(NewId);
+	SendMessage(ListBox->GetWnd(), LB_SETCURSEL, 0, 0);
+}
+
 void DBInstance::Destroy()
 {
 	RemoveAllComponents();
@@ -292,6 +301,7 @@ void DBInstance::CallCommand(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPar
 		{
 			ResetListBox();
 			UpdateFolderIdText();
+			ResetListSelection();
 		}
 		break;
 	}
@@ -301,6 +311,7 @@ void DBInstance::CallCommand(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPar
 		{
 			ResetListBox();
 			UpdateFolderIdText();
+			ResetListSelection();
 		}
 		break;
 	}
@@ -319,6 +330,7 @@ void DBInstance::OpenNextMember()
 	FMemberId NewId(GetListBox()->GetItemData(NextItemId), GetDataManager()->GetSelectedFolderId(), NextItemId);
 	GetDataManager()->SelectMember(NewId);
 	GetListBox()->SetLastSelectedItem(NewId.ListItem);
+	SendMessage(ListBox->GetWnd(), LB_SETCURSEL, NewId.ListItem, 0);
 
 	DBFamilyData SelectedData;
 	if (GetDataManager()->LoadMember(SelectedData))
