@@ -172,9 +172,9 @@ void DBAutofill::InitSubMemberActions(const DBPeopleData& Data, bool FirstPeople
 	const std::string SImage = Data.ImageFile;
 	std::wstring	  WImage;
 	DBConvert::StringToWString(SImage, WImage);
-	std::wstring FilePath = DBPaths::GetDataFolderPath(MemberId.FolderId).append(WImage);
+	std::wstring ImagePath = DBPaths::GetDataFolderPath(MemberId.FolderId).append(WImage);
 
-	ActionList.push_back(new DBAction_Clipboard(FilePath, OwnerWindow));
+	ActionList.push_back(new DBAction_Clipboard(ImagePath, OwnerWindow));
 	ActionList.push_back(new DBAction_PressButtons(HK_Paste));
 	ActionList.push_back(new DBAction_PressButtons(VK_RETURN));
 	ActionList.back()->DelaySeconds = DBAutofillSettings::LoadOption(ESettingType::ImageClose);

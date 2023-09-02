@@ -44,6 +44,7 @@ namespace DBPaths
 	std::wstring GetDataFolderPath(int Folder);
 	std::wstring GetImagePath(int Folder, int ImageId);
 	std::wstring GetConfirmationPath(int FolderId);
+	std::wstring GetBackupConfirmationPath(int FolderId);
 
 	std::wstring GenerateConfirmFileName(const DBFamilyData& MemberData, const FMemberId& MemberId);
 
