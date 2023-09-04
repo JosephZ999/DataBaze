@@ -9,22 +9,6 @@
 
 #include <map>
 
-static std::map<char, WORD> VKeys = {
-	//
-	{'Q', VK_Q}, {'W', VK_W}, {'E', VK_E}, {'R', VK_R}, {'T', VK_T}, {'Y', VK_Y}, //
-	{'U', VK_U}, {'I', VK_I}, {'O', VK_O}, {'P', VK_P},							  //
-
-	{'A', VK_A}, {'S', VK_S}, {'D', VK_D}, {'F', VK_F}, {'G', VK_G}, {'H', VK_H}, //
-	{'J', VK_J}, {'K', VK_K}, {'L', VK_L},										  //
-
-	{'Z', VK_Z}, {'X', VK_X}, {'C', VK_C}, {'V', VK_V}, //
-	{'B', VK_B}, {'N', VK_N}, {'M', VK_M},				//
-
-	{'.', VK_OEM_PERIOD}, {'1', VK_1}, {'2', VK_2}, {'3', VK_3}, {'4', VK_4}, {'5', VK_5}, //
-	{'6', VK_6}, {'7', VK_7}, {'8', VK_8}, {'9', VK_9}, {'0', VK_0}						   //
-
-};
-
 LRESULT DBWindowViewer::CallProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	switch (message)
@@ -170,6 +154,7 @@ DBWindowViewer::DBWindowViewer(HWND OwningWnd)
 	if (AutoFillObj)
 	{
 		AutoFillObj->OnFinish.Bind(this, &DBWindowViewer::OnFillFinish);
+		AutoFillObj->OnFinishWithError.Bind(this, &DBWindowViewer::OnFillFinishError);
 	}
 
 	ButtonManager = CreateComponent<DBButtonManager>();
@@ -432,4 +417,9 @@ void DBWindowViewer::OnFillFinish()
 	cmd::data::SetLockMember(true, MemberId);
 	cmd::wnd::UpdateListBoxElem(MemberId);
 	cmd::wnd::OpenNextMember();
+}
+
+void DBWindowViewer::OnFillFinishError()
+{
+	MessageBox(NULL, L"Error: its not a confirmation page", L"Message", MB_OK | MB_ICONHAND);
 }

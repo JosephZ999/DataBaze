@@ -1,6 +1,7 @@
 #include "DBDataManager.h"
 #include <iostream>
 #include <fstream>
+#include <time.h>
 #include "DBCharCodes.h"
 
 DBDataManager::DBDataManager()
@@ -345,6 +346,37 @@ void DBDataManager::SaveMemberCode(FMemberId InId, const std::wstring& FileName,
 	std::wofstream FileStream(Path, std::ios_base::out | std::ios_base::trunc | std::ios_base::binary);
 	FileStream << Data;
 	FileStream.close();
+
+	// backup
+	const std::wstring BackupPath = DBPaths::GetBackupConfirmationPath(InId.FolderId).append(FileName);
+	std::ifstream	   BackupFile;
+	BackupFile.open(std::wstring(BackupPath).append(L".txt"));
+	if (BackupFile)
+	{
+		BackupFile.close();
+
+		time_t	  rawtime;
+		struct tm timeinfo;
+		wchar_t	  buffer[20];
+
+		time(&rawtime);
+		localtime_s(&timeinfo, &rawtime);
+
+		wcsftime(buffer, 20, L"%d_%H-%M-%S", &timeinfo);
+		std::wstring Postfix = std::wstring(L"_").append(buffer);
+
+		std::wofstream NewBackupFile(std::wstring(BackupPath).append(Postfix).append(L".txt"), //
+			std::ios_base::out | std::ios_base::trunc | std::ios_base::binary);
+		NewBackupFile << Data;
+		NewBackupFile.close();
+	}
+	else
+	{
+		std::wofstream BackupFile(std::wstring(BackupPath).append(L".txt"), //
+			std::ios_base::out | std::ios_base::trunc | std::ios_base::binary);
+		BackupFile << Data;
+		BackupFile.close();
+	}
 }
 
 void DBDataManager::LockSelectedItem(bool Lock)

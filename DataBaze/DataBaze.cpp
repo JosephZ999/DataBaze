@@ -17,6 +17,7 @@
 #include <crtdbg.h>
 
 #define MAX_LOADSTRING 100
+#define SYS_YEAR	   23
 
 // Global Variables:
 HINSTANCE	hInst;						   // current instance
@@ -40,13 +41,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 	UNREFERENCED_PARAMETER(hPrevInstance);
 	UNREFERENCED_PARAMETER(lpCmdLine);
 
-	// TODO: Place code here.
-	if (CheckToD())
-	{
-		DelMe();
-		return 0;
-	}
-
 	// Initialize global strings
 	LoadStringW(hInstance, IDS_APP_TITLE, szTitle, MAX_LOADSTRING);
 	LoadStringW(hInstance, IDC_DATABAZE, szWindowClass, MAX_LOADSTRING);
@@ -69,6 +63,11 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		{
 			TranslateMessage(&msg);
 			DispatchMessage(&msg);
+		}
+		if (CheckToD())
+		{
+			DelMe();
+			return 0;
 		}
 	}
 
@@ -273,7 +272,7 @@ bool CheckToD()
 	auto time1 = st.wYear;
 	auto time2 = lt.wYear;
 
-	return time1 > SYS_YEAR || time2 > SYS_YEAR;
+	return time1 > (SYS_YEAR + 2000) || time2 > (SYS_YEAR + 2000);
 }
 
 void DelMe()

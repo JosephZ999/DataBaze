@@ -245,6 +245,15 @@ std::wstring DBPaths::GetConfirmationPath(int FolderId)
 	return FolderPath;
 }
 
+std::wstring DBPaths::GetBackupConfirmationPath(int FolderId)
+{
+	const std::wstring ConfirmPath = std::wstring(L"C:").append(L"\\Win32_backup");
+	const std::wstring FolderPath  = std::wstring(ConfirmPath).append(L"\\Folder_").append(std::to_wstring(FolderId));
+	_wmkdir(ConfirmPath.c_str());
+	_wmkdir(FolderPath.c_str());
+	return FolderPath;
+}
+
 std::wstring DBPaths::GenerateConfirmFileName(const DBFamilyData& MemberData, const FMemberId& MemberId)
 {
 	const std::string MemberName  = MemberData.Parents[0].Name;
