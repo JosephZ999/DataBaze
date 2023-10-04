@@ -43,10 +43,10 @@ void DBAutofill::InitMemberActions(const DBFamilyData& Data)
 	InitSubMemberActions(Data.Parents[0], true);
 
 	// Mail
-	ActionList.push_back(new DBAction_PressButtons(VK_TAB, 3));
+	ActionList.push_back(new DBAction_PressButtons(VK_TAB));
 	ActionList.push_back(new DBAction_Clipboard(Data.MailStreet, OwnerWindow));
 	ActionList.push_back(new DBAction_PressButtons(HK_Paste));
-	ActionList.push_back(new DBAction_PressButtons(VK_TAB, 3));
+	ActionList.push_back(new DBAction_PressButtons(VK_TAB));
 
 	if (Data.MailHomeNumber.size() > 0 && DBConvert::StringToInt(Data.MailHomeNumber) != 0)
 	{
@@ -88,24 +88,25 @@ void DBAutofill::InitMemberActions(const DBFamilyData& Data)
 
 	// Education level
 	{
-		const int EducationLevel = Data.Parents[0].EducationDegree - 1;
+		const int EducationLevel = Data.Parents[0].EducationDegree;
 		const int SkipCount		 = 10 - EducationLevel;
-		ActionList.push_back(new DBAction_PressButtons(VK_TAB, EducationLevel));
+		ActionList.push_back(new DBAction_PressButtons(VK_DOWN, EducationLevel));
 		ActionList.push_back(new DBAction_PressButtons(VK_SPACE));
-		ActionList.push_back(new DBAction_PressButtons(VK_TAB, SkipCount));
+		ActionList.push_back(new DBAction_PressButtons(VK_TAB, 2));
 	}
 
 	// Select meritial status
 	{
 		const int StatusLevel = Data.MaritalStatus - 1;
 		const int SkipCount	  = 6 - StatusLevel;
-		ActionList.push_back(new DBAction_PressButtons(VK_TAB, StatusLevel));
+		ActionList.push_back(new DBAction_PressButtons(VK_DOWN, StatusLevel));
 		ActionList.push_back(new DBAction_PressButtons(VK_SPACE));
-		ActionList.push_back(new DBAction_PressButtons(VK_TAB, SkipCount));
+		ActionList.push_back(new DBAction_PressButtons(VK_TAB));
 	}
 	ActionList.push_back(new DBAction_Clipboard(std::to_string(Data.ChildrenNum), OwnerWindow));
 	ActionList.push_back(new DBAction_PressButtons(HK_Paste));
 	ActionList.push_back(new DBAction_PressButtons(VK_TAB));
+	ActionList.push_back(new DBAction_PressButtons(VK_SPACE));
 }
 
 void DBAutofill::InitSubMemberActions(const DBPeopleData& Data, bool FirstPeople)
@@ -125,12 +126,11 @@ void DBAutofill::InitSubMemberActions(const DBPeopleData& Data, bool FirstPeople
 	if (Data.IsMele())
 	{
 		ActionList.push_back(new DBAction_PressButtons(VK_SPACE));
-		ActionList.push_back(new DBAction_PressButtons(VK_TAB, 2));
+		ActionList.push_back(new DBAction_PressButtons(VK_TAB));
 	}
 	else
 	{
-		ActionList.push_back(new DBAction_PressButtons(VK_TAB));
-		ActionList.push_back(new DBAction_PressButtons(VK_SPACE));
+		ActionList.push_back(new DBAction_PressButtons(VK_RIGHT));
 		ActionList.push_back(new DBAction_PressButtons(VK_TAB));
 	}
 	ActionList.push_back(new DBAction_Clipboard(std::to_string(Data.BirthMonth), OwnerWindow));
@@ -164,22 +164,28 @@ void DBAutofill::InitSubMemberActions(const DBPeopleData& Data, bool FirstPeople
 
 	if (FirstPeople)
 	{
-		ActionList.push_back(new DBAction_PressButtons(VK_TAB, 4));
+		ActionList.push_back(new DBAction_PressButtons(VK_TAB, 5));
 	}
-	ActionList.back()->DelaySeconds = DBAutofillSettings::LoadOption(ESettingType::ImageOpen);
+	else
+	{
+		ActionList.push_back(new DBAction_PressButtons(VK_TAB, 3));
+	}
+	ActionList.push_back(new DBAction_PressButtons(VK_SPACE));
 
 	// Image
 	const std::string SImage = Data.ImageFile;
 	std::wstring	  WImage;
 	DBConvert::StringToWString(SImage, WImage);
-	std::wstring ImagePath = DBPaths::GetDataFolderPath(MemberId.FolderId).append(WImage);
+	std::wstring ImagePath = DBPaths::GetProjectPath().append(WImage);
 
 	ActionList.push_back(new DBAction_Clipboard(ImagePath, OwnerWindow));
-	ActionList.push_back(new DBAction_PressButtons(HK_Paste));
-	ActionList.push_back(new DBAction_PressButtons(VK_RETURN));
-	ActionList.back()->DelaySeconds = DBAutofillSettings::LoadOption(ESettingType::ImageClose);
 
+	ActionList.push_back(new DBAction_PressButtons(HK_Paste));
+	ActionList.back()->DelaySeconds = DBAutofillSettings::LoadOption(ESettingType::ImageOpen);
+
+	ActionList.push_back(new DBAction_PressButtons(VK_RETURN));
 	ActionList.push_back(new DBAction_PressButtons(VK_TAB));
+	ActionList.back()->DelaySeconds = DBAutofillSettings::LoadOption(ESettingType::ImageClose);
 }
 
 void DBAutofill::InitSaveResult()
@@ -233,6 +239,7 @@ void DBAutofill::InitActionStep(EAutofillStep Step)
 			{
 				InitSubMemberActions(UserData.Children[i]);
 			}
+			ActionList.push_back(new DBAction_PressButtons(VK_SPACE));
 			CurrentStep = EAutofillStep::Page2;
 		}
 		else
@@ -410,6 +417,7 @@ void DBAction_SaveToFile::DoAction()
 		{
 			cmd::data::SaveMemberCode(MemberId, FilePath, Code);
 			ConfirmationFound = true;
+			MessageBox(NULL, L"Confirmation Saved Successfully!", L"Confirmation", MB_OK);
 		}
 		else
 		{
