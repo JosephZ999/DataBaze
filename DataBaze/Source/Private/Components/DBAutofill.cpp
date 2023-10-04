@@ -122,17 +122,22 @@ void DBAutofill::InitSubMemberActions(const DBPeopleData& Data, bool FirstPeople
 	ActionList.push_back(new DBAction_PressButtons(VK_TAB, 3));
 	ActionList.push_back(new DBAction_PressButtons(VK_SPACE));
 	ActionList.push_back(new DBAction_PressButtons(VK_TAB));
-	// Gender
-	if (Data.IsMele())
+
+	if (FirstPeople)
 	{
-		ActionList.push_back(new DBAction_PressButtons(VK_SPACE));
-		ActionList.push_back(new DBAction_PressButtons(VK_TAB));
+		// Gender
+		if (Data.IsMele())
+		{
+			ActionList.push_back(new DBAction_PressButtons(VK_SPACE));
+			ActionList.push_back(new DBAction_PressButtons(VK_TAB));
+		}
+		else
+		{
+			ActionList.push_back(new DBAction_PressButtons(VK_RIGHT));
+			ActionList.push_back(new DBAction_PressButtons(VK_TAB));
+		}
 	}
-	else
-	{
-		ActionList.push_back(new DBAction_PressButtons(VK_RIGHT));
-		ActionList.push_back(new DBAction_PressButtons(VK_TAB));
-	}
+
 	ActionList.push_back(new DBAction_Clipboard(std::to_string(Data.BirthMonth), OwnerWindow));
 	ActionList.push_back(new DBAction_PressButtons(HK_Paste));
 	ActionList.push_back(new DBAction_PressButtons(VK_TAB));
@@ -144,6 +149,21 @@ void DBAutofill::InitSubMemberActions(const DBPeopleData& Data, bool FirstPeople
 	ActionList.push_back(new DBAction_Clipboard(std::to_string(Data.BirthYear), OwnerWindow));
 	ActionList.push_back(new DBAction_PressButtons(HK_Paste));
 	ActionList.push_back(new DBAction_PressButtons(VK_TAB));
+
+	if (! FirstPeople)
+	{
+		// Gender
+		if (Data.IsMele())
+		{
+			ActionList.push_back(new DBAction_PressButtons(VK_SPACE));
+			ActionList.push_back(new DBAction_PressButtons(VK_TAB));
+		}
+		else
+		{
+			ActionList.push_back(new DBAction_PressButtons(VK_RIGHT));
+			ActionList.push_back(new DBAction_PressButtons(VK_TAB));
+		}
+	}
 
 	// Fill City
 	if (Data.IsBirthCityValid())
@@ -179,13 +199,13 @@ void DBAutofill::InitSubMemberActions(const DBPeopleData& Data, bool FirstPeople
 	std::wstring ImagePath = DBPaths::GetProjectPath().append(WImage);
 
 	ActionList.push_back(new DBAction_Clipboard(ImagePath, OwnerWindow));
-
-	ActionList.push_back(new DBAction_PressButtons(HK_Paste));
 	ActionList.back()->DelaySeconds = DBAutofillSettings::LoadOption(ESettingType::ImageOpen);
 
+	ActionList.push_back(new DBAction_PressButtons(HK_Paste));
+
 	ActionList.push_back(new DBAction_PressButtons(VK_RETURN));
-	ActionList.push_back(new DBAction_PressButtons(VK_TAB));
 	ActionList.back()->DelaySeconds = DBAutofillSettings::LoadOption(ESettingType::ImageClose);
+	ActionList.push_back(new DBAction_PressButtons(VK_TAB));
 }
 
 void DBAutofill::InitSaveResult()
@@ -230,6 +250,7 @@ void DBAutofill::InitActionStep(EAutofillStep Step)
 	{
 		if (UserData.IsHasASpouse() || UserData.ChildrenNum > 0)
 		{
+			ActionList.clear();
 			if (UserData.IsHasASpouse())
 			{
 				InitSubMemberActions(UserData.Parents[1]);
