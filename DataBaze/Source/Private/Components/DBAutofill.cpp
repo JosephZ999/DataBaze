@@ -90,8 +90,8 @@ void DBAutofill::InitMemberActions(const DBFamilyData& Data)
 	{
 		const int EducationLevel = Data.Parents[0].EducationDegree;
 		const int SkipCount		 = 10 - EducationLevel;
-		ActionList.push_back(new DBAction_PressButtons(VK_DOWN, EducationLevel));
 		ActionList.push_back(new DBAction_PressButtons(VK_SPACE));
+		ActionList.push_back(new DBAction_PressButtons(VK_RIGHT, EducationLevel));
 		ActionList.push_back(new DBAction_PressButtons(VK_TAB, 2));
 	}
 
@@ -99,8 +99,8 @@ void DBAutofill::InitMemberActions(const DBFamilyData& Data)
 	{
 		const int StatusLevel = Data.MaritalStatus - 1;
 		const int SkipCount	  = 6 - StatusLevel;
-		ActionList.push_back(new DBAction_PressButtons(VK_DOWN, StatusLevel));
 		ActionList.push_back(new DBAction_PressButtons(VK_SPACE));
+		ActionList.push_back(new DBAction_PressButtons(VK_RIGHT, StatusLevel));
 		ActionList.push_back(new DBAction_PressButtons(VK_TAB));
 	}
 	ActionList.push_back(new DBAction_Clipboard(std::to_string(Data.ChildrenNum), OwnerWindow));
